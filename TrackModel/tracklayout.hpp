@@ -16,7 +16,7 @@ namespace TrackModel {
         private:
             std::unordered_map<int, Block*> blocks;
             std::unordered_map<int, Switch*> switches;
-            std::vector<Station> stations;
+            std::vector<Station *> stations;
 
         public:
             std::string name;
@@ -62,7 +62,7 @@ namespace TrackModel {
             BlockFault clearFault( BlockFault fault );
 
             // connect this block to another block in the given direction
-            void setLink( BlockDir direction, Block newBlock );
+            void setLink( BlockDir direction, Block *newBlock );
     };
 
     class Switch {
@@ -73,13 +73,13 @@ namespace TrackModel {
             Block *straightBlock;
             Block *divergeBlock;
 
-            SwitchState diverging;
+            SwitchState direction;
 
             Switch( Block *from, BlockDir fromDir, Block *straight, Block *diverge);
 
             // move the points of this switch to the given direction, and update block connections
             // returns: the new state of the switch
-            SwitchState setDirection( SwitchState newState );
+            void setDirection( SwitchState newState );
     };
 
     class Station {
@@ -89,7 +89,8 @@ namespace TrackModel {
 
             Station( std::string name );
 
-            // remove the given number of passengers from this platform
-            void removePassengers( int count );
+            // remove up to the given number of passengers from this platform
+            // returns: actual number of passengers removed
+            int removePassengers( int maxCount );
     };
 }

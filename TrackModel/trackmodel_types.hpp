@@ -20,6 +20,22 @@ namespace TrackModel {
         FAULT_POWER_FAIL = 4
     };
 
+    inline BlockFault operator|( BlockFault a, BlockFault b ) {
+        return static_cast<BlockFault>(static_cast<int>(a) | static_cast<int>(b));
+    }
+
+    inline BlockFault operator&( BlockFault a, BlockFault b ) {
+        return static_cast<BlockFault>(static_cast<int>(a) & static_cast<int>(b));
+    }
+
+    inline BlockFault operator~( BlockFault a ) {
+        return static_cast<BlockFault>(~static_cast<int>(a));
+    }
+
+    inline bool isFaultSet( BlockFault faults, BlockFault flag ) {
+        return (faults & flag) != FAULT_NONE;
+    }
+
     struct TrackCircuitData {
         uint32_t speed;
         uint32_t authority;
