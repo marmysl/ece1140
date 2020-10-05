@@ -2,7 +2,7 @@
 #include "trackmodel_types.hpp"
 
 namespace TrackModel {
-    TrackCircuit getTrackCircuit( int blockId );
+    TrackCircuitData getTrackCircuit( int blockId );
 
     // add a train presence to indicated block
     void addOccupancy( int blockId );

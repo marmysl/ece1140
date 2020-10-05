@@ -20,9 +20,25 @@ namespace TrackModel {
         FAULT_POWER_FAIL = 4
     };
 
-    struct TrackCircuit {
-        uint16_t speed;
-        uint16_t authority;
+    struct TrackCircuitData {
+        uint32_t speed;
+        uint32_t authority;
+
+        TrackCircuitData( uint32_t speed, uint32_t auth ) :
+            speed(speed), authority(auth) {}
+
+        TrackCircuitData( float speedKph, float authKm ) {
+            speed = (uint32_t)(speedKph * 4096);
+            authority = (uint32_t)(authKm * 4096);
+        }
+
+        float decodeSpeed() {
+            return ((float)speed) / 4096;
+        }
+
+        float decodeAuthority() {
+            return ((float)authority) / 4096;
+        }
     };
 
     struct Transponder {

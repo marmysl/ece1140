@@ -4,7 +4,7 @@
 
 namespace TrackModel {
     // update speed/authority signal to a block
-    void setTrackCircuit( int blockId, TrackCircuit data );
+    void setTrackCircuit( int blockId, TrackCircuitData data );
 
     // check whether the given block contains >= 1 train
     bool isBlockOccupied( int blockId );
