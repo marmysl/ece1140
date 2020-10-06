@@ -1,5 +1,6 @@
 #pragma once
 
+#include <string>
 #include "trackmodel_types.hpp"
 
 namespace TrackModel {

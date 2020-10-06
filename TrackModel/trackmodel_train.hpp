@@ -1,12 +1,14 @@
 #pragma once
+
+#include <string>
 #include "trackmodel_types.hpp"
 
 namespace TrackModel {
-    TrackCircuitData getTrackCircuit( int blockId );
+    TrackCircuitData getTrackCircuit( std::string route, int blockId );
 
     // add a train presence to indicated block
-    void addOccupancy( int blockId );
+    void addOccupancy( std::string route, int blockId );
 
     // remove a train presence from the indicated block
-    void removeOccupancy( int blockId );
+    void removeOccupancy( std::string route, int blockId );
 }
