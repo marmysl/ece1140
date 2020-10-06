@@ -13,6 +13,8 @@ namespace TrackModel {
 
     extern Block *yard;
 
+    extern std::vector<Route *> routes;
+
     // Get the route with the given name
     Route *getRoute( std::string name );
 
@@ -23,12 +25,11 @@ namespace TrackModel {
 
     // Represents a route/line (eg green line, red line)
     class Route {
-        private:
+        public:
             std::unordered_map<int, Block*> blocks;
             std::unordered_map<int, Switch*> switches;
             std::vector<Station *> stations;
 
-        public:
             std::string name;
 
             Block *spawnBlock;

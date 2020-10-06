@@ -7,6 +7,18 @@ using namespace TrackModel;
 
 Block *TrackModel::yard;
 
+std::vector<Route *> TrackModel::routes = std::vector<Route *>();
+
+Route *getRoute( std::string name ) {
+    for( Route *r : routes ) {
+        if( !name.compare(r->name) ) {
+            return r;
+        }
+    }
+
+    return NULL;
+}
+
 // Route Members
 Route::Route( std::string name ) : name(name) {}
 
@@ -269,17 +281,7 @@ Station *Route::getStationByName( std::string stationName ) {
 // Block Members
 Block::Block( int id, std::string section, float length, float grade, float speedLimit ) :
     id(id), section(section), length(length), grade(grade), speedLimit(speedLimit),
-    nextBlock(NULL), prevBlock(NULL), station(NULL), faults(FAULT_NONE) {}
-
-BlockFault Block::setFault( BlockFault fault ) {
-    faults = faults | fault;
-    return faults;
-}
-
-BlockFault Block::clearFault( BlockFault fault ) {
-    faults = faults & ~fault;
-    return faults;
-}
+    nextBlock(NULL), prevBlock(NULL), station(NULL) {}
 
 void Block::setLink( BlockDir direction, Block *newBlock ) {
     if( direction == BLK_FORWARD ) {
