@@ -11,6 +11,13 @@ namespace TrackModel {
     class Station;
     class Switch;
 
+    extern Block *yard;
+
+    class LayoutParseError : public std::runtime_error {
+        public:
+            LayoutParseError( std::string msg ) : std::runtime_error(msg) {}
+    };
+
     // Represents a route/line (eg green line, red line)
     class Route {
         private:
@@ -20,7 +27,6 @@ namespace TrackModel {
 
         public:
             std::string name;
-            Block *yard;
 
             Route( std::string name );
 
