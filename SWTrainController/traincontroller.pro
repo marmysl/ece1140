@@ -12,9 +12,8 @@ CONFIG += c++11
 SOURCES += \
     TrainCGUI.cpp \
     TrainController.cpp \
-    TrainController_clientmain.cpp
+    TrainController_main.cpp
 
-INCLUDEPATH  += /usr/include/boost
 
 HEADERS += \
     TrainCGUI.h \
@@ -29,9 +28,9 @@ macx {
 
     QMAKE_CXXFLAGS += -std=c++11 -stdlib=libc++
 
-    LIBS += -L"/usr/local/Cellar/boost/1.73.0/lib" -lboost_random
+    # LIBS += -L"/usr/local/Cellar/boost/1.73.0/lib" -lboost_random
 
-    INCLUDEPATH += "/usr/local/Cellar/boost/1.73.0/include"
+    # INCLUDEPATH += "/usr/local/Cellar/boost/1.73.0/include"
 
 }
 

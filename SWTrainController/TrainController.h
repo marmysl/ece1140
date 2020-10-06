@@ -10,8 +10,7 @@ private:
     double kp;
     double ki;
 public:
-   TrainController();
-   double getPower();
+   TrainController(int argc, char *argv[]);
    void calculatePower();
    double decode(unsigned);
 };

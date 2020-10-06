@@ -63,7 +63,7 @@
    <widget class="QPushButton" name="submit">
     <property name="geometry">
      <rect>
-      <x>420</x>
+      <x>290</x>
       <y>90</y>
       <width>80</width>
       <height>24</height>
@@ -76,8 +76,8 @@
    <widget class="QLabel" name="pcmd_label">
     <property name="geometry">
      <rect>
-      <x>140</x>
-      <y>250</y>
+      <x>500</x>
+      <y>80</y>
       <width>171</width>
       <height>21</height>
      </rect>
@@ -89,8 +89,8 @@
    <widget class="QLabel" name="p_out_label">
     <property name="geometry">
      <rect>
-      <x>350</x>
-      <y>250</y>
+      <x>710</x>
+      <y>80</y>
       <width>58</width>
       <height>16</height>
      </rect>
@@ -102,8 +102,8 @@
    <widget class="QLabel" name="kW_label">
     <property name="geometry">
      <rect>
-      <x>400</x>
-      <y>250</y>
+      <x>760</x>
+      <y>80</y>
       <width>58</width>
       <height>16</height>
      </rect>
@@ -112,14 +112,17 @@
      <string>kW</string>
     </property>
    </widget>
-   <widget class="QTextEdit" name="test_box">
+   <widget class="QPushButton" name="sendPowerButton">
     <property name="geometry">
      <rect>
-      <x>250</x>
-      <y>400</y>
-      <width>431</width>
-      <height>71</height>
+      <x>390</x>
+      <y>310</y>
+      <width>141</width>
+      <height>61</height>
      </rect>
+    </property>
+    <property name="text">
+     <string>SET POWER</string>
     </property>
    </widget>
   </widget>

@@ -1,7 +1,12 @@
+//  Implementation file for SW Train Controller GUI
+
 #include "TrainCGUI.h"
-#include "ui_mainwindow.h"
+#include "ui_TrainController.h"
+// #include  "Train.h" // Leaving as comment until Train.h exists
+
 #include <QString>
 #include <QGeoRoute>
+
 
 
 MainWindow::MainWindow(QWidget *parent)
@@ -16,12 +21,10 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
-void MainWindow::on_submit_clicked()
+void MainWindow::on_submit_clicked() // on "Submit" the controller instantiates a Train class
 {
-    QString temp1,temp2;
-    double kp, ki, power;
-
     //convert input string to text then assign to Kp  & Ki
+    QString temp1,temp2;
     temp1 = ui->kp_textbox->toPlainText();
     kp = temp1.toDouble();
     temp2 =  ui->ki_textbox->toPlainText();
@@ -31,7 +34,7 @@ void MainWindow::on_submit_clicked()
     ui->ki_textbox->clear();
     ui->kp_textbox->clear();
 
-    // set Power = Kp + Ki, then display on UI
+    // [temporary, for iteration 2] set Power = Kp + Ki, then display on UI
     power = kp + ki;
     ui->p_out_label->setText(QString::number(power));
 

@@ -17,7 +17,6 @@
 #include <QtWidgets/QPlainTextEdit>
 #include <QtWidgets/QPushButton>
 #include <QtWidgets/QStatusBar>
-#include <QtWidgets/QTextEdit>
 #include <QtWidgets/QWidget>
 
 QT_BEGIN_NAMESPACE
@@ -34,7 +33,7 @@ public:
     QLabel *pcmd_label;
     QLabel *p_out_label;
     QLabel *kW_label;
-    QTextEdit *test_box;
+    QPushButton *sendPowerButton;
     QMenuBar *menubar;
     QStatusBar *statusbar;
 
@@ -59,19 +58,19 @@ public:
         ki_textbox->setGeometry(QRect(160, 110, 91, 31));
         submit = new QPushButton(centralwidget);
         submit->setObjectName(QString::fromUtf8("submit"));
-        submit->setGeometry(QRect(420, 90, 80, 24));
+        submit->setGeometry(QRect(290, 90, 80, 24));
         pcmd_label = new QLabel(centralwidget);
         pcmd_label->setObjectName(QString::fromUtf8("pcmd_label"));
-        pcmd_label->setGeometry(QRect(140, 250, 171, 21));
+        pcmd_label->setGeometry(QRect(500, 80, 171, 21));
         p_out_label = new QLabel(centralwidget);
         p_out_label->setObjectName(QString::fromUtf8("p_out_label"));
-        p_out_label->setGeometry(QRect(350, 250, 58, 16));
+        p_out_label->setGeometry(QRect(710, 80, 58, 16));
         kW_label = new QLabel(centralwidget);
         kW_label->setObjectName(QString::fromUtf8("kW_label"));
-        kW_label->setGeometry(QRect(400, 250, 58, 16));
-        test_box = new QTextEdit(centralwidget);
-        test_box->setObjectName(QString::fromUtf8("test_box"));
-        test_box->setGeometry(QRect(250, 400, 431, 71));
+        kW_label->setGeometry(QRect(760, 80, 58, 16));
+        sendPowerButton = new QPushButton(centralwidget);
+        sendPowerButton->setObjectName(QString::fromUtf8("sendPowerButton"));
+        sendPowerButton->setGeometry(QRect(390, 310, 141, 61));
         MainWindow->setCentralWidget(centralwidget);
         menubar = new QMenuBar(MainWindow);
         menubar->setObjectName(QString::fromUtf8("menubar"));
@@ -95,6 +94,7 @@ public:
         pcmd_label->setText(QCoreApplication::translate("MainWindow", "The power commanded is:", nullptr));
         p_out_label->setText(QCoreApplication::translate("MainWindow", "0", nullptr));
         kW_label->setText(QCoreApplication::translate("MainWindow", "kW", nullptr));
+        sendPowerButton->setText(QCoreApplication::translate("MainWindow", "SET POWER", nullptr));
     } // retranslateUi
 
 };
