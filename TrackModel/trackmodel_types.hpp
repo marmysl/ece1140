@@ -40,12 +40,13 @@ namespace TrackModel {
         uint32_t speed;
         uint32_t authority;
 
+        TrackCircuitData() : speed(0), authority(0) {};
+
         TrackCircuitData( uint32_t speed, uint32_t auth ) :
             speed(speed), authority(auth) {}
 
-        TrackCircuitData( float speedKph, float authKm ) {
-            speed = (uint32_t)(speedKph * 4096);
-            authority = (uint32_t)(authKm * 4096);
+        static TrackCircuitData fromFloat( float speedKph, float authKm ) {
+            return TrackCircuitData((uint32_t)(speedKph * 4096), (uint32_t)(authKm * 4096));
         }
 
         float decodeSpeed() {

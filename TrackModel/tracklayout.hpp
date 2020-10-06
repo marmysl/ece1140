@@ -13,6 +13,9 @@ namespace TrackModel {
 
     extern Block *yard;
 
+    // Get the route with the given name
+    Route *getRoute( std::string name );
+
     class LayoutParseError : public std::runtime_error {
         public:
             LayoutParseError( std::string msg ) : std::runtime_error(msg) {}
@@ -27,6 +30,8 @@ namespace TrackModel {
 
         public:
             std::string name;
+
+            Block *spawnBlock;
 
             Route( std::string name );
 
@@ -50,7 +55,6 @@ namespace TrackModel {
             float length;
             float grade;
             float speedLimit;
-            BlockFault faults;
 
             Station *station;
 
@@ -58,14 +62,6 @@ namespace TrackModel {
             Block *nextBlock;
 
             Block( int id, std::string section, float length, float grade, float speedLimit );
-
-            // apply the given fault to this block
-            // returns: the new fault state
-            BlockFault setFault( BlockFault fault );
-
-            // remove the given fault from this block
-            // returns: the new fault state
-            BlockFault clearFault( BlockFault fault );
 
             // connect this block to another block in the given direction
             void setLink( BlockDir direction, Block *newBlock );

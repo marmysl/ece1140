@@ -4,17 +4,17 @@
 
 namespace TrackModel {
     // update speed/authority signal to a block
-    void setTrackCircuit( int blockId, TrackCircuitData data );
+    void setTrackCircuit( std::string route, int blockId, TrackCircuitData data );
 
     // check whether the given block contains >= 1 train
-    bool isBlockOccupied( int blockId );
+    bool isBlockOccupied( std::string route, int blockId );
 
     // get the current fault flags for the given block
-    BlockFault getFaults( int blockId );
+    BlockFault getFaults( std::string route, int blockId );
 
     // check the current direction of the switch attached to the given block
-    SwitchState getSwitchState( int switchBlockId );
+    SwitchState getSwitchState( std::string route, int switchBlockId );
 
     // change the direction of the switch attached to the given block
-    SwitchState setSwitchState( int switchBlockId, SwitchState newDirection );
+    void setSwitchState( std::string route, int switchBlockId, SwitchState newDirection );
 }
