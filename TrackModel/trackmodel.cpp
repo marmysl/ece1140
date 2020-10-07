@@ -151,19 +151,19 @@ BlockFault clearFault( std::string route, int block,  BlockFault fault ) {
 
 // Testing
 //---------------------------------------------------------------------------------
-int main(int argc, char const *argv[]) {
-    
-    if( argc != 2 ) return 0;
+const std::string LAYOUT_FILE = "blue_line.csv";
+const std::string ROUTE_NAME = "Blue Line";
 
+int trackModelTestMain() {
     yard = new Block(0, "Yard", 0, 0, 100);
 
-    Route *r = new Route("Blue Line");
+    Route *r = new Route(ROUTE_NAME);
 
     try {
-        r->loadLayout(argv[1]);
+        r->loadLayout(LAYOUT_FILE);
     }
     catch( const LayoutParseError &e ) {
-        std::cerr << "Failed to parse layout file " << argv[1] << ":" << std::endl;
+        std::cerr << "Failed to parse layout file:" << std::endl;
         std::cerr << e.what() << std::endl;
         return -1;
     }
