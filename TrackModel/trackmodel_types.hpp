@@ -42,11 +42,21 @@ namespace TrackModel {
 
         TrackCircuitData() : speed(0), authority(0) {};
 
-        TrackCircuitData( uint32_t speed, uint32_t auth ) :
-            speed(speed), authority(auth) {}
+        TrackCircuitData( uint64_t data ) :
+            speed((uint32_t)(data >> 32)), authority((uint32_t)(data & 0xFFFFFFFFul)) {}
+
+        static TrackCircuitData fromFixed( uint32_t speed, uint32_t auth ) {
+            TrackCircuitData d;
+            d.speed = speed;
+            d.authority = auth;
+            return d;
+        }
 
         static TrackCircuitData fromFloat( float speedKph, float authKm ) {
-            return TrackCircuitData((uint32_t)(speedKph * 4096), (uint32_t)(authKm * 4096));
+            TrackCircuitData d;
+            d.speed = (uint32_t)(speedKph * 4096);
+            d.authority = (uint32_t)(authKm * 4096);
+            return d;
         }
 
         float decodeSpeed() {
@@ -55,6 +65,18 @@ namespace TrackModel {
 
         float decodeAuthority() {
             return ((float)authority) / 4096;
+        }
+
+        uint64_t getEncodedData() {
+            return ((uint64_t)speed << 32) | (uint64_t)authority;
+        }
+
+        static uint64_t encodeFromFloat( float speedKph, float authKm ) {
+            return fromFloat(speedKph, authKm).getEncodedData();
+        }
+
+        static uint64_t encodeFromFixed( uint32_t speed, uint32_t auth ) {
+            return fromFixed(speed, auth).getEncodedData();
         }
     };
 
