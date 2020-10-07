@@ -1,10 +1,7 @@
 #include "Train.h"
-#include "TrainModelUI.h"
-#include "TrainModelMath.h"
-#include "tracklayout.hpp"
-#include "trackmodel_train.hpp"
 #include <QApplication>
 #include <chrono>
+#include <cstdint>
 using namespace std;
 
 Train::Train(int newNumCars, int argc, char *argv[])
@@ -57,20 +54,17 @@ void Train::updateTrackInfo(){                            //Will update block in
     //update block num
     //update block length
     //send occupancy to Track Model
-    //getTrackCircuit info on new block
-    Route *blueLine = getRoute("Blue Line");
-    trackmodel_train::removeOccupancy(blueLine, blockNum);
-    blockNum = blockNum + 1;
-    trackmodel_train::addOccupancy(blueLine, blockNum);
-    Block* blockInfo = blueLine.getBlock(blockNum);
-    blockDist = blockInfo.length;
-    blockGrade = blockInfo.grade;
+    blockNum = TrainModelUpdateBlock::updateBlock(blockNum);
+    blockDist = TrainModelUpdateBlock::blockLength(blockNum);
+    blockGrade = TrainModelUpdateBlock::blockGrade(blockNum);
+    this->setTrackCircuit(blockNum);
 }
 
 //ask about this ?
-void Train::getTrackCircuit(int block){                   //Get curr track signal from Track Model when new block
+void Train::setTrackCircuit(int blockNum){                   //Get curr track signal from Track Model when new block
     //get tc info for block
     //assign
+    trackCircuitData = TrainModelUpdateBlock::updateTrackCircuit(blockNum);
 }
 
 uint64_t Train::sendTrackCircuit(){          //Train controller can call to get curr track signal
