@@ -18,13 +18,18 @@ public:
 
 private slots:
     void on_submit_clicked();
+    void on_sendPowerButton_clicked();
+    void on_getCircuitInfoButton_clicked();
 
 private:
     Ui::MainWindow *ui;
 
+
+    double power;
     double kp;
     double ki;
-    double power;
+
+
 
 };
 #endif // MAINWINDOW_H

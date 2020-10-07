@@ -25,8 +25,12 @@ void TrainController :: calculatePower()
 }
 
 
-double TrainController :: decode(unsigned)  // decodes track circuit into speed & auth
+void TrainController :: decode(unsigned signal)  // decodes track circuit into speed & auth //switch to void?
 {
     // add stuff here
-    return 0;
+
+    //temporary - debugging
+    authority = 10.5;
+    suggestedSpeed = signal;
+
 }
