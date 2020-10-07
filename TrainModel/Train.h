@@ -3,7 +3,7 @@
 #include "TrainModelUI.h"
 #include "TrainModelMath.h"
 #include "TrainModelUpdateBlock.h"
-#include <QMainWindow>
+//#include <QMainWindow>
 #include <chrono>
 #include <cstdint>
 using namespace std;
@@ -21,9 +21,11 @@ public:
     double blockDist = 50;
     double blockGrade = 0;
     int blockNum;
+    //TrainModelUI* uiPtr;
+    //QApplication* qapp;
 
 
-    Train(int newNumCars, int argc, char *argv[]);
+    Train(int newNumCars);
     //Train(int, char);
     void setPower(double newPower);             //Called by train controller to set power
     void setTrackCircuit(int blockNum);       //Get curr track signal from Track Model when new block
