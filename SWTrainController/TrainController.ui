@@ -115,14 +115,105 @@
    <widget class="QPushButton" name="sendPowerButton">
     <property name="geometry">
      <rect>
-      <x>390</x>
-      <y>310</y>
+      <x>580</x>
+      <y>120</y>
       <width>141</width>
       <height>61</height>
      </rect>
     </property>
     <property name="text">
      <string>SET POWER</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="getCircuitInfoButton">
+    <property name="geometry">
+     <rect>
+      <x>130</x>
+      <y>280</y>
+      <width>201</width>
+      <height>41</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Get Track Circuit Info</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="decodeButton">
+    <property name="geometry">
+     <rect>
+      <x>130</x>
+      <y>350</y>
+      <width>201</width>
+      <height>41</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Decode Circuit Info</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="circuitInfo">
+    <property name="geometry">
+     <rect>
+      <x>540</x>
+      <y>320</y>
+      <width>101</width>
+      <height>21</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Circuit info:</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="sugspeedlabel">
+    <property name="geometry">
+     <rect>
+      <x>480</x>
+      <y>370</y>
+      <width>121</width>
+      <height>21</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Suggested Speed:</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="authlabel">
+    <property name="geometry">
+     <rect>
+      <x>480</x>
+      <y>410</y>
+      <width>58</width>
+      <height>16</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Authority:</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="suggested_speed_label">
+    <property name="geometry">
+     <rect>
+      <x>630</x>
+      <y>370</y>
+      <width>58</width>
+      <height>16</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>0</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="authority_label">
+    <property name="geometry">
+     <rect>
+      <x>620</x>
+      <y>410</y>
+      <width>58</width>
+      <height>16</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>0</string>
     </property>
    </widget>
   </widget>

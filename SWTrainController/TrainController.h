@@ -5,14 +5,22 @@
 
 class TrainController
 {
-private:
+
+public: // TEMPORARILY making everything public for easier implementation
+//private:
     double power;
     double kp;
     double ki;
+    double suggestedSpeed;
+    double authority;
+    double setpointSpeed;
+    unsigned signal;
+    int argc;
+    char *argv[];
 public:
-   TrainController(int argc, char *argv[]);
+   TrainController(int, char*[]);
    void calculatePower();
-   double decode(unsigned);
+   void decode(unsigned);
 };
 
 #endif // TRAINCONTROLLER_H

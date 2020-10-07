@@ -34,6 +34,13 @@ public:
     QLabel *p_out_label;
     QLabel *kW_label;
     QPushButton *sendPowerButton;
+    QPushButton *getCircuitInfoButton;
+    QPushButton *decodeButton;
+    QLabel *circuitInfo;
+    QLabel *sugspeedlabel;
+    QLabel *authlabel;
+    QLabel *suggested_speed_label;
+    QLabel *authority_label;
     QMenuBar *menubar;
     QStatusBar *statusbar;
 
@@ -70,7 +77,28 @@ public:
         kW_label->setGeometry(QRect(760, 80, 58, 16));
         sendPowerButton = new QPushButton(centralwidget);
         sendPowerButton->setObjectName(QString::fromUtf8("sendPowerButton"));
-        sendPowerButton->setGeometry(QRect(390, 310, 141, 61));
+        sendPowerButton->setGeometry(QRect(580, 120, 141, 61));
+        getCircuitInfoButton = new QPushButton(centralwidget);
+        getCircuitInfoButton->setObjectName(QString::fromUtf8("getCircuitInfoButton"));
+        getCircuitInfoButton->setGeometry(QRect(130, 280, 201, 41));
+        decodeButton = new QPushButton(centralwidget);
+        decodeButton->setObjectName(QString::fromUtf8("decodeButton"));
+        decodeButton->setGeometry(QRect(130, 350, 201, 41));
+        circuitInfo = new QLabel(centralwidget);
+        circuitInfo->setObjectName(QString::fromUtf8("circuitInfo"));
+        circuitInfo->setGeometry(QRect(540, 320, 101, 21));
+        sugspeedlabel = new QLabel(centralwidget);
+        sugspeedlabel->setObjectName(QString::fromUtf8("sugspeedlabel"));
+        sugspeedlabel->setGeometry(QRect(480, 370, 121, 21));
+        authlabel = new QLabel(centralwidget);
+        authlabel->setObjectName(QString::fromUtf8("authlabel"));
+        authlabel->setGeometry(QRect(480, 410, 58, 16));
+        suggested_speed_label = new QLabel(centralwidget);
+        suggested_speed_label->setObjectName(QString::fromUtf8("suggested_speed_label"));
+        suggested_speed_label->setGeometry(QRect(630, 370, 58, 16));
+        authority_label = new QLabel(centralwidget);
+        authority_label->setObjectName(QString::fromUtf8("authority_label"));
+        authority_label->setGeometry(QRect(620, 410, 58, 16));
         MainWindow->setCentralWidget(centralwidget);
         menubar = new QMenuBar(MainWindow);
         menubar->setObjectName(QString::fromUtf8("menubar"));
@@ -95,6 +123,13 @@ public:
         p_out_label->setText(QCoreApplication::translate("MainWindow", "0", nullptr));
         kW_label->setText(QCoreApplication::translate("MainWindow", "kW", nullptr));
         sendPowerButton->setText(QCoreApplication::translate("MainWindow", "SET POWER", nullptr));
+        getCircuitInfoButton->setText(QCoreApplication::translate("MainWindow", "Get Track Circuit Info", nullptr));
+        decodeButton->setText(QCoreApplication::translate("MainWindow", "Decode Circuit Info", nullptr));
+        circuitInfo->setText(QCoreApplication::translate("MainWindow", "Circuit info:", nullptr));
+        sugspeedlabel->setText(QCoreApplication::translate("MainWindow", "Suggested Speed:", nullptr));
+        authlabel->setText(QCoreApplication::translate("MainWindow", "Authority:", nullptr));
+        suggested_speed_label->setText(QCoreApplication::translate("MainWindow", "0", nullptr));
+        authority_label->setText(QCoreApplication::translate("MainWindow", "0", nullptr));
     } // retranslateUi
 
 };

@@ -11,6 +11,7 @@ int main(int argc, char *argv[])
 {
 
     TrainController* tc1 = new TrainController(argc, argv);
+
     /*
     QApplication a(argc, argv);
     MainWindow w;
