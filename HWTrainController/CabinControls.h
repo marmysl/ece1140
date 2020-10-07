@@ -1,8 +1,6 @@
 #ifndef CABINCONTROLS_H
 #define CABINCONTROLS_H
 
-#include "SerialPort.hpp"
-
 class CabinControls
 {
 	private:

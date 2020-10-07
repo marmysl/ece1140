@@ -13,12 +13,12 @@ class SpeedRegulator
 		double powerCmd;
 		double Kp;
 		double Ki;
-		Train* train_model;
+		Train *train_model;
 		
 	public:
 
 		//Constructor
-		SpeedRegulator(*Train ptr);
+		SpeedRegulator(Train*);
 
 		//Accessor Functions
 		double getAuthority();
