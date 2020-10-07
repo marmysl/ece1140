@@ -1,6 +1,8 @@
 #include "Train.h"
 #include "TrainModelUI.h"
 #include "TrainModelMath.h"
+#include "tracklayout.hpp"
+#include "trackmodel_train.hpp"
 #include <QApplication>
 #include <chrono>
 using namespace std;
@@ -56,6 +58,13 @@ void Train::updateTrackInfo(){                            //Will update block in
     //update block length
     //send occupancy to Track Model
     //getTrackCircuit info on new block
+    Route *blueLine = getRoute("Blue Line");
+    trackmodel_train::removeOccupancy(blueLine, blockNum);
+    blockNum = blockNum + 1;
+    trackmodel_train::addOccupancy(blueLine, blockNum);
+    Block* blockInfo = blueLine.getBlock(blockNum);
+    blockDist = blockInfo.length;
+    blockGrade = blockInfo.grade;
 }
 
 //ask about this ?
@@ -64,7 +73,7 @@ void Train::getTrackCircuit(int block){                   //Get curr track signa
     //assign
 }
 
-uint16_t Train::sendTrackCircuit(){          //Train controller can call to get curr track signal
+uint64_t Train::sendTrackCircuit(){          //Train controller can call to get curr track signal
     return trackCircuitData;
 }
 
