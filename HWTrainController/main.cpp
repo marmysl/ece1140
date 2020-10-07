@@ -2,25 +2,27 @@
 #include "SerialPort.hpp"
 #include "SerialPort.cpp"
 #include <stdio.h>
-#include <string.h>
+#include <string>
 #include "CabinControls.h"
 #include "CabinControls.cpp"
 #include "SpeedRegulator.h"
 #include "SpeedRegulator.cpp"
 #include "FailureDetector.h"
 #include "FailureDetector.cpp"
+#include "../TrainModel/Train.h"
 
 using namespace std;
 
 char portName[] = "\\\\.\\COM4";
 
-#define MAX_DATA_LENGTH 255
+char incomingData[255];
+char outgoingData[255];
 
-char incomingData[MAX_DATA_LENGTH];
+//Arduino SerialPort object
+SerialPort *arduino;
 
-//Objects for communication with other classes
-//SerialPort object
-SerialPort serial_port(portName);
+//TrainModel Object
+Train train_model(5);
 
 //CabinControls object
 CabinControls cabin_controller;
@@ -29,130 +31,105 @@ CabinControls cabin_controller;
 FailureDetector failure_detector;
 
 //SpeedRegulator object
-SpeedRegulator speed_regulator;
-
-//Arduino SerialPort object
-SerialPort *arduino;
-
-//Blinking Delay
-const unsigned int BLINKING_DELAY = 1000;
+SpeedRegulator speed_regulator(&train_model);
 
 //If you want to send data then define "SEND" else comment it out
 #define SEND
 
-void receiveData(void)
+void exampleReceiveData(void)
 {
     int readResult = arduino->readSerialPort(incomingData, MAX_DATA_LENGTH);
     string data(incomingData);
 
-    if(data == "joystick up")
+      //Create a system to encode all data to be read from
+      //char 0 = cabinLights
+      //char 1 = cabinAc
+      //char 2 = cabinHeat
+      //char 3 = cabinDoorsClosed
+      //char 4 = cabinAdvertisements
+      //char 5 = cabinAnnouncements
+      //char6-10 = Kp
+      //char11-15 = Ki
+      //char16 = joystick up
+      //char17 = joystick down
+
+
+    std::cout << "Incoming: " << data << std::endl;
+
+    if(!data.empty())
     {
-        speed_regulator.incSetpointSpeed(.5);
-    }
-    else if(data == "joystick down")
-    {
-        speed_regulator.incSetpointSpeed(-.5);
-    }
-    else if(data.substr(0,4) == "KpKi")
-    {
-        speed_regulator.setKpAndKi(stod(data.substr(4,6)), stod(data.substr(10,6)));
-    }
-    else if(data == "cabinLightsOn")
-    {
-        cabin_controller.cabinLightsOn();
-    }
-    else if(data == "cabinAcOn")
-    {  
-        cabin_controller.cabinAcOn();
-    }
-    else if(data == "cabinHeatOn")
-    {
-        cabin_controller.cabinHeatOn();
-    }
-    else if(data == "cabinDoorsOpen")
-    {
-        cabin_controller.cabinDoorsOpen();
-    }
-    else if(data == "cabinAdvertisementsOn")
-    {
-        cabin_controller.cabinAdvertisementsOn();
-    }
-    else if(data == "cabinAnnouncementsOn")
-    {
-        cabin_controller.cabinAnnouncementsOn();
-    }
-    else if(data == "cabinLightsOff")
-    {
-        cabin_controller.cabinLightsOff();
-    }
-    else if(data == "cabinAcOff")
-    {
-        cabin_controller.cabinAcOff();
-    }
-    else if(data == "cabinHeatOff")
-    {
-        cabin_controller.cabinHeatOff();
-    }
-    else if(data == "cabinDoorsClosed")
-    {
-        cabin_controller.cabinDoorsClosed();
-    }
-    else if(data == "cabinAdvertisementsOff")
-    {
-        cabin_controller.cabinAdvertisementsOff();
-    }
-    else if(data == "cabinAnnouncementsOff")
-    {
-        cabin_controller.cabinAnnouncementsOff();
-    }
-    Sleep(1);
+        if(data.substr(0,1) == "1") cabin_controller.cabinLightsOn();
+        else cabin_controller.cabinLightsOff();
+
+        if(data.substr(1,1) == "1") cabin_controller.cabinAcOn();
+        else cabin_controller.cabinAcOff();
+
+        if(data.substr(2,1) == "1") cabin_controller.cabinHeatOn();
+        else cabin_controller.cabinHeatOff();
+
+        if(data.substr(3,1) == "1") cabin_controller.cabinDoorsOpen();
+        else cabin_controller.cabinDoorsClosed();
+
+        if(data.substr(4,1) == "1") cabin_controller.cabinAdvertisementsOn();
+        else cabin_controller.cabinAdvertisementsOff();
+
+        if(data.substr(5,1) == "1") cabin_controller.cabinAnnouncementsOn();
+        else cabin_controller.cabinAnnouncementsOff();
+
+        if(data.substr(16,1) == "1") speed_regulator.incSetpointSpeed(.5);
+
+        if(data.substr(17) == "1") speed_regulator.incSetpointSpeed(-.5);
+
+        speed_regulator.setKpAndKi(std::stod(data.substr(6,5)), std::stod(data.substr(11,5)));
+    }  
+    Sleep(100);
 }
 
-void writeData(unsigned int delayTime)
+void exampleWriteData(unsigned int delayTime)
 {
     //Create a system to encode all data to be returned to the interface in the string
-    //char 1 = cabinLights
-    //char 2 = cabinAc
-    //char 3 = cabinHeat
-    //char 4 = cabinDoorsClosed
-    //char 5 = cabinAdvertisements
-    //char 6 = cabinAnnouncements
-    //char7-11 = authority
-    //char12-16 = Kp
-    //char17-21 = Ki
-    //char22-26 = commandedSpeed
-    //char27-31 = setpointSpeed
-    //char32-36 = currentSpeed
+    //char 0 = cabinLights
+    //char 1 = cabinAc
+    //char 2 = cabinHeat
+    //char 3 = cabinDoorsClosed
+    //char 4 = cabinAdvertisements
+    //char 5 = cabinAnnouncements
+    //char6-10 = authority
+    //char11-15 = Kp
+    //char16-20 = Ki
+    //char21-25 = commandedSpeed
+    //char26-30 = setpointSpeed
+    //char31-35 = currentSpeed
 
     string outgoing_s = "";
-    outgoing_s += cabin_controller.getCabinLights();
-    outgoing_s += cabin_controller.getCabinAc();
-    outgoing_s += cabin_controller.getCabinHeat();
-    outgoing_s += cabin_controller.getCabinDoors();
-    outgoing_s += cabin_controller.getCabinAdvertisements();
-    outgoing_s += cabin_controller.getCabinAnnouncements();
+    outgoing_s += to_string(cabin_controller.getCabinLights());
+    outgoing_s += to_string(cabin_controller.getCabinAc());
+    outgoing_s += to_string(cabin_controller.getCabinHeat());
+    outgoing_s += to_string(cabin_controller.getCabinDoors());
+    outgoing_s += to_string(cabin_controller.getCabinAdvertisements());
+    outgoing_s += to_string(cabin_controller.getCabinAnnouncements());
 
-    string power(speed_regulator.getPowerCmd(), 5);
+    string power(to_string(speed_regulator.getAuthority()), 0, 5);
     outgoing_s += power;
 
-    string Kp(speed_regulator.getKp(), 5);
+    string Kp(to_string(speed_regulator.getKp()), 0, 5);
     outgoing_s += Kp;
 
-    string Ki(speed_regulator.getKi(), 5);
+    string Ki(to_string(speed_regulator.getKi()), 0, 5);
     outgoing_s += Ki;
 
-    string commandedSpeed(speed_regulator.getCommandedSpeed(), 5);
+    string commandedSpeed(to_string(speed_regulator.getCommandedSpeed()), 0, 5);
     outgoing_s += commandedSpeed;
 
-    string setpointSpeed(speed_regulator.getSetpointSpeed(), 5);
+    string setpointSpeed(to_string(speed_regulator.getSetpointSpeed()), 0, 5);
     outgoing_s += setpointSpeed;
 
-    string currentSpeed(speed_regulator.getCurrentSpeed(), 5);
+    string currentSpeed(to_string(speed_regulator.getCurrentSpeed()), 0, 5);
     outgoing_s += currentSpeed;
 
     outgoing_s += "\n";
 
-    char *outgoingData;
+    std::cout << "Outgoing: " << outgoing_s << std::endl;
     strcpy(outgoingData, outgoing_s.c_str());
 
     arduino->writeSerialPort(outgoingData, MAX_DATA_LENGTH);
@@ -161,10 +138,6 @@ void writeData(unsigned int delayTime)
 
 void autoConnect(void)
 {
-    //better than recusion
-    //avoid stack overflows
-    while(1) {
-        // ui - searching
         std::cout << "Searching in progress";
         // wait connection
         while (!arduino->isConnected()) {
@@ -177,18 +150,17 @@ void autoConnect(void)
         if (arduino->isConnected()) {
             std::cout  << std::endl << "Connection established at port " << portName << std::endl;
         }
-
-        #ifdef SEND
-            while(arduino->isConnected()) writeData(BLINKING_DELAY);
-        #else // SEND
-            while(arduino->isConnected()) receiveData();
-        #endif // SEND
-    }
 }
 
 int main()
 {
     arduino = new SerialPort(portName);
 
-    autoConnect();  
+    autoConnect();
+    while(arduino -> isConnected())
+    {
+        exampleReceiveData();
+        std::cout << "Cabin Lights: " << cabin_controller.getCabinLights() << std::endl;
+        exampleWriteData(100);
+    }
 }
