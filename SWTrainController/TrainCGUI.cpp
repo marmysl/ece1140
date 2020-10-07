@@ -3,7 +3,7 @@
 #include "TrainCGUI.h"
 #include "TrainController.h"
 #include "ui_TrainController.h"
-// #include  "Train.h" // Leaving as comment until Train.h exists
+#include  "../TrainModel/Train.h"
 
 #include <QString>
 #include <QGeoRoute>
@@ -38,15 +38,17 @@ void MainWindow::on_submit_clicked() // on "Submit" the controller instantiates 
     power = kp + ki;
     ui->p_out_label->setText(QString::number(power));
 
+    /* IGNORE
     // Initialize a train class
     int numofCars = 3; //hard coding number of traincars for now - we will see what to do with this eventually
-    //Train* train = new Train(numofCars, argc, argv);
+    // Train* train = new Train(numofCars, argc, argv);
+    */
 }
 
 void MainWindow::on_sendPowerButton_clicked() // Currently a button, but will need to be a loop.
 {
-    // How to use train object here if it's initialized in an earlier function locally?
-    // train.setPower(power);
+    // How to use train object here if it's initialized in an earlier function locally? Pointer?
+    train->setPower(power);
 }
 
 void MainWindow::on_getCircuitInfoButton_clicked()
