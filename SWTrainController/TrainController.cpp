@@ -14,10 +14,9 @@ TrainController :: TrainController(int argc, char *argv[]) //Constructor: create
     QApplication a(argc, argv);
     MainWindow w;
     //Train* train = new Train(3, argc, argv); // create train object each time a TC is initialized
-    Train train(3, argc, argv); // create train object each time a TC is initialized
+    // Train train(3, argc, argv); // create train object each time a TC is initialized
     w.show();
     a.exec();
-
 }
 
 

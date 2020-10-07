@@ -2,6 +2,7 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include <../TrainModel/Train.h>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -15,6 +16,7 @@ class MainWindow : public QMainWindow
 public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
+    Train* train;
 
 private slots:
     void on_submit_clicked();
@@ -25,9 +27,11 @@ private:
     Ui::MainWindow *ui;
 
 
-    double power;
+    double power; //remove someday
     double kp;
     double ki;
+    int argc;
+    char *argv[];
 
 
 

@@ -7,13 +7,16 @@
 
 #include <QString>
 #include <QGeoRoute>
-
+#include <iostream>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+    Train train(3, argc, argv);
+    //trainPtr = &train;
+    //Train* train = new Train(3, argc, argv);
 }
 
 MainWindow::~MainWindow()
@@ -38,17 +41,16 @@ void MainWindow::on_submit_clicked() // on "Submit" the controller instantiates 
     power = kp + ki;
     ui->p_out_label->setText(QString::number(power));
 
-    /* IGNORE
-    // Initialize a train class
-    int numofCars = 3; //hard coding number of traincars for now - we will see what to do with this eventually
-    // Train* train = new Train(numofCars, argc, argv);
-    */
 }
 
 void MainWindow::on_sendPowerButton_clicked() // Currently a button, but will need to be a loop.
 {
     // How to use train object here if it's initialized in an earlier function locally? Pointer?
     train->setPower(power);
+    //std::cout << "The velocity is " << train->getCurrentVelocity() << endl;
+
+    double testytest = train->getCurrentVelocity();
+    ui->suggested_speed_label->setText(QString::number(testytest));
 }
 
 void MainWindow::on_getCircuitInfoButton_clicked()
