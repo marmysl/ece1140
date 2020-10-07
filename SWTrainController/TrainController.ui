@@ -115,7 +115,7 @@
    <widget class="QPushButton" name="sendPowerButton">
     <property name="geometry">
      <rect>
-      <x>580</x>
+      <x>570</x>
       <y>120</y>
       <width>141</width>
       <height>61</height>
@@ -141,7 +141,7 @@
    <widget class="QPushButton" name="decodeButton">
     <property name="geometry">
      <rect>
-      <x>130</x>
+      <x>190</x>
       <y>350</y>
       <width>201</width>
       <height>41</height>
