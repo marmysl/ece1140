@@ -1,16 +1,28 @@
 #ifndef TRACKLAYOUT_H
 #define TRACKLAYOUT_H
 
-class TrackLayout
+#include <string>
+#include "Region.hpp"
+
+class Track : private Region
 {
 private:
+	std::string route;
+	int blockNum;
+	float authority;
 	double speedLimit;
 	bool blockOccupancy = 0;
+	int lights;
+	int switchpath; 
+
 public:
-	TrackLayout();
+	Track();
 	void viewTrack();
-	void detectTrain(bool);
+	bool detectTrain();
 	void updateTrack();
+	void updateLights();
+	int switchState(); 
+
 };
 
 #endif //TRACKLAYOUT_H
