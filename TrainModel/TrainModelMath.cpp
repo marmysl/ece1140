@@ -4,7 +4,7 @@ using namespace std::chrono;
 
 TrainModelMath::TrainModelMath()
 {
-
+    //empty constructor
 }
 
 double TrainModelMath::travelledDist(double time, double velocity){
