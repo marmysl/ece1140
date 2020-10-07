@@ -5,13 +5,15 @@
 #include "CTCSignals.hpp"
 using namespace std;
 
-void CTCSignals :: setSpeedAuth(float s[], float a[]) {
+void CTCSignals :: setSpeedAuth(float s[], float a[], int b) {
 	for (int i = 0; i < 15; i++){
 		speedCTC.push_back(s[i]);
 	}
 	for (int i = 0; i < 15; i++){
 		authCTC.push_back(a[i]);
 	}
+
+	destinationBlock = b;
 }
 
 std::vector<float> CTCSignals :: getSpeed() {
