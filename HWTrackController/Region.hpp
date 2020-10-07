@@ -30,6 +30,7 @@ public:
     // CTC initalize and check Speed Limit
     void initialize(CTCSignals &);
     // Getters and Setters
+    std::string getRoute() const;
     std::string getSection() const;
     int getCurrentBlock() const;
     int getSuggestedSpeed() const;

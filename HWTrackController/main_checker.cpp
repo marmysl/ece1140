@@ -7,9 +7,9 @@
 #include "Region.hpp"
 #include "Region.cpp"
 #include "CTCSignals.cpp"
+#include "FailureDetector.cpp"
+#include "Track.cpp"
 
-// #include "FailureDetector.hpp"
-// #include "FailureDetector.cpp"
 // #include "PLC.hpp"
 // #include "PLC.cpp"
 // #include "ManualOverride.hpp"
@@ -21,9 +21,12 @@ using namespace std;
 
 int main() {
 	// Instantiate objects for testing
-	 Region r1;
+	Region r1;
 	CTCSignals c1;
-	
+	FailureDetector fd1;
+	//Track t1;
+
+	// check CTC
 	float speeds[] = {1,2,3,4,5,6,7,8,9,10,11,12,13,14,15};
 	float auths[] = {1,2,3,4,5,6,7,8,9,10,11,12,13,14,15};
 	
@@ -36,7 +39,13 @@ int main() {
     cout << endl;
     r1.initialize(c1);
 
+    // failures check
+    int yes = fd1.detectFailure();
+    cout << " Failure code is " << yes << endl;
 
+    // track check
+    //t1.updateLights();
+   // t1.detectTrain();
 
 	return 0;
 }

@@ -2,9 +2,9 @@
 #define FAILUREDETECTOR_H
 
 #include <string>
-#include "Region.cpp"
+#include "Region.hpp"
 
-class FailureDetector
+class FailureDetector : private Region
 {
 private:
 	int failureCode;

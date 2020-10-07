@@ -54,6 +54,10 @@ void Region :: initialize(CTCSignals &c1) {
     setCircuit();
 }
 
+std::string Region::getRoute() const {
+    return route;
+}
+
 std::string Region::getSection() const {
 	return currentSection;
 }
