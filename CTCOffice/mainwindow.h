@@ -1,5 +1,6 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
+#include "CTCDispatch.h"
 
 #include <QMainWindow>
 
@@ -14,6 +15,7 @@ class MainWindow : public QMainWindow
 public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
+    CTCDispatch ctc;
 
 private slots:
     void on_timeStart_userTimeChanged(const QTime &time);

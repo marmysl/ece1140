@@ -10,7 +10,7 @@ class CTCSignals : private TrackController
         void setFlag(bool);
     public:
         bool update_flag = 0;
-        void setSignal(float[], float[]);
+        void setSignal(int, float[], float[]);
         std::vector<float> ctc_spd;
         std::vector<float> ctc_auth;
 };

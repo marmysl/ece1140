@@ -3,6 +3,7 @@
 #include <string>
 #include <sstream>
 #include <QTextStream>
+#include <QApplication>
 
 //useful cout replacement command while using QT Creator Application Output
 //qDebug() << QString::fromStdString(station);
@@ -10,6 +11,7 @@
 
 void CTCDispatch::setAuthority(std::string station)
 {
+    qDebug() << QString::fromStdString(station);
     float blocklen = 50;
     if(station == "Station B"){
         for(int i = 9; i > -1; i--){
@@ -48,6 +50,13 @@ void CTCDispatch::setSpeed(std::string station, float timeStart, float timeArriv
     float blocklen = 50;
     float tracklength = 10 * blocklen;
     float avgspeed = tracklength/duration;
+
+    qDebug() << "Start: " << QString::number(timeArrival);
+    qDebug() << "Arrival: " << QString::number(timeStart);
+    qDebug() << "Duration: " << QString::number(duration);
+    qDebug() << "Blocklen: " << QString::number(blocklen);
+    qDebug() << "Tracklength: " << QString::number(tracklength);
+    qDebug() << "Avgspeed: " << QString::number(avgspeed);
 
     if(station == "Station B"){
         for(int i = 0; i < 10; i++){
@@ -88,12 +97,19 @@ void CTCDispatch::setSpeed(std::string station, float timeStart, float timeArriv
 
 void CTCDispatch::sendTrackController(){
     CTCSignals sig;
-    sig.setSignal(authority, speed);
+    int destblock;
+    if(station == "Station B"){
+        destblock = 10;
+    }else{
+        destblock = 15;
+    }
+    sig.setSignal(destblock, authority, speed);
 }
 
 
 void CTCDispatch::setLine(std::string l){
     line = l;
+    qDebug() << QString::fromStdString(line);
 }
 
 std::string CTCDispatch::getline(){
@@ -102,7 +118,7 @@ std::string CTCDispatch::getline(){
 
 void CTCDispatch::setStation(std::string state){
     station = state;
-    qDebug() << QString::fromStdString(state);
+    qDebug() << QString::fromStdString(station);
 }
 
 std::string CTCDispatch::getStation(){
@@ -170,14 +186,12 @@ float CTCDispatch::getTimeArrival(){
 }
 
 void CTCDispatch::dispatch(){
-    CTCDispatch ctc;
+    //qDebug() << QString::fromStdString(station) << Qt::endl;
+    //qDebug() << QString::number(timeStart) << Qt::endl;
+    //qDebug() << QString::number(timeArrival) << Qt::endl;
 
-    qDebug() << QString::fromStdString(station) << Qt::endl;
-    qDebug() << QString::number(timeStart) << Qt::endl;
-    qDebug() << QString::number(timeArrival) << Qt::endl;
-
-    ctc.setAuthority(station);
-    ctc.setSpeed(station, timeStart, timeArrival);
-    ctc.sendTrackController();
+    setAuthority(station);
+    setSpeed(station, timeStart, timeArrival);
+    sendTrackController();
 }
 
