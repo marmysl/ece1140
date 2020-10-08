@@ -54,7 +54,7 @@ void SpeedRegulator::incSetpointSpeed(double inc)
 }
 void SpeedRegulator::calculatePowerCmd()
 {
-	powerCmd = commandedSpeed * 2;
+	powerCmd = train_model -> getCurrentVelocity() * 2;
 	train_model -> setPower(powerCmd);
 }
 void SpeedRegulator::decodeTrackSignal()
