@@ -4,7 +4,8 @@
 #include <vector>
 #include <iostream>
 #include <string>
-#include <CTCSignals.h>
+#include <../HWTrackController/CTCSignals.hpp>
+#include <../TrackModel/tracklayout.hpp>
 
 class CTCDispatch
 {
