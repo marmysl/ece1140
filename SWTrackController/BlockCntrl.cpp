@@ -2,34 +2,13 @@
 #include <iostream>
 #include <vector>
 #include "BlockCntrl.h"
-#include "trackmodel_controller.hpp"
-#include "tracklayout.hpp"
 
-//using namespace std;
-//using namespace TrackModel;
+BlockCntrl::BlockCntrl() {
+	
+	
+}
 
-class TrafficSignal
-{
-	public:
-		bool lights[2];
-};
-
-class CrossingSignal
-{
-	public:
-		bool light;
-		bool bar;
-};
-
-class SwitchSignal
-{
-	public:
-		bool active_sw;
-};
-
-
-
-BlockCntrl::BlockCntrl(int block) {
+void BlockCntrl::setUpBlock(int block) {
 	block_num = block;
 	
 	if (block_num <= section_length)
@@ -80,10 +59,9 @@ void BlockCntrl::setOcc() {
 	block_occ = TrackModel::isBlockOccupied(r, block_num); 
 }
 
-void BlockCntrl::setSpdAuth(int dest_block) {
-	//int num = block_num;
-	
-	
+void BlockCntrl::setSpdAuth(int dest_block, float s, float a) {
+	block_speed = s;
+	block_authority = a;
 		
 	if (dest_block == 10) {
 		
@@ -127,4 +105,19 @@ void BlockCntrl::setSpdAuth(int dest_block) {
 	
 	
 }
+
+class BlockContainer 
+{
+	public:
+	
+		std::vector<BlockCntrl> blocks;
+		void addBlockObj(int num) {
+			using namespace std;
+			BlockCntrl b;
+			b.setUpBlock(num);
+			//using namespace std;
+			blocks.push_back(b);
+		}
+};
+
 
