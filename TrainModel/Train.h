@@ -1,3 +1,4 @@
+
 #ifndef TRAIN_H
 #define TRAIN_H
 #include "TrainModelMath.h"
@@ -22,11 +23,11 @@ public:
     double blockDist = 50;
     double blockGrade = 0;
     int blockNum;
-    //TrainModelUI* uiPtr;
-    //QApplication* qapp;
+    TrainModelUI* uiPtr;
+    QApplication* qapp;
 
 
-    Train(int newNumCars);
+    Train(int newNumCars, int, char **);
     //Train(int, char);
     void setPower(double newPower);             //Called by train controller to set power
     void setTrackCircuit(int blockNum);       //Get curr track signal from Track Model when new block
@@ -34,6 +35,7 @@ public:
     void updateTrackInfo();                     //Will update block information
     double getCurrentVelocity();                //Called by train controller to get curr velocity
     double getCurrentPosition();                //will return current position
+    void updateUI();
 };
 
 #endif // TRAIN_H

@@ -1,3 +1,4 @@
+
 #include "TrackModel/tracklayout.hpp"
 #include "TrackModel/trackmodel_train.hpp"
 #include "TrainModelUpdateBlock.h"
@@ -40,11 +41,9 @@ uint64_t TrainModelUpdateBlock::updateTrackCircuit(int blockNum){
 }
 
 /*
-TrainModelUpdateBlock();
-static int updateBlock(int blockNum);
-static double blockLength(int blockNum);
-static double blockGrade(int blockNum);
-static uint64_t updateTrackCircuit(int blockNum);
+#include "TrainModelUpdateBlock.h"
+#include <cstdint>
+#include <string>
 
 TrainModelUpdateBlock::TrainModelUpdateBlock()
 {
@@ -81,4 +80,5 @@ uint64_t TrainModelUpdateBlock::updateTrackCircuit(int blockNum){
     uint64_t trackCircuitData = newData.getEncodedData();
     return trackCircuitData;
 }
+
 */

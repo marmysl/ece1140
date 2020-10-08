@@ -1,5 +1,5 @@
 #include "Train.h"
-//#include <QApplication>
+#include <QApplication>
 #include <chrono>
 #include <cstdint>
 
@@ -7,26 +7,17 @@
 #include "TrainModelUpdateBlock.h"
 using namespace std;
 
-Train::Train(int newNumCars)
+Train::Train(int newNumCars, int argc, char *argv[])
 {
     numCars = newNumCars;
-/*    QApplication a(argc, argv);
+    QApplication a(argc, argv);
     TrainModelUI w;
     uiPtr = &w;
     qapp = &a;
     w.show();
-    a.exec();*/
-}
-
-/* might need to change this
-Train::Train(int argc, char *argv[])
-{
-    QApplication a(argc, argv);
-    TrainModel w;
-    w.show();
+    updateUI();
     a.exec();
 }
-*/
 
 void Train::setPower(double newPower){             //Called by train controller to set power
     //Get current time
@@ -40,7 +31,6 @@ void Train::setPower(double newPower){             //Called by train controller 
     //Find the distance travelled using old velocity
     double distTravelled = TrainModelMath::travelledDist(milliSec, currVel);
     double newPos = TrainModelMath::updatePosition(oldPos, distTravelled);
-    //double newPos = 1.0; //temp
 
     //compare new position to old to see if new block
     if (newPos >= blockDist){
@@ -49,11 +39,10 @@ void Train::setPower(double newPower){             //Called by train controller 
         this->updateTrackInfo();
     }
     oldPos = newPos;
-
+    updateUI();
     currPower = newPower;
-//    uiPtr->updatePower(newPower);
-    currVel = TrainModelMath::calcVelocity(newPower);
-    //currVel = 2.5; //temp hard coding
+    double newCurrVel = TrainModelMath::calcVelocity(newPower);
+    currVel = newCurrVel;
 }
 
 void Train::updateTrackInfo(){                            //Will update block information
@@ -63,9 +52,7 @@ void Train::updateTrackInfo(){                            //Will update block in
     blockNum = TrainModelUpdateBlock::updateBlock(blockNum);
     blockDist = TrainModelUpdateBlock::blockLength(blockNum);
     blockGrade = TrainModelUpdateBlock::blockGrade(blockNum);
- //   blockNum = 1;
- //   blockDist = 1.0;
- //   blockGrade = 1.0;
+    updateUI();
     this->setTrackCircuit(blockNum);
 }
 
@@ -74,7 +61,6 @@ void Train::setTrackCircuit(int blockNum){                   //Get curr track si
     //get tc info for block
     //assign
     trackCircuitData = TrainModelUpdateBlock::updateTrackCircuit(blockNum);
- //   trackCircuitData = 1;
 }
 
 uint64_t Train::sendTrackCircuit(){          //Train controller can call to get curr track signal
@@ -90,3 +76,12 @@ double Train::getCurrentPosition(){                //will return current positio
     return oldPos;
 }
 
+void Train::updateUI(){
+ /*   uiPtr->updateNumCars(numCars);
+    uiPtr->updatePower(power);
+    uiPtr->updateVelocity(currVel);
+    uiPtr->updateVelocity(currVel);
+    uiPtr->updateBlockNum(blockNum);
+    uiPtr->updateBlockLength(blockDist);
+    uiPtr->updateBlockGrade(blockGrade);    */
+}
