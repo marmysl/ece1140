@@ -10,7 +10,7 @@ FailureDetector :: FailureDetector()
 	failureCode = 0;
 	blockNum = getCurrentBlock();
 	route = getRoute();
-	cout << "\n\nfailure - block num is " << blockNum << endl;
+	cout << "\nin failure detector - block num is " << blockNum << endl;
 }
 
 int FailureDetector :: detectFailure()
