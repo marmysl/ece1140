@@ -1,9 +1,6 @@
 //  Implementation file for SW Train Controller GUI
 
 #include "TrainCGUI.h"
-#include "TrainController.h"
-#include "ui_TrainController.h"
-#include  "../TrainModel/Train.h"
 
 #include <QString>
 #include <QGeoRoute>
@@ -14,7 +11,8 @@ MainWindow::MainWindow(QWidget *parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-    Train train(3, argc, argv);
+    //Train train(3, argc, argv);
+    //Train train(3);
     //trainPtr = &train;
     //Train* train = new Train(3, argc, argv);
 }
@@ -46,7 +44,11 @@ void MainWindow::on_submit_clicked() // on "Submit" the controller instantiates 
 void MainWindow::on_sendPowerButton_clicked() // Currently a button, but will need to be a loop.
 {
     // How to use train object here if it's initialized in an earlier function locally? Pointer?
+    std::cout << "Setting power...\n";
+
     train->setPower(power);
+
+    std::cout << "Power sent.\n";
     //std::cout << "The velocity is " << train->getCurrentVelocity() << endl;
 
     double testytest = train->getCurrentVelocity();

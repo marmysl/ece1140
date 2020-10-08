@@ -2,8 +2,6 @@
 #include <iomanip>
 
 #include "TrainController.h"
-#include "TrainCGUI.h"
-#include  "../TrainModel/Train.h"
 
 #include <QApplication>
 
