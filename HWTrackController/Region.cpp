@@ -2,8 +2,6 @@
 #include <iomanip>
 #include <cstdint>
 #include "Region.hpp"
-#include "TrackModel/tracklayout.hpp"
-#include "TrackModel/trackmodel_controller.hpp"
 
 using namespace std;
 
@@ -33,7 +31,7 @@ Region :: Region() {
     cout << "Section: " << currentSection << endl;
     cout << "Route: " << route << endl;
 
-    //TrackModel::Route *blueLine = TrackModel::getRoute(route);
+    TrackModel::Route *blueLine = initTestLayout();
 }
 
 void Region :: initialize(CTCSignals &c1) {
@@ -70,20 +68,20 @@ int Region::getCurrentBlock() const {
 	return currentBlock;
 } 
     
-int Region::getSuggestedSpeed() const{
-	return suggestedSpeed[currentBlock];
+float Region::getSuggestedSpeed() const{
+	return suggestedSpeed[currentBlock-1];
 }
 
-int Region::getCommandedSpeed() const {
-	return commandedSpeed[currentBlock];
+float Region::getCommandedSpeed() const {
+	return commandedSpeed[currentBlock-1];
 }
 
-int Region::getAuthority() const{
-	return authority[currentBlock];
+float Region::getAuthority() const{
+	return authority[currentBlock-1];
 }
   
-int Region::getSpeedLimit() const{
-	return speedLimit[currentBlock];
+float Region::getSpeedLimit() const{
+	return speedLimit[currentBlock-1];
 }
    
 void Region::setSection(std::string val) {
@@ -94,12 +92,16 @@ void Region::setCurrentBlock(int val) {
 	currentBlock = val;
 }
 
-void Region :: setCommandedSpeed(int blockID, int val) {
-	commandedSpeed[blockID] = val;
+void Region :: setCommandedSpeed(int blockID, float val) {
+	commandedSpeed[blockID-1] = val;
 }
 
-void Region :: setAuthority(int blockID, int val) {
-	authority[blockID] = val;
+void Region :: setAuthority(int blockID, float val) {
+	authority[blockID-1] = val;
+}
+
+void Region :: setSpeedLimit(int blockID, float val) {
+    speedLimit[blockID-1] = val;
 }
  
 void Region :: setCircuit() {

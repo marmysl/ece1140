@@ -2,7 +2,6 @@
 #include <iomanip>
 #include <cstdint>
 #include "Track.hpp"
-#include "TrackModel/trackmodel_controller.hpp"
 
 using namespace std;
 
@@ -15,13 +14,14 @@ Track :: Track(Region &r) {
 	blockOccupancy = 0;
 	lights = 0;
 
-	pickupSpeedLimit();
-
 	cout << route << endl;
 	cout << blockNum << endl;
 	cout << authority << endl;
 	cout << blockOccupancy << endl;
 	cout << lights << endl;
+
+	// pickupSpeedLimit(r);
+	// cout << speedLimit << endl;
 }
 
 void Track :: viewTrack() {
@@ -59,10 +59,19 @@ int Track :: switchState() {
     // switchpath = TrackModel::getSwitchState("Blue Line", blockNum);
     // cout << " Switch is pointed to " << switchpath; 
     // return switchpath;
-    return 0;
+	return 0;
 }
 
-void Track :: pickupSpeedLimit(){
-//	speedLimit = Block::speedLimit; 
+void Track :: pickupSpeedLimit(Region &r){
+	// check that blocks match? 
+	//TrackModel::Block *currentBlock;
+	//float speedLimit = currentBlock -> speedLimit;
 
+	speedLimit = 10;
+
+	r.setSpeedLimit(blockNum, speedLimit);
+}
+
+int Track :: getLights() {
+	return lights;
 }
