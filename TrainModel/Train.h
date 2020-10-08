@@ -1,4 +1,4 @@
-ifndef TRAIN_H
+#ifndef TRAIN_H
 #define TRAIN_H
 //#include "TrainModelMath.h"
 #include "TrainModelMath.cpp"
