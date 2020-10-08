@@ -1,0 +1,6 @@
+#ifndef HWTRAINCONTROLLER_MAIN_H
+#define HWTRAINCONTROLLER_MAIN_H
+
+int init_HWTrainController();
+
+#endif // HWTRAINCONTROLLER_MAIN_H

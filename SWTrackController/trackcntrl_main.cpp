@@ -1,8 +1,8 @@
-#include "BlockCntrl.cpp"
-#include "CTCSignals.cpp"
+#include "BlockCntrl.h"
+#include "CTCOffice/ctcoffice/CTCSignals.h"
+#include "TrackController.h"
 
-
-int main() {
+int init_SWTrackController() {
 	
 	BlockContainer B_Container;
 	
@@ -21,10 +21,10 @@ int main() {
 	CTCSignals C1;
 
 		
-	std::vector<float> s_temp[15] = {50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50};
-	std::vector<float> a_temp[15] = {14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1};
+    std::vector<float> s_temp {50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50};
+    std::vector<float> a_temp {14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1};
 	int dest_temp = 10;
-	C1.setSignal(dest_temp, s[50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50], a[14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1]);
+    C1.setSignal(dest_temp, s_temp, a_temp);
 	
 	while(true) {
 		

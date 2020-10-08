@@ -3,12 +3,12 @@
 #include "TrainCGUI.h"
 
 #include <QString>
-#include <QGeoRoute>
+#include <QtLocation/QGeoRoute>
 #include <iostream>
 
-MainWindow::MainWindow(QWidget *parent)
+TrainControlWindow::TrainControlWindow(QWidget *parent)
     : QMainWindow(parent)
-    , ui(new Ui::MainWindow)
+    , ui(new Ui::TrainControlWindow)
 {
     ui->setupUi(this);
     //Train train(3, argc, argv);
@@ -17,12 +17,12 @@ MainWindow::MainWindow(QWidget *parent)
     //Train* train = new Train(3, argc, argv);
 }
 
-MainWindow::~MainWindow()
+TrainControlWindow::~TrainControlWindow()
 {
     delete ui;
 }
 
-void MainWindow::on_submit_clicked() // on "Submit" the controller instantiates a Train class
+void TrainControlWindow::on_submit_clicked() // on "Submit" the controller instantiates a Train class
 {
     //convert input string to text then assign to Kp  & Ki [kinda useless]
     QString temp1,temp2;
@@ -41,7 +41,7 @@ void MainWindow::on_submit_clicked() // on "Submit" the controller instantiates 
 
 }
 
-void MainWindow::on_sendPowerButton_clicked() // Currently a button, but will need to be a loop.
+void TrainControlWindow::on_sendPowerButton_clicked() // Currently a button, but will need to be a loop.
 {
     // How to use train object here if it's initialized in an earlier function locally? Pointer?
     std::cout << "Setting power...\n";
@@ -55,7 +55,7 @@ void MainWindow::on_sendPowerButton_clicked() // Currently a button, but will ne
     ui->suggested_speed_label->setText(QString::number(testytest));
 }
 
-void MainWindow::on_getCircuitInfoButton_clicked()
+void TrainControlWindow::on_getCircuitInfoButton_clicked()
 {
     // signal = train.sendTrackCircuit();
 

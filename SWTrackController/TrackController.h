@@ -3,6 +3,7 @@
 #define TrackController_h
 #include <vector>
 
+int init_SWTrackController();
 
 //FlashLight class declaration
 class TrackController

@@ -1,12 +1,14 @@
 /* Header file for Train Controller */
 
-#ifndef TRAINCONTROLLER_H
-#define TRAINCONTROLLER_H
+#ifndef SWTRAINCONTROLLER_H
+#define SWTRAINCONTROLLER_H
 
 #include "TrainCGUI.h"
-#include  "../TrainModel/Train.h"
+#include  "TrainModel/Train.h"
 
-class TrainController
+int init_SWTrainController(int argc, char *argv[]);
+
+class SWTrainController
 {
 
 public: // TEMPORARILY making everything public for easier implementation
@@ -21,9 +23,9 @@ public: // TEMPORARILY making everything public for easier implementation
     int argc;
     char *argv[];
 public:
-   TrainController(int, char*[]);
+   SWTrainController(int, char*[]);
    void calculatePower();
    void decode(unsigned);
 };
 
-#endif // TRAINCONTROLLER_H
+#endif // SWTRAINCONTROLLER_H

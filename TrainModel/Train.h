@@ -1,12 +1,11 @@
 
 #ifndef TRAIN_H
 #define TRAIN_H
-#include "TrainModelUI.h"
 #include "TrainModelMath.h"
-//#include "TrainModelMath.cpp"
-#include "TrainModelUpdateBlock.cpp"
-//#include "TrainModelUpdateBlock.cpp"
-#include <QMainWindow>
+#include "TrainModelUpdateBlock.h"
+
+//#include <QMainWindow>
+
 #include <chrono>
 #include <cstdint>
 using namespace std;

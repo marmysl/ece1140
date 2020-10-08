@@ -9,7 +9,7 @@
 #include "CTCDispatch.h"
 #include "../../TrackModel/tracklayout.hpp"
 
-int main(int argc, char *argv[])
+int init_CTC(int argc, char *argv[])
 {
     QApplication a(argc, argv);
     MainWindow w;

@@ -1,5 +1,3 @@
-#pragma once
-
 #ifndef TRAINMODELMATH_H
 #define TRAINMODELMATH_H
 
