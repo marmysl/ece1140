@@ -15,8 +15,20 @@ MainWindow::MainWindow(QWidget *parent)
 
     ui->comboLine->addItem("Blue Line");
 
-    ui->comboDestination->addItem("Station B");
-    ui->comboDestination->addItem("Station C");
+    ui->comboDestinationType->addItem("Station");
+    ui->comboDestinationType->addItem("Block");
+
+    QFont font = ui->btnDispatch->font();
+    font.setPointSize(60);
+    ui->btnDispatch->setFont(font);
+
+    QFont font1 = ui->btnCancel->font();
+    font1.setPointSize(60);
+    ui->btnCancel->setFont(font1);
+
+    QFont font2 = ui->comboLine->font();
+    font2.setPointSize(60);
+    ui->btnCancel->setFont(font2);
 }
 
 MainWindow::~MainWindow()
@@ -63,15 +75,43 @@ void MainWindow::on_btnDispatch_clicked()
 
 void MainWindow::on_comboDestination_currentIndexChanged(const QString &arg1)
 {
-    std::string station;
+    std::string choice;
     QString qs = arg1;
 
-    station = qs.toStdString();
+    choice = qs.toStdString();
 
-    ctc.setStation(station);
+    ctc.setDestinationType(choice);
 }
 
-void MainWindow::on_btnCancel_clicked()
+void MainWindow::on_comboDestinationType_currentIndexChanged(const QString &arg1)
 {
+    std::string destinationType;
+    QString qs = arg1;
 
+    destinationType = qs.toStdString();
+
+    ui->comboDestination->clear();
+    if(destinationType == "Station"){
+        ui->comboDestination->addItem("Station B");
+        ui->comboDestination->addItem("Station C");
+    }
+    else if(destinationType == "Block"){
+        ui->comboDestination->addItem("Block 1");
+        ui->comboDestination->addItem("Block 2");
+        ui->comboDestination->addItem("Block 3");
+        ui->comboDestination->addItem("Block 4");
+        ui->comboDestination->addItem("Block 5");
+        ui->comboDestination->addItem("Block 6");
+        ui->comboDestination->addItem("Block 7");
+        ui->comboDestination->addItem("Block 8");
+        ui->comboDestination->addItem("Block 9");
+        ui->comboDestination->addItem("Block 10");
+        ui->comboDestination->addItem("Block 11");
+        ui->comboDestination->addItem("Block 12");
+        ui->comboDestination->addItem("Block 13");
+        ui->comboDestination->addItem("Block 14");
+        ui->comboDestination->addItem("Block 15");
+    }
+
+    ctc.setDestinationType(destinationType);
 }
