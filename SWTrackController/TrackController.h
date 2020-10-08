@@ -9,6 +9,8 @@ class TrackController
 {
 	
 	public:
+	
+		TrackController();
 		int region;
 		std::vector<char> cntrl_sections; 
 		std::vector<int> cntrl_blocks;
@@ -17,8 +19,8 @@ class TrackController
 		int block_count;
 		int section_length;
 		int section_count;
-		TrackController(); //Constructor 
-		int getResult() const;
+		 
+		int getResult();
 };
 
 #endif /*TrackController_h*/
