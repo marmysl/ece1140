@@ -17,21 +17,23 @@ Block* blk6 = rt -> getBlock(6);
 while(prevBlock != NULL)
 Block* blk5 = blk6 -> prevBlock;*/
 
-void CTCDispatch::setAuthority(std::string station)
+void CTCDispatch::setAuthority(std::string station, int blocknum)
 {
     float blockLength = 50;
-    float trackLength = 10 * blockLength;
-    for(int i = 0; i < 10; i++){
-        authority.push_back(0);
-    }
+    float trackLength;
 
     if(getTimeStart() >= getTimeArrival()){
         return;
     }
 
-    if(station == "Station B"){
-        int m = 0;
 
+    if(station == "Station B" && blocknum == -1){
+        int m = 0;
+        trackLength = 10 * blockLength;
+
+        for(int i = 0; i < 10; i++){
+            authority.push_back(0);
+        }
         for(auto i = authority.begin(); i != authority.end(); i++){
             if(m == 0){
                 *i = trackLength;
@@ -41,10 +43,18 @@ void CTCDispatch::setAuthority(std::string station)
             }
             m++;
         }
+        // TEST DEBUG FOR AUTHORITY
+        for(int j = 0; j < 10; j++){
+            qDebug() << "Authority at Block" << j << "- " << QString::number(authority.at(j)) << "km";
+        }
     }
-    else if(station == "Station C"){
+    else if(station == "Station C" && blocknum == -1){
         int n = 0;
+        trackLength = 10 * blockLength;
 
+        for(int i = 0; i < 10; i++){
+            authority.push_back(0);
+        }
         for(auto i = authority.begin(); i != authority.end(); i++){
             if(n == 0){
                 *i = trackLength;
@@ -54,24 +64,44 @@ void CTCDispatch::setAuthority(std::string station)
             }
             n++;
         }
+        // TEST DEBUG FOR AUTHORITY
+        for(int j = 0; j < 10; j++){
+            qDebug() << "Authority at Block" << j << "- " << QString::number(authority.at(j)) << "km";
+        }
+    }
+    else if(blocknum != -1 && station == "-1"){
+        int o = 0;
+        trackLength = blocknum * blockLength;
+
+        for(int i = 0; i < blocknum; i++){
+            authority.push_back(0);
+        }
+        for(auto i = authority.begin(); i != authority.end(); i++){
+            if(o == 0){
+                *i = trackLength;
+            }
+            else{
+                *i = authority.at(o-1) - blockLength;
+            }
+            o++;
+        }
+        // TEST DEBUG FOR AUTHORITY
+        for(int j = 0; j < blocknum; j++){
+            qDebug() << "Authority at Block" << j << "- " << QString::number(authority.at(j)) << "km";
+        }
     }
     else{
         qDebug() << "Incorrect Station Destination";
         return;
     }
-
-    // TEST DEBUG FOR AUTHORITY
-    for(int j = 0; j < 10; j++){
-        qDebug() << "Authority at Block" << j << "- " << QString::number(authority.at(j)) << "km";
-    }
 }
 
-void CTCDispatch::setSpeed(std::string station, float timeStart, float timeArrival)
+void CTCDispatch::setSpeed(std::string station, int blocknum, float timeStart, float timeArrival)
 {
     float duration = timeArrival - timeStart;
     float blockLength = 50;
-    float trackLength = 10 * blockLength;
-    float avgspeed = trackLength/duration;
+    float trackLength;
+    float avgspeed;
 
     if(duration <= 0){
         qDebug() << "Invalid time frame: please try again.";
@@ -82,15 +112,19 @@ void CTCDispatch::setSpeed(std::string station, float timeStart, float timeArriv
     qDebug() << "Final Arrival Time: " << QString::number(timeStart);
     qDebug() << "Duration of Trip: " << QString::number(duration);
     qDebug() << "Block Length: " << QString::number(blockLength);
-    qDebug() << "Track Length: " << QString::number(trackLength);
-    qDebug() << "Average Speed: " << QString::number(avgspeed);
 
-    for(int i = 0; i < 10; i++){
-        speed.push_back(0);
-    }
     int m = 0;
 
-    if(station == "Station B"){
+    if(station == "Station B" && blocknum == -1){
+        trackLength = 10 * blockLength;
+        avgspeed = trackLength/duration;
+
+        qDebug() << "Track Length: " << QString::number(trackLength);
+        qDebug() << "Average Speed: " << QString::number(avgspeed);
+
+        for(int i = 0; i < 10; i++){
+            speed.push_back(0);
+        }
         for(auto i = speed.begin(); i != speed.end(); i++){
             if(m < 3){
                 *i = (1.666666 * avgspeed);
@@ -103,8 +137,21 @@ void CTCDispatch::setSpeed(std::string station, float timeStart, float timeArriv
             }
             m++;
         }
+        // TEST DEBUG FOR SPEED
+        for(int j = 0; j < 10; j++){
+            qDebug() << "Suggested Speed at Block" << j << "- " << QString::number(speed.at(j)) << "km/hr";
+        }
     }
-    else if(station == "Station C"){
+    else if(station == "Station C" && blocknum == -1){
+        trackLength = 10 * blockLength;
+        avgspeed = trackLength/duration;
+
+        qDebug() << "Track Length: " << QString::number(trackLength);
+        qDebug() << "Average Speed: " << QString::number(avgspeed);
+
+        for(int i = 0; i < 10; i++){
+            speed.push_back(0);
+        }
         for(auto i = speed.begin(); i != speed.end(); i++){
             if(m < 3){
                 *i = (1.666666 * avgspeed);
@@ -113,18 +160,35 @@ void CTCDispatch::setSpeed(std::string station, float timeStart, float timeArriv
                 *i = avgspeed;
             }
             else{
-                *i = ((-avgspeed*(m)) + (10*avgspeed))/4;
+                *i = ((-avgspeed*(m+1)) + (10*avgspeed))/4;
             }
             m++;
+        }
+        // TEST DEBUG FOR SPEED
+        for(int j = 0; j < 10; j++){
+            qDebug() << "Suggested Speed at Block" << j << "- " << QString::number(speed.at(j)) << "km/hr";
+        }
+    }
+    else if(blocknum != -1 && station == "-1"){
+        trackLength = blocknum * blockLength;
+        avgspeed = trackLength/duration;
+
+        qDebug() << "Track Length: " << QString::number(trackLength);
+        qDebug() << "Average Speed: " << QString::number(avgspeed);
+
+        for(int i = 0; i < blocknum; i++){
+            speed.push_back(0);
+        }
+        for(auto i = speed.begin(); i != speed.end(); i++){
+            *i = avgspeed;
+        }
+        // TEST DEBUG FOR SPEED
+        for(int j = 0; j < blocknum; j++){
+            qDebug() << "Suggested Speed at Block" << j << "- " << QString::number(speed.at(j)) << "km/hr";
         }
     }
     else{
         qDebug() << "Incorrect Station Destination";
-    }
-
-    // TEST DEBUG FOR SPEED
-    for(int j = 0; j < 10; j++){
-        qDebug() << "Suggested Speed at Block" << j << "- " << QString::number(speed.at(j)) << "km/hr";
     }
 }
 
@@ -142,9 +206,11 @@ void CTCDispatch::setDestinationType(std::string dt){
 
     if(temp == "S"){
         setStation(dt);
+        setBlock("-1");
     }
     if(temp == "B"){
         setBlock(dt);
+        setStation("-1");
     }
 
     destinationType = dt;
@@ -155,17 +221,35 @@ std::string CTCDispatch::getDestinationType(){
 }
 
 void CTCDispatch::setBlock(std::string blk){
-    endblock = blk;
-    qDebug() << "Set Block Destination to: " << QString::fromStdString(endblock);
+    if(blk != "-1"){
+        std::string temp;
+        int tblock;
+        temp = blk.substr(5,6);
+
+        std::stringstream temp1(temp);
+        temp1 >> tblock;
+
+        qDebug() << "Set Block Destination to: " << QString::number(tblock);
+        if(tblock > 10){
+            endblock = tblock - 5;
+        }else{
+            endblock = tblock;
+        }
+    }
+    else{
+        endblock = -1;
+    }
 }
 
-std::string CTCDispatch::getBlock(){
+int CTCDispatch::getBlock(){
     return endblock;
 }
 
 void CTCDispatch::setStation(std::string state){
     station = state;
-    qDebug() << "Set Station Destination to: " << QString::fromStdString(station);
+    if(station != "-1"){
+        qDebug() << "Set Station Destination to: " << QString::fromStdString(station);
+    }
 }
 
 std::string CTCDispatch::getStation(){
@@ -226,15 +310,13 @@ float CTCDispatch::getTimeArrival(){
     return timeArrival;
 }
 
-void CTCDispatch::dispatch(){
-
-    setAuthority(station);
-    setSpeed(station, timeStart, timeArrival);
-    sendTrackController();
+void CTCDispatch::dispatch(CTCSignals(&c)){
+    setAuthority(station, endblock);
+    setSpeed(station, endblock, timeStart, timeArrival);
+    sendTrackController(c);
 }
 
-void CTCDispatch::sendTrackController(){
-    CTCSignals sig;
+void CTCDispatch::sendTrackController(CTCSignals(&sig)){
     int destblock;
     if(station == "Station B"){
         destblock = 10;
