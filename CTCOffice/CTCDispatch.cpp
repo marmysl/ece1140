@@ -111,7 +111,7 @@ void CTCDispatch::sendTrackController(){
     }else{
         destblock = 15;
     }
-    sig.SetSignal()
+    sig.setSignal(destblock, speed, authority);
 }
 
 
