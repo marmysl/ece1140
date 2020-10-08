@@ -11,7 +11,7 @@
 
 int main(int argc, char *argv[])
 {
-    CTCDispatch ctc;
+    //CTCDispatch ctc;
     //ctc.setTimeStart("15:45");
     //ctc.setTimeArrival("18:30");
 
@@ -20,8 +20,9 @@ int main(int argc, char *argv[])
     w.show();
     a.exec();
 
-    ctc.setAuthority("Station B");
-    ctc.setSpeed("Station C", 8, 10);
+    //ctc.dispatch();
+    //ctc.setAuthority("Station B");
+    //ctc.setSpeed("Station C", 8, 10);
 
     return 0;
 }

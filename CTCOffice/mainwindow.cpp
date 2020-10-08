@@ -31,10 +31,7 @@ void MainWindow::on_comboLine_currentIndexChanged(const QString &arg1)
 
     line = qs.toStdString();
 
-    CTCDispatch ctc;
     ctc.setLine(line);
-
-    qDebug() << QString::fromStdString(line);
 }
 
 void MainWindow::on_timeStart_userTimeChanged(const QTime &time)
@@ -45,10 +42,7 @@ void MainWindow::on_timeStart_userTimeChanged(const QTime &time)
     std::string startTime;
     startTime = qs.toStdString();
 
-    CTCDispatch ctc;
     ctc.setTimeStart(startTime);
-
-    qDebug() << QString::fromStdString(startTime);
 }
 
 void MainWindow::on_timeArrival_userTimeChanged(const QTime &time)
@@ -59,16 +53,11 @@ void MainWindow::on_timeArrival_userTimeChanged(const QTime &time)
     std::string arrivalTime;
     arrivalTime = qs.toStdString();
 
-    CTCDispatch ctc;
-    ctc.setTimeStart(arrivalTime);
-
-    qDebug() << QString::fromStdString(arrivalTime);
+    ctc.setTimeArrival(arrivalTime);
 }
 
 void MainWindow::on_btnDispatch_clicked()
 {
-    CTCDispatch ctc;
-
     ctc.dispatch();
 }
 
@@ -79,10 +68,7 @@ void MainWindow::on_comboDestination_currentIndexChanged(const QString &arg1)
 
     station = qs.toStdString();
 
-    CTCDispatch ctc;
     ctc.setStation(station);
-
-    qDebug() << QString::fromStdString(station);
 }
 
 void MainWindow::on_btnCancel_clicked()

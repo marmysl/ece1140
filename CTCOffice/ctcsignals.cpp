@@ -5,7 +5,7 @@
 void CTCSignals::setFlag(bool flag) {
     update_flag = flag;
 }
-void CTCSignals::setSignal(float s[], float a[]) {
+void CTCSignals::setSignal(int dest, float s[], float a[]) {
 
     int len = *(&s + 1) - s;
 
