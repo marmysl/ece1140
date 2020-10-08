@@ -5,7 +5,10 @@
     // This class also sends the track circuit information to the Track Signal
 
 #include <string>
-#include "CTCOffice/ctcoffice/CTCSignals.h"
+#include "CTCSignals.hpp"
+#include "../TrackModel/tracklayout.hpp"
+#include "../TrackModel/trackmodel_controller.hpp"
+#include "../TrackModel/trackmodel_test.hpp"
 
 class Region
 {
@@ -31,14 +34,15 @@ public:
     std::string getRoute() const;
     std::string getSection() const;
     int getCurrentBlock() const;
-    int getSuggestedSpeed() const;
-    int getCommandedSpeed() const;
-    int getAuthority() const;
-    int getSpeedLimit() const;
+    float getSuggestedSpeed() const;
+    float getCommandedSpeed() const;
+    float getAuthority() const;
+    float getSpeedLimit() const;
     void setSection(std::string);
     void setCurrentBlock(int);
-    void setCommandedSpeed(int, int);
-    void setAuthority(int, int);
+    void setCommandedSpeed(int, float);
+    void setAuthority(int, float);
+    void setSpeedLimit(int, float);
     void setCircuit(); 
 
     

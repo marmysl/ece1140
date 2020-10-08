@@ -16,13 +16,14 @@ private:
 	int switchpath; 
 
 public:
-	Track(Region &);
+	Track(Region &reg);
 	void viewTrack();
 	bool detectTrain();
 	void updateTrack();
 	void updateLights();
 	int switchState(); 
-	void pickupSpeedLimit();
+	void pickupSpeedLimit(Region &reg);
+	int getLights();
 
 };
 
