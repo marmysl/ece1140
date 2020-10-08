@@ -1,16 +1,15 @@
 #include "Train.h"
-#include <QApplication>
 #include <chrono>
 #include <cstdint>
 using namespace std;
 
-Train::Train(int newNumCars, int argc, char *argv[])
+Train::Train(int newNumCars)
 {
     numCars = newNumCars;
-    QApplication a(argc, argv);
-    TrainModelUI w;
-    w.show();
-    a.exec();
+    //QApplication a(argc, argv);
+    //TrainModelUI w;
+    //w.show();
+   // a.exec();
 }
 
 /* might need to change this

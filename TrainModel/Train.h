@@ -1,9 +1,9 @@
 #ifndef TRAIN_H
 #define TRAIN_H
-#include "TrainModelUI.h"
 #include "TrainModelMath.h"
+#include "TrainModelMath.cpp"
 #include "TrainModelUpdateBlock.h"
-#include <QMainWindow>
+#include "TrainModelUpdateBlock.cpp"
 #include <chrono>
 #include <cstdint>
 using namespace std;
@@ -23,7 +23,7 @@ public:
     int blockNum;
 
 
-    Train(int newNumCars, int argc, char *argv[]);
+    Train(int newNumCars);
     //Train(int, char);
     void setPower(double newPower);             //Called by train controller to set power
     void setTrackCircuit(int blockNum);       //Get curr track signal from Track Model when new block

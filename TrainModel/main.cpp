@@ -1,6 +1,3 @@
-#include "TrainModelUI.h"
-
-#include <QApplication>
 #include "Train.h"
 #include <iostream>
 using namespace std;
