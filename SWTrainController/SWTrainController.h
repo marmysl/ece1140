@@ -4,7 +4,9 @@
 #define SWTRAINCONTROLLER_H
 
 #include "TrainCGUI.h"
-#include  "../TrainModel/Train.h"
+#include  "TrainModel/Train.h"
+
+int init_SWTrainController(int argc, char *argv[]);
 
 class SWTrainController
 {

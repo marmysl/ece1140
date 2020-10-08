@@ -11,7 +11,7 @@ CONFIG += c++11
 SOURCES += \
     CTCOffice/ctcoffice/CTCDispatch.cpp \
     CTCOffice/ctcoffice/CTCSignals.cpp \
-    CTCOffice/ctcoffice/main.cpp \
+    CTCOffice/ctcoffice/ctc_main.cpp \
     CTCOffice/ctcoffice/mainwindow.cpp \
     HWTrackController/FailureDetector.cpp \
     HWTrackController/ManualOverride.cpp \
@@ -31,24 +31,25 @@ SOURCES += \
     SerialPort.cpp \
     TrackModel/tracklayout.cpp \
     TrackModel/trackmodel.cpp \
-    TrackModel/trackmodeltest.cpp \
     TrainModel/Train.cpp \
     TrainModel/TrainModelMath.cpp \
     TrainModel/TrainModelUI.cpp \
     TrainModel/TrainModelUpdateBlock.cpp \
     TrainModel/main.cpp \
-    main.cpp \
-    sysOverview.cpp
+    system_main.cpp
 
 HEADERS += \
     CTCOffice/ctcoffice/CTCDispatch.h \
     CTCOffice/ctcoffice/CTCSignals.h \
+    CTCOffice/ctcoffice/ctc_main.h \
     CTCOffice/ctcoffice/mainwindow.h \
     HWTrackController/FailureDetector.hpp \
+    HWTrackController/HWTrackController_main.h \
     HWTrackController/ManualOverride.hpp \
     HWTrackController/Region.hpp \
     HWTrackController/Track.hpp \
     HWTrainController/CabinControls.h \
+    HWTrainController/HWTrainController_main.h \
     HWTrainController/SpeedRegulator.h \
     HWTrainController/TrainController.h \
     SWTrackController/BlockCntrl.h \
@@ -65,14 +66,12 @@ HEADERS += \
     TrainModel/Train.h \
     TrainModel/TrainModelMath.h \
     TrainModel/TrainModelUI.h \
-    TrainModel/TrainModelUpdateBlock.h \
-    sysOverview.h
+    TrainModel/TrainModelUpdateBlock.h
 
 FORMS += \
     CTCOffice/ctcoffice/mainwindow.ui \
     SWTrainController/SWTrainController.ui \
-    TrainModel/TrainModelUI.ui \
-    sysOverview.ui
+    TrainModel/TrainModelUI.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

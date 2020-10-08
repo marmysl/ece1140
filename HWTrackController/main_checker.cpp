@@ -6,10 +6,11 @@
 
 #include "Region.hpp"
 #include "Track.hpp"
+#include "HWTrackController_main.h"
 
 using namespace std;
 
-int main() {
+int init_HWTrackController() {
 	// Instantiate objects for testing
 	
 	Region r1;

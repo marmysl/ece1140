@@ -1,8 +1,8 @@
 #include "BlockCntrl.h"
 #include "CTCOffice/ctcoffice/CTCSignals.h"
+#include "TrackController.h"
 
-
-int main() {
+int init_SWTrackController() {
 	
 	BlockContainer B_Container;
 	

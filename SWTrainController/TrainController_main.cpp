@@ -7,7 +7,7 @@
 #include <iostream>
 
 
-int main(int argc, char *argv[])
+int init_SWTrainController(int argc, char *argv[])
 {
 
     SWTrainController* tc1 = new SWTrainController(argc, argv);

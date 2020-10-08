@@ -6,6 +6,7 @@
 #include "SpeedRegulator.h"
 //#include "FailureDetector.h"
 #include "../TrainModel/Train.h"
+#include "HWTrainController_main.h"
 
 using namespace std;
 
@@ -148,7 +149,7 @@ void autoConnect(void)
         }
 }
 
-int main()
+int init_HWTrainController()
 {
     arduino = new SerialPort(portName);
 
@@ -159,4 +160,6 @@ int main()
         std::cout << "Cabin Lights: " << cabin_controller.getCabinLights() << std::endl;
         exampleWriteData(100);
     }
+
+    return 0;
 }
