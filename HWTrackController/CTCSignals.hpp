@@ -11,19 +11,8 @@ public:
 	std::vector<float> authCTC; 
 	int destinationBlock;
 
-	void setSignal(int b, std::vector<float> &s, std::vector<float> &a) {
-			destinationBlock = b;
-			for(int i = 0; i < s.size(); i++) {
-				speedCTC.push_back(s[i]);
-				authCTC.push_back(a[i]);
-			}
-	}
-	
-
-	int getDest() {
-		return destinationBlock;
-	}
-
+        void setSignal(int b, std::vector<float> &s, std::vector<float> &a);
+        int getDest();
 };
 
 #endif

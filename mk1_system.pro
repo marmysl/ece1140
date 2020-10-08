@@ -14,7 +14,6 @@ SOURCES += \
     CTCOffice/ctcoffice/ctc_main.cpp \
     CTCOffice/ctcoffice/mainwindow.cpp \
     HWTrackController/FailureDetector.cpp \
-    HWTrackController/ManualOverride.cpp \
     HWTrackController/Region.cpp \
     HWTrackController/Track.cpp \
     HWTrackController/main_checker.cpp \
@@ -43,7 +42,6 @@ HEADERS += \
     CTCOffice/ctcoffice/mainwindow.h \
     HWTrackController/FailureDetector.hpp \
     HWTrackController/HWTrackController_main.h \
-    HWTrackController/ManualOverride.hpp \
     HWTrackController/Region.hpp \
     HWTrackController/Track.hpp \
     HWTrainController/CabinControls.h \
