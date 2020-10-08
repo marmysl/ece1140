@@ -2,6 +2,7 @@
 #include <iomanip>
 #include <cstdint>
 #include "FailureDetector.hpp"
+#include "TrackModel/trackmodel_controller.hpp"
 
 using namespace std;
 

@@ -21,7 +21,7 @@
 
 QT_BEGIN_NAMESPACE
 
-class Ui_MainWindow
+class Ui_TrainControlWindow
 {
 public:
     QWidget *centralwidget;
@@ -135,7 +135,7 @@ public:
 };
 
 namespace Ui {
-    class MainWindow: public Ui_MainWindow {};
+    class TrainControlWindow: public Ui_TrainControlWindow {};
 } // namespace Ui
 
 QT_END_NAMESPACE

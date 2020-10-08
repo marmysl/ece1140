@@ -1,23 +1,23 @@
-#ifndef MAINWINDOW_H
-#define MAINWINDOW_H
+#ifndef TRAINCONTROLWINDOW_H
+#define TRAINCONTROLWINDOW_H
 
 #include <QMainWindow>
-#include <../TrainModel/Train.h>
+#include "TrainModel/Train.h"
 #include "TrainController.h"
 #include "ui_TrainController.h"
 
 QT_BEGIN_NAMESPACE
-namespace Ui { class MainWindow; }
+namespace Ui { class TrainControlWindow; }
 QT_END_NAMESPACE
 
-class MainWindow : public QMainWindow
+class TrainControlWindow : public QMainWindow
 {
     Q_OBJECT
 
 
 public:
-    MainWindow(QWidget *parent = nullptr);
-    ~MainWindow();
+    TrainControlWindow(QWidget *parent = nullptr);
+    ~TrainControlWindow();
     Train* train;
 
 private slots:
@@ -26,7 +26,7 @@ private slots:
     void on_getCircuitInfoButton_clicked();
 
 private:
-    Ui::MainWindow *ui;
+    Ui::TrainControlWindow *ui;
 
 
     double power; //remove someday
@@ -38,4 +38,4 @@ private:
 
 
 };
-#endif // MAINWINDOW_H
+#endif // TRAINCONTROLWINDOW_H

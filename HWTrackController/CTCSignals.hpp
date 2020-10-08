@@ -20,10 +20,9 @@ public:
 	}
 	
 
-	int getDest() {
-		return destinationBlock;
-	}
-
+    int getDest();
+    std::vector<float> getSpeed();
+    std::vector<float> getAuth();
 };
 
 #endif

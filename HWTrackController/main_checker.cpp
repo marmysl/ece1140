@@ -24,8 +24,8 @@ int main() {
 	CTCSignals c1;
 	
 	// check CTC
-	float speeds[] = {1,2,3,4,5,6,7,8,9,10,11,12,13,14,15};
-	float auths[] = {1,2,3,4,5,6,7,8,9,10,11,12,13,14,15};
+    std::vector<float> speeds {1,2,3,4,5,6,7,8,9,10,11,12,13,14,15};
+    std::vector<float> auths {1,2,3,4,5,6,7,8,9,10,11,12,13,14,15};
 	int b = 10;
 	
 	c1.setSignal(b, speeds, auths);

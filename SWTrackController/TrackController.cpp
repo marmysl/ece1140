@@ -2,10 +2,6 @@
 #include <iostream>
 #include <vector>
 #include "TrackController.h"
-#include "trackmodel_test.hpp"
-#include "trackmodel_controller.hpp"
-#include "tracklayout.hpp"
-
 
 
 //using namespace std;
@@ -25,7 +21,7 @@ TrackController::TrackController(){
 	cntrl_switches.push_back(5);
 	cntrl_switches.push_back(6);
 	cntrl_switches.push_back(11);
-	TrackModel::Route *blueLine = initTestLayout();
+    //TrackModel::Route *blueLine = initTestLayout();
 	
 
 }

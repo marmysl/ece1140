@@ -10,7 +10,7 @@ using namespace std;
 TrainController :: TrainController(int argc, char *argv[]) //Constructor: creates train controller object and executes GUI
 {
     QApplication a(argc, argv);
-    MainWindow w;
+    TrainControlWindow w;
     //Train* train = new Train(3, argc, argv); // create train object each time a TC is initialized
     // Train train(3, argc, argv); // create train object each time a TC is initialized
     w.show();

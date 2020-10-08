@@ -2,6 +2,8 @@
 #include <iomanip>
 #include <cstdint>
 #include "Region.hpp"
+#include "TrackModel/tracklayout.hpp"
+#include "TrackModel/trackmodel_controller.hpp"
 
 using namespace std;
 
@@ -31,7 +33,7 @@ Region :: Region() {
     cout << "Section: " << currentSection << endl;
     cout << "Route: " << route << endl;
 
-    TrackModel::Route *blueLine = initTestLayout();
+    //TrackModel::Route *blueLine = TrackModel::getRoute(route);
 }
 
 void Region :: initialize(CTCSignals &c1) {

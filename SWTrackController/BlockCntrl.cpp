@@ -2,6 +2,7 @@
 #include <iostream>
 #include <vector>
 #include "BlockCntrl.h"
+#include "TrackModel/trackmodel_controller.hpp"
 
 BlockCntrl::BlockCntrl() {
 	

@@ -6,9 +6,6 @@
 
 #include <string>
 #include "CTCSignals.hpp"
-#include "tracklayout.hpp"
-#include "trackmodel_controller.hpp"
-#include "trackmodel_test.hpp"
 
 class Region
 {

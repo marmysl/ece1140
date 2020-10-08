@@ -13,7 +13,6 @@ SOURCES += \
     CTCOffice/ctcoffice/CTCSignals.cpp \
     CTCOffice/ctcoffice/main.cpp \
     CTCOffice/ctcoffice/mainwindow.cpp \
-    CTCOffice/ctcoffice/tracklayout.cpp \
     HWTrackController/CTCSignals.cpp \
     HWTrackController/FailureDetector.cpp \
     HWTrackController/ManualOverride.cpp \
@@ -26,7 +25,6 @@ SOURCES += \
     HWTrainController/SpeedRegulator.cpp \
     HWTrainController/TrainController.cpp \
     HWTrainController/main.cpp \
-    HWTrainController/test.cpp \
     SWTrackController/BlockCntrl.cpp \
     SWTrackController/TrackController.cpp \
     SWTrackController/trackcntrl_main.cpp \

@@ -3,13 +3,13 @@
 
 #include <iostream>
 #include "SerialPort.hpp"
-#include "SerialPort.cpp"
+//#include "SerialPort.cpp"
 #include <stdio.h>
 #include <string>
 #include "CabinControls.h"
-#include "CabinControls.cpp"
+//#include "CabinControls.cpp"
 #include "SpeedRegulator.h"
-#include "SpeedRegulator.cpp"
+//#include "SpeedRegulator.cpp"
 #include "../TrainModel/Train.h"
 //#include "../TrainModel/Train.cpp"
 

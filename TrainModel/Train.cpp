@@ -2,6 +2,9 @@
 //#include <QApplication>
 #include <chrono>
 #include <cstdint>
+
+#include "TrainModelMath.h"
+#include "TrainModelUpdateBlock.h"
 using namespace std;
 
 Train::Train(int newNumCars)
