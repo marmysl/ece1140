@@ -77,13 +77,13 @@ public:
         kW_label->setGeometry(QRect(760, 80, 58, 16));
         sendPowerButton = new QPushButton(centralwidget);
         sendPowerButton->setObjectName(QString::fromUtf8("sendPowerButton"));
-        sendPowerButton->setGeometry(QRect(580, 120, 141, 61));
+        sendPowerButton->setGeometry(QRect(570, 120, 141, 61));
         getCircuitInfoButton = new QPushButton(centralwidget);
         getCircuitInfoButton->setObjectName(QString::fromUtf8("getCircuitInfoButton"));
         getCircuitInfoButton->setGeometry(QRect(130, 280, 201, 41));
         decodeButton = new QPushButton(centralwidget);
         decodeButton->setObjectName(QString::fromUtf8("decodeButton"));
-        decodeButton->setGeometry(QRect(130, 350, 201, 41));
+        decodeButton->setGeometry(QRect(190, 350, 201, 41));
         circuitInfo = new QLabel(centralwidget);
         circuitInfo->setObjectName(QString::fromUtf8("circuitInfo"));
         circuitInfo->setGeometry(QRect(540, 320, 101, 21));

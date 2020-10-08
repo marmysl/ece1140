@@ -6,6 +6,7 @@ TrainModelUI::TrainModelUI(QWidget *parent)
     , ui(new Ui::TrainModelUI)
 {
     ui->setupUi(this);
+
 }
 
 TrainModelUI::~TrainModelUI()
@@ -13,6 +14,6 @@ TrainModelUI::~TrainModelUI()
     delete ui;
 }
 
-/*void TrainModelUI::updatePower(double power){
+void TrainModelUI::updatePower(double power){
     ui->powerLabel->setText(QString::number(power));
-}*/
+}

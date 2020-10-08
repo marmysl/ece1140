@@ -14,7 +14,7 @@ class TrainModelUI : public QMainWindow
 public:
     TrainModelUI(QWidget *parent = nullptr);
     ~TrainModelUI();
-    //void updatePower(double power);
+    void updatePower(double power);
 
 private:
     Ui::TrainModelUI *ui;

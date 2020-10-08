@@ -3,7 +3,11 @@
 #include "TrainModelMath.h"
 #include "TrainModelMath.cpp"
 #include "TrainModelUpdateBlock.h"
+
 #include "TrainModelUpdateBlock.cpp"
+
+//#include <QMainWindow>
+
 #include <chrono>
 #include <cstdint>
 using namespace std;
@@ -21,6 +25,8 @@ public:
     double blockDist = 50;
     double blockGrade = 0;
     int blockNum;
+    //TrainModelUI* uiPtr;
+    //QApplication* qapp;
 
 
     Train(int newNumCars);

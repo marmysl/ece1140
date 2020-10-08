@@ -1,4 +1,5 @@
 #include "Train.h"
+//#include <QApplication>
 #include <chrono>
 #include <cstdint>
 using namespace std;
@@ -6,10 +7,12 @@ using namespace std;
 Train::Train(int newNumCars)
 {
     numCars = newNumCars;
-    //QApplication a(argc, argv);
-    //TrainModelUI w;
-    //w.show();
-   // a.exec();
+/*    QApplication a(argc, argv);
+    TrainModelUI w;
+    uiPtr = &w;
+    qapp = &a;
+    w.show();
+    a.exec();*/
 }
 
 /* might need to change this
@@ -44,7 +47,7 @@ void Train::setPower(double newPower){             //Called by train controller 
     oldPos = newPos;
 
     currPower = newPower;
-//    w.updatePower(newPower);
+//    uiPtr->updatePower(newPower);
     currVel = TrainModelMath::calcVelocity(newPower);
 
 }
