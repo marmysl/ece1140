@@ -85,7 +85,7 @@ void TrainController::recieveData()
 
         speed_regulator -> setKpAndKi(std::stod(data.substr(6,5)), std::stod(data.substr(11,5)));
     }  
-    Sleep(100);
+    Sleep(900);
 }
 
 void TrainController::writeData(int delayTime)
@@ -155,7 +155,7 @@ void TrainController::dispatch()
 	while(arduino -> isConnected())
 	{
 		recieveData();
-		writeData(100);
+		writeData(900);
 		speed_regulator -> calculatePowerCmd();
 		cout << "Power: " << speed_regulator -> getPowerCmd() << endl;
 		cout << "Incoming: " << getInput() << endl;
