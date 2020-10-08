@@ -1,7 +1,7 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include <QTextStream>
-#include <CTCDispatch.h>
+#include "CTCDispatch.h"
 #include <QTime>
 #include <QString>
 #include <iostream>

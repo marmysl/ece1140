@@ -4,8 +4,8 @@
 #include <vector>
 #include <iostream>
 #include <string>
-#include <../HWTrackController/CTCSignals.hpp>
-#include <../TrackModel/tracklayout.hpp>
+#include "../../HWTrackController/CTCSignals.hpp"
+#include "../../TrackModel/tracklayout.hpp"
 
 class CTCDispatch
 {
@@ -15,8 +15,8 @@ class CTCDispatch
         float timeStart;
         float timeArrival;
     public:
-        float authority[9];
-        float speed[9];
+        std::vector<float> authority;
+        std::vector<float> speed;
         void setAuthority(std::string);
         void setSpeed(std::string, float, float);
         void sendTrackController();
