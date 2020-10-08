@@ -91,7 +91,7 @@ void CTCDispatch::setSpeed(std::string station, float timeStart, float timeArriv
                 *i = avgspeed;
             }
             else{
-                *i = ((-avgspeed*(m)) + (10*avgspeed))/4;
+                *i = ((-avgspeed*(m+1)) + (10*avgspeed))/4;
             }
             m++;
         }
@@ -117,7 +117,7 @@ void CTCDispatch::setSpeed(std::string station, float timeStart, float timeArriv
 
     // TEST DEBUG FOR SPEED
     for(int j = 0; j < 10; j++){
-        qDebug() << QString::number(speed[j]) << ", ";
+        qDebug() << QString::number(speed.at(j)) << ", ";
     }
 }
 

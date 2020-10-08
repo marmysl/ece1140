@@ -1,6 +1,7 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 #include "CTCDispatch.h"
+#include "CTCSignals.h"
 
 #include <QMainWindow>
 
