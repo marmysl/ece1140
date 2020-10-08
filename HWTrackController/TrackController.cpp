@@ -1,7 +1,7 @@
 #include <iostream>
 #include <string>
-#include "SerialPort.hpp"
-#include "SerialPort.cpp"
+#include "../SerialPort.hpp"
+#include "../SerialPort.cpp"
 #include <stdio.h>
 #include <vector>
 
