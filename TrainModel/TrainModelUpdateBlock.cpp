@@ -11,10 +11,17 @@ TrainModelUpdateBlock::TrainModelUpdateBlock()
 }
 
 int TrainModelUpdateBlock::updateBlock(int blockNum){
+<<<<<<< Updated upstream
     Route *blueLine = getRoute("Blue Line");
     trackmodel_train::removeOccupancy(blueLine, blockNum);
     blockNum = blockNum + 1;
     trackmodel_train::addOccupancy(blueLine, blockNum);
+=======
+    std::string line = "Blue Line";
+    removeOccupancy(line, blockNum);
+    blockNum = blockNum + 1;
+    addOccupancy(line, blockNum);
+>>>>>>> Stashed changes
     return blockNum;
 }
 
@@ -33,7 +40,12 @@ double TrainModelUpdateBlock::blockGrade(int blockNum){
 }
 
 uint64_t TrainModelUpdateBlock::updateTrackCircuit(int blockNum){
+<<<<<<< Updated upstream
     TrackCircuitData newData = trackmodel_train::getTrackCircuit("Blue Line", blockNum);
+=======
+    std::string line = "Blue Line";
+    TrackCircuitData newData = getTrackCircuit(line, blockNum);
+>>>>>>> Stashed changes
     uint64_t trackCircuitData = newData.getEncodedData();
     return trackCircuitData;
 }

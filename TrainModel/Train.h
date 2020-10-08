@@ -3,6 +3,10 @@
 #include "TrainModelUI.h"
 #include "TrainModelMath.h"
 #include "TrainModelUpdateBlock.h"
+<<<<<<< Updated upstream
+=======
+#include "TrainModelUpdateBlock.cpp"
+>>>>>>> Stashed changes
 //#include <QMainWindow>
 #include <chrono>
 #include <cstdint>
