@@ -35,7 +35,6 @@ SOURCES += \
     TrainModel/TrainModelMath.cpp \
     TrainModel/TrainModelUI.cpp \
     TrainModel/TrainModelUpdateBlock.cpp \
-    TrainModel/main.cpp \
     system_main.cpp
 
 HEADERS += \
