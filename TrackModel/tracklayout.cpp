@@ -9,7 +9,7 @@ Block *TrackModel::yard;
 
 std::vector<Route *> TrackModel::routes = std::vector<Route *>();
 
-Route *getRoute( std::string name ) {
+Route *TrackModel::getRoute( std::string name ) {
     for( Route *r : routes ) {
         if( !name.compare(r->name) ) {
             return r;
