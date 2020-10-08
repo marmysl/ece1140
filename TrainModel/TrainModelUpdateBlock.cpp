@@ -1,4 +1,3 @@
-
 #include "TrackModel/tracklayout.hpp"
 #include "TrackModel/trackmodel_train.hpp"
 #include "TrainModelUpdateBlock.h"

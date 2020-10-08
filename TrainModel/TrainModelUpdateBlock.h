@@ -21,4 +21,3 @@ public:
 
 #endif // TRAINMODELUPDATEBLOCK_H
 
-*/

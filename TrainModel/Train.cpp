@@ -7,6 +7,18 @@
 #include "TrainModelUpdateBlock.h"
 using namespace std;
 
+Train::Train(int newNumCars)//, int argc, char *argv[])
+{
+    numCars = newNumCars;
+    /*QApplication a(argc, argv);
+    TrainModelUI w;
+    uiPtr = &w;
+    qapp = &a;
+    w.show();
+    updateUI();
+    a.exec();*/
+}
+/*
 Train::Train(int newNumCars, int argc, char *argv[])
 {
     numCars = newNumCars;
@@ -17,7 +29,7 @@ Train::Train(int newNumCars, int argc, char *argv[])
     w.show();
     updateUI();
     a.exec();
-}
+}*/
 
 void Train::setPower(double newPower){             //Called by train controller to set power
     //Get current time
