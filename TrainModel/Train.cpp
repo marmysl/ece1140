@@ -2,6 +2,7 @@
 #include <QApplication>
 #include <chrono>
 #include <cstdint>
+#include <iostream>
 
 #include "TrainModelMath.h"
 #include "TrainModelUpdateBlock.h"
@@ -9,6 +10,7 @@ using namespace std;
 
 Train::Train(int newNumCars)//, int argc, char *argv[])
 {
+    cout << "Create new Train Model with " << newNumCars << " cars" << endl;
     numCars = newNumCars;
     /*QApplication a(argc, argv);
     TrainModelUI w;

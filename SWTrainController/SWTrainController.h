@@ -13,6 +13,7 @@ class SWTrainController
 
 public: // TEMPORARILY making everything public for easier implementation
 //private:
+    Train *train;
     double power;
     double kp;
     double ki;

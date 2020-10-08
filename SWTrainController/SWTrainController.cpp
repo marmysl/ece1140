@@ -9,12 +9,16 @@ using namespace std;
 
 SWTrainController :: SWTrainController(int argc, char *argv[]) //Constructor: creates train controller object and executes GUI
 {
-    QApplication a(argc, argv);
+    cout << "Train Controller created" << endl;
+    cout.flush();
+
+    //QApplication a(argc, argv);
     TrainControlWindow w;
-    //Train* train = new Train(3, argc, argv); // create train object each time a TC is initialized
-    // Train train(3, argc, argv); // create train object each time a TC is initialized
+    train = new Train(3); // create train object each time a TC is initialized
+    w.train = train;
+
     w.show();
-    a.exec();
+    //a.exec();
 }
 
 

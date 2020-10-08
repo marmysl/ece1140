@@ -27,7 +27,6 @@ SOURCES += \
     SWTrackController/trackcntrl_main.cpp \
     SWTrainController/SWTrainController.cpp \
     SWTrainController/TrainCGUI.cpp \
-    SWTrainController/TrainController_main.cpp \
     SerialPort.cpp \
     TrackModel/tracklayout.cpp \
     TrackModel/trackmodel.cpp \
@@ -65,7 +64,8 @@ HEADERS += \
     TrainModel/Train.h \
     TrainModel/TrainModelMath.h \
     TrainModel/TrainModelUI.h \
-    TrainModel/TrainModelUpdateBlock.h
+    TrainModel/TrainModelUpdateBlock.h \
+    system_main.h
 
 FORMS += \
     CTCOffice/ctcoffice/mainwindow.ui \

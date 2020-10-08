@@ -10,17 +10,26 @@
 
 TrackModel::Route *blueLineLayout;
 
+int mainArgc;
+char **mainArgv;
+
+void createNewTrain() {
+    SWTrainController(mainArgc, mainArgv);
+}
+
 int main(int argc, char *argv[])
 {
+    mainArgc = argc;
+    mainArgv = argv;
+
     QApplication a(argc, argv);
 
     blueLineLayout = initTestLayout();
 
     init_CTC(argc, argv);
     //init_HWTrackController();
-    init_SWTrackController();
+    //init_SWTrackController();
     //init_HWTrainController();
-    init_SWTrainController(argc, argv);
 
     return a.exec();
 }

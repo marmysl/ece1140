@@ -5,6 +5,8 @@
 #include <QTextStream>
 #include <QApplication>
 
+#include "system_main.h"
+
 //useful cout replacement command while using QT Creator Application Output
 //qDebug() << QString::fromStdString(station);
 //qDebug() << QString::number(hours);
@@ -311,6 +313,8 @@ float CTCDispatch::getTimeArrival(){
 }
 
 void CTCDispatch::dispatch(CTCSignals(&c)){
+    createNewTrain();
+
     setAuthority(station, endblock);
     setSpeed(station, endblock, timeStart, timeArrival);
     sendTrackController(c);
