@@ -37,6 +37,10 @@ void Train::setPower(double newPower){             //Called by train controller 
     //Find the distance travelled using old velocity
     double distTravelled = TrainModelMath::travelledDist(milliSec, currVel);
     double newPos = TrainModelMath::updatePosition(oldPos, distTravelled);
+<<<<<<< Updated upstream
+=======
+    //double newPos = 1.0; //temp
+>>>>>>> Stashed changes
 
     //compare new position to old to see if new block
     if (newPos >= blockDist){
@@ -49,6 +53,10 @@ void Train::setPower(double newPower){             //Called by train controller 
     currPower = newPower;
 //    uiPtr->updatePower(newPower);
     currVel = TrainModelMath::calcVelocity(newPower);
+<<<<<<< Updated upstream
+=======
+ //   currVel = 2.5; //temp hard coding
+>>>>>>> Stashed changes
 
 }
 
@@ -57,8 +65,16 @@ void Train::updateTrackInfo(){                            //Will update block in
     //update block length
     //send occupancy to Track Model
     blockNum = TrainModelUpdateBlock::updateBlock(blockNum);
+<<<<<<< Updated upstream
     blockDist = TrainModelUpdateBlock::blockLength(blockNum);
     blockGrade = TrainModelUpdateBlock::blockGrade(blockNum);
+=======
+ //   blockNum = 1;
+    blockDist = TrainModelUpdateBlock::blockLength(blockNum);
+ //   blockDist = 1.0;
+    blockGrade = TrainModelUpdateBlock::blockGrade(blockNum);
+ //   blockGrade = 1.0;
+>>>>>>> Stashed changes
     this->setTrackCircuit(blockNum);
 }
 
@@ -67,6 +83,10 @@ void Train::setTrackCircuit(int blockNum){                   //Get curr track si
     //get tc info for block
     //assign
     trackCircuitData = TrainModelUpdateBlock::updateTrackCircuit(blockNum);
+<<<<<<< Updated upstream
+=======
+ //   trackCircuitData = 1;
+>>>>>>> Stashed changes
 }
 
 uint64_t Train::sendTrackCircuit(){          //Train controller can call to get curr track signal
