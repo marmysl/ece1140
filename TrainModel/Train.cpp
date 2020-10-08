@@ -35,8 +35,9 @@ void Train::setPower(double newPower){             //Called by train controller 
     double milliSec = chrono::duration<double, milli>(elapsedTime).count();
 
     //Find the distance travelled using old velocity
-    double distTravelled = TrainModelMath::travelledDist(milliSec, currVel);
-    double newPos = TrainModelMath::updatePosition(oldPos, distTravelled);
+    //double distTravelled = TrainModelMath::travelledDist(milliSec, currVel);
+    //double newPos = TrainModelMath::updatePosition(oldPos, distTravelled);
+    double newPos = 1.0; //temp
 
     //compare new position to old to see if new block
     if (newPos >= blockDist){
@@ -48,7 +49,8 @@ void Train::setPower(double newPower){             //Called by train controller 
 
     currPower = newPower;
 //    uiPtr->updatePower(newPower);
-    currVel = TrainModelMath::calcVelocity(newPower);
+    //currVel = TrainModelMath::calcVelocity(newPower);
+    currVel = 2.5; //temp hard coding
 
 }
 
@@ -56,9 +58,12 @@ void Train::updateTrackInfo(){                            //Will update block in
     //update block num
     //update block length
     //send occupancy to Track Model
-    blockNum = TrainModelUpdateBlock::updateBlock(blockNum);
-    blockDist = TrainModelUpdateBlock::blockLength(blockNum);
-    blockGrade = TrainModelUpdateBlock::blockGrade(blockNum);
+    //blockNum = TrainModelUpdateBlock::updateBlock(blockNum);
+    blockNum = 1;
+    //blockDist = TrainModelUpdateBlock::blockLength(blockNum);
+    blockDist = 1.0;
+    //blockGrade = TrainModelUpdateBlock::blockGrade(blockNum);
+    blockGrade = 1.0;
     this->setTrackCircuit(blockNum);
 }
 
@@ -66,7 +71,8 @@ void Train::updateTrackInfo(){                            //Will update block in
 void Train::setTrackCircuit(int blockNum){                   //Get curr track signal from Track Model when new block
     //get tc info for block
     //assign
-    trackCircuitData = TrainModelUpdateBlock::updateTrackCircuit(blockNum);
+    // trackCircuitData = TrainModelUpdateBlock::updateTrackCircuit(blockNum);
+    trackCircuitData = 1;
 }
 
 uint64_t Train::sendTrackCircuit(){          //Train controller can call to get curr track signal
