@@ -20,6 +20,7 @@ private:
     std::vector<int> blocks;
     int currentBlock;
     int blockID;
+    int destinationBlock;
     std::vector<float> suggestedSpeed;
     std::vector<float> commandedSpeed;
     std::vector<float> authority;

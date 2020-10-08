@@ -51,6 +51,8 @@ void Region :: initialize(CTCSignals &c1) {
         cout << authority[i] << " "; 
     cout<< endl; 
 
+    destinationBlock = c1.getDest();
+
     setCircuit();
 }
 

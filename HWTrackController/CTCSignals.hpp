@@ -4,12 +4,13 @@
 class CTCSignals
 {
 public:
-        void setSpeedAuth(float[], float[]);
+	void setSignal(int, float[], float[]);
 	std::vector<float> speedCTC;
 	std::vector<float> authCTC; 
+	int destinationBlock;
 	std::vector<float> getSpeed();
 	std::vector<float> getAuth();
-	int destinationBlock;
+	int getDest();
 };
 
 #endif

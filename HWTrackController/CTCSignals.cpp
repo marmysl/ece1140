@@ -5,7 +5,7 @@
 #include "CTCSignals.hpp"
 using namespace std;
 
-void CTCSignals :: setSpeedAuth(float s[], float a[], int b) {
+void CTCSignals :: setSignal(int b, float s[], float a[]) {
 	for (int i = 0; i < 15; i++){
 		speedCTC.push_back(s[i]);
 	}
@@ -24,6 +24,6 @@ std::vector<float> CTCSignals :: getAuth() {
 	return authCTC;
 }
 
-
-
-
+int CTCSignals :: getDest() {
+	return destinationBlock;
+}
