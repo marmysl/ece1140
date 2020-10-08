@@ -1,9 +1,9 @@
-#ifndef TRAIN_H
+ifndef TRAIN_H
 #define TRAIN_H
-#include "TrainModelMath.h"
-//#include "TrainModelMath.cpp"
-#include "TrainModelUpdateBlock.h"
-//#include "TrainModelUpdateBlock.cpp"
+//#include "TrainModelMath.h"
+#include "TrainModelMath.cpp"
+//#include "TrainModelUpdateBlock.h"
+#include "TrainModelUpdateBlock.cpp"
 
 //#include <QMainWindow>
 

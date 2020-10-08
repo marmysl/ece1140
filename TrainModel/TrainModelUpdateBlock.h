@@ -1,4 +1,4 @@
-#ifndef TRAINMODELUPDATEBLOCK_H
+/*#ifndef TRAINMODELUPDATEBLOCK_H
 #define TRAINMODELUPDATEBLOCK_H
 //#include "../TrackModel/trackmodel.cpp"
 #include "../TrackModel/tracklayout.hpp"
@@ -18,5 +18,5 @@ public:
     static uint64_t updateTrackCircuit(int blockNum);
 };
 
-#endif // TRAINMODELUPDATEBLOCK_H
+#endif // TRAINMODELUPDATEBLOCK_H*/
 

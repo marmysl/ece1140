@@ -1,4 +1,4 @@
-#ifndef TRAINMODELMATH_H
+/*#ifndef TRAINMODELMATH_H
 #define TRAINMODELMATH_H
 
 
@@ -12,4 +12,4 @@ public:
 
 };
 
-#endif // TRAINMODELMATH_H
+#endif // TRAINMODELMATH_H*/
