@@ -26,6 +26,9 @@ void CTCDispatch::setAuthority(std::string station, int blocknum)
         return;
     }
 
+    if(blocknum > 11){
+       blocknum -= 5;
+    }
 
     if(station == "Station B" && blocknum == -1){
         int m = 0;
@@ -106,6 +109,10 @@ void CTCDispatch::setSpeed(std::string station, int blocknum, float timeStart, f
     if(duration <= 0){
         qDebug() << "Invalid time frame: please try again.";
         return;
+    }
+
+    if(blocknum > 11){
+       blocknum -= 5;
     }
 
     qDebug() << "Final Start Time: " << QString::number(timeArrival);
@@ -230,11 +237,7 @@ void CTCDispatch::setBlock(std::string blk){
         temp1 >> tblock;
 
         qDebug() << "Set Block Destination to: " << QString::number(tblock);
-        if(tblock > 10){
-            endblock = tblock - 5;
-        }else{
-            endblock = tblock;
-        }
+        endblock = tblock;
     }
     else{
         endblock = -1;
@@ -320,8 +323,11 @@ void CTCDispatch::sendTrackController(CTCSignals(&sig)){
     int destblock;
     if(station == "Station B"){
         destblock = 10;
-    }else{
+    }else if(station == "Station C"){
         destblock = 15;
+    }
+    else{
+        destblock = endblock;
     }
     sig.setSignal(destblock, speed, authority);
 }
