@@ -4,7 +4,7 @@
 class CTCSignals
 {
 public:
-	void setSpeedAuth(float[], float[]), int;
+        void setSpeedAuth(float[], float[]);
 	std::vector<float> speedCTC;
 	std::vector<float> authCTC; 
 	std::vector<float> getSpeed();

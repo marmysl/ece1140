@@ -9,6 +9,14 @@
 //qDebug() << QString::fromStdString(station);
 //qDebug() << QString::number(hours);
 
+//Get block 6
+/*Route *rt;
+rt = getRoute("Blue Line");
+Block* blk6 = rt -> getBlock(6);
+
+while(prevBlock != NULL)
+Block* blk5 = blk6 -> prevBlock;*/
+
 void CTCDispatch::setAuthority(std::string station)
 {
     qDebug() << QString::fromStdString(station);
