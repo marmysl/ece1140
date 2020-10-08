@@ -12,6 +12,8 @@ class CTCDispatch
 {
     private:
         std::string line;
+        std::string destinationType;
+        std::string endblock;
         std::string station;
         float timeStart;
         float timeArrival;
@@ -25,8 +27,12 @@ class CTCDispatch
 
         void setLine(std::string);
         std::string getline();
+        void setDestinationType(std::string);
+        std::string getDestinationType();
         void setStation(std::string);
         std::string getStation();
+        void setBlock(std::string);
+        std::string getBlock();
         void setTimeStart(std::string);
         float getTimeStart();
         void setTimeArrival(std::string);
