@@ -3,7 +3,6 @@
 #include "TrainModelMath.h"
 #include "TrainModelMath.cpp"
 #include "TrainModelUpdateBlock.h"
-
 #include "TrainModelUpdateBlock.cpp"
 
 //#include <QMainWindow>

@@ -9,10 +9,9 @@ TrainModelUpdateBlock::TrainModelUpdateBlock()
 
 int TrainModelUpdateBlock::updateBlock(int blockNum){
     std::string line = "Blue Line";
-    Route *blueLine = getRoute(line);
-    removeOccupancy("Blue Line", blockNum);
+    removeOccupancy(line, blockNum);
     blockNum = blockNum + 1;
-    addOccupancy("Blue Line", blockNum);
+    addOccupancy(line, blockNum);
     return blockNum;
 }
 
@@ -33,7 +32,8 @@ double TrainModelUpdateBlock::blockGrade(int blockNum){
 }
 
 uint64_t TrainModelUpdateBlock::updateTrackCircuit(int blockNum){
-    TrackCircuitData newData = getTrackCircuit("Blue Line", blockNum);
+    std::string line = "Blue Line";
+    TrackCircuitData newData = getTrackCircuit(line, blockNum);
     uint64_t trackCircuitData = newData.getEncodedData();
     return trackCircuitData;
 }
