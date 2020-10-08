@@ -18,8 +18,8 @@ SOURCES += \
     SWTrackController/trackcntrl_main.cpp \
     SWTrainController/SWTrainController.cpp \
     SWTrainController/TrainCGUI.cpp \
-    SWTrainController/TrainController_main.cpp \
-    SerialPort.cpp \
+    # SWTrainController/TrainController_main.cpp \
+    # SerialPort.cpp \
     TrackModel/tracklayout.cpp \
     TrackModel/trackmodel.cpp \
     TrainModel/Train.cpp \
@@ -38,7 +38,7 @@ HEADERS += \
     SWTrainController/SWTrainController.h \
     SWTrainController/TrainCGUI.h \
     SWTrainController/ui_TrainController.h \
-    SerialPort.hpp \
+    # SerialPort.hpp \
     TrackModel/tracklayout.hpp \
     TrackModel/trackmodel_controller.hpp \
     TrackModel/trackmodel_test.hpp \
