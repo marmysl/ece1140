@@ -17,7 +17,7 @@ int main(int argc, char *argv[])
     blueLineLayout = initTestLayout();
 
     init_CTC(argc, argv);
-    init_HWTrackController();
+    //init_HWTrackController();
     init_SWTrackController();
     //init_HWTrainController();
     init_SWTrainController(argc, argv);
