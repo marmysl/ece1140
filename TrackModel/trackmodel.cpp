@@ -195,8 +195,10 @@ int trackModelTestMain() {
     
     Block *block = r->getBlock(1);
     while( block != NULL ) {
-        std::cout << "Block " << block->id << " sec " << block->section;
-        std::cout << " grade " << (block->grade * 100) << "%";
+        std::cout << "Block " << block->id << " | sec " << block->section;
+        std::cout << " | length " << block->length << "m";
+        std::cout << " | grade " << (block->grade * 100) << "%";
+        std::cout << " | speed limit " << block->speedLimit << "kph";
 
         Switch *sw = r->getSwitch(block->id);
         if( sw != NULL ) {
@@ -211,6 +213,8 @@ int trackModelTestMain() {
 
         block = block->nextBlock;
     }
+    
+    std::cout << "Block 7 occupied: " << isBlockOccupied(r->name, 7) << std::endl;
 
     addOccupancy(r->name, 7);
 

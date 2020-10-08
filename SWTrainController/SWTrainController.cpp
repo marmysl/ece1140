@@ -13,11 +13,11 @@ SWTrainController :: SWTrainController(int argc, char *argv[]) //Constructor: cr
     cout.flush();
 
     //QApplication a(argc, argv);
-    TrainControlWindow w;
+    TrainControlWindow *w = new TrainControlWindow();
     train = new Train(3); // create train object each time a TC is initialized
-    w.train = train;
+    w->train = train;
 
-    w.show();
+    w->show();
     //a.exec();
 }
 
