@@ -3,6 +3,9 @@
 #ifndef TRAINCONTROLLER_H
 #define TRAINCONTROLLER_H
 
+#include "TrainCGUI.h"
+#include  "../TrainModel/Train.h"
+
 class TrainController
 {
 

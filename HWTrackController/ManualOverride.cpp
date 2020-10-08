@@ -5,7 +5,11 @@
 using namespace std;
 
 // Constructor
-ManualOverride :: ManualOverride() {}
+ManualOverride :: ManualOverride(Region &r) {
+	route = r.getRoute();
+	blockNum = r.getCurrentBlock();
+	authority = r.getAuthority();
+}
 
 void ManualOverride :: setManual(bool b) {
 	manualSwitch = b;
@@ -17,6 +21,7 @@ void ManualOverride :: setCrossing(bool b) {
 
 void ManualOverride :: setSwitch(bool b) {
 	switchingSwitch = b;
+	//TrackModel::setSwitchState("Blue Line", blockNum, TrackModel::SwitchState b);
 }
 
 void ManualOverride :: getSwitch(bool b) {

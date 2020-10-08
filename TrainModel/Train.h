@@ -1,14 +1,8 @@
-#ifndef TRAIN_H
+ifndef TRAIN_H
 #define TRAIN_H
-<<<<<<< Updated upstream
-#include "TrainModelMath.h"
-#include "TrainModelMath.cpp"
-#include "TrainModelUpdateBlock.h"
-=======
 //#include "TrainModelMath.h"
 #include "TrainModelMath.cpp"
 //#include "TrainModelUpdateBlock.h"
->>>>>>> Stashed changes
 #include "TrainModelUpdateBlock.cpp"
 
 //#include <QMainWindow>

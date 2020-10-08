@@ -4,16 +4,17 @@
 #include <vector>
 #include <iostream>
 #include <string>
-#include <CTCSignals.h>
+#include <../HWTrackController/CTCSignals.hpp>
+#include <../TrackModel/tracklayout.hpp>
 
 class CTCDispatch
 {
     private:
+        std::string line;
+        std::string station;
+        float timeStart;
+        float timeArrival;
     public:
-    std::string line;
-    std::string station;
-    float timeStart;
-    float timeArrival;
         float authority[9];
         float speed[9];
         void setAuthority(std::string);

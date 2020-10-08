@@ -10,15 +10,12 @@ CONFIG += c++11
 
 SOURCES += \
     CTCDispatch.cpp \
-    CTCSignals.cpp \
-    TrackController.cpp \
     main.cpp \
-    mainwindow.cpp
+    mainwindow.cpp \
+    tracklayout.cpp
 
 HEADERS += \
     CTCDispatch.h \
-    CTCSignals.h \
-    TrackController.h \
     mainwindow.h
 
 FORMS += \

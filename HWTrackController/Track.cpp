@@ -6,12 +6,21 @@
 using namespace std;
 
 // Constructor
-Track :: Track() {
-	route = getRoute();
-	blockNum = getCurrentBlock();
-	authority = getAuthority();
+Track :: Track(Region &r) {
+	cout << " In Track class\n";
+	route = r.getRoute();
+	blockNum = r.getCurrentBlock();
+	authority = r.getAuthority();
 	blockOccupancy = 0;
 	lights = 0;
+
+	pickupSpeedLimit();
+
+	cout << route << endl;
+	cout << blockNum << endl;
+	cout << authority << endl;
+	cout << blockOccupancy << endl;
+	cout << lights << endl;
 }
 
 void Track :: viewTrack() {
@@ -20,25 +29,24 @@ void Track :: viewTrack() {
 }
 
 bool Track :: detectTrain() {
-	blockOccupancy = TrackModel::isBlockOccupied(route, blockNum);
+	blockOccupancy = TrackModel::isBlockOccupied("Blue Line", blockNum);
 
-	cout << " train detected is " << blockOccupancy; 
+	cout << " train detected is " << blockOccupancy << endl; 
 
 	return blockOccupancy;
 }
 
 void Track :: updateTrack() {
-
 }
 
 
 void Track :: updateLights() {
 	// Control traffic lights based on authority (speed must slow down accordingly)
-	if (authority > 30) {
+	if (authority > 6) {
 		lights = 0; // green
-	} else if (authority < 30 && authority > 15) {
+	} else if (authority < 6 && authority > 3) {
 		lights = 1; //yellow
-	} else if (authority < 15) {
+	} else if (authority < 3) {
 		lights = 2; // red
 	}
 
@@ -47,8 +55,13 @@ void Track :: updateLights() {
 
 int Track :: switchState() {
 
-	switchpath = 6;
-    //switchpath = TrackModel::getSwitchState(route, 5);
-    cout << " Switch is pointed to " << switchpath; 
-    return switchpath;
+    // switchpath = TrackModel::getSwitchState("Blue Line", blockNum);
+    // cout << " Switch is pointed to " << switchpath; 
+    // return switchpath;
+    return 0;
+}
+
+void Track :: pickupSpeedLimit(){
+//	speedLimit = Block::speedLimit; 
+
 }
