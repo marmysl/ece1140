@@ -10,7 +10,6 @@ CONFIG += c++11
 
 SOURCES += \
     CTCDispatch.cpp \
-    CTCSignals.cpp \
     main.cpp \
     mainwindow.cpp \
     tracklayout.cpp
