@@ -1,7 +1,7 @@
-#include "TrainModelMath.h"
+#include <TrainModelMath.h>
 #include <chrono>
 using namespace std::chrono;
-
+/*
 class TrainModelMath
 {
     public:
@@ -23,12 +23,7 @@ class TrainModelMath
             return 20;
         }
 };
-
-/*
-TrainModelMath();
-static double travelledDist(double time, double velocity);
-static double updatePosition(double oldPos, double change);
-static double calcVelocity(double power);
+*/
 
 TrainModelMath::TrainModelMath()
 {
@@ -47,4 +42,4 @@ double TrainModelMath::updatePosition(double oldPos, double change){
 double TrainModelMath::calcVelocity(double power){
     return 20;
 }
-*/
+

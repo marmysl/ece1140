@@ -18,7 +18,7 @@
     <property name="geometry">
      <rect>
       <x>50</x>
-      <y>123</y>
+      <y>50</y>
       <width>171</width>
       <height>61</height>
      </rect>
@@ -31,7 +31,7 @@
     <property name="geometry">
      <rect>
       <x>50</x>
-      <y>200</y>
+      <y>150</y>
       <width>171</width>
       <height>61</height>
      </rect>
@@ -44,7 +44,7 @@
     <property name="geometry">
      <rect>
       <x>50</x>
-      <y>280</y>
+      <y>260</y>
       <width>171</width>
       <height>61</height>
      </rect>
@@ -66,32 +66,151 @@
      <string>Generate Brake Failure</string>
     </property>
    </widget>
-   <widget class="QTabWidget" name="tabWidget">
+   <widget class="QTabWidget" name="tabMenu">
     <property name="geometry">
      <rect>
-      <x>280</x>
-      <y>40</y>
-      <width>371</width>
+      <x>260</x>
+      <y>30</y>
+      <width>381</width>
       <height>391</height>
      </rect>
     </property>
     <property name="currentIndex">
-     <number>1</number>
+     <number>2</number>
     </property>
-    <widget class="QWidget" name="tab">
+    <widget class="QWidget" name="errors">
      <attribute name="title">
-      <string>Tab 1</string>
+      <string>Failure Status</string>
      </attribute>
+     <widget class="QPlainTextEdit" name="plainTextEdit">
+      <property name="geometry">
+       <rect>
+        <x>40</x>
+        <y>200</y>
+        <width>301</width>
+        <height>131</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_6">
+      <property name="geometry">
+       <rect>
+        <x>50</x>
+        <y>155</y>
+        <width>101</width>
+        <height>31</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Failure Status:</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_7">
+      <property name="geometry">
+       <rect>
+        <x>50</x>
+        <y>30</y>
+        <width>111</width>
+        <height>16</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Current Velocity:</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="velLabel">
+      <property name="geometry">
+       <rect>
+        <x>120</x>
+        <y>60</y>
+        <width>91</width>
+        <height>71</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:36pt;&quot;&gt;0&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_9">
+      <property name="geometry">
+       <rect>
+        <x>220</x>
+        <y>70</y>
+        <width>91</width>
+        <height>51</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:36pt;&quot;&gt;mph&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+      </property>
+     </widget>
     </widget>
-    <widget class="QWidget" name="tab_2">
+    <widget class="QWidget" name="doorTab">
      <attribute name="title">
-      <string>Tab 2</string>
+      <string>Door status</string>
+     </attribute>
+     <widget class="QPushButton" name="pushButton_5">
+      <property name="geometry">
+       <rect>
+        <x>80</x>
+        <y>140</y>
+        <width>211</width>
+        <height>71</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Open Doors</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="pushButton_6">
+      <property name="geometry">
+       <rect>
+        <x>80</x>
+        <y>250</y>
+        <width>211</width>
+        <height>71</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Close Doors</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_8">
+      <property name="geometry">
+       <rect>
+        <x>140</x>
+        <y>20</y>
+        <width>101</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>The Doors are:</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_10">
+      <property name="geometry">
+       <rect>
+        <x>130</x>
+        <y>60</y>
+        <width>121</width>
+        <height>41</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:36pt;&quot;&gt;Closed&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+      </property>
+     </widget>
+    </widget>
+    <widget class="QWidget" name="infoTab">
+     <attribute name="title">
+      <string>Additional Information</string>
      </attribute>
      <widget class="QLabel" name="label">
       <property name="geometry">
        <rect>
         <x>40</x>
-        <y>60</y>
+        <y>70</y>
         <width>58</width>
         <height>16</height>
        </rect>
@@ -103,8 +222,8 @@
      <widget class="QLabel" name="powerLabel">
       <property name="geometry">
        <rect>
-        <x>130</x>
-        <y>60</y>
+        <x>150</x>
+        <y>70</y>
         <width>58</width>
         <height>16</height>
        </rect>
@@ -117,7 +236,7 @@
       <property name="geometry">
        <rect>
         <x>40</x>
-        <y>140</y>
+        <y>110</y>
         <width>71</width>
         <height>16</height>
        </rect>
@@ -126,24 +245,89 @@
        <string>Block Num:</string>
       </property>
      </widget>
+     <widget class="QLabel" name="blockNumLabel">
+      <property name="geometry">
+       <rect>
+        <x>150</x>
+        <y>110</y>
+        <width>58</width>
+        <height>16</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>0</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_4">
+      <property name="geometry">
+       <rect>
+        <x>40</x>
+        <y>150</y>
+        <width>91</width>
+        <height>16</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Block Length:</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_5">
+      <property name="geometry">
+       <rect>
+        <x>40</x>
+        <y>190</y>
+        <width>81</width>
+        <height>16</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Block Grade:</string>
+      </property>
+     </widget>
      <widget class="QLabel" name="label_3">
       <property name="geometry">
        <rect>
         <x>40</x>
-        <y>100</y>
+        <y>30</y>
+        <width>101</width>
+        <height>16</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Number of Cars:</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="numCarLabel">
+      <property name="geometry">
+       <rect>
+        <x>150</x>
+        <y>30</y>
+        <width>41</width>
+        <height>16</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>0</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_11">
+      <property name="geometry">
+       <rect>
+        <x>200</x>
+        <y>70</y>
         <width>58</width>
         <height>16</height>
        </rect>
       </property>
       <property name="text">
-       <string>Velocity:</string>
+       <string>W</string>
       </property>
      </widget>
-     <widget class="QLabel" name="velocityLabel">
+     <widget class="QLabel" name="blockLengthLabel">
       <property name="geometry">
        <rect>
-        <x>130</x>
-        <y>100</y>
+        <x>150</x>
+        <y>150</y>
         <width>58</width>
         <height>16</height>
        </rect>
@@ -152,17 +336,43 @@
        <string>0</string>
       </property>
      </widget>
-     <widget class="QLabel" name="blockNumLabel">
+     <widget class="QLabel" name="blockGradeLabel">
       <property name="geometry">
        <rect>
-        <x>130</x>
-        <y>140</y>
+        <x>150</x>
+        <y>190</y>
         <width>58</width>
         <height>16</height>
        </rect>
       </property>
       <property name="text">
        <string>0</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="blockNumLabel_4">
+      <property name="geometry">
+       <rect>
+        <x>200</x>
+        <y>150</y>
+        <width>58</width>
+        <height>16</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>ft</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="blockNumLabel_5">
+      <property name="geometry">
+       <rect>
+        <x>200</x>
+        <y>190</y>
+        <width>58</width>
+        <height>16</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>%</string>
       </property>
      </widget>
     </widget>
