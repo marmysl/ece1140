@@ -1,13 +1,12 @@
 #ifndef TRAIN_H
 #define TRAIN_H
-#include "TrainModelUI.h"
 #include "TrainModelMath.h"
+#include "TrainModelMath.cpp"
 #include "TrainModelUpdateBlock.h"
-<<<<<<< Updated upstream
-=======
 #include "TrainModelUpdateBlock.cpp"
->>>>>>> Stashed changes
+
 //#include <QMainWindow>
+
 #include <chrono>
 #include <cstdint>
 using namespace std;

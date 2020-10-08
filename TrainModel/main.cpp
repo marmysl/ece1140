@@ -1,11 +1,4 @@
-<<<<<<< Updated upstream
-#include "TrainModelUI.h"
-
-#include <QApplication>
-#include "Train.h"
-=======
 /*#include "Train.h"
->>>>>>> Stashed changes
 #include <iostream>
 using namespace std;
 
