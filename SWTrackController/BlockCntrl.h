@@ -1,7 +1,8 @@
 //This file contains a class declaration
 #ifndef BlockCntrl_h
 #define BlockCntrl_h
-#include "TrackController.h"
+
+#include "TrackController.cpp"
 
 
 class BlockCntrl : virtual public TrackController
@@ -12,7 +13,9 @@ class BlockCntrl : virtual public TrackController
 	
 	public:
 	
-		BlockCntrl(int);
+		BlockCntrl();
+		//static std::vector<BlockCntrl> blocks;
+		void setUpBlock(int);
 		bool switch_head;
 		bool switch_tail;
 		int lights[2];
@@ -22,7 +25,7 @@ class BlockCntrl : virtual public TrackController
 		bool block_fail; 
 		int getRes();
 		void setCircuit();
-		void setSpdAuth(int);
+		void setSpdAuth(int, float, float);
 		void setOcc();
 };
 

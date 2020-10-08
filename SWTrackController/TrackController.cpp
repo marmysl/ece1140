@@ -4,6 +4,7 @@
 #include "TrackController.h"
 #include "trackmodel_test.hpp"
 #include "trackmodel_controller.hpp"
+#include "tracklayout.hpp"
 
 
 
@@ -29,7 +30,7 @@ TrackController::TrackController(){
 
 }
 
-int TrackController::getResult() const{
+int TrackController::getResult() {
 	std::cout << "region: " << region << "\n\n";
 	std::cout << "sections: ";
 	for ( auto i = cntrl_sections.begin(); i != cntrl_sections.end(); ++i) 

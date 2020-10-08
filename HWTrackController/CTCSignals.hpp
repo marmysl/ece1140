@@ -1,16 +1,29 @@
 #ifndef CTCSIGNALS_H
 #define CTCSIGNALS_H
 
+#include <vector>
+#include <iostream>
+
 class CTCSignals
 {
 public:
-	void setSignal(int, float[], float[]);
 	std::vector<float> speedCTC;
 	std::vector<float> authCTC; 
 	int destinationBlock;
-	std::vector<float> getSpeed();
-	std::vector<float> getAuth();
-	int getDest();
+
+	void setSignal(int b, std::vector<float> &s, std::vector<float> &a) {
+			destinationBlock = b;
+			for(int i = 0; i < s.size(); i++) {
+				speedCTC.push_back(s[i]);
+				authCTC.push_back(a[i]);
+			}
+	}
+	
+
+	int getDest() {
+		return destinationBlock;
+	}
+
 };
 
 #endif

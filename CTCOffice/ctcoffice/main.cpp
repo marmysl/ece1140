@@ -6,9 +6,8 @@
 #include <vector>
 #include <time.h>
 #include <cstdlib>
-#include <CTCDispatch.h>
-#include <../HWTrackController/CTCSignals.hpp>
-#include <../TrackModel/tracklayout.hpp>
+#include "CTCDispatch.h"
+#include "../../TrackModel/tracklayout.hpp"
 
 int main(int argc, char *argv[])
 {

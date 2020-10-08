@@ -1,6 +1,7 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 #include "CTCDispatch.h"
+#include "CTCSignals.h"
 
 #include <QMainWindow>
 
@@ -28,7 +29,7 @@ private slots:
 
     void on_comboDestination_currentIndexChanged(const QString &arg1);
 
-    void on_btnCancel_clicked();
+    void on_comboDestinationType_currentIndexChanged(const QString &arg1);
 
 private:
     Ui::MainWindow *ui;
