@@ -5,15 +5,7 @@
 #include <cstdint>
 
 #include "Region.hpp"
-#include "Region.cpp"
-#include "CTCSignals.cpp"
-// #include "FailureDetector.cpp"
-#include "Track.cpp"
-
-// #include "PLC.hpp"
-// #include "PLC.cpp"
-// #include "ManualOverride.hpp"
-// #include "ManualOverride.cpp"
+#include "Track.hpp"
 
 using namespace std;
 

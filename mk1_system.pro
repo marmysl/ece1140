@@ -13,24 +13,22 @@ SOURCES += \
     CTCOffice/ctcoffice/CTCSignals.cpp \
     CTCOffice/ctcoffice/main.cpp \
     CTCOffice/ctcoffice/mainwindow.cpp \
-    HWTrackController/CTCSignals.cpp \
     HWTrackController/FailureDetector.cpp \
     HWTrackController/ManualOverride.cpp \
     HWTrackController/Region.cpp \
-    HWTrackController/SerialPort.cpp \
     HWTrackController/Track.cpp \
     HWTrackController/main_checker.cpp \
     HWTrainController/CabinControls.cpp \
-    HWTrainController/SerialPort.cpp \
     HWTrainController/SpeedRegulator.cpp \
     HWTrainController/TrainController.cpp \
     HWTrainController/main.cpp \
     SWTrackController/BlockCntrl.cpp \
     SWTrackController/TrackController.cpp \
     SWTrackController/trackcntrl_main.cpp \
+    SWTrainController/SWTrainController.cpp \
     SWTrainController/TrainCGUI.cpp \
-    SWTrainController/TrainController.cpp \
     SWTrainController/TrainController_main.cpp \
+    SerialPort.cpp \
     TrackModel/tracklayout.cpp \
     TrackModel/trackmodel.cpp \
     TrackModel/trackmodeltest.cpp \
@@ -46,22 +44,19 @@ HEADERS += \
     CTCOffice/ctcoffice/CTCDispatch.h \
     CTCOffice/ctcoffice/CTCSignals.h \
     CTCOffice/ctcoffice/mainwindow.h \
-    HWTrackController/CTCSignals.hpp \
     HWTrackController/FailureDetector.hpp \
     HWTrackController/ManualOverride.hpp \
     HWTrackController/Region.hpp \
-    HWTrackController/SerialPort.hpp \
     HWTrackController/Track.hpp \
     HWTrainController/CabinControls.h \
-    HWTrainController/SerialPort.hpp \
     HWTrainController/SpeedRegulator.h \
     HWTrainController/TrainController.h \
     SWTrackController/BlockCntrl.h \
-    SWTrackController/CTCSignals.h \
     SWTrackController/TrackController.h \
+    SWTrainController/SWTrainController.h \
     SWTrainController/TrainCGUI.h \
-    SWTrainController/TrainController.h \
     SWTrainController/ui_TrainController.h \
+    SerialPort.hpp \
     TrackModel/tracklayout.hpp \
     TrackModel/trackmodel_controller.hpp \
     TrackModel/trackmodel_test.hpp \
@@ -75,7 +70,7 @@ HEADERS += \
 
 FORMS += \
     CTCOffice/ctcoffice/mainwindow.ui \
-    SWTrainController/TrainController.ui \
+    SWTrainController/SWTrainController.ui \
     TrainModel/TrainModelUI.ui \
     sysOverview.ui
 
@@ -97,7 +92,7 @@ DISTFILES += \
     TrackModel/trackmodel.exe \
     TrainModel/.DS_Store
 
-SUBDIRS += \
-    CTCOffice/ctcoffice/ctcoffice.pro \
-    SWTrainController/traincontroller.pro \
-    TrainModel/TrainModel.pro
+#SUBDIRS += \
+#    CTCOffice/ctcoffice/ctcoffice.pro \
+#    SWTrainController/traincontroller.pro \
+#    TrainModel/TrainModel.pro

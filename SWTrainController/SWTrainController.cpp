@@ -1,13 +1,13 @@
 #include <iostream>
 #include <iomanip>
 
-#include "TrainController.h"
+#include "SWTrainController.h"
 
 #include <QApplication>
 
 using namespace std;
 
-TrainController :: TrainController(int argc, char *argv[]) //Constructor: creates train controller object and executes GUI
+SWTrainController :: SWTrainController(int argc, char *argv[]) //Constructor: creates train controller object and executes GUI
 {
     QApplication a(argc, argv);
     TrainControlWindow w;
@@ -18,14 +18,14 @@ TrainController :: TrainController(int argc, char *argv[]) //Constructor: create
 }
 
 
-void TrainController :: calculatePower()
+void SWTrainController :: calculatePower()
 {
     // calculate power here
     power = 2; //arbitrary value for iteration #2
 }
 
 
-void TrainController :: decode(unsigned signal)  // decodes track circuit into speed & auth //switch to void?
+void SWTrainController :: decode(unsigned signal)  // decodes track circuit into speed & auth //switch to void?
 {
     // add stuff here
 

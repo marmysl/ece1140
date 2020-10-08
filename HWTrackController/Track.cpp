@@ -2,6 +2,7 @@
 #include <iomanip>
 #include <cstdint>
 #include "Track.hpp"
+#include "TrackModel/trackmodel_controller.hpp"
 
 using namespace std;
 

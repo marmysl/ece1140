@@ -107,18 +107,11 @@ void BlockCntrl::setSpdAuth(int dest_block, float s, float a) {
 	
 }
 
-class BlockContainer 
-{
-	public:
-	
-		std::vector<BlockCntrl> blocks;
-		void addBlockObj(int num) {
-			using namespace std;
-			BlockCntrl b;
-			b.setUpBlock(num);
-			//using namespace std;
-			blocks.push_back(b);
-		}
-};
+void BlockContainer::addBlockObj(int num) {
+    using namespace std;
+    BlockCntrl b;
+    b.setUpBlock(num);
+    blocks.push_back(b);
+}
 
 

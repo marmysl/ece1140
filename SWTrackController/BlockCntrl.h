@@ -2,7 +2,8 @@
 #ifndef BlockCntrl_h
 #define BlockCntrl_h
 
-#include "TrackController.cpp"
+#include <cstdint>
+#include "TrackController.h"
 
 
 class BlockCntrl : virtual public TrackController
@@ -27,6 +28,14 @@ class BlockCntrl : virtual public TrackController
 		void setCircuit();
 		void setSpdAuth(int, float, float);
 		void setOcc();
+};
+
+class BlockContainer
+{
+    public:
+
+        std::vector<BlockCntrl> blocks;
+        void addBlockObj(int num);
 };
 
 #endif /*BlockCntrl_h*/

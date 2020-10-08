@@ -1,14 +1,10 @@
 #include <iostream>
 #include "SerialPort.hpp"
-#include "SerialPort.cpp"
 #include <stdio.h>
 #include <string>
 #include "CabinControls.h"
-#include "CabinControls.cpp"
 #include "SpeedRegulator.h"
-#include "SpeedRegulator.cpp"
-#include "FailureDetector.h"
-#include "FailureDetector.cpp"
+//#include "FailureDetector.h"
 #include "../TrainModel/Train.h"
 
 using namespace std;
@@ -28,7 +24,7 @@ Train train_model(5);
 CabinControls cabin_controller;
 
 //FailureDetector object
-FailureDetector failure_detector;
+//FailureDetector failure_detector;
 
 //SpeedRegulator object
 SpeedRegulator speed_regulator(&train_model);

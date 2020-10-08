@@ -5,7 +5,7 @@
     // This class also sends the track circuit information to the Track Signal
 
 #include <string>
-#include "CTCSignals.hpp"
+#include "CTCOffice/ctcoffice/CTCSignals.h"
 
 class Region
 {

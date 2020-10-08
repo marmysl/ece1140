@@ -1,8 +1,6 @@
 #ifndef TRAINMODELUPDATEBLOCK_H
 #define TRAINMODELUPDATEBLOCK_H
-//#include "../TrackModel/trackmodel.cpp"
 #include "../TrackModel/tracklayout.hpp"
-//#include "../TrackModel/tracklayout.cpp"
 #include "../TrackModel/trackmodel_train.hpp"
 #include "../TrackModel/trackmodel_types.hpp"
 #include <cstdint>

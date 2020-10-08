@@ -1,5 +1,5 @@
-#include "BlockCntrl.cpp"
-#include "CTCSignals.h"
+#include "BlockCntrl.h"
+#include "CTCOffice/ctcoffice/CTCSignals.h"
 
 
 int main() {

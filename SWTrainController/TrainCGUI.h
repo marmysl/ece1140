@@ -3,7 +3,7 @@
 
 #include <QMainWindow>
 #include "TrainModel/Train.h"
-#include "TrainController.h"
+#include "SWTrainController.h"
 #include "ui_TrainController.h"
 
 QT_BEGIN_NAMESPACE

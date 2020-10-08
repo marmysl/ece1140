@@ -1,7 +1,7 @@
 /* This  is the "main" file for the Train Controller SW module.*/
 
 #include "TrainCGUI.h"
-#include "TrainController.h"
+#include "SWTrainController.h"
 
 #include <QApplication>
 #include <iostream>
@@ -10,7 +10,7 @@
 int main(int argc, char *argv[])
 {
 
-    TrainController* tc1 = new TrainController(argc, argv);
+    SWTrainController* tc1 = new SWTrainController(argc, argv);
 
     /*
     QApplication a(argc, argv);
