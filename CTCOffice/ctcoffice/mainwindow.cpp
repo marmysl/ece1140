@@ -70,7 +70,8 @@ void MainWindow::on_timeArrival_userTimeChanged(const QTime &time)
 
 void MainWindow::on_btnDispatch_clicked()
 {
-    ctc.dispatch();
+    CTCSignals c;
+    ctc.dispatch(c);
 }
 
 void MainWindow::on_comboDestination_currentIndexChanged(const QString &arg1)

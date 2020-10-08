@@ -13,17 +13,17 @@ class CTCDispatch
     private:
         std::string line;
         std::string destinationType;
-        std::string endblock;
+        int endblock;
         std::string station;
         float timeStart;
         float timeArrival;
     public:
         std::vector<float> authority;
         std::vector<float> speed;
-        void setAuthority(std::string);
-        void setSpeed(std::string, float, float);
-        void sendTrackController();
-        void dispatch();
+        void setAuthority(std::string, int);
+        void setSpeed(std::string, int, float, float);
+        void sendTrackController(CTCSignals &c);
+        void dispatch(CTCSignals &c);
 
         void setLine(std::string);
         std::string getline();
@@ -32,7 +32,7 @@ class CTCDispatch
         void setStation(std::string);
         std::string getStation();
         void setBlock(std::string);
-        std::string getBlock();
+        int getBlock();
         void setTimeStart(std::string);
         float getTimeStart();
         void setTimeArrival(std::string);
