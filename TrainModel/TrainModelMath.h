@@ -1,4 +1,6 @@
-/*#ifndef TRAINMODELMATH_H
+#pragma once
+
+#ifndef TRAINMODELMATH_H
 #define TRAINMODELMATH_H
 
 
@@ -9,7 +11,6 @@ public:
     static double travelledDist(double time, double velocity);
     static double updatePosition(double oldPos, double change);
     static double calcVelocity(double power);
-
 };
 
-#endif // TRAINMODELMATH_H*/
+#endif // TRAINMODELMATH_H
