@@ -4,14 +4,14 @@
 #include "HWTrackController/HWTrackController_main.h"
 #include "SWTrackController/TrackController.h"
 #include "TrackModel/tracklayout.hpp"
-#include "TrackModel/trackmodel_test.hpp"
+#include "TrackModel/trackmodel_main.hpp"
 #include "HWTrainController/HWTrainController_main.h"
 #include "SWTrainController/SWTrainController.h"
 
 #include <iostream>
 #include <QApplication>
 
-TrackModel::Route *blueLineLayout;
+TrackModel::RouteFile blueLine {"Blue Line", "blue_line.csv"};
 
 SerialPortDialog *hwPortsDialog;
 
@@ -29,7 +29,8 @@ int main(int argc, char *argv[])
 
     QApplication a(argc, argv);
 
-    blueLineLayout = initTestLayout();
+    TrackModel::routesToLoad.push_back(blueLine);
+    TrackModel::loadLayouts();
 
     // display modal dialog to select HW component serial ports
     hwPortsDialog = new SerialPortDialog();

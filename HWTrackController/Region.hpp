@@ -8,7 +8,7 @@
 #include "CTCSignals.hpp"
 #include "../TrackModel/tracklayout.hpp"
 #include "../TrackModel/trackmodel_controller.hpp"
-#include "../TrackModel/trackmodel_test.hpp"
+#include "../TrackModel/trackmodel_main.hpp"
 
 class Region
 {

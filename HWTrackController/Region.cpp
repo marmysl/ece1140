@@ -30,8 +30,6 @@ Region :: Region() {
     cout << "\nCurrent Block: " << currentBlock << endl;
     cout << "Section: " << currentSection << endl;
     cout << "Route: " << route << endl;
-
-    TrackModel::Route *blueLine = initTestLayout();
 }
 
 void Region :: initialize(CTCSignals &c1) {

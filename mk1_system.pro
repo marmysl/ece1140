@@ -61,7 +61,7 @@ HEADERS += \
     SerialPort.hpp \
     TrackModel/tracklayout.hpp \
     TrackModel/trackmodel_controller.hpp \
-    TrackModel/trackmodel_test.hpp \
+    TrackModel/trackmodel_main.hpp \
     TrackModel/trackmodel_train.hpp \
     TrackModel/trackmodel_types.hpp \
     TrainModel/Train.h \
