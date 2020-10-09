@@ -29,6 +29,7 @@ SOURCES += \
     SerialPort.cpp \
     TrackModel/tracklayout.cpp \
     TrackModel/trackmodel.cpp \
+    TrackModel/trackmodeldisplay.cpp \
     TrainModel/Train.cpp \
     TrainModel/TrainModelMath.cpp \
     TrainModel/TrainModelUI.cpp \
@@ -59,6 +60,7 @@ HEADERS += \
     TrackModel/trackmodel_main.hpp \
     TrackModel/trackmodel_train.hpp \
     TrackModel/trackmodel_types.hpp \
+    TrackModel/trackmodeldisplay.h \
     TrainModel/Train.h \
     TrainModel/TrainModelMath.h \
     TrainModel/TrainModelUI.h \
@@ -68,6 +70,7 @@ HEADERS += \
 FORMS += \
     CTCOffice/ctcoffice/mainwindow.ui \
     SWTrainController/SWTrainController.ui \
+    TrackModel/trackmodeldisplay.ui \
     TrainModel/TrainModelUI.ui
 
 # Default rules for deployment.
