@@ -6,49 +6,13 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>661</width>
-    <height>428</height>
+    <width>1121</width>
+    <height>534</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Track Model</string>
   </property>
-  <widget class="QListView" name="blockListView">
-   <property name="geometry">
-    <rect>
-     <x>130</x>
-     <y>110</y>
-     <width>256</width>
-     <height>192</height>
-    </rect>
-   </property>
-  </widget>
-  <widget class="QLabel" name="blockLenLabel">
-   <property name="geometry">
-    <rect>
-     <x>450</x>
-     <y>40</y>
-     <width>55</width>
-     <height>16</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>TextLabel</string>
-   </property>
-  </widget>
-  <widget class="QLabel" name="label">
-   <property name="geometry">
-    <rect>
-     <x>350</x>
-     <y>40</y>
-     <width>81</width>
-     <height>16</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>Block Length:</string>
-   </property>
-  </widget>
   <widget class="QComboBox" name="regionComboBox">
    <property name="geometry">
     <rect>
@@ -56,6 +20,16 @@
      <y>10</y>
      <width>141</width>
      <height>24</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QTableView" name="blocktableView">
+   <property name="geometry">
+    <rect>
+     <x>20</x>
+     <y>50</y>
+     <width>1041</width>
+     <height>461</height>
     </rect>
    </property>
   </widget>
