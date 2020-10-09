@@ -2,13 +2,13 @@
 #include "HWTrackController/HWTrackController_main.h"
 #include "SWTrackController/TrackController.h"
 #include "TrackModel/tracklayout.hpp"
-#include "TrackModel/trackmodel_test.hpp"
+#include "TrackModel/trackmodel_main.hpp"
 #include "HWTrainController/HWTrainController_main.h"
 #include "SWTrainController/SWTrainController.h"
 
 #include <QApplication>
 
-TrackModel::Route *blueLineLayout;
+TrackModel::RouteFile blueLine {"Blue Line", "blue_line.csv"};
 
 int mainArgc;
 char **mainArgv;
@@ -24,7 +24,8 @@ int main(int argc, char *argv[])
 
     QApplication a(argc, argv);
 
-    blueLineLayout = initTestLayout();
+    TrackModel::routesToLoad.push_back(blueLine);
+    TrackModel::loadLayouts();
 
     init_CTC(argc, argv);
     //init_HWTrackController();
