@@ -3,6 +3,7 @@
 
 #include <QDialog>
 #include <QSerialPortInfo>
+#include <QAbstractButton>
 
 namespace Ui {
 class SerialPortDialog;
@@ -20,16 +21,10 @@ public:
     ~SerialPortDialog();
 
 private slots:
-    void on_buttonBox_accepted();
-
-
+    void on_buttonBox_clicked( QAbstractButton *button );
     void on_refreshButton_clicked();
-
     void on_trackPortCombo_currentIndexChanged(int index);
-
     void on_trainPortCombo_currentIndexChanged(int index);
-
-    void on_buttonBox_rejected();
 
 private:
     Ui::SerialPortDialog *ui;

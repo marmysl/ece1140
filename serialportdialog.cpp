@@ -21,9 +21,9 @@ SerialPortDialog::~SerialPortDialog()
     delete ui;
 }
 
-void SerialPortDialog::on_buttonBox_accepted()
+void SerialPortDialog::on_buttonBox_clicked(QAbstractButton *button)
 {
-    // OK button clicked :D
+    // Apply button clicked
 
     if( ui->trackEnabled->isChecked() )
     {
@@ -43,15 +43,9 @@ void SerialPortDialog::on_buttonBox_accepted()
         setTrainControllerPort(trainContPortInfo);
     }
 
+    setResult(Accepted);
+
     hide();
-}
-
-void SerialPortDialog::on_buttonBox_rejected()
-{
-    // Cancel button clicked :(
-
-    hwTrackControllerConnected = false;
-    hwTrainControllerConnected = false;
 }
 
 static bool refreshInProgress = false;
