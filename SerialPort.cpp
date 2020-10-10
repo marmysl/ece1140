@@ -1,7 +1,10 @@
 #include "SerialPort.hpp"
 
-bool trackControlConnected = false;
-bool trainControlConnected = false;
+QSerialPort trackControllerPort;
+bool hwTrackControllerConnected = false;
+
+QSerialPort trainControllerPort;
+bool hwTrainControllerConnected = false;
 
 void setTrackControllerPort( QSerialPortInfo &portInfo )
 {
@@ -12,7 +15,7 @@ void setTrackControllerPort( QSerialPortInfo &portInfo )
     trackControllerPort.setParity(parity);
     trackControllerPort.setFlowControl(flowControl);
 
-    trackControlConnected = trackControllerPort.open(QIODevice::ReadWrite);
+    hwTrackControllerConnected = trackControllerPort.open(QIODevice::ReadWrite);
 }
 
 void setTrainControllerPort( QSerialPortInfo &portInfo )
@@ -24,7 +27,7 @@ void setTrainControllerPort( QSerialPortInfo &portInfo )
     trainControllerPort.setParity(parity);
     trainControllerPort.setFlowControl(flowControl);
 
-    trainControlConnected = trainControllerPort.open(QIODevice::ReadWrite);
+    hwTrainControllerConnected = trainControllerPort.open(QIODevice::ReadWrite);
 }
 
 
