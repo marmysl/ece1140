@@ -1,6 +1,6 @@
 #include "serialportdialog.h"
 #include "ui_serialportdialog.h"
-#include <QtSerialPort/QSerialPortInfo>
+#include <QSerialPortInfo>
 
 #include "SerialPort.hpp"
 
@@ -11,6 +11,9 @@ SerialPortDialog::SerialPortDialog(QWidget *parent) :
     ui->setupUi(this);
 
     on_refreshButton_clicked();
+
+    on_trackPortCombo_currentIndexChanged(0);
+    on_trainPortCombo_currentIndexChanged(0);
 }
 
 SerialPortDialog::~SerialPortDialog()
@@ -22,17 +25,44 @@ void SerialPortDialog::on_buttonBox_accepted()
 {
     // OK button clicked :D
 
-    setTrackControllerPort(trackContPortInfo);
-    setTrainControllerPort(trainContPortInfo);
+    if( ui->trackEnabled->isChecked() )
+    {
+        hwTrackControllerConnected = false;
+    }
+    else
+    {
+        setTrackControllerPort(trackContPortInfo);
+    }
+
+    if( ui->trainEnabled->isChecked() )
+    {
+        hwTrainControllerConnected = false;
+    }
+    else
+    {
+        setTrainControllerPort(trainContPortInfo);
+    }
 
     hide();
 }
+
+void SerialPortDialog::on_buttonBox_rejected()
+{
+    // Cancel button clicked :(
+
+    hwTrackControllerConnected = false;
+    hwTrainControllerConnected = false;
+}
+
+static bool refreshInProgress = false;
 
 void SerialPortDialog::on_refreshButton_clicked()
 {
     // Refresh button click'd
 
     portList = QSerialPortInfo::availablePorts();
+
+    refreshInProgress = true;
 
     ui->trackPortCombo->clear();
     ui->trainPortCombo->clear();
@@ -43,14 +73,32 @@ void SerialPortDialog::on_refreshButton_clicked()
         ui->trackPortCombo->addItem(pName);
         ui->trainPortCombo->addItem(pName);
     }
+
+    refreshInProgress = false;
 }
 
 void SerialPortDialog::on_trackPortCombo_currentIndexChanged(int index)
 {
-    trackContPortInfo = portList[index];
+    if( refreshInProgress ) return;
+    if( index >= 0 && index < portList.length() )
+    {
+        trackContPortInfo = &(portList[index]);
+    }
+    else
+    {
+        trackContPortInfo = NULL;
+    }
 }
 
 void SerialPortDialog::on_trainPortCombo_currentIndexChanged(int index)
 {
-    trainContPortInfo = portList[index];
+    if( refreshInProgress ) return;
+    if( index >= 0 && index < portList.length() )
+    {
+        trainContPortInfo = &(portList[index]);
+    }
+    else
+    {
+        trackContPortInfo = NULL;
+    }
 }

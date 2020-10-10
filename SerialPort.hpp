@@ -1,7 +1,6 @@
 #pragma once
 
-#include <QtSerialPort/QSerialPort>
-#include <QtSerialPort/QSerialPortInfo>
+#include <QSerialPort>
 #include <iostream>
 
 const int ARDUINO_WAIT_TIME = 2000;
@@ -19,5 +18,5 @@ extern bool hwTrackControllerConnected;
 extern QSerialPort trainControllerPort;
 extern bool hwTrainControllerConnected;
 
-void setTrackControllerPort( QSerialPortInfo &portInfo );
-void setTrainControllerPort( QSerialPortInfo &portInfo );
+void setTrackControllerPort( QSerialPortInfo *portInfo );
+void setTrainControllerPort( QSerialPortInfo *portInfo );

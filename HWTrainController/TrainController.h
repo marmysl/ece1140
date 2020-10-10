@@ -7,7 +7,7 @@
 #include "CabinControls.h"
 #include "SpeedRegulator.h"
 #include "TrainModel/Train.h"
-#include <QtSerialPort/QSerialPort>
+#include <QSerialPort>
 
 using namespace std;
 

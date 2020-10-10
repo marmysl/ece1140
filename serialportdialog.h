@@ -2,7 +2,7 @@
 #define SERIALPORTDIALOG_H
 
 #include <QDialog>
-#include <QtSerialPort/QSerialPortInfo>
+#include <QSerialPortInfo>
 
 namespace Ui {
 class SerialPortDialog;
@@ -13,8 +13,8 @@ class SerialPortDialog : public QDialog
     Q_OBJECT
 
 public:
-    QSerialPortInfo trackContPortInfo;
-    QSerialPortInfo trainContPortInfo;
+    QSerialPortInfo *trackContPortInfo;
+    QSerialPortInfo *trainContPortInfo;
 
     explicit SerialPortDialog(QWidget *parent = nullptr);
     ~SerialPortDialog();
@@ -28,6 +28,8 @@ private slots:
     void on_trackPortCombo_currentIndexChanged(int index);
 
     void on_trainPortCombo_currentIndexChanged(int index);
+
+    void on_buttonBox_rejected();
 
 private:
     Ui::SerialPortDialog *ui;

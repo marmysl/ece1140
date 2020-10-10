@@ -2,16 +2,25 @@
 <ui version="4.0">
  <class>SerialPortDialog</class>
  <widget class="QDialog" name="SerialPortDialog">
+  <property name="windowModality">
+   <enum>Qt::WindowModal</enum>
+  </property>
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>400</width>
+    <width>434</width>
     <height>300</height>
    </rect>
   </property>
+  <property name="contextMenuPolicy">
+   <enum>Qt::NoContextMenu</enum>
+  </property>
   <property name="windowTitle">
-   <string>Dialog</string>
+   <string>HW Serial Ports</string>
+  </property>
+  <property name="modal">
+   <bool>true</bool>
   </property>
   <widget class="QDialogButtonBox" name="buttonBox">
    <property name="geometry">
@@ -26,13 +35,13 @@
     <enum>Qt::Horizontal</enum>
    </property>
    <property name="standardButtons">
-    <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
+    <set>QDialogButtonBox::Apply</set>
    </property>
   </widget>
   <widget class="QComboBox" name="trackPortCombo">
    <property name="geometry">
     <rect>
-     <x>190</x>
+     <x>140</x>
      <y>40</y>
      <width>171</width>
      <height>29</height>
@@ -42,7 +51,7 @@
   <widget class="QComboBox" name="trainPortCombo">
    <property name="geometry">
     <rect>
-     <x>190</x>
+     <x>140</x>
      <y>100</y>
      <width>171</width>
      <height>29</height>
@@ -86,6 +95,32 @@
    </property>
    <property name="text">
     <string>Refresh Ports</string>
+   </property>
+  </widget>
+  <widget class="QCheckBox" name="trackEnabled">
+   <property name="geometry">
+    <rect>
+     <x>330</x>
+     <y>40</y>
+     <width>83</width>
+     <height>22</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Enabled</string>
+   </property>
+  </widget>
+  <widget class="QCheckBox" name="trainEnabled">
+   <property name="geometry">
+    <rect>
+     <x>330</x>
+     <y>100</y>
+     <width>83</width>
+     <height>22</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Enabled</string>
    </property>
   </widget>
  </widget>
