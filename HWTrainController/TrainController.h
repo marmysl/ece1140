@@ -2,12 +2,12 @@
 #define TRAINCONTROLLER_H
 
 #include <iostream>
-#include "SerialPort.hpp"
 #include <stdio.h>
 #include <string>
 #include "CabinControls.h"
 #include "SpeedRegulator.h"
 #include "TrainModel/Train.h"
+#include <QtSerialPort/QSerialPort>
 
 using namespace std;
 
@@ -17,7 +17,7 @@ class TrainController
 		char portName[9] = "\\\\.\\COM4";
 		char incomingData[255];
 		char outgoingData[255];
-		SerialPort *arduino;
+        QSerialPort *arduino;
 		Train *train_model;
 		CabinControls *cabin_controller;
 		SpeedRegulator *speed_regulator;

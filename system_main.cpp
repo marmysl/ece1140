@@ -1,3 +1,5 @@
+#include "serialportdialog.h"
+
 #include "CTCOffice/ctcoffice/ctc_main.h"
 #include "HWTrackController/HWTrackController_main.h"
 #include "SWTrackController/TrackController.h"

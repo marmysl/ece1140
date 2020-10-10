@@ -33,6 +33,7 @@ SOURCES += \
     TrainModel/TrainModelMath.cpp \
     TrainModel/TrainModelUI.cpp \
     TrainModel/TrainModelUpdateBlock.cpp \
+    serialportdialog.cpp \
     system_main.cpp
 
 HEADERS += \
@@ -63,12 +64,14 @@ HEADERS += \
     TrainModel/TrainModelMath.h \
     TrainModel/TrainModelUI.h \
     TrainModel/TrainModelUpdateBlock.h \
+    serialportdialog.h \
     system_main.h
 
 FORMS += \
     CTCOffice/ctcoffice/mainwindow.ui \
     SWTrainController/SWTrainController.ui \
-    TrainModel/TrainModelUI.ui
+    TrainModel/TrainModelUI.ui \
+    serialportdialog.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

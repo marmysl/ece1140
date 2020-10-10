@@ -1,9 +1,13 @@
 #include "TrainController.h"
+#include <QtSerialPort/QSerialPortInfo>
+#include <QThread>
 
 TrainController::TrainController()
 {
 	//Create objects and assign them to pointers
-	arduino = new SerialPort(portName);
+    QList<QSerialPortInfo> availPorts = QSerialPortInfo::availablePorts();
+    arduino = new QSerialPort(availPorts.first());
+
 	train_model = new Train(5);
 	cout << "here" << endl;
 	speed_regulator = new SpeedRegulator(train_model);
@@ -15,14 +19,14 @@ TrainController::TrainController()
      
      // wait connection
 	std::cout << "Searching in progress";
-    while (!arduino->isConnected()) {
-        Sleep(100);
+    while (!arduino->isOpen()) {
         std::cout << ".";
-        arduino = new SerialPort(portName);
+        arduino->open(QIODevice::ReadWrite);
+        QThread::msleep(500);
     }
 
     //Checking if arduino is connected or not
-    if (arduino->isConnected()) {
+    if (arduino->isOpen()) {
         std::cout  << std::endl << "Connection established at port " << portName << std::endl;
     }
 }
