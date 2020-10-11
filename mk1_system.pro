@@ -2,7 +2,12 @@ QT       += core gui serialport
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
-CONFIG += c++11
+CONFIG += c++11 file_copies
+
+COPIES += layoutFiles
+
+layoutFiles.files = $$files(*.csv)
+layoutFiles.path = $$OUT_PWD
 
 # You can make your code fail to compile if it uses deprecated APIs.
 # In order to do so, uncomment the following line.
