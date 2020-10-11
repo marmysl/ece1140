@@ -1,30 +1,35 @@
 #include "blocktablemodel.h"
 #include "trackmodel_main.hpp"
+#include "mk1_util.hpp"
 
 BlockTableModel::BlockTableModel(QObject *parent)
     : QAbstractTableModel(parent)
 {
 }
 
-static const int NUM_COLUMNS = 8;
 enum Columns
 {
-    COL_ID = 0,
-    COL_SECTION = 1,
-    COL_LENGTH = 2,
-    COL_GRADE = 3,
-    COL_LIMIT = 4,
-    COL_OCCUPIED = 5,
-    COL_SPEED = 6,
-    COL_AUTH = 7,
+    COL_ID,
+    COL_SECTION,
+    COL_LENGTH,
+    COL_GRADE,
+    COL_LIMIT,
+    COL_OCCUPIED,
+    COL_FAULTS,
+    COL_SPEED,
+    COL_AUTH,
 };
 
-static QString columnHeaders[] {
+static const int NUM_COLUMNS = 9;
+
+static QString columnHeaders[NUM_COLUMNS]
+{
     "Block Id",
     "Section",
     "Length (m)",
     "Grade",
     "Speed Limit (kph)",
+    "Faults",
     "Occupied",
     "Speed Cmd",
     "Auth Cmd"
@@ -32,6 +37,11 @@ static QString columnHeaders[] {
 
 static bool compBlockIds( TrackModel::BlockStatus *a, TrackModel::BlockStatus *b ) {
     return (a->layoutBlock->id) < (b->layoutBlock->id);
+}
+
+static inline int getBlockId( TrackModel::BlockStatus *blk )
+{
+    return blk->layoutBlock->id;
 }
 
 void BlockTableModel::resetRoute( TrackModel::RouteStatus *route )
@@ -46,6 +56,14 @@ void BlockTableModel::resetRoute( TrackModel::RouteStatus *route )
     std::sort(blockList.begin(), blockList.end(), compBlockIds);
 
     emit layoutChanged();
+}
+
+void BlockTableModel::on_blockStatusUpdated( int blockId )
+{
+    int idx = MK1Util::binSearchOnField(&blockList, blockId, getBlockId);
+    if( idx < 0 ) return;
+
+    emit dataChanged(index(idx, 0), index(idx, NUM_COLUMNS - 1));
 }
 
 QVariant BlockTableModel::headerData(int section, Qt::Orientation orientation, int role) const
@@ -74,7 +92,7 @@ int BlockTableModel::columnCount(const QModelIndex &parent) const
 
 QVariant BlockTableModel::data(const QModelIndex &index, int role) const
 {
-    if( role != Qt::DisplayRole ) return QVariant();
+    if( role != Qt::DisplayRole ) return QVariant::Invalid;
 
     if (!index.isValid()) return QVariant::Invalid;
 
@@ -105,6 +123,9 @@ QVariant BlockTableModel::data(const QModelIndex &index, int role) const
 
     case COL_OCCUPIED:
         return QVariant((block->isOccupied()) ? "Yes" : "No");
+
+    case COL_FAULTS:
+        return QVariant(TrackModel::getFaultString(block->faults));
 
     case COL_SPEED:
         return QVariant(block->circuit.decodeSpeed());

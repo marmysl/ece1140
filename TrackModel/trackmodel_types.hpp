@@ -1,6 +1,8 @@
 #pragma once
 
 #include <stdint.h>
+#include <sstream>
+#include <QString>
 
 namespace TrackModel {
     enum BlockDir {
@@ -35,6 +37,8 @@ namespace TrackModel {
     inline bool isFaultSet( BlockFault faults, BlockFault flag ) {
         return (faults & flag) != FAULT_NONE;
     }
+
+    QString getFaultString( BlockFault faults );
 
     struct TrackCircuitData {
         uint32_t speed;
