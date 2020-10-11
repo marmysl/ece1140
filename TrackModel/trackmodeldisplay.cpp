@@ -11,6 +11,10 @@ TrackModelDisplay::TrackModelDisplay(QWidget *parent) :
     ui->setupUi(this);
 
     ui->blocktableView->setModel(&blockTable);
+    ui->blocktableView->resizeColumnsToContents();
+
+    ui->switchTableView->setModel(&switchTable);
+    ui->switchTableView->resizeColumnsToContents();
 }
 
 TrackModelDisplay::~TrackModelDisplay()
@@ -29,8 +33,20 @@ void TrackModelDisplay::setRegionList( std::vector<TrackModel::Route *> *routeLi
 void TrackModelDisplay::setRoute( TrackModel::RouteStatus *newRoute ) {
     selectedRoute = newRoute;
     blockTable.resetRoute(newRoute);
+    switchTable.resetRoute(newRoute->layoutRoute);
 }
 
+void TrackModelDisplay::notifyBlockUpdated( TrackModel::RouteStatus *route, int blockId )
+{
+    if( route != selectedRoute ) return;
+    blockTable.on_blockStatusUpdated(blockId);
+}
+
+void TrackModelDisplay::notifySwitchUpdated( TrackModel::Route *route, int switchId )
+{
+    if( route != selectedRoute->layoutRoute ) return;
+    switchTable.on_switchStatusUpdated(switchId);
+}
 
 void TrackModelDisplay::on_regionComboBox_currentTextChanged(const QString &arg1)
 {

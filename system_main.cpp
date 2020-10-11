@@ -10,6 +10,7 @@
 
 #include <iostream>
 #include <QApplication>
+#include <QDebug>
 
 TrackModel::RouteFile blueLine {"Blue Line", "blue_line.csv"};
 
@@ -30,7 +31,13 @@ int main(int argc, char *argv[])
     QApplication a(argc, argv);
 
     TrackModel::routesToLoad.push_back(blueLine);
-    TrackModel::loadLayouts();
+    int initResult = TrackModel::initializeTrackModel();
+    if( initResult < 0 )
+    {
+        qDebug() << "Failed to load track model";
+        a.quit();
+        return EXIT_FAILURE;
+    }
 
     // display modal dialog to select HW component serial ports
     hwPortsDialog = new SerialPortDialog();

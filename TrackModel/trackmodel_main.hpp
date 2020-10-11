@@ -55,6 +55,6 @@ namespace TrackModel {
     extern TrackModelDisplay *trackModelUi;
     extern std::vector<RouteFile> routesToLoad;
 
-    int loadLayouts();
+    int initializeTrackModel();
     RouteStatus *getRouteStatus( QString name );
 }
