@@ -28,8 +28,10 @@ SOURCES += \
     SWTrainController/TrainCGUI.cpp \
     SerialPort.cpp \
     TrackModel/blocktablemodel.cpp \
+    TrackModel/switchtablemodel.cpp \
     TrackModel/tracklayout.cpp \
-    TrackModel/trackmodel.cpp \
+    TrackModel/trackmodel_main.cpp \
+    TrackModel/trackmodel_types.cpp \
     TrackModel/trackmodeldisplay.cpp \
     TrainModel/Train.cpp \
     TrainModel/TrainModelMath.cpp \
@@ -57,6 +59,7 @@ HEADERS += \
     SWTrainController/ui_TrainController.h \
     SerialPort.hpp \
     TrackModel/blocktablemodel.h \
+    TrackModel/switchtablemodel.h \
     TrackModel/tracklayout.hpp \
     TrackModel/trackmodel_controller.hpp \
     TrackModel/trackmodel_main.hpp \
@@ -67,6 +70,7 @@ HEADERS += \
     TrainModel/TrainModelMath.h \
     TrainModel/TrainModelUI.h \
     TrainModel/TrainModelUpdateBlock.h \
+    mk1_util.hpp \
     system_main.h
 
 FORMS += \
