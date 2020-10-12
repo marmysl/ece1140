@@ -204,7 +204,9 @@ void Route::loadLayout( std::string fileName ) {
 
         // check for station
         if( !station.empty() ) {
-            newBlock->station = new Station(station);
+            Station *newStation = new Station(station);
+            newBlock->station = newStation;
+            stations.push_back(newStation);
         }
 
         prevBlock = newBlock;
@@ -281,7 +283,7 @@ Station *Route::getStationByName( std::string stationName ) {
 // Block Members
 Block::Block( int id, std::string section, float length, float grade, float speedLimit ) :
     id(id), section(section), length(length), grade(grade), speedLimit(speedLimit),
-    nextBlock(NULL), prevBlock(NULL), station(NULL) {}
+    station(NULL), prevBlock(NULL), nextBlock(NULL) {}
 
 void Block::setLink( BlockDir direction, Block *newBlock ) {
     if( direction == BLK_FORWARD ) {
@@ -316,14 +318,3 @@ void Switch::setDirection( SwitchState newState ) {
 Station::Station( std::string name ) :
     name(name) {}
 
-int Station::removePassengers( int maxCount ) {
-    if( numPassengers < maxCount ) {
-        int curCount = numPassengers;
-        numPassengers = 0;
-        return curCount;
-    }
-    else {
-        numPassengers -= maxCount;
-        return maxCount;
-    }
-}
