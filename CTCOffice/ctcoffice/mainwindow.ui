@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>823</width>
+    <width>1078</width>
     <height>494</height>
    </rect>
   </property>
@@ -73,8 +73,8 @@
     </item>
     <item row="1" column="2">
      <widget class="QComboBox" name="comboDestination">
-      <property name="placeholderText">
-       <string>Choose One</string>
+      <property name="editable">
+       <bool>false</bool>
       </property>
      </widget>
     </item>
@@ -97,8 +97,8 @@
     </item>
     <item row="1" column="0">
      <widget class="QComboBox" name="comboLine">
-      <property name="placeholderText">
-       <string>Choose One</string>
+      <property name="editable">
+       <bool>false</bool>
       </property>
      </widget>
     </item>
@@ -111,8 +111,8 @@
     </item>
     <item row="1" column="1">
      <widget class="QComboBox" name="comboDestinationType">
-      <property name="placeholderText">
-       <string>Choose One</string>
+      <property name="editable">
+       <bool>false</bool>
       </property>
      </widget>
     </item>
