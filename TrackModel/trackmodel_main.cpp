@@ -2,7 +2,6 @@
 #include <unordered_map>
 #include "tracklayout.hpp"
 #include "trackmodel_main.hpp"
-#include "ui_trackmodeldisplay.h"
 
 #include <QDebug>
 
@@ -108,6 +107,26 @@ namespace TrackModel {
         }
     }
 
+    int takePassengers( std::string route, std::string station, int maxTransfer )
+    {
+        try
+        {
+            RouteStatus *routeInfo = routeStatusMap.at(route);
+            StationStatus *stationInfo = routeInfo->getStationStatus(station);
+
+            int nTrans = std::min(stationInfo->numPassengers, maxTransfer);
+            stationInfo->numPassengers -= nTrans;
+
+            trackModelUi->notifyStationUpdated(routeInfo->layoutRoute, station);
+
+            return nTrans;
+        }
+        catch( const std::out_of_range &e )
+        {
+            throw std::invalid_argument("route or block not found");
+        }
+    }
+
 
     // Track Model Internal
     //---------------------------------------------------------------------------------
@@ -118,6 +137,10 @@ namespace TrackModel {
         
         for( auto kvp : route->blocks ) {
             rs->addBlock(kvp.second);
+        }
+
+        for( Station *&s : route->stations ) {
+            rs->addStation(s);
         }
     }
 

@@ -34,6 +34,12 @@ void TrackModelDisplay::setRoute( TrackModel::RouteStatus *newRoute ) {
     selectedRoute = newRoute;
     blockTable.resetRoute(newRoute);
     switchTable.resetRoute(newRoute->layoutRoute);
+
+    ui->stationSelector->clear();
+    for( auto &s : newRoute->layoutRoute->stations )
+    {
+        ui->stationSelector->addItem(QString::fromStdString(s->name));
+    }
 }
 
 void TrackModelDisplay::notifyBlockUpdated( TrackModel::RouteStatus *route, int blockId )
@@ -48,6 +54,19 @@ void TrackModelDisplay::notifySwitchUpdated( TrackModel::Route *route, int switc
     switchTable.on_switchStatusUpdated(switchId);
 }
 
+void TrackModelDisplay::updateStationDisplay()
+{
+    ui->passCountLabel->setText(QString(selectedStation->numPassengers));
+    ui->passCountInput->setValue(selectedStation->numPassengers);
+}
+
+void TrackModelDisplay::notifyStationUpdated(TrackModel::Route *route, std::string stationName)
+{
+    if( route != selectedRoute->layoutRoute ) return;
+    if( selectedStation == NULL || stationName.compare(selectedStation->layoutStation->name) ) return;
+    updateStationDisplay();
+}
+
 void TrackModelDisplay::on_regionComboBox_currentTextChanged(const QString &arg1)
 {
     qDebug() << "[TrackModel] Displayed region changed to " << arg1;
@@ -59,5 +78,19 @@ void TrackModelDisplay::on_regionComboBox_currentTextChanged(const QString &arg1
     }
     else {
         setRoute(newRoute);
+    }
+}
+
+void TrackModelDisplay::on_stationSelector_currentTextChanged(const QString &arg1)
+{
+    TrackModel::StationStatus *newStation = selectedRoute->getStationStatus(arg1.toStdString());
+    if( newStation == NULL )
+    {
+        qDebug() << "[TrackModel] Station " << arg1 << " not found";
+    }
+    else
+    {
+        selectedStation = newStation;
+        updateStationDisplay();
     }
 }
