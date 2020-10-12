@@ -25,7 +25,7 @@ void SerialPortDialog::on_buttonBox_clicked(QAbstractButton *button)
 {
     // Apply button clicked
 
-    if( ui->trackEnabled->isChecked() )
+    if( ui->trackEnabled->isChecked() && (trackContPortInfo != NULL) )
     {
         setTrackControllerPort(trackContPortInfo);
     }
@@ -34,7 +34,7 @@ void SerialPortDialog::on_buttonBox_clicked(QAbstractButton *button)
         hwTrackControllerConnected = false;
     }
 
-    if( ui->trainEnabled->isChecked() )
+    if( ui->trainEnabled->isChecked() && (trainContPortInfo != NULL) )
     {
         setTrainControllerPort(trainContPortInfo);
     }
