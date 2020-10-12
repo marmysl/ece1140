@@ -18,7 +18,7 @@ static const int NUM_COLUMNS = 3;
 static QString columnHeaders[NUM_COLUMNS]
 {
     "From Block",
-    "State",
+    "Direction",
     "To Block"
 };
 
