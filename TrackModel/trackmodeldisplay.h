@@ -29,6 +29,11 @@ public:
 private slots:
     void on_regionComboBox_currentTextChanged(const QString &arg1);
     void on_stationSelector_currentTextChanged(const QString &arg1);
+    void on_blocktableView_clicked(const QModelIndex &index);
+    void on_applyFaultsButton_clicked();
+
+
+    void on_applyStationPropsButton_clicked();
 
 private:
     Ui::TrackModelDisplay *ui;
@@ -36,6 +41,7 @@ private:
     BlockTableModel blockTable;
     SwitchTableModel switchTable;
     TrackModel::StationStatus *selectedStation;
+    TrackModel::BlockStatus *selectedBlock;
 
     void updateStationDisplay();
 };

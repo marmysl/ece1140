@@ -18,6 +18,10 @@ namespace TrackModel {
         bool isOccupied() {
             return trainCount > 0;
         }
+
+        inline int id() {
+            return layoutBlock->id;
+        }
     };
 
     struct StationStatus {
@@ -25,6 +29,10 @@ namespace TrackModel {
         int numPassengers;
 
         StationStatus( Station *station ) : layoutStation(station), numPassengers(0) {}
+
+        inline QString name() {
+            return QString::fromStdString(layoutStation->name);
+        }
     };
 
     struct RouteStatus {

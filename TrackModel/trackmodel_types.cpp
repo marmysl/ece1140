@@ -9,19 +9,19 @@ namespace TrackModel
         "PWR FAIL",
     };
 
-    QString getFaultString( BlockFault faults )
+    QString getFaultString( const BlockFault &faults )
     {
-        if( faults == FAULT_NONE ) return QString();
+        if( faults == FAULT_NONE ) return QString("None");
 
         std::stringstream stream;
         bool first = true;
 
         BlockFault test = FAULT_POWER_FAIL;
-        for( int i = 2; i > 0; i-- )
+        for( int i = 2; i >= 0; i-- )
         {
             if( isFaultSet(faults, test) )
             {
-                if( !first ) stream << '|';
+                if( !first ) stream << ", ";
                 first = false;
                 stream << faultNames[i];
             }

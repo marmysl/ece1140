@@ -29,8 +29,8 @@ static QString columnHeaders[NUM_COLUMNS]
     "Length (m)",
     "Grade",
     "Speed Limit (kph)",
-    "Faults",
     "Occupied",
+    "Faults",
     "Speed Cmd",
     "Auth Cmd"
 };
@@ -65,6 +65,14 @@ void BlockTableModel::on_blockStatusUpdated( int blockId )
 
     emit dataChanged(index(idx, 0), index(idx, NUM_COLUMNS - 1));
 }
+
+TrackModel::BlockStatus *BlockTableModel::getBlockAtIdx( int idx )
+{
+    if( (idx < 0) || (static_cast<uint>(idx) > blockList.size()) ) return NULL;
+
+    return blockList[idx];
+}
+
 
 QVariant BlockTableModel::headerData(int section, Qt::Orientation orientation, int role) const
 {

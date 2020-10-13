@@ -29,8 +29,14 @@
      <x>20</x>
      <y>60</y>
      <width>871</width>
-     <height>461</height>
+     <height>371</height>
     </rect>
+   </property>
+   <property name="alternatingRowColors">
+    <bool>true</bool>
+   </property>
+   <property name="selectionMode">
+    <enum>QAbstractItemView::SingleSelection</enum>
    </property>
   </widget>
   <widget class="QTableView" name="switchTableView">
@@ -161,6 +167,9 @@
     <string>Station Info</string>
    </property>
    <widget class="QPushButton" name="applyStationPropsButton">
+    <property name="enabled">
+     <bool>false</bool>
+    </property>
     <property name="geometry">
      <rect>
       <x>220</x>
@@ -237,6 +246,145 @@
     </property>
    </widget>
   </widget>
+  <widget class="QGroupBox" name="faultGroupBox">
+   <property name="geometry">
+    <rect>
+     <x>20</x>
+     <y>439</y>
+     <width>871</width>
+     <height>81</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>10</pointsize>
+    </font>
+   </property>
+   <property name="title">
+    <string>Faults:</string>
+   </property>
+   <widget class="QCheckBox" name="pwrFailCheck">
+    <property name="geometry">
+     <rect>
+      <x>200</x>
+      <y>40</y>
+      <width>141</width>
+      <height>22</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Power Failure</string>
+    </property>
+   </widget>
+   <widget class="QCheckBox" name="circFailCheck">
+    <property name="geometry">
+     <rect>
+      <x>350</x>
+      <y>40</y>
+      <width>141</width>
+      <height>22</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Circuit Failure</string>
+    </property>
+   </widget>
+   <widget class="QCheckBox" name="brknRailCheck">
+    <property name="geometry">
+     <rect>
+      <x>500</x>
+      <y>40</y>
+      <width>141</width>
+      <height>22</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Broken Rail</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="applyFaultsButton">
+    <property name="enabled">
+     <bool>false</bool>
+    </property>
+    <property name="geometry">
+     <rect>
+      <x>670</x>
+      <y>40</y>
+      <width>111</width>
+      <height>25</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Apply Faults</string>
+    </property>
+   </widget>
+   <widget class="QLCDNumber" name="faultBlockNum">
+    <property name="geometry">
+     <rect>
+      <x>70</x>
+      <y>39</y>
+      <width>64</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="palette">
+     <palette>
+      <active>
+       <colorrole role="WindowText">
+        <brush brushstyle="SolidPattern">
+         <color alpha="255">
+          <red>0</red>
+          <green>0</green>
+          <blue>255</blue>
+         </color>
+        </brush>
+       </colorrole>
+      </active>
+      <inactive>
+       <colorrole role="WindowText">
+        <brush brushstyle="SolidPattern">
+         <color alpha="255">
+          <red>0</red>
+          <green>0</green>
+          <blue>255</blue>
+         </color>
+        </brush>
+       </colorrole>
+      </inactive>
+      <disabled>
+       <colorrole role="WindowText">
+        <brush brushstyle="SolidPattern">
+         <color alpha="255">
+          <red>120</red>
+          <green>120</green>
+          <blue>120</blue>
+         </color>
+        </brush>
+       </colorrole>
+      </disabled>
+     </palette>
+    </property>
+    <property name="digitCount">
+     <number>3</number>
+    </property>
+    <property name="segmentStyle">
+     <enum>QLCDNumber::Flat</enum>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_7">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>40</y>
+      <width>55</width>
+      <height>21</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Block</string>
+    </property>
+   </widget>
+  </widget>
   <zorder>stationGroupBox</zorder>
   <zorder>regionComboBox</zorder>
   <zorder>blocktableView</zorder>
@@ -247,6 +395,7 @@
   <zorder>stationSelector</zorder>
   <zorder>label_4</zorder>
   <zorder>label_6</zorder>
+  <zorder>faultGroupBox</zorder>
  </widget>
  <resources/>
  <connections/>

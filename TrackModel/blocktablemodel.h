@@ -19,6 +19,7 @@ public:
     // Data manip:
     void resetRoute( TrackModel::RouteStatus *route );
     void on_blockStatusUpdated( int blockId );
+    TrackModel::BlockStatus *getBlockAtIdx( int idx );
 
     // Header:
     QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const override;
