@@ -1,6 +1,7 @@
 #include <fstream>
 #include <iostream>
 #include <sstream>
+#include <stdexcept>
 #include "tracklayout.hpp"
 
 #include <QFileInfo>
