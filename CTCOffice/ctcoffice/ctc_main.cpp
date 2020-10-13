@@ -9,12 +9,12 @@
 #include "CTCDispatch.h"
 #include "../../TrackModel/tracklayout.hpp"
 
+MainWindow *ctcMainWindow;
+
 int init_CTC(int argc, char *argv[])
 {
-    QApplication a(argc, argv);
-    MainWindow w;
-    w.show();
-    a.exec();
+    ctcMainWindow = new MainWindow();
+    ctcMainWindow->show();
 
     return 0;
 }

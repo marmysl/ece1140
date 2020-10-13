@@ -1,30 +1,33 @@
 #include "TrainController.h"
+#include "SerialPort.hpp"
+
+#include <QThread>
 
 TrainController::TrainController()
 {
-	//Create objects and assign them to pointers
-	arduino = new SerialPort(portName);
+    //Create objects and assign them to pointers
+
 	train_model = new Train(5);
 	cout << "here" << endl;
 	speed_regulator = new SpeedRegulator(train_model);
 	speed_regulator -> decodeTrackSignal();
 	cabin_controller = new CabinControls();
 
-	//Connects the arduino to the serial port
-	std::cout << "Searching in progress";
+//	//Connects the arduino to the serial port
+//	std::cout << "Searching in progress";
      
-     // wait connection
-	std::cout << "Searching in progress";
-    while (!arduino->isConnected()) {
-        Sleep(100);
-        std::cout << ".";
-        arduino = new SerialPort(portName);
-    }
+//     // wait connection
+//	std::cout << "Searching in progress";
+//    while (!arduino->isOpen()) {
+//        std::cout << ".";
+//        arduino->open(QIODevice::ReadWrite);
+//        QThread::msleep(500);
+//    }
 
-    //Checking if arduino is connected or not
-    if (arduino->isConnected()) {
-        std::cout  << std::endl << "Connection established at port " << portName << std::endl;
-    }
+//    //Checking if arduino is connected or not
+//    if (arduino->isOpen()) {
+//        std::cout  << std::endl << "Connection established at port " << portName << std::endl;
+//    }
 }
 
 TrainController::~TrainController()
@@ -41,51 +44,56 @@ TrainController::~TrainController()
 
 void TrainController::recieveData()
 {
-	int readResult = arduino->readSerialPort(incomingData, MAX_DATA_LENGTH);
-    string data(incomingData);
+    int readResult = trainControllerPort.read(incomingData, ARDUINO_BUF_LENGTH);
 
-      //Create a system to encode all data to be read from
-      //char 0 = cabinLights
-      //char 1 = cabinAc
-      //char 2 = cabinHeat
-      //char 3 = cabinDoorsClosed
-      //char 4 = cabinAdvertisements
-      //char 5 = cabinAnnouncements
-      //char6-10 = Kp
-      //char11-15 = Ki
-      //char16 = joystick up
-      //char17 = joystick down
-
-
-    std::cout << "Incoming: " << data << std::endl;
-
-    if(!data.empty())
+    if( readResult > 0 )
     {
-        if(data.substr(0,1) == "1") cabin_controller -> cabinLightsOn();
-        else cabin_controller -> cabinLightsOff();
+        string data(incomingData);
 
-        if(data.substr(1,1) == "1") cabin_controller -> cabinAcOn();
-        else cabin_controller -> cabinAcOff();
+          //Create a system to encode all data to be read from
+          //char 0 = cabinLights
+          //char 1 = cabinAc
+          //char 2 = cabinHeat
+          //char 3 = cabinDoorsClosed
+          //char 4 = cabinAdvertisements
+          //char 5 = cabinAnnouncements
+          //char6-10 = Kp
+          //char11-15 = Ki
+          //char16 = joystick up
+          //char17 = joystick down
 
-        if(data.substr(2,1) == "1") cabin_controller -> cabinHeatOn();
-        else cabin_controller -> cabinHeatOff();
 
-        if(data.substr(3,1) == "1") cabin_controller -> cabinDoorsOpen();
-        else cabin_controller -> cabinDoorsClosed();
+        std::cout << "Incoming: " << data << std::endl;
 
-        if(data.substr(4,1) == "1") cabin_controller -> cabinAdvertisementsOn();
-        else cabin_controller -> cabinAdvertisementsOff();
+        if(!data.empty())
+        {
+            if(data.substr(0,1) == "1") cabin_controller -> cabinLightsOn();
+            else cabin_controller -> cabinLightsOff();
 
-        if(data.substr(5,1) == "1") cabin_controller -> cabinAnnouncementsOn();
-        else cabin_controller -> cabinAnnouncementsOff();
+            if(data.substr(1,1) == "1") cabin_controller -> cabinAcOn();
+            else cabin_controller -> cabinAcOff();
 
-        if(data.substr(16,1) == "1") speed_regulator -> incSetpointSpeed(.5);
+            if(data.substr(2,1) == "1") cabin_controller -> cabinHeatOn();
+            else cabin_controller -> cabinHeatOff();
 
-        if(data.substr(17,1) == "1") speed_regulator -> incSetpointSpeed(-.5);
+            if(data.substr(3,1) == "1") cabin_controller -> cabinDoorsOpen();
+            else cabin_controller -> cabinDoorsClosed();
 
-        speed_regulator -> setKpAndKi(std::stod(data.substr(6,5)), std::stod(data.substr(11,5)));
-    }  
-    Sleep(900);
+            if(data.substr(4,1) == "1") cabin_controller -> cabinAdvertisementsOn();
+            else cabin_controller -> cabinAdvertisementsOff();
+
+            if(data.substr(5,1) == "1") cabin_controller -> cabinAnnouncementsOn();
+            else cabin_controller -> cabinAnnouncementsOff();
+
+            if(data.substr(16,1) == "1") speed_regulator -> incSetpointSpeed(.5);
+
+            if(data.substr(17,1) == "1") speed_regulator -> incSetpointSpeed(-.5);
+
+            speed_regulator -> setKpAndKi(std::stod(data.substr(6,5)), std::stod(data.substr(11,5)));
+        }
+    }
+
+    QThread::msleep(900);
 }
 
 void TrainController::writeData(int delayTime)
@@ -135,8 +143,9 @@ void TrainController::writeData(int delayTime)
     std::cout << "Outgoing: " << outgoing_s << std::endl;
     strcpy(outgoingData, outgoing_s.c_str());
 
-    arduino->writeSerialPort(outgoingData, MAX_DATA_LENGTH);
-    Sleep(delayTime);
+    trainControllerPort.read(outgoingData, ARDUINO_BUF_LENGTH);
+
+    QThread::msleep(delayTime);
 }
 
 string TrainController::getInput()
@@ -152,7 +161,7 @@ string TrainController::getOutput()
 
 void TrainController::dispatch()
 {
-	while(arduino -> isConnected())
+    while(hwTrainControllerConnected)
 	{
 		recieveData();
 		writeData(900);

@@ -8,30 +8,14 @@
 #include "TrainModelUpdateBlock.h"
 using namespace std;
 
-Train::Train(int newNumCars)//, int argc, char *argv[])
+Train::Train(int newNumCars)
 {
     cout << "Create new Train Model with " << newNumCars << " cars" << endl;
     numCars = newNumCars;
-    /*QApplication a(argc, argv);
-    TrainModelUI w;
-    uiPtr = &w;
-    qapp = &a;
-    w.show();
+    w = new TrainModelUI();
+    w->show();
     updateUI();
-    a.exec();*/
 }
-/*
-Train::Train(int newNumCars, int argc, char *argv[])
-{
-    numCars = newNumCars;
-    QApplication a(argc, argv);
-    TrainModelUI w;
-    uiPtr = &w;
-    qapp = &a;
-    w.show();
-    updateUI();
-    a.exec();
-}*/
 
 void Train::setPower(double newPower){             //Called by train controller to set power
     //Get current time
@@ -53,8 +37,8 @@ void Train::setPower(double newPower){             //Called by train controller 
         this->updateTrackInfo();
     }
     oldPos = newPos;
-    updateUI();
     currPower = newPower;
+    updateUI();
     double newCurrVel = TrainModelMath::calcVelocity(newPower);
     currVel = newCurrVel;
 }
@@ -91,11 +75,11 @@ double Train::getCurrentPosition(){                //will return current positio
 }
 
 void Train::updateUI(){
- /*   uiPtr->updateNumCars(numCars);
-    uiPtr->updatePower(power);
-    uiPtr->updateVelocity(currVel);
-    uiPtr->updateVelocity(currVel);
-    uiPtr->updateBlockNum(blockNum);
-    uiPtr->updateBlockLength(blockDist);
-    uiPtr->updateBlockGrade(blockGrade);    */
+    w->updateNumCars(numCars);
+    w->updatePower(currPower);
+    w->updateVelocity(currVel);
+    w->updateVelocity(currVel);
+    w->updateBlockNum(blockNum);
+    w->updateBlockLength(blockDist);
+    w->updateBlockGrade(blockGrade);
 }

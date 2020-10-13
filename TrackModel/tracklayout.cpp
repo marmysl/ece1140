@@ -3,6 +3,8 @@
 #include <sstream>
 #include "tracklayout.hpp"
 
+#include <QFileInfo>
+
 using namespace TrackModel;
 
 Block *TrackModel::yard;
@@ -40,7 +42,9 @@ static float parseFloatStrict( std::string str ) {
 
 void Route::loadLayout( std::string fileName ) {
     std::ifstream layoutFile;
-    layoutFile.open(fileName, std::ios::in);
+
+    QFileInfo lfInfo(QString::fromStdString(fileName));
+    layoutFile.open(lfInfo.absoluteFilePath().toStdString(), std::ios::in);
 
     if( !layoutFile.is_open() ) throw std::invalid_argument ("Unable to open layout file");
 
@@ -138,6 +142,7 @@ void Route::loadLayout( std::string fileName ) {
                             buf.str(std::string());
                             buf.clear();
                             buf << "Too many fields on line " << fileLine;
+                            layoutFile.close();
                             throw LayoutParseError(buf.str());
                     }
                 }
@@ -146,6 +151,7 @@ void Route::loadLayout( std::string fileName ) {
                     buf.clear();
                     buf << "Error parsing field " << stateNames[state] << " on line " << fileLine;
                     buf << ": " << e.what();
+                    layoutFile.close();
                     throw LayoutParseError(buf.str());
                 }
                 catch( const std::out_of_range &e ) {
@@ -153,6 +159,7 @@ void Route::loadLayout( std::string fileName ) {
                     buf.clear();
                     buf << "Error parsing field " << stateNames[state] << " on line " << fileLine;
                     buf << ": " << e.what();
+                    layoutFile.close();
                     throw LayoutParseError(buf.str());
                 }
 
@@ -178,6 +185,7 @@ void Route::loadLayout( std::string fileName ) {
             buf.str(std::string());
             buf.clear();
             buf << "Too few fields on line " << fileLine;
+            layoutFile.close();
             throw LayoutParseError(buf.str());
         }
 
@@ -214,6 +222,7 @@ void Route::loadLayout( std::string fileName ) {
     }
 
     // eof
+    layoutFile.close();
 
     // loop thru uninitialized switches and connect those suckers
     for( BranchInfo &branch : voidBranches ) {

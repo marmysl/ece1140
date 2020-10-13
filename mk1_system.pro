@@ -1,8 +1,13 @@
-QT       += core gui
+QT       += core gui serialport
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
-CONFIG += c++11
+CONFIG += c++11 file_copies
+
+COPIES += layoutFiles
+
+layoutFiles.files = $$files(*.csv)
+layoutFiles.path = $$OUT_PWD
 
 # You can make your code fail to compile if it uses deprecated APIs.
 # In order to do so, uncomment the following line.
@@ -20,7 +25,6 @@ SOURCES += \
     HWTrainController/CabinControls.cpp \
     HWTrainController/SpeedRegulator.cpp \
     HWTrainController/TrainController.cpp \
-    HWTrainController/main.cpp \
     SWTrackController/BlockCntrl.cpp \
     SWTrackController/TrackController.cpp \
     SWTrackController/trackcntrl_main.cpp \
@@ -33,6 +37,7 @@ SOURCES += \
     TrainModel/TrainModelMath.cpp \
     TrainModel/TrainModelUI.cpp \
     TrainModel/TrainModelUpdateBlock.cpp \
+    serialportdialog.cpp \
     system_main.cpp
 
 HEADERS += \
@@ -63,12 +68,14 @@ HEADERS += \
     TrainModel/TrainModelMath.h \
     TrainModel/TrainModelUI.h \
     TrainModel/TrainModelUpdateBlock.h \
+    serialportdialog.h \
     system_main.h
 
 FORMS += \
     CTCOffice/ctcoffice/mainwindow.ui \
     SWTrainController/SWTrainController.ui \
-    TrainModel/TrainModelUI.ui
+    TrainModel/TrainModelUI.ui \
+    serialportdialog.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

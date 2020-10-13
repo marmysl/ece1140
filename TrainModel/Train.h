@@ -3,7 +3,7 @@
 #define TRAIN_H
 #include "TrainModelMath.h"
 #include "TrainModelUpdateBlock.h"
-
+#include "TrainModelUI.h"
 //#include <QMainWindow>
 
 #include <chrono>
@@ -23,7 +23,7 @@ public:
     double blockDist = 50;
     double blockGrade = 0;
     int blockNum;
-    //TrainModelUI* uiPtr;
+    TrainModelUI *w;
     //QApplication* qapp;
 
     Train(int newNumCars);

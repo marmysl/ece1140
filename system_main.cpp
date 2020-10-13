@@ -1,3 +1,5 @@
+#include "serialportdialog.h"
+
 #include "CTCOffice/ctcoffice/ctc_main.h"
 #include "HWTrackController/HWTrackController_main.h"
 #include "SWTrackController/TrackController.h"
@@ -6,9 +8,12 @@
 #include "HWTrainController/HWTrainController_main.h"
 #include "SWTrainController/SWTrainController.h"
 
+#include <iostream>
 #include <QApplication>
 
 TrackModel::Route *blueLineLayout;
+
+SerialPortDialog *hwPortsDialog;
 
 int mainArgc;
 char **mainArgv;
@@ -25,6 +30,17 @@ int main(int argc, char *argv[])
     QApplication a(argc, argv);
 
     blueLineLayout = initTestLayout();
+
+    // display modal dialog to select HW component serial ports
+    hwPortsDialog = new SerialPortDialog();
+    int portsResult = hwPortsDialog->exec();
+
+    // if the dialog was X'd out then quit, because we can't confirm the HW config
+    if( portsResult != QDialog::Accepted )
+    {
+        a.quit();
+        return EXIT_SUCCESS;
+    }
 
     init_CTC(argc, argv);
     //init_HWTrackController();
