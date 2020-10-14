@@ -9,6 +9,7 @@ TrackModelDisplay::TrackModelDisplay(QWidget *parent) :
     ui(new Ui::TrackModelDisplay)
 {
     ui->setupUi(this);
+    setWindowFlags(windowFlags() & !(Qt::WindowStaysOnTopHint));
 
     ui->blocktableView->setModel(&blockTable);
     ui->blocktableView->resizeColumnsToContents();
