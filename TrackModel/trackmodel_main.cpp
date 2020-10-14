@@ -1,21 +1,14 @@
 #include <iostream>
 #include <unordered_map>
 #include "tracklayout.hpp"
+#include "trackmodel_main.hpp"
+
+#include <QDebug>
 
 namespace TrackModel {
-    struct BlockStatus {
-        TrackCircuitData circuit;
-        int trainCount;
-        BlockFault faults;
-
-        BlockStatus() : circuit(TrackCircuitData()), trainCount(0), faults(FAULT_NONE) {}
-    };
-
-    struct RouteStatus {
-        std::unordered_map<int, BlockStatus *> blockMap;
-
-        RouteStatus() : blockMap(std::unordered_map<int, BlockStatus *>()) {}
-    };
+    // extern
+    TrackModelDisplay *trackModelUi = NULL;
+    std::vector<RouteFile> routesToLoad;
 
     std::unordered_map<std::string, RouteStatus *> routeStatusMap = std::unordered_map<std::string, RouteStatus *>();
 
@@ -26,6 +19,8 @@ namespace TrackModel {
             RouteStatus *routeInfo = routeStatusMap.at(route);
             BlockStatus *blockInfo = routeInfo->blockMap.at(blockId);
             blockInfo->circuit = data;
+
+            trackModelUi->notifyBlockUpdated(routeInfo, blockId);
         }
         catch( const std::out_of_range &e ) {
             throw std::invalid_argument("route or block not found");
@@ -54,18 +49,24 @@ namespace TrackModel {
         }
     }
 
-    SwitchState getSwitchState( Route *route, int switchBlockId ) {
-        Switch *s = route->getSwitch(switchBlockId);
+    SwitchState getSwitchState( std::string route, int switchBlockId )
+    {
+        Route *routeObj = getRoute(route);
+        Switch *s = routeObj->getSwitch(switchBlockId);
 
         if( s == NULL ) throw std::invalid_argument("Requested switch not found");
         return s->direction;
     }
 
-    void setSwitchState( Route *route, int switchBlockId, SwitchState newDirection ) {
-        Switch *s = route->getSwitch(switchBlockId);
+    void setSwitchState( std::string route, int switchBlockId, SwitchState newDirection )
+    {
+        Route *routeObj = getRoute(route);
+        Switch *s = routeObj->getSwitch(switchBlockId);
 
         if( s == NULL ) throw std::invalid_argument("Requested switch not found");
         s->setDirection(newDirection);
+
+        trackModelUi->notifySwitchUpdated(routeObj, switchBlockId);
     }
 
 
@@ -87,6 +88,8 @@ namespace TrackModel {
             RouteStatus *routeInfo = routeStatusMap.at(route);
             BlockStatus *blockInfo = routeInfo->blockMap.at(blockId);
             blockInfo->trainCount += 1;
+
+            trackModelUi->notifyBlockUpdated(routeInfo, blockId);
         }
         catch( const std::out_of_range &e ) {
             throw std::invalid_argument("route or block not found");
@@ -104,16 +107,40 @@ namespace TrackModel {
         }
     }
 
+    int takePassengers( std::string route, std::string station, int maxTransfer )
+    {
+        try
+        {
+            RouteStatus *routeInfo = routeStatusMap.at(route);
+            StationStatus *stationInfo = routeInfo->getStationStatus(station);
+
+            int nTrans = std::min(stationInfo->numPassengers, maxTransfer);
+            stationInfo->numPassengers -= nTrans;
+
+            trackModelUi->notifyStationUpdated(routeInfo->layoutRoute, station);
+
+            return nTrans;
+        }
+        catch( const std::out_of_range &e )
+        {
+            throw std::invalid_argument("route or block not found");
+        }
+    }
+
 
     // Track Model Internal
     //---------------------------------------------------------------------------------
 
     void initRouteState( Route *route ) {
-        RouteStatus *rs = new RouteStatus();
+        RouteStatus *rs = new RouteStatus(route);
         routeStatusMap[route->name] = rs;
         
         for( auto kvp : route->blocks ) {
-            rs->blockMap[kvp.second->id] = new BlockStatus();
+            rs->addBlock(kvp.second);
+        }
+
+        for( Station *&s : route->stations ) {
+            rs->addStation(s);
         }
     }
 
@@ -122,9 +149,11 @@ namespace TrackModel {
     BlockFault setFault( std::string route, int block, BlockFault fault ) {
         try {
             RouteStatus *routeInfo = routeStatusMap.at(route);
-            BlockStatus *blockInfo = routeInfo->blockMap.at(block);
+            BlockStatus *blockInfo = routeInfo->getBlockStatus(block);
 
             blockInfo->faults = blockInfo->faults | fault;
+            trackModelUi->notifyBlockUpdated(routeInfo, block);
+
             return blockInfo->faults;
         }
         catch( const std::out_of_range &e ) {
@@ -137,88 +166,63 @@ namespace TrackModel {
     BlockFault clearFault( std::string route, int block,  BlockFault fault ) {
         try {
             RouteStatus *routeInfo = routeStatusMap.at(route);
-            BlockStatus *blockInfo = routeInfo->blockMap.at(block);
+            BlockStatus *blockInfo = routeInfo->getBlockStatus(block);
 
             blockInfo->faults = blockInfo->faults & ~fault;
+            trackModelUi->notifyBlockUpdated(routeInfo, block);
+
             return blockInfo->faults;
         }
         catch( const std::out_of_range &e ) {
             throw std::invalid_argument("route or block not found");
         }
     }
-}
 
-using namespace TrackModel;
-
-// Testing
-//---------------------------------------------------------------------------------
-const std::string LAYOUT_FILE = "blue_line.csv";
-const std::string ROUTE_NAME = "Blue Line";
-
-Route *initTestLayout() {
-    Route *blue_line = new Route(ROUTE_NAME);
-
-    try {
-        blue_line->loadLayout(LAYOUT_FILE);
-    }
-    catch( const LayoutParseError &e ) {
-        std::cerr << "Failed to parse layout file:" << std::endl;
-        std::cerr << e.what() << std::endl;
-        return NULL;
+    RouteStatus *getRouteStatus( QString name )
+    {
+        try
+        {
+            return routeStatusMap.at(name.toStdString());
+        }
+        catch( const std::out_of_range &e )
+        {
+            return NULL;
+        }
     }
 
-    Block *first = blue_line->getBlock(1);
-    blue_line->spawnBlock = first;
+    // load and initialize all layout files in routesToLoad
+    // returns: 0 on success, negative number on error
+    int initializeTrackModel()
+    {
+        routes.clear();
 
-    routes.push_back(blue_line);
-    initRouteState(blue_line);
+        for( RouteFile rf : routesToLoad ) {
+            Route *blue_line = new Route(rf.name);
 
-    return blue_line;
-}
+            try {
+                blue_line->loadLayout(rf.layoutFile);
+            }
+            catch( const LayoutParseError &e ) {
+                qDebug() << "Failed to parse layout file:\n";
+                qDebug() << e.what() << '\n';
+                return -1;
+            }
 
-int trackModelTestMain() {
-    yard = new Block(0, "Yard", 0, 0, 100);
+            Block *first = blue_line->getBlock(1);
+            blue_line->spawnBlock = first;
 
-    Route *r = new Route(ROUTE_NAME);
-
-    try {
-        r->loadLayout(LAYOUT_FILE);
-    }
-    catch( const LayoutParseError &e ) {
-        std::cerr << "Failed to parse layout file:" << std::endl;
-        std::cerr << e.what() << std::endl;
-        return -1;
-    }
-
-    routes.push_back(r);
-    initRouteState(r);
-    
-    Block *block = r->getBlock(1);
-    while( block != NULL ) {
-        std::cout << "Block " << block->id << " | sec " << block->section;
-        std::cout << " | length " << block->length << "m";
-        std::cout << " | grade " << (block->grade * 100) << "%";
-        std::cout << " | speed limit " << block->speedLimit << "kph";
-
-        Switch *sw = r->getSwitch(block->id);
-        if( sw != NULL ) {
-            std::cout << " (branch -> " << sw->divergeBlock->id << ")";
+            routes.push_back(blue_line);
+            initRouteState(blue_line);
         }
 
-        if( block->station != NULL ) {
-            std::cout << " [" << block->station->name << "]";
+        if( trackModelUi == NULL ) {
+            // Instantiate the UI singleton
+            trackModelUi = new TrackModelDisplay();
+            trackModelUi->show();
         }
 
-        std::cout << std::endl;
+        trackModelUi->setRegionList(&routes);
 
-        block = block->nextBlock;
+        return 0;
     }
-    
-    std::cout << "Block 7 occupied: " << isBlockOccupied(r->name, 7) << std::endl;
-
-    addOccupancy(r->name, 7);
-
-    std::cout << "Block 7 occupied: " << isBlockOccupied(r->name, 7) << std::endl;
-
-    return 0;
 }

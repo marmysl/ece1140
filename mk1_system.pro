@@ -31,8 +31,12 @@ SOURCES += \
     SWTrainController/SWTrainController.cpp \
     SWTrainController/TrainCGUI.cpp \
     SerialPort.cpp \
+    TrackModel/blocktablemodel.cpp \
+    TrackModel/switchtablemodel.cpp \
     TrackModel/tracklayout.cpp \
-    TrackModel/trackmodel.cpp \
+    TrackModel/trackmodel_main.cpp \
+    TrackModel/trackmodel_types.cpp \
+    TrackModel/trackmodeldisplay.cpp \
     TrainModel/Train.cpp \
     TrainModel/TrainModelMath.cpp \
     TrainModel/TrainModelUI.cpp \
@@ -59,23 +63,29 @@ HEADERS += \
     SWTrainController/TrainCGUI.h \
     SWTrainController/ui_TrainController.h \
     SerialPort.hpp \
+    TrackModel/blocktablemodel.h \
+    TrackModel/switchtablemodel.h \
     TrackModel/tracklayout.hpp \
     TrackModel/trackmodel_controller.hpp \
-    TrackModel/trackmodel_test.hpp \
+    TrackModel/trackmodel_main.hpp \
     TrackModel/trackmodel_train.hpp \
     TrackModel/trackmodel_types.hpp \
+    TrackModel/trackmodeldisplay.h \
     TrainModel/Train.h \
     TrainModel/TrainModelMath.h \
     TrainModel/TrainModelUI.h \
     TrainModel/TrainModelUpdateBlock.h \
     serialportdialog.h \
+    mk1_util.hpp \
     system_main.h
 
 FORMS += \
     CTCOffice/ctcoffice/mainwindow.ui \
     SWTrainController/SWTrainController.ui \
     TrainModel/TrainModelUI.ui \
-    serialportdialog.ui
+    serialportdialog.ui \
+    TrackModel/trackmodeldisplay.ui \
+    TrainModel/TrainModelUI.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

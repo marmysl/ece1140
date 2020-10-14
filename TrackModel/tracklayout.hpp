@@ -88,12 +88,7 @@ namespace TrackModel {
     class Station {
         public:
             std::string name;
-            int numPassengers;
 
             Station( std::string name );
-
-            // remove up to the given number of passengers from this platform
-            // returns: actual number of passengers removed
-            int removePassengers( int maxCount );
     };
 }
