@@ -164,3 +164,8 @@ void TrackModelDisplay::on_applyFaultsButton_clicked()
     qDebug() << "[TrackModel] Applied faults " << getFaultString(newFaults) << " to block " << selectedBlock->id();
 }
 
+
+void TrackModelDisplay::on_reloadLayoutButton_clicked()
+{
+    TrackModel::initializeTrackModel();
+}

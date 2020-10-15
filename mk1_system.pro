@@ -32,6 +32,7 @@ SOURCES += \
     SWTrainController/TrainCGUI.cpp \
     SerialPort.cpp \
     TrackModel/blocktablemodel.cpp \
+    TrackModel/layoutdialog.cpp \
     TrackModel/switchtablemodel.cpp \
     TrackModel/tracklayout.cpp \
     TrackModel/trackmodel_main.cpp \
@@ -64,6 +65,7 @@ HEADERS += \
     SWTrainController/ui_TrainController.h \
     SerialPort.hpp \
     TrackModel/blocktablemodel.h \
+    TrackModel/layoutdialog.h \
     TrackModel/switchtablemodel.h \
     TrackModel/tracklayout.hpp \
     TrackModel/trackmodel_controller.hpp \
@@ -82,6 +84,7 @@ HEADERS += \
 FORMS += \
     CTCOffice/ctcoffice/mainwindow.ui \
     SWTrainController/SWTrainController.ui \
+    TrackModel/layoutdialog.ui \
     TrainModel/TrainModelUI.ui \
     serialportdialog.ui \
     TrackModel/trackmodeldisplay.ui \

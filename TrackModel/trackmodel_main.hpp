@@ -75,10 +75,10 @@ namespace TrackModel {
     };
 
     struct RouteFile {
-        std::string name;
-        std::string layoutFile;
+        QString name;
+        QString layoutFile;
 
-        RouteFile( std::string name, std::string file ) :
+        RouteFile( QString name, QString file ) :
             name(name), layoutFile(file) {}
     };
 

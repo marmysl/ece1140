@@ -31,9 +31,9 @@ private slots:
     void on_stationSelector_currentTextChanged(const QString &arg1);
     void on_blocktableView_clicked(const QModelIndex &index);
     void on_applyFaultsButton_clicked();
-
-
     void on_applyStationPropsButton_clicked();
+
+    void on_reloadLayoutButton_clicked();
 
 private:
     Ui::TrackModelDisplay *ui;

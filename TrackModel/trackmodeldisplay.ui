@@ -385,6 +385,19 @@
     </property>
    </widget>
   </widget>
+  <widget class="QPushButton" name="reloadLayoutButton">
+   <property name="geometry">
+    <rect>
+     <x>340</x>
+     <y>10</y>
+     <width>121</width>
+     <height>25</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Reload Layouts...</string>
+   </property>
+  </widget>
   <zorder>stationGroupBox</zorder>
   <zorder>regionComboBox</zorder>
   <zorder>blocktableView</zorder>
@@ -396,6 +409,7 @@
   <zorder>label_4</zorder>
   <zorder>label_6</zorder>
   <zorder>faultGroupBox</zorder>
+  <zorder>reloadLayoutButton</zorder>
  </widget>
  <resources/>
  <connections/>

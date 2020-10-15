@@ -2,6 +2,7 @@
 #include <unordered_map>
 #include "tracklayout.hpp"
 #include "trackmodel_main.hpp"
+#include "layoutdialog.h"
 
 #include <QDebug>
 
@@ -196,11 +197,14 @@ namespace TrackModel {
     {
         routes.clear();
 
+        LayoutDialog diag;
+        diag.exec();
+
         for( RouteFile rf : routesToLoad ) {
-            Route *blue_line = new Route(rf.name);
+            Route *newRoute = new Route(rf.name.toStdString());
 
             try {
-                blue_line->loadLayout(rf.layoutFile);
+                newRoute->loadLayout(rf.layoutFile.toStdString());
             }
             catch( const LayoutParseError &e ) {
                 qDebug() << "Failed to parse layout file:\n";
@@ -208,11 +212,11 @@ namespace TrackModel {
                 return -1;
             }
 
-            Block *first = blue_line->getBlock(1);
-            blue_line->spawnBlock = first;
+            Block *first = newRoute->getBlock(1);
+            newRoute->spawnBlock = first;
 
-            routes.push_back(blue_line);
-            initRouteState(blue_line);
+            routes.push_back(newRoute);
+            initRouteState(newRoute);
         }
 
         if( trackModelUi == NULL ) {
