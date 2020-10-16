@@ -164,20 +164,20 @@
      <string>Circuit info:</string>
     </property>
    </widget>
-   <widget class="QLabel" name="sugspeedlabel">
+   <widget class="QLabel" name="currspeed">
     <property name="geometry">
      <rect>
-      <x>480</x>
-      <y>370</y>
+      <x>510</x>
+      <y>200</y>
       <width>121</width>
       <height>21</height>
      </rect>
     </property>
     <property name="text">
-     <string>Suggested Speed:</string>
+     <string>Current Speed:</string>
     </property>
    </widget>
-   <widget class="QLabel" name="authlabel">
+   <widget class="QLabel" name="authority">
     <property name="geometry">
      <rect>
       <x>480</x>
@@ -190,11 +190,11 @@
      <string>Authority:</string>
     </property>
    </widget>
-   <widget class="QLabel" name="suggested_speed_label">
+   <widget class="QLabel" name="currspeed_">
     <property name="geometry">
      <rect>
-      <x>630</x>
-      <y>370</y>
+      <x>660</x>
+      <y>200</y>
       <width>58</width>
       <height>16</height>
      </rect>
@@ -203,7 +203,7 @@
      <string>0</string>
     </property>
    </widget>
-   <widget class="QLabel" name="authority_label">
+   <widget class="QLabel" name="authority_">
     <property name="geometry">
      <rect>
       <x>620</x>
@@ -214,6 +214,32 @@
     </property>
     <property name="text">
      <string>0</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="suggspeed_">
+    <property name="geometry">
+     <rect>
+      <x>620</x>
+      <y>360</y>
+      <width>58</width>
+      <height>16</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>0</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="suggspeed">
+    <property name="geometry">
+     <rect>
+      <x>480</x>
+      <y>360</y>
+      <width>111</width>
+      <height>16</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Suggested Speed:</string>
     </property>
    </widget>
   </widget>
