@@ -128,7 +128,7 @@
    <widget class="QPushButton" name="getCircuitInfoButton">
     <property name="geometry">
      <rect>
-      <x>50</x>
+      <x>130</x>
       <y>320</y>
       <width>201</width>
       <height>41</height>
