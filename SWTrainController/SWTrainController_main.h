@@ -14,19 +14,12 @@ class SWTrainController
 public: // TEMPORARILY making everything public for easier implementation
 //private:
     Train *train;
-    double power;
-    double kp;
-    double ki;
-    double suggestedSpeed;
-    double authority;
-    double setpointSpeed;
-    unsigned signal;
     int argc;
     char *argv[];
 public:
    SWTrainController(int, char*[]);
-   void calculatePower();
-   void decode(unsigned);
+   //void calculatePower();
+   //void decode(unsigned);
 };
 
 #endif // SWTRAINCONTROLLER_H

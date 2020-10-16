@@ -4,6 +4,7 @@
 #include <QMainWindow>
 
 #include "SWTrainController_main.h"
+#include "SWTC.h"
 #include "TrainModel/Train.h"
 #include "../ui_SWTrainController.h"
 
@@ -20,7 +21,7 @@ public:
     TrainControlWindow(QWidget *parent = nullptr);
     ~TrainControlWindow();
     Train* train;
-    //SWTrainController* swtc;
+    SWTC swtc;
 
 private slots:
     void on_submit_clicked();
