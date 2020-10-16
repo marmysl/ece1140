@@ -26,7 +26,7 @@ TrainControlWindow::~TrainControlWindow()
 void TrainControlWindow::timerEvent(QTimerEvent *event)
 {
     count++;
-    std::cout << "Timer has updated... Count is " << count << std::endl;
+    //std::cout << "Timer has updated... Count is " << count << std::endl;
 }
 
 void TrainControlWindow::on_submit_clicked() // on "Submit" the controller instantiates a Train class
