@@ -28,7 +28,7 @@ SOURCES += \
     SWTrackController/BlockCntrl.cpp \
     SWTrackController/TrackController.cpp \
     SWTrackController/trackcntrl_main.cpp \
-    SWTrainController/SWTrainController.cpp \
+    SWTrainController/SWTrainController_main.cpp \
     SWTrainController/TrainCGUI.cpp \
     SerialPort.cpp \
     TrackModel/blocktablemodel.cpp \
@@ -60,7 +60,7 @@ HEADERS += \
     HWTrainController/TrainController.h \
     SWTrackController/BlockCntrl.h \
     SWTrackController/TrackController.h \
-    SWTrainController/SWTrainController.h \
+    SWTrainController/SWTrainController_main.h \
     SWTrainController/TrainCGUI.h \
     SWTrainController/ui_SWTrainController.h \
     SerialPort.hpp \

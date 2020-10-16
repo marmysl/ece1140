@@ -6,7 +6,7 @@
 #include "TrackModel/tracklayout.hpp"
 #include "TrackModel/trackmodel_main.hpp"
 #include "HWTrainController/HWTrainController_main.h"
-#include "SWTrainController/SWTrainController.h"
+#include "SWTrainController/SWTrainController_main.h"
 
 #include <iostream>
 #include <QApplication>

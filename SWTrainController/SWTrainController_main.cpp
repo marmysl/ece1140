@@ -1,7 +1,7 @@
 #include <iostream>
 #include <iomanip>
 
-#include "SWTrainController.h"
+#include "SWTrainController_main.h"
 
 #include <QApplication>
 
@@ -20,7 +20,7 @@ SWTrainController :: SWTrainController(int argc, char *argv[]) //Constructor: cr
 
 }
 
-
+/* ------------------------------------------ UNUSED ------------------------------------------------
 void SWTrainController :: calculatePower()
 {
     // calculate power here
@@ -37,3 +37,4 @@ void SWTrainController :: decode(unsigned signal)  // decodes track circuit into
     suggestedSpeed = signal;
 
 }
+*/

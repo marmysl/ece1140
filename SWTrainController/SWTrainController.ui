@@ -252,6 +252,12 @@
      <height>22</height>
     </rect>
    </property>
+   <widget class="QMenu" name="menuTrain_Controller">
+    <property name="title">
+     <string>Train Controller</string>
+    </property>
+   </widget>
+   <addaction name="menuTrain_Controller"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
  </widget>
