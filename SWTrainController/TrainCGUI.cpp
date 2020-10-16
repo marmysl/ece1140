@@ -52,7 +52,9 @@ void TrainControlWindow::on_sendPowerButton_clicked() // Currently a button, but
 {
     std::cout << "Setting power...\n";
 
+    power = swtc.calculatePower();
     train->setPower(power);
+
 
     std::cout << "Power sent.\n";
     //std::cout << "The velocity is " << train->getCurrentVelocity() << endl;

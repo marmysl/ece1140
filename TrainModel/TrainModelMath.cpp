@@ -15,6 +15,7 @@ double TrainModelMath::updatePosition(double oldPos, double change) {
 }
 
 double TrainModelMath::calcVelocity(double power) {
-    return 20;
+    //return 20;
+    return power; //morgen debug
 }
 
