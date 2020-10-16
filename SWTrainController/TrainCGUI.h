@@ -3,7 +3,7 @@
 
 #include <QMainWindow>
 #include "TrainModel/Train.h"
-#include "ui_TrainController.h"
+#include "../ui_SWTrainController.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class TrainControlWindow; }
