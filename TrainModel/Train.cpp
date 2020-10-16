@@ -31,7 +31,7 @@ void Train::setPower(double newPower){             //Called by train controller 
     double newPos = TrainModelMath::updatePosition(oldPos, distTravelled);
 
     //compare new position to old to see if new block
-    if (newPos >= blockDist){
+    if (newPos >= blockDist && blockNum<=10){
         newPos = newPos - blockDist;
         //update current block and information
         this->updateTrackInfo();
