@@ -11,11 +11,21 @@ TrainControlWindow::TrainControlWindow(QWidget *parent)
     , ui(new Ui::TrainControlWindow)
 {
     ui->setupUi(this);
+
+    timerID = startTimer(1000);
+    count = 0;
 }
 
 TrainControlWindow::~TrainControlWindow()
 {
+    killTimer(timerID);
     delete ui;
+}
+
+void TrainControlWindow::timerEvent(QTimerEvent *event)
+{
+    count++;
+    std::cout << "Timer has updated... Count is " << count << std::endl;
 }
 
 void TrainControlWindow::on_submit_clicked() // on "Submit" the controller instantiates a Train class

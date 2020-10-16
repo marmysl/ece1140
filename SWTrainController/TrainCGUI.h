@@ -2,6 +2,7 @@
 #define TRAINCONTROLWINDOW_H
 
 #include <QMainWindow>
+
 #include "TrainModel/Train.h"
 #include "../ui_SWTrainController.h"
 
@@ -26,7 +27,8 @@ private slots:
 
 private:
     Ui::TrainControlWindow *ui;
-
+    int timerID;
+    int count; //debug
 
     double power; //remove someday
     double kp;
@@ -34,7 +36,8 @@ private:
     int argc;
     char *argv[];
 
-
+protected:
+    void timerEvent(QTimerEvent *event);
 
 };
 #endif // TRAINCONTROLWINDOW_H
