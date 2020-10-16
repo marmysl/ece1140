@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>MainWindow</class>
- <widget class="QMainWindow" name="MainWindow">
+ <class>TrainControlWindow</class>
+ <widget class="QMainWindow" name="TrainControlWindow">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -128,8 +128,8 @@
    <widget class="QPushButton" name="getCircuitInfoButton">
     <property name="geometry">
      <rect>
-      <x>130</x>
-      <y>280</y>
+      <x>50</x>
+      <y>320</y>
       <width>201</width>
       <height>41</height>
      </rect>
@@ -141,8 +141,8 @@
    <widget class="QPushButton" name="decodeButton">
     <property name="geometry">
      <rect>
-      <x>190</x>
-      <y>350</y>
+      <x>130</x>
+      <y>370</y>
       <width>201</width>
       <height>41</height>
      </rect>

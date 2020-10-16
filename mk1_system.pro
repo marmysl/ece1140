@@ -62,7 +62,7 @@ HEADERS += \
     SWTrackController/TrackController.h \
     SWTrainController/SWTrainController.h \
     SWTrainController/TrainCGUI.h \
-    SWTrainController/ui_TrainController.h \
+    SWTrainController/ui_SWTrainController.h \
     SerialPort.hpp \
     TrackModel/blocktablemodel.h \
     TrackModel/layoutdialog.h \
