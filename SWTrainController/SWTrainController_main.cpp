@@ -1,7 +1,7 @@
 #include <iostream>
 #include <iomanip>
 
-#include "SWTrainController.h"
+#include "SWTrainController_main.h"
 
 #include <QApplication>
 
@@ -12,16 +12,15 @@ SWTrainController :: SWTrainController(int argc, char *argv[]) //Constructor: cr
     cout << "Train Controller created" << endl;
     cout.flush();
 
-    //QApplication a(argc, argv);
     TrainControlWindow *w = new TrainControlWindow();
     train = new Train(3); // create train object each time a TC is initialized
     w->train = train;
 
     w->show();
-    //a.exec();
+
 }
 
-
+/* ------------------------------------------ UNUSED ------------------------------------------------
 void SWTrainController :: calculatePower()
 {
     // calculate power here
@@ -38,3 +37,4 @@ void SWTrainController :: decode(unsigned signal)  // decodes track circuit into
     suggestedSpeed = signal;
 
 }
+*/

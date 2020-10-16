@@ -2,6 +2,7 @@
 
 #include "TrainCGUI.h"
 
+
 #include <QString>
 #include <QtLocation/QGeoRoute>
 #include <iostream>
@@ -11,15 +12,21 @@ TrainControlWindow::TrainControlWindow(QWidget *parent)
     , ui(new Ui::TrainControlWindow)
 {
     ui->setupUi(this);
-    //Train train(3, argc, argv);
-    //Train train(3);
-    //trainPtr = &train;
-    //Train* train = new Train(3, argc, argv);
+
+    timerID = startTimer(1000);
+    count = 0;
 }
 
 TrainControlWindow::~TrainControlWindow()
 {
+    killTimer(timerID);
     delete ui;
+}
+
+void TrainControlWindow::timerEvent(QTimerEvent *event)
+{
+    count++;
+    //std::cout << "Timer has updated... Count is " << count << std::endl;
 }
 
 void TrainControlWindow::on_submit_clicked() // on "Submit" the controller instantiates a Train class
@@ -43,7 +50,6 @@ void TrainControlWindow::on_submit_clicked() // on "Submit" the controller insta
 
 void TrainControlWindow::on_sendPowerButton_clicked() // Currently a button, but will need to be a loop.
 {
-    // How to use train object here if it's initialized in an earlier function locally? Pointer?
     std::cout << "Setting power...\n";
 
     train->setPower(power);
@@ -52,7 +58,7 @@ void TrainControlWindow::on_sendPowerButton_clicked() // Currently a button, but
     //std::cout << "The velocity is " << train->getCurrentVelocity() << endl;
 
     double testytest = train->getCurrentVelocity();
-    ui->suggested_speed_label->setText(QString::number(testytest));
+    ui->currspeed_->setText(QString::number(testytest));
 }
 
 void TrainControlWindow::on_getCircuitInfoButton_clicked()
