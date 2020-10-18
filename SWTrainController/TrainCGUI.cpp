@@ -72,7 +72,6 @@ void TrainControlWindow::on_sendPowerButton_clicked() // Currently a button, but
     //power = swtc.calculatePower();
     swtc.setPowerCommand(temp);
 
-
     std::cout << "Power command set.\n";
 
     temp++;

@@ -73,50 +73,11 @@
      <string>Submit</string>
     </property>
    </widget>
-   <widget class="QLabel" name="pcmd_label">
-    <property name="geometry">
-     <rect>
-      <x>550</x>
-      <y>40</y>
-      <width>171</width>
-      <height>21</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>The power commanded is:</string>
-    </property>
-   </widget>
-   <widget class="QLabel" name="p_out_label">
-    <property name="geometry">
-     <rect>
-      <x>760</x>
-      <y>40</y>
-      <width>58</width>
-      <height>16</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>0</string>
-    </property>
-   </widget>
-   <widget class="QLabel" name="kW_label">
-    <property name="geometry">
-     <rect>
-      <x>810</x>
-      <y>40</y>
-      <width>58</width>
-      <height>16</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>kW</string>
-    </property>
-   </widget>
    <widget class="QPushButton" name="sendPowerButton">
     <property name="geometry">
      <rect>
-      <x>640</x>
-      <y>70</y>
+      <x>100</x>
+      <y>190</y>
       <width>141</width>
       <height>61</height>
      </rect>
