@@ -75,7 +75,7 @@ void TrainControlWindow::on_sendPowerButton_clicked() // Currently a button, but
 
     std::cout << "Power command set.\n";
 
-    temp += 5;
+    temp++;
 }
 
 void TrainControlWindow::on_getCircuitInfoButton_clicked()
