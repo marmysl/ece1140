@@ -29,18 +29,20 @@ void TrainControlWindow::timerEvent(QTimerEvent *event)
     //std::cout << "Timer has updated... Count is " << count << std::endl;
 }
 
-void TrainControlWindow::on_submit_clicked() // on "Submit" the controller instantiates a Train class
+void TrainControlWindow::on_submit_clicked() //Submits Kp and Ki
 {
-    //convert input string to text then assign to Kp  & Ki [kinda useless]
+    //convert input string to text then assign to Kp  & Ki
     QString temp1,temp2;
     temp1 = ui->kp_textbox->toPlainText();
     kp = temp1.toDouble();
     temp2 =  ui->ki_textbox->toPlainText();
     ki = temp2.toDouble();
 
-    // Clear textboxes
-    ui->ki_textbox->clear();
-    ui->kp_textbox->clear();
+    // Disable textboxes (Kp and Ki are only set at dispatch)
+    ui->ki_textbox->setReadOnly(true);
+    ui->kp_textbox->setReadOnly(true);
+
+    cout << "Kp and Ki have been set." << std::endl; //debug
 
     // [temporary, for iteration 2] set Power = Kp + Ki, then display on UI
     power = kp + ki;
