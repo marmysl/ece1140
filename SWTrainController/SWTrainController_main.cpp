@@ -7,7 +7,7 @@
 
 using namespace std;
 
-SWTrainController :: SWTrainController(int argc, char *argv[]) //Constructor: creates train controller object and executes GUI
+SWTrainController :: SWTrainController(int argc, char *argv[]) //Constructor: creates train and executes GUI
 {
     cout << "Train Controller created" << endl;
     cout.flush();
