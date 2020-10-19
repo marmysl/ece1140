@@ -6,7 +6,7 @@
 #include "SWTrainController_main.h"
 #include "SWTC.h"
 #include "TrainModel/Train.h"
-#include "../ui_SWTrainController.h"
+#include "ui_SWTrainController.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class TrainControlWindow; }
