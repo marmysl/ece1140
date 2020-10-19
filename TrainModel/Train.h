@@ -18,7 +18,7 @@ public:
     double power;
     double oldPos;
     chrono::steady_clock::time_point oldTime;
-    double currVel;
+    double currVel = 0.0;
     double currPower;
     double blockDist = 50;
     double blockGrade = 0;
