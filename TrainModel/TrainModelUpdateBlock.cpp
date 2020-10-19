@@ -8,9 +8,9 @@ using namespace TrackModel;
 
 TrainModelUpdateBlock::TrainModelUpdateBlock() {}
 
-int TrainModelUpdateBlock::updateBlock(int blockNum){
+int TrainModelUpdateBlock::updateBlock(int blockNum, bool first){
     std::string line = "Blue Line";
-    removeOccupancy(line, blockNum);
+    if (!first){removeOccupancy(line, blockNum);}
     blockNum = blockNum + 1;
     addOccupancy(line, blockNum);
     return blockNum;

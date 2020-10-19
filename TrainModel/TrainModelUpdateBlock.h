@@ -13,7 +13,7 @@ class TrainModelUpdateBlock
 
 public:
     TrainModelUpdateBlock();
-    static int updateBlock(int blockNum);
+    static int updateBlock(int blockNum, bool first);
     static double blockLength(int blockNum);
     static double blockGrade(int blockNum);
     static uint64_t updateTrackCircuit(int blockNum);

@@ -6,7 +6,7 @@
 #include "SWTrainController_main.h"
 #include "SWTC.h"
 #include "TrainModel/Train.h"
-#include "../ui_SWTrainController.h"
+#include "ui_SWTrainController.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class TrainControlWindow; }
@@ -22,11 +22,14 @@ public:
     ~TrainControlWindow();
     Train* train;
     SWTC swtc;
+    double temp = 5.0;
 
 private slots:
     void on_submit_clicked();
     void on_sendPowerButton_clicked();
     void on_getCircuitInfoButton_clicked();
+
+    void on_serviceBrake_clicked();
 
 private:
     Ui::TrainControlWindow *ui;

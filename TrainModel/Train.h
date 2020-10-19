@@ -22,8 +22,9 @@ public:
     double currPower;
     double blockDist = 50;
     double blockGrade = 0;
-    int blockNum;
+    int blockNum = 0;
     TrainModelUI *w;
+    bool inYard = true;
     //QApplication* qapp;
 
     Train(int newNumCars);
