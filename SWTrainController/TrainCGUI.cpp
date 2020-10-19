@@ -58,7 +58,7 @@ void TrainControlWindow::on_submit_clicked() //Submits Kp and Ki
     cout << "Kp and Ki have been set." << std::endl; //debug
 
     //Calculate the initial power for the yard speed (5 m/s)
-    int newpower = swtc.calculatePower(5.0);
+    double newpower = swtc.calculatePower(yardSpeed);
     swtc.setPowerCommand(newpower);
 
     cout << "The initial power for 5m/s has been set by the train controller.\n";
