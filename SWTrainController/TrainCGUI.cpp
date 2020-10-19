@@ -90,6 +90,9 @@ void TrainControlWindow::on_serviceBrake_clicked()
 {
     std::cout << "Service brake has been applied.\n"; //debug
 
+    // set power equal to zero
+    // if emergency brake: setEmergencyBrake too
+
     /*while (swtc.getTrainVelocity() != 0)
     {
         // service brake decel = 1.2 m/s^2, currently running at 1s
