@@ -20,7 +20,7 @@ int mainArgc;
 char **mainArgv;
 
 void createNewTrain() {
-    SWTrainController(mainArgc, mainArgv);
+    SWTrainController();
 }
 
 int main(int argc, char *argv[])

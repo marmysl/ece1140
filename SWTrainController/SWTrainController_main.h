@@ -6,7 +6,7 @@
 #include "TrainCGUI.h"
 #include  "TrainModel/Train.h"
 
-int init_SWTrainController(int argc, char *argv[]);
+int init_SWTrainController();
 
 class SWTrainController
 {
@@ -17,7 +17,7 @@ public: // TEMPORARILY making everything public for easier implementation
     int argc;
     char *argv[];
 public:
-   SWTrainController(int, char*[]);
+   SWTrainController();
    //void calculatePower();
    //void decode(unsigned);
 };
