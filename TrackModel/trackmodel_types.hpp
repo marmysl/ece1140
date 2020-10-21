@@ -6,8 +6,9 @@
 
 namespace TrackModel {
     enum BlockDir {
-        BLK_FORWARD,
-        BLK_REVERSE
+        BLK_NODIR = 0,
+        BLK_FORWARD = 1,
+        BLK_REVERSE = 2
     };
 
     enum SwitchState {
