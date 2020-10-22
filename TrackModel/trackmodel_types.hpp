@@ -8,8 +8,12 @@ namespace TrackModel {
     enum BlockDir {
         BLK_NODIR = 0,
         BLK_FORWARD = 1,
-        BLK_REVERSE = 2
+        BLK_REVERSE = -1
     };
+
+    inline BlockDir oppositeDir( const BlockDir &d ) {
+        return static_cast<BlockDir>(-d);
+    }
 
     enum SwitchState {
         SW_STRAIGHT,

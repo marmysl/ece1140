@@ -355,7 +355,7 @@ Station *Route::getStationByName( std::string stationName ) {
 // Block Members
 Block::Block( int id, std::string section, float length, float grade, float speedLimit, BlockDir oneWay ) :
     id(id), section(section), length(length), grade(grade), speedLimit(speedLimit), oneWay(oneWay),
-    station(nullptr), prevBlock(nullptr), nextBlock(nullptr) {}
+    station(nullptr), reverseLink(nullptr), forwardLink(nullptr) {}
 
 Block *Block::getTarget()
 {
@@ -364,22 +364,27 @@ Block *Block::getTarget()
 
 void Block::setLink( BlockDir direction, Linkable *newBlock ) {
     if( direction == BLK_FORWARD ) {
-        nextBlock = newBlock;
+        forwardLink = newBlock;
     }
     else {
-        prevBlock = newBlock;
+        reverseLink = newBlock;
     }
 }
 
-Block *Block::getLink( BlockDir direction )
+Linkable *Block::getLink( BlockDir direction )
+{
+    return (direction == BLK_FORWARD) ? forwardLink : reverseLink;
+}
+
+Block *Block::getNextBlock( BlockDir direction )
 {
     if( direction == BLK_FORWARD )
     {
-        return nextBlock ? nextBlock->getTarget() : nullptr;
+        return forwardLink ? forwardLink->getTarget() : nullptr;
     }
     else
     {
-        return prevBlock ? prevBlock->getTarget() : nullptr;
+        return reverseLink ? reverseLink->getTarget() : nullptr;
     }
 }
 
@@ -391,13 +396,6 @@ Switch::Switch( Block *from, BlockDir fromDir, Block *straight, Block *diverge )
     straightBlock(straight), divergeBlock(diverge), direction(SW_STRAIGHT) {}
 
 void Switch::setDirection( SwitchState newState ) {
-    if( newState == SW_DIVERGING ) {
-        fromBlock->setLink(fromBlockDir, divergeBlock);
-    }
-    else {
-        fromBlock->setLink(fromBlockDir, straightBlock);
-    }
-
     direction = newState;
 }
 
