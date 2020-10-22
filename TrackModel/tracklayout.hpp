@@ -67,15 +67,18 @@ namespace TrackModel {
             BlockDir oneWay;
             Station *station;
 
-            Linkable *prevBlock;
-            Linkable *nextBlock;
+            Linkable *reverseLink;
+            Linkable *forwardLink;
 
             Block( int id, std::string section, float length, float grade, float speedLimit, BlockDir oneWay = BLK_NODIR );
 
             // connect this block to another block in the given direction
             void setLink( BlockDir direction, Linkable *newBlock );
-            Block *getLink( BlockDir direction );
+            Linkable *getLink( BlockDir direction );
 
+            Block *getNextBlock( BlockDir direction );
+
+            // Linkable interface
             Block *getTarget();
     };
 
@@ -95,6 +98,7 @@ namespace TrackModel {
             // returns: the new state of the switch
             void setDirection( SwitchState newState );
 
+            // Linkable interface
             Block *getTarget();
     };
 
