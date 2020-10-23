@@ -1,3 +1,5 @@
+#include "timetracker.h"
+#include "weatherstation.h"
 #include "serialportdialog.h"
 
 #include "CTCOffice/ctcoffice/ctc_main.h"
@@ -30,6 +32,10 @@ int main(int argc, char *argv[])
 
     QApplication a(argc, argv);
 
+    // initialize system timer
+    systemClock = new TimeTracker(QDateTime::currentDateTime(), 500, 1800, &a);
+    QObject::connect(systemClock, &TimeTracker::timeAdvanced, &weather, &WeatherStation::onTimeUpdate);
+
     TrackModel::routesToLoad.push_back(blueLine);
     int initResult = TrackModel::initializeTrackModel();
     if( initResult < 0 )
@@ -55,5 +61,9 @@ int main(int argc, char *argv[])
     //init_SWTrackController();
     //init_HWTrainController();
 
-    return a.exec();
+    systemClock->play();
+
+    a.exec();
+
+    return EXIT_SUCCESS;
 }

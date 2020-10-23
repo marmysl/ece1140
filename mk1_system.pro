@@ -44,7 +44,9 @@ SOURCES += \
     TrainModel/TrainModelUI.cpp \
     TrainModel/TrainModelUpdateBlock.cpp \
     serialportdialog.cpp \
-    system_main.cpp
+    system_main.cpp \
+    timetracker.cpp \
+    weatherstation.cpp
 
 HEADERS += \
     CTCOffice/ctcoffice/CTCDispatch.h \
@@ -81,7 +83,9 @@ HEADERS += \
     TrainModel/TrainModelUpdateBlock.h \
     serialportdialog.h \
     mk1_util.hpp \
-    system_main.h
+    system_main.h \
+    timetracker.h \
+    weatherstation.h
 
 FORMS += \
     CTCOffice/ctcoffice/mainwindow.ui \
