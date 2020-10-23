@@ -22,7 +22,8 @@ namespace TrackModel
             float distance;
 
             PathNode *prev;
-            int hopCount;
+            Switch *prevSwitch;
+            SwitchState switchDir;
         };
 
     private:
