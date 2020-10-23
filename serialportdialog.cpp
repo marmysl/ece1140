@@ -27,20 +27,20 @@ void SerialPortDialog::on_buttonBox_clicked(QAbstractButton *button)
 
     if( ui->trackEnabled->isChecked() && (trackContPortInfo != NULL) )
     {
-        setTrackControllerPort(trackContPortInfo);
+        trackControllerPort.connectPort(*trackContPortInfo);
     }
     else
     {
-        hwTrackControllerConnected = false;
+        trackControllerPort.disconnect();
     }
 
     if( ui->trainEnabled->isChecked() && (trainContPortInfo != NULL) )
     {
-        setTrainControllerPort(trainContPortInfo);
+        trainControllerPort.connectPort(*trainContPortInfo);
     }
     else
     {
-        hwTrainControllerConnected = false;
+        trainControllerPort.disconnect();
     }
 
     setResult(Accepted);

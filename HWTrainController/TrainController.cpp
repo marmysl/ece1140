@@ -2,6 +2,7 @@
 #include "SerialPort.hpp"
 
 #include <QThread>
+#include <cstring>
 
 TrainController::TrainController()
 {
@@ -13,42 +14,28 @@ TrainController::TrainController()
 	speed_regulator -> decodeTrackSignal();
 	cabin_controller = new CabinControls();
 
-//	//Connects the arduino to the serial port
-//	std::cout << "Searching in progress";
-     
-//     // wait connection
-//	std::cout << "Searching in progress";
-//    while (!arduino->isOpen()) {
-//        std::cout << ".";
-//        arduino->open(QIODevice::ReadWrite);
-//        QThread::msleep(500);
-//    }
-
-//    //Checking if arduino is connected or not
-//    if (arduino->isOpen()) {
-//        std::cout  << std::endl << "Connection established at port " << portName << std::endl;
-//    }
+    // connect data receive method
+    // trainControllerPort.dataReceived -> this.receiveData
+    connect(&trainControllerPort, &SerialConn::dataReceived, this, &TrainController::recieveData);
 }
 
 TrainController::~TrainController()
 {
-	arduino = nullptr;
 	train_model = nullptr;
 	speed_regulator = nullptr;
-	cabin_controller = nullptr;
-	delete arduino;
+    cabin_controller = nullptr;
 	delete train_model;
 	delete speed_regulator;
 	delete cabin_controller;
 }
 
-void TrainController::recieveData()
+void TrainController::recieveData( char *buf, qint64 len )
 {
-    int readResult = trainControllerPort.read(incomingData, ARDUINO_BUF_LENGTH);
+    memcpy(incomingData, buf, len);
 
-    if( readResult > 0 )
+    if( len > 0 )
     {
-        string data(incomingData);
+        string data(buf);
 
           //Create a system to encode all data to be read from
           //char 0 = cabinLights
@@ -143,7 +130,7 @@ void TrainController::writeData(int delayTime)
     std::cout << "Outgoing: " << outgoing_s << std::endl;
     strcpy(outgoingData, outgoing_s.c_str());
 
-    trainControllerPort.read(outgoingData, ARDUINO_BUF_LENGTH);
+    trainControllerPort.writeString(outgoing_s);
 
     QThread::msleep(delayTime);
 }
@@ -161,9 +148,9 @@ string TrainController::getOutput()
 
 void TrainController::dispatch()
 {
-    while(hwTrainControllerConnected)
+    while(trainControllerPort.isConnected())
 	{
-		recieveData();
+        //recieveData();
 		writeData(900);
 		speed_regulator -> calculatePowerCmd();
 		cout << "Power: " << speed_regulator -> getPowerCmd() << endl;

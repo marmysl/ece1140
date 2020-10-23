@@ -4,32 +4,35 @@
 #include <iostream>
 #include <stdio.h>
 #include <string>
+#include <QObject>
 #include "CabinControls.h"
 #include "SpeedRegulator.h"
 #include "TrainModel/Train.h"
-#include <QSerialPort>
+#include "SerialPort.hpp"
 
 using namespace std;
 
-class TrainController
+class TrainController : public QObject
 {
-	private:
-		char portName[9] = "\\\\.\\COM4";
-		char incomingData[255];
-		char outgoingData[255];
-        QSerialPort *arduino;
+    Q_OBJECT
+
+    private:
+        char incomingData[ARDUINO_BUF_LENGTH];
+        char outgoingData[ARDUINO_BUF_LENGTH];
 		Train *train_model;
 		CabinControls *cabin_controller;
 		SpeedRegulator *speed_regulator;
+
 	public:
 		TrainController();
-		~TrainController();
-		void recieveData();
+        ~TrainController();
 		void writeData(int delayTime);
 		string getInput();
 		string getOutput();
 		void dispatch();
 
+    public slots:
+        void recieveData( char *buf, qint64 len );
 };
 
 #endif
