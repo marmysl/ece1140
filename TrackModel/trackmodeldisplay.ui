@@ -398,6 +398,19 @@
     <string>Reload Layouts...</string>
    </property>
   </widget>
+  <widget class="QPushButton" name="testRouteButton">
+   <property name="geometry">
+    <rect>
+     <x>630</x>
+     <y>10</y>
+     <width>80</width>
+     <height>25</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Test Routing</string>
+   </property>
+  </widget>
   <zorder>stationGroupBox</zorder>
   <zorder>regionComboBox</zorder>
   <zorder>blocktableView</zorder>
@@ -410,6 +423,7 @@
   <zorder>label_6</zorder>
   <zorder>faultGroupBox</zorder>
   <zorder>reloadLayoutButton</zorder>
+  <zorder>testRouteButton</zorder>
  </widget>
  <resources/>
  <connections/>

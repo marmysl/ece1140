@@ -35,6 +35,8 @@ private slots:
 
     void on_reloadLayoutButton_clicked();
 
+    void on_testRouteButton_clicked();
+
 private:
     Ui::TrackModelDisplay *ui;
     TrackModel::RouteStatus *selectedRoute;

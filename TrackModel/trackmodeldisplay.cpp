@@ -1,6 +1,7 @@
 #include "trackmodeldisplay.h"
 #include "ui_trackmodeldisplay.h"
 #include "trackmodel_main.hpp"
+#include "routingtestdialog.h"
 
 #include <QDebug>
 
@@ -168,4 +169,10 @@ void TrackModelDisplay::on_applyFaultsButton_clicked()
 void TrackModelDisplay::on_reloadLayoutButton_clicked()
 {
     TrackModel::initializeTrackModel();
+}
+
+void TrackModelDisplay::on_testRouteButton_clicked()
+{
+    RoutingTestDialog rtd(selectedRoute->layoutRoute, this);
+    rtd.exec();
 }
