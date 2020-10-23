@@ -50,7 +50,7 @@ TrainPathInfo TrackRouter::findPath( int startBlock, BlockDir startDir, int endB
         nodeList[i].distance = std::numeric_limits<float>::infinity();
         nodeList[i].dir = BLK_NODIR;
         nodeList[i].prev = nullptr;
-        nodeList[i].hopCount = 0;
+        nodeList[i].prevSwitch = nullptr;
 
         if( nodeList[i].block->id == startBlock )
         {
@@ -72,13 +72,21 @@ TrainPathInfo TrackRouter::findPath( int startBlock, BlockDir startDir, int endB
         {
             // return path
             TrainPathInfo path;
+
             // push blocks from last to first
             for( PathNode *n = curNode; n != nullptr; n = n->prev )
             {
                 path.blocks.push_back(n->block);
+
+                if( n->prevSwitch )
+                {
+                    path.switchStates.push_back({n->prevSwitch->fromBlock->id, n->switchDir});
+                }
             }
 
             std::reverse(path.blocks.begin(), path.blocks.end());
+            std::reverse(path.switchStates.begin(), path.switchStates.end());
+
             return path;
         }
 
@@ -118,6 +126,9 @@ TrainPathInfo TrackRouter::findPath( int startBlock, BlockDir startDir, int endB
                                 d->distance = newDist;
                                 d->prev = curNode;
 
+                                d->prevSwitch = s;
+                                d->switchDir = SW_DIVERGING;
+
                                 pathQueue.push(d);
                             }
                         }
@@ -143,6 +154,13 @@ TrainPathInfo TrackRouter::findPath( int startBlock, BlockDir startDir, int endB
                         n->dir = searchDir;
                         n->distance = newDist;
                         n->prev = curNode;
+
+                        // if we got here via the straight leg of the switch
+                        if( Switch *s = dynamic_cast<Switch *>(next) )
+                        {
+                            n->prevSwitch = s;
+                            n->switchDir = SW_STRAIGHT;
+                        }
 
                         pathQueue.push(n);
                     }
@@ -183,6 +201,9 @@ TrainPathInfo TrackRouter::findPath( int startBlock, BlockDir startDir, int endB
                                 d->distance = newDist;
                                 d->prev = curNode;
 
+                                d->prevSwitch = s;
+                                d->switchDir = SW_DIVERGING;
+
                                 pathQueue.push(d);
                             }
                         }
@@ -205,8 +226,16 @@ TrainPathInfo TrackRouter::findPath( int startBlock, BlockDir startDir, int endB
                     // if the node was already found in the other direction then it's a loop, throw it out
                     if( n->dir == BLK_NODIR || searchDir == n->dir )
                     {
+                        n->dir = searchDir;
                         n->distance = newDist;
                         n->prev = curNode;
+
+                        // if we got here via the straight leg of the switch
+                        if( Switch *s = dynamic_cast<Switch *>(prev) )
+                        {
+                            n->prevSwitch = s;
+                            n->switchDir = SW_STRAIGHT;
+                        }
 
                         pathQueue.push(n);
                     }

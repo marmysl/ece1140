@@ -7,15 +7,24 @@ RoutingTestDialog::RoutingTestDialog(TrackModel::Route *route, QWidget *parent) 
     route(route), ui(new Ui::RoutingTestDialog)
 {
     ui->setupUi(this);
-    blockList = new int[route->blocks.size()];
+    int nBlk = route->blocks.size() + 1;
+    blockList = new int[nBlk];
 
-    int i = 0;
+    blockList[0] = 0;
+
+    int i = 1;
     for( auto &kvp : route->blocks )
     {
         blockList[i] = kvp.first;
-        ui->fromCombo->addItem(QString::number(kvp.first));
-        ui->toCombo->addItem(QString::number(kvp.first));
         i++;
+    }
+
+    std::sort(blockList, blockList + nBlk);
+
+    for( i = 0; i < nBlk; i++ )
+    {
+        ui->fromCombo->addItem(QString::number(blockList[i]));
+        ui->toCombo->addItem(QString::number(blockList[i]));
     }
 
     router = new TrackModel::TrackRouter(route);
@@ -38,13 +47,38 @@ void RoutingTestDialog::on_buttonBox_accepted()
     TrainPathInfo path = router->findPath(fromBlk, BLK_NODIR, toBlk);
 
     std::stringstream buf;
+    bool first = true;
+
     for( Block *blk : path.blocks )
     {
+        if( !first ) buf << " > ";
+        first = false;
+
         buf << blk->id;
-        buf << " > ";
     }
 
-    ui->resultLabel->setText(QString::fromStdString(buf.str()));
+    ui->routeLabel->setText(QString::fromStdString(buf.str()));
+
+    if( path.switchStates.size() > 0 )
+    {
+        buf.str(std::string());
+        first = true;
+
+        for( auto &sw : path.switchStates )
+        {
+            if( !first ) buf << ", ";
+            first = false;
+
+            buf << '{' << sw.first << ": ";
+            buf << ((sw.second == SW_DIVERGING) ? "Diverge}" : "Straight}");
+        }
+
+        ui->switchesLabel->setText(QString::fromStdString(buf.str()));
+    }
+    else
+    {
+        ui->switchesLabel->setText("N/A");
+    }
 }
 
 void RoutingTestDialog::on_buttonBox_rejected()
