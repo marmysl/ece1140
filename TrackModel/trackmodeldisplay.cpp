@@ -2,6 +2,8 @@
 #include "ui_trackmodeldisplay.h"
 #include "trackmodel_main.hpp"
 #include "routingtestdialog.h"
+#include "weatherstation.h"
+#include "timetracker.h"
 
 #include <QDebug>
 
@@ -17,6 +19,8 @@ TrackModelDisplay::TrackModelDisplay(QWidget *parent) :
 
     ui->switchTableView->setModel(&switchTable);
     ui->switchTableView->resizeColumnsToContents();
+
+    connect(systemClock, &TimeTracker::timeAdvanced, this, &TrackModelDisplay::on_timeAdvanced);
 }
 
 TrackModelDisplay::~TrackModelDisplay()
@@ -175,4 +179,10 @@ void TrackModelDisplay::on_testRouteButton_clicked()
 {
     RoutingTestDialog rtd(selectedRoute->layoutRoute, this);
     rtd.exec();
+}
+
+void TrackModelDisplay::on_timeAdvanced( const QDateTime &newTime, qint64 delta )
+{
+    ui->sysTimeLabel->setText(newTime.toString());
+    ui->envTempLabel->setText(QString::fromStdString(weather.getTempFString()));
 }

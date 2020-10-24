@@ -4,6 +4,7 @@
 #include <vector>
 #include "tracklayout.hpp"
 #include "trackmodeldisplay.h"
+#include "weatherstation.h"
 
 namespace TrackModel {
     struct BlockStatus {

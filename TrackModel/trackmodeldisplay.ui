@@ -411,6 +411,38 @@
     <string>Test Routing</string>
    </property>
   </widget>
+  <widget class="QLabel" name="sysTimeLabel">
+   <property name="geometry">
+    <rect>
+     <x>824</x>
+     <y>10</y>
+     <width>181</width>
+     <height>20</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>&lt;System Time&gt;</string>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignCenter</set>
+   </property>
+  </widget>
+  <widget class="QLabel" name="envTempLabel">
+   <property name="geometry">
+    <rect>
+     <x>1074</x>
+     <y>10</y>
+     <width>61</width>
+     <height>20</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>&lt;Temp&gt;</string>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignCenter</set>
+   </property>
+  </widget>
   <zorder>stationGroupBox</zorder>
   <zorder>regionComboBox</zorder>
   <zorder>blocktableView</zorder>
@@ -424,6 +456,8 @@
   <zorder>faultGroupBox</zorder>
   <zorder>reloadLayoutButton</zorder>
   <zorder>testRouteButton</zorder>
+  <zorder>sysTimeLabel</zorder>
+  <zorder>envTempLabel</zorder>
  </widget>
  <resources/>
  <connections/>
