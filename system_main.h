@@ -1,6 +1,7 @@
-#ifndef SYSTEM_MAIN_H
-#define SYSTEM_MAIN_H
+#pragma once
+
+#include <QApplication>
+
+extern QApplication *mk1_app;
 
 void createNewTrain();
-
-#endif // SYSTEM_MAIN_H
