@@ -45,6 +45,7 @@ SOURCES += \
     TrainModel/TrainModelMath.cpp \
     TrainModel/TrainModelUI.cpp \
     TrainModel/TrainModelUpdateBlock.cpp \
+    binaryindicator.cpp \
     serialportdialog.cpp \
     system_main.cpp \
     timetracker.cpp \
@@ -85,6 +86,7 @@ HEADERS += \
     TrainModel/TrainModelMath.h \
     TrainModel/TrainModelUI.h \
     TrainModel/TrainModelUpdateBlock.h \
+    binaryindicator.h \
     serialportdialog.h \
     mk1_util.hpp \
     system_main.h \

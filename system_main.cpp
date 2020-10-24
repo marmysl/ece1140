@@ -34,7 +34,8 @@ int main(int argc, char *argv[])
     mk1_app = new QApplication(argc, argv);
 
     // initialize system timer
-    systemClock = new TimeTracker(QDateTime::currentDateTime(), 500, 1800, mk1_app);
+    QDateTime startTime = QDate(2020, 11, 20).startOfDay();
+    systemClock = new TimeTracker(startTime, 500, 1800, mk1_app);
     QObject::connect(systemClock, &TimeTracker::timeAdvanced, &weather, &WeatherStation::onTimeUpdate);
 
     TrackModel::routesToLoad.push_back(blueLine);

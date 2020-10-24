@@ -4,7 +4,8 @@
 #include "tracklayout.hpp"
 #include "blocktablemodel.h"
 #include "switchtablemodel.h"
-#include <QDialog>
+#include <QMainWindow>
+#include <QLabel>
 
 namespace Ui {
 class TrackModelDisplay;
@@ -12,7 +13,7 @@ class TrackModelDisplay;
 
 namespace TrackModel { struct RouteStatus; struct StationStatus; }
 
-class TrackModelDisplay : public QDialog
+class TrackModelDisplay : public QMainWindow
 {
     Q_OBJECT
 
@@ -43,6 +44,8 @@ private:
     SwitchTableModel switchTable;
     TrackModel::StationStatus *selectedStation;
     TrackModel::BlockStatus *selectedBlock;
+
+    QLabel sysTimeLabel;
 
     void updateStationDisplay();
 };

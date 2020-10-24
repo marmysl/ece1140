@@ -8,11 +8,13 @@
 #include <QDebug>
 
 TrackModelDisplay::TrackModelDisplay(QWidget *parent) :
-    QDialog(parent),
+    QMainWindow(parent),
     ui(new Ui::TrackModelDisplay)
 {
     ui->setupUi(this);
     setWindowFlags(windowFlags() & !(Qt::WindowStaysOnTopHint));
+
+    ui->statusBar->addPermanentWidget(&sysTimeLabel, 1);
 
     ui->blocktableView->setModel(&blockTable);
     ui->blocktableView->resizeColumnsToContents();
@@ -183,6 +185,17 @@ void TrackModelDisplay::on_testRouteButton_clicked()
 
 void TrackModelDisplay::on_timeAdvanced( const QDateTime &newTime, qint64 delta )
 {
-    ui->sysTimeLabel->setText(newTime.toString());
+    sysTimeLabel.setText("System Time:  " + newTime.toString());
     ui->envTempLabel->setText(QString::fromStdString(weather.getTempFString()));
+
+    if( weather.isBelowFreezing() )
+    {
+        ui->heatersStatLabel->setText("On");
+        ui->heatersOnFlag->setValue(true);
+    }
+    else
+    {
+        ui->heatersStatLabel->setText("Off");
+        ui->heatersOnFlag->setValue(false);
+    }
 }
