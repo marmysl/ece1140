@@ -23,10 +23,12 @@ class TrainController : public QObject
 		CabinControls *cabin_controller;
 		SpeedRegulator *speed_regulator;
 
+        QTimer *writeTimer;
+
 	public:
 		TrainController();
         ~TrainController();
-		void writeData(int delayTime);
+        void writeData();
 		string getInput();
 		string getOutput();
 		void dispatch();

@@ -5,7 +5,7 @@
 #include "SWTrackController/TrackController.h"
 #include "TrackModel/tracklayout.hpp"
 #include "TrackModel/trackmodel_main.hpp"
-#include "HWTrainController/HWTrainController_main.h"
+#include "HWTrainController/TrainController.h"
 #include "SWTrainController/SWTrainController_main.h"
 
 #include <iostream>
@@ -19,8 +19,10 @@ SerialPortDialog *hwPortsDialog;
 int mainArgc;
 char **mainArgv;
 
+TrainController *tc;
+
 void createNewTrain() {
-    SWTrainController();
+    tc = new TrainController();
 }
 
 int main(int argc, char *argv[])

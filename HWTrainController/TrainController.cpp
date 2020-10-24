@@ -2,7 +2,8 @@
 #include "SerialPort.hpp"
 
 #include <QThread>
-#include <cstring>
+#include <string>
+#include <QTimer>
 
 TrainController::TrainController()
 {
@@ -14,9 +15,15 @@ TrainController::TrainController()
 	speed_regulator -> decodeTrackSignal();
 	cabin_controller = new CabinControls();
 
+    writeTimer = new QTimer();
+    writeTimer->setInterval(ARDUINO_WAIT_TIME);
+
     // connect data receive method
     // trainControllerPort.dataReceived -> this.receiveData
     connect(&trainControllerPort, &SerialConn::dataReceived, this, &TrainController::recieveData);
+    connect(writeTimer, &QTimer::timeout, this, &TrainController::writeData);
+
+    writeTimer->start();
 }
 
 TrainController::~TrainController()
@@ -24,6 +31,7 @@ TrainController::~TrainController()
 	train_model = nullptr;
 	speed_regulator = nullptr;
     cabin_controller = nullptr;
+    delete writeTimer;
 	delete train_model;
 	delete speed_regulator;
 	delete cabin_controller;
@@ -32,10 +40,11 @@ TrainController::~TrainController()
 void TrainController::recieveData( char *buf, qint64 len )
 {
     memcpy(incomingData, buf, len);
+    incomingData[len] = '\0';
 
-    if( len > 0 )
+    if( len >= 0 )
     {
-        string data(buf);
+        string data(incomingData);
 
           //Create a system to encode all data to be read from
           //char 0 = cabinLights
@@ -50,10 +59,10 @@ void TrainController::recieveData( char *buf, qint64 len )
           //char17 = joystick down
 
 
-        std::cout << "Incoming: " << data << std::endl;
-
         if(!data.empty())
         {
+            std::cout << "Incoming: " << data.substr(0, 17) << std::endl;
+
             if(data.substr(0,1) == "1") cabin_controller -> cabinLightsOn();
             else cabin_controller -> cabinLightsOff();
 
@@ -77,13 +86,14 @@ void TrainController::recieveData( char *buf, qint64 len )
             if(data.substr(17,1) == "1") speed_regulator -> incSetpointSpeed(-.5);
 
             speed_regulator -> setKpAndKi(std::stod(data.substr(6,5)), std::stod(data.substr(11,5)));
+
+            speed_regulator -> calculatePowerCmd();
+            cout << "Power: " << speed_regulator -> getPowerCmd() << endl;
         }
     }
-
-    QThread::msleep(900);
 }
 
-void TrainController::writeData(int delayTime)
+void TrainController::writeData()
 {
 	//Create a system to encode all data to be returned to the interface in the string
     //char 0 = cabinLights
@@ -131,8 +141,6 @@ void TrainController::writeData(int delayTime)
     strcpy(outgoingData, outgoing_s.c_str());
 
     trainControllerPort.writeString(outgoing_s);
-
-    QThread::msleep(delayTime);
 }
 
 string TrainController::getInput()
@@ -148,13 +156,13 @@ string TrainController::getOutput()
 
 void TrainController::dispatch()
 {
-    while(trainControllerPort.isConnected())
-	{
-        //recieveData();
-		writeData(900);
-		speed_regulator -> calculatePowerCmd();
-		cout << "Power: " << speed_regulator -> getPowerCmd() << endl;
-		cout << "Incoming: " << getInput() << endl;
-		cout << "Outgoing: " << getOutput() << endl;
-	}
+//    while(trainControllerPort.isConnected())
+//	{
+//        //recieveData();
+//		writeData(900);
+//		speed_regulator -> calculatePowerCmd();
+//		cout << "Power: " << speed_regulator -> getPowerCmd() << endl;
+//		cout << "Incoming: " << getInput() << endl;
+//		cout << "Outgoing: " << getOutput() << endl;
+//	}
 }
