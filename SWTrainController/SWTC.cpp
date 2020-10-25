@@ -1,12 +1,21 @@
 #include "SWTC.h"
 
 
-double SWTC :: calculatePower(double currentSpeed)
+void SWTC :: calculatePower()
 {
-    // calculate power here
+    double speed;
+    // Compare setpoint & commanded speed
+    if (setpointSpeed <= commandedSpeed){
+        speed = setpointSpeed;
+    } else {
+        speed = commandedSpeed;
+    }
 
-    double power = kp + ki / currentSpeed;
-    return power;
+    double power = kp + ki / speed;
+
+    if (speed == 0) {power = 0;}
+
+    setPowerCommand(power);
 }
 
 
@@ -14,6 +23,12 @@ void SWTC :: decode(uint64_t decodeSignal)  // decodes track circuit into speed 
 {
     double decodeSpeed = decodeSignal >> 32;
     double decodeAuth = decodeSignal & 0xfffffff;
+
+
+    // TEMP: Hard coding commanded speed and authority since track controller gives 0
+    decodeSpeed = 25.0;
+    decodeAuth = 45.0;
+
 
     setCommandedSpeed(decodeSpeed);
     setAuthority(decodeAuth);

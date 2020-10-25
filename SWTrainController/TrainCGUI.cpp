@@ -28,7 +28,7 @@ void TrainControlWindow::timerEvent(QTimerEvent *event)
 {
     count++;
     //std::cout << "Timer has updated... " << count << std::endl; //debug
-
+    swtc.calculatePower();
     updatePower();
     updateCircuitInfo();
     updateBrakes();
@@ -101,14 +101,14 @@ void TrainControlWindow::on_submit_clicked() //Submits Kp and Ki
     cout << "Kp and Ki have been set." << std::endl; //debug
 
     //Calculate the initial power for the yard speed (5 m/s)
-    double newpower = swtc.calculatePower(yardSpeed);
-    swtc.setPowerCommand(newpower);
+    swtc.setSetpointSpeed(yardSpeed);
+    swtc.calculatePower();
 
     cout << "The initial power for 5m/s has been set by the train controller.\n";
 
 }
 
-void TrainControlWindow::on_sendPowerButton_clicked() // Currently a button, but will need to be a loop.
+void TrainControlWindow::on_sendPowerButton_clicked()
 {
     std::cout << "Setting power command to " << temp << std::endl;
 
