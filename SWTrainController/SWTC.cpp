@@ -101,3 +101,12 @@ double SWTC :: getAuthority()
 {
     return authority;
 }
+
+void SWTC :: setSetpointSpeed(double speed)
+{
+    setpointSpeed = speed;
+}
+double SWTC :: getSetpointSpeed()
+{
+    return setpointSpeed;
+}
