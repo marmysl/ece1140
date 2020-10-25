@@ -25,12 +25,18 @@ public:
     double temp = 5.0;
     double yardSpeed = 5.0; //speed of train in yard before block 1
 
+    void updateCircuitInfo();
+    void updatePower();
+    void updateBrakes();
+
 private slots:
     void on_submit_clicked();
     void on_sendPowerButton_clicked();
     void on_getCircuitInfoButton_clicked();
 
     void on_serviceBrake_clicked();
+
+    void on_emergencyBrake_clicked();
 
 private:
     Ui::TrainControlWindow *ui;

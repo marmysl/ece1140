@@ -3,23 +3,23 @@
 #ifndef SWTRAINCONTROLLER_H
 #define SWTRAINCONTROLLER_H
 
-#include "TrainCGUI.h"
+#include "hw_sw_interfaces.h"
 #include  "TrainModel/Train.h"
 
 int init_SWTrainController();
 
-class SWTrainController
+class SWTrainController : public ITrainController
 {
 
 public: // TEMPORARILY making everything public for easier implementation
 //private:
-    Train *train;
     int argc;
     char *argv[];
 public:
    SWTrainController();
    //void calculatePower();
    //void decode(unsigned);
+   void dispatch() override;
 };
 
 #endif // SWTRAINCONTROLLER_H

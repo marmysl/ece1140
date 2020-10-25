@@ -10,17 +10,17 @@ double SWTC :: calculatePower(double currentSpeed)
 }
 
 
-void SWTC :: decode(unsigned signal)  // decodes track circuit into speed & auth //switch to void?
+void SWTC :: decode(uint64_t decodeSignal)  // decodes track circuit into speed & auth //switch to void?
 {
-    // add stuff here
+    double decodeSpeed = decodeSignal >> 32;
+    double decodeAuth = decodeSignal & 0xfffffff;
 
-    //temporary - debugging
-    authority = 10.5;
-    suggestedSpeed = signal;
+    setCommandedSpeed(decodeSpeed);
+    setAuthority(decodeAuth);
 
 }
 
-// Just accessors and mutators below here. Nothin fancy
+// ------------------------------------------------------------ Just accessors and mutators below here. Nothin fancy
 
 void SWTC :: setPowerCommand(double newpower)
 {
@@ -60,4 +60,44 @@ void SWTC :: setKi(double input)
 double SWTC :: getKi()
 {
     return ki;
+}
+
+void SWTC :: setServiceBrake(bool flag)
+{
+    serviceBrakeEnabled = flag;
+}
+
+bool SWTC :: getServiceBrakeFlag()
+{
+    return serviceBrakeEnabled;
+}
+
+void SWTC :: setEmergencyBrake(bool flag)
+{
+    emergencyBrakeEnabled = flag;
+}
+
+bool SWTC :: getEmergencyBrakeFlag()
+{
+    return emergencyBrakeEnabled;
+}
+
+void SWTC :: setCommandedSpeed(double speed)
+{
+    commandedSpeed = speed;
+}
+
+double SWTC :: getCommandedSpeed()
+{
+    return commandedSpeed;
+}
+
+void SWTC :: setAuthority(double newAuth)
+{
+    authority = newAuth;
+}
+
+double SWTC :: getAuthority()
+{
+    return authority;
 }

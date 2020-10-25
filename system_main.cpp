@@ -3,15 +3,18 @@
 #include "serialportdialog.h"
 #include "systemsettingsdialog.h"
 
+#include "system_main.h"
+
 #include "CTCOffice/ctcoffice/ctc_main.h"
 #include "HWTrackController/HWTrackController_main.h"
 #include "SWTrackController/TrackController.h"
 #include "TrackModel/tracklayout.hpp"
 #include "TrackModel/trackmodel_main.hpp"
-#include "HWTrainController/HWTrainController_main.h"
+#include "HWTrainController/TrainController.h"
 #include "SWTrainController/SWTrainController_main.h"
 
 #include <iostream>
+#include <unordered_map>
 #include <QApplication>
 #include <QDebug>
 
@@ -21,18 +24,35 @@ QApplication *mk1_app;
 SerialPortDialog *hwPortsDialog;
 SystemSettingsDialog *systemDialog;
 
-int mainArgc;
-char **mainArgv;
+std::unordered_map<int, ITrainController *> activeTrains;
+int nextTrainId = 1;
 
 void createNewTrain() {
-    SWTrainController();
+    ITrainController *newTrain;
+
+    if( nextTrainId == 1 )
+    {
+        newTrain = new TrainController();
+    }
+    else
+    {
+        newTrain = new SWTrainController();
+    }
+
+    newTrain->id = nextTrainId;
+    activeTrains.insert({nextTrainId, newTrain});
+
+    nextTrainId += 1;
 }
+
+void forgetTrain( int id )
+{
+    activeTrains.erase(id);
+}
+
 
 int main(int argc, char *argv[])
 {
-    mainArgc = argc;
-    mainArgv = argv;
-
     mk1_app = new QApplication(argc, argv);
 
     // initialize system timer
