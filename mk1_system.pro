@@ -83,6 +83,7 @@ HEADERS += \
     TrainModel/TrainModelMath.h \
     TrainModel/TrainModelUI.h \
     TrainModel/TrainModelUpdateBlock.h \
+    hw_sw_interfaces.h \
     serialportdialog.h \
     mk1_util.hpp \
     system_main.h \

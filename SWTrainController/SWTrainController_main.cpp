@@ -1,6 +1,7 @@
 #include <iostream>
 #include <iomanip>
 
+#include "TrainCGUI.h"
 #include "SWTrainController_main.h"
 
 #include <QApplication>
@@ -20,3 +21,7 @@ SWTrainController :: SWTrainController() //Constructor: creates train and execut
 
 }
 
+void SWTrainController::dispatch()
+{
+    // <your code here>
+}
