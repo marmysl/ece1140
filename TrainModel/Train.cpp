@@ -14,18 +14,11 @@ Train::Train(int newNumCars)
 {
     cout << "Created new Train Model with " << newNumCars << " cars" << endl;
     w = new TrainModelUI();
-    cout << "made train ui";
     w->show();
-    cout << "show train ui";
     controls = new TrainModelControls();
-    cout << "made controls";
     block = new TrainModelUpdateBlock();
     math = new TrainModelMath(newNumCars, block);
-    cout << "made math";
-    //block = new TrainModelUpdateBlock();
-    cout << "made block";
     updateUI();
-    cout << "made it to the end of const ";
 }
 
 void Train::setPower(double newPower){             //Called by train controller to set power
