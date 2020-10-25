@@ -103,8 +103,9 @@ void TrainControlWindow::on_sendPowerButton_clicked() // Currently a button, but
 
 void TrainControlWindow::on_getCircuitInfoButton_clicked()
 {
-    // signal = train.sendTrackCircuit();
-
+    swtc.decode(train->sendTrackCircuit());
+    ui->commspeed_->setText(QString::number(swtc.getCommandedSpeed()));
+    ui->authority_->setText(QString::number(swtc.getAuthority()));
 }
 
 void TrainControlWindow::on_serviceBrake_clicked()
