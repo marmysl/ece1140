@@ -11,13 +11,13 @@ class SWTC
         double ki;
         double commandedSpeed = 0.0;
         double authority = 0.0;
-        double setpointSpeed = 20.0;
+        double setpointSpeed = 0.0;
         double trainVelocity;
         unsigned signal;
         bool serviceBrakeEnabled = false;
         bool emergencyBrakeEnabled = false;
     public:
-        double calculatePower(double);
+        void calculatePower();
         void decode(uint64_t);
 
         // Accessors & mutators
