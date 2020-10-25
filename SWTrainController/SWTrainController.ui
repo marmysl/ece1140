@@ -89,8 +89,8 @@
    <widget class="QPushButton" name="getCircuitInfoButton">
     <property name="geometry">
      <rect>
-      <x>480</x>
-      <y>30</y>
+      <x>460</x>
+      <y>40</y>
       <width>201</width>
       <height>41</height>
      </rect>
@@ -99,30 +99,17 @@
      <string>Get Track Circuit Info</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="decodeButton">
-    <property name="geometry">
-     <rect>
-      <x>480</x>
-      <y>80</y>
-      <width>201</width>
-      <height>41</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Decode Circuit Info</string>
-    </property>
-   </widget>
    <widget class="QLabel" name="circuitInfo">
     <property name="geometry">
      <rect>
-      <x>770</x>
+      <x>730</x>
       <y>20</y>
-      <width>101</width>
+      <width>141</width>
       <height>21</height>
      </rect>
     </property>
     <property name="text">
-     <string>Circuit info:</string>
+     <string>Decoded Circuit Info: </string>
     </property>
    </widget>
    <widget class="QLabel" name="currspeed">
@@ -142,7 +129,7 @@
     <property name="geometry">
      <rect>
       <x>710</x>
-      <y>110</y>
+      <y>90</y>
       <width>58</width>
       <height>16</height>
      </rect>
@@ -168,7 +155,7 @@
     <property name="geometry">
      <rect>
       <x>850</x>
-      <y>110</y>
+      <y>90</y>
       <width>58</width>
       <height>16</height>
      </rect>
@@ -177,7 +164,7 @@
      <string>0</string>
     </property>
    </widget>
-   <widget class="QLabel" name="suggspeed_">
+   <widget class="QLabel" name="commspeed_">
     <property name="geometry">
      <rect>
       <x>850</x>
@@ -190,17 +177,17 @@
      <string>0</string>
     </property>
    </widget>
-   <widget class="QLabel" name="suggspeed">
+   <widget class="QLabel" name="commspeed">
     <property name="geometry">
      <rect>
       <x>710</x>
       <y>60</y>
-      <width>111</width>
+      <width>131</width>
       <height>16</height>
      </rect>
     </property>
     <property name="text">
-     <string>Suggested Speed:</string>
+     <string>Commanded Speed:</string>
     </property>
    </widget>
    <widget class="QPushButton" name="serviceBrake">

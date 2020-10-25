@@ -25,6 +25,10 @@ public:
     double temp = 5.0;
     double yardSpeed = 5.0; //speed of train in yard before block 1
 
+    void updateCircuitInfo();
+    void updatePower();
+    void updateBrakes();
+
 private slots:
     void on_submit_clicked();
     void on_sendPowerButton_clicked();

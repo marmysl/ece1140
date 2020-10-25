@@ -23,23 +23,36 @@ TrainControlWindow::~TrainControlWindow()
     delete ui;
 }
 
-/* ------------------------ Transmitter --------------------------------- */
+// --------------------------------------------------------------------------------- Transmitter
 void TrainControlWindow::timerEvent(QTimerEvent *event)
 {
     count++;
-    std::cout << "Timer has updated... " << count << std::endl; //debug
+    //std::cout << "Timer has updated... " << count << std::endl; //debug
 
+    updatePower();
+    updateCircuitInfo();
+    updateBrakes();
+}
 
-    // Eventually put all of this stuff in a clearer way
-    swtc.setTrainVelocity(train->getCurrentVelocity()); //gets the current speed of the train
+// -------------------------------------------------------------------------------- Transmitter update functions
+void TrainControlWindow :: updateCircuitInfo()
+{
+    swtc.decode(train->sendTrackCircuit());
+    ui->commspeed_->setText(QString::number(swtc.getCommandedSpeed()));
+    ui->authority_->setText(QString::number(swtc.getAuthority()));
+}
+
+void TrainControlWindow :: updatePower()
+{
+    swtc.setTrainVelocity(train->getCurrentVelocity());
     ui->currspeed_->setText(QString::number(swtc.getTrainVelocity()));
 
-    train->setPower(swtc.getPowerCommand()); //feeds train new power every sec
+    train->setPower(swtc.getPowerCommand());
     ui->powerOutput_->setText(QString::number(swtc.getPowerCommand()));
+}
 
-    //train->setServiceBrake(swtc.getServiceBrakeFlag()); //set service brake flag
-    //train->setEmergencyBrake(swtc.getEmergencyBrakeFlag()); //set service brake flag
-
+void TrainControlWindow :: updateBrakes()
+{
     // if the train is actively braking, display on GUI for driver
     if (swtc.getEmergencyBrakeFlag() == true){
         ui->ebrake_->setText("The emergency brake is enabled!");
@@ -54,13 +67,13 @@ void TrainControlWindow::timerEvent(QTimerEvent *event)
     }
 
     // if the train has 0 velocity, reset the brake flags
-    if ((train->getCurrentVelocity()) == 0.0)
-    {
+    if ((train->getCurrentVelocity()) == 0.0) {
         swtc.setServiceBrake(false);
         swtc.setEmergencyBrake(false);
     }
 }
 
+// ------------------------------------------------------------------------------------------- GUI buttons n' stuff
 void TrainControlWindow::on_submit_clicked() //Submits Kp and Ki
 {
     //convert input string to text then assign to Kp  & Ki
@@ -103,8 +116,9 @@ void TrainControlWindow::on_sendPowerButton_clicked() // Currently a button, but
 
 void TrainControlWindow::on_getCircuitInfoButton_clicked()
 {
-    // signal = train.sendTrackCircuit();
-
+    swtc.decode(train->sendTrackCircuit());
+    ui->commspeed_->setText(QString::number(swtc.getCommandedSpeed()));
+    ui->authority_->setText(QString::number(swtc.getAuthority()));
 }
 
 void TrainControlWindow::on_serviceBrake_clicked()
