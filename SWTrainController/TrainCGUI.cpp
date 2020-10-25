@@ -27,7 +27,7 @@ TrainControlWindow::~TrainControlWindow()
 void TrainControlWindow::timerEvent(QTimerEvent *event)
 {
     count++;
-    std::cout << "Timer has updated... " << count << std::endl; //debug
+    //std::cout << "Timer has updated... " << count << std::endl; //debug
 
     updatePower();
     updateCircuitInfo();
