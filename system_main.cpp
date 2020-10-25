@@ -1,6 +1,7 @@
 #include "timetracker.h"
 #include "weatherstation.h"
 #include "serialportdialog.h"
+#include "systemsettingsdialog.h"
 
 #include "CTCOffice/ctcoffice/ctc_main.h"
 #include "HWTrackController/HWTrackController_main.h"
@@ -18,6 +19,7 @@ TrackModel::RouteFile blueLine {"Blue Line", "blue_line.csv"};
 
 QApplication *mk1_app;
 SerialPortDialog *hwPortsDialog;
+SystemSettingsDialog *systemDialog;
 
 int mainArgc;
 char **mainArgv;
@@ -35,7 +37,10 @@ int main(int argc, char *argv[])
 
     // initialize system timer
     systemClock = new TimeTracker(QDateTime::currentDateTime(), 500, 1800, mk1_app);
-    QObject::connect(systemClock, &TimeTracker::timeAdvanced, &weather, &WeatherStation::onTimeUpdate);
+    QObject::connect(systemClock, &TimeTracker::timeAdvanced, weather, &WeatherStation::onTimeUpdate);
+
+    systemDialog = new SystemSettingsDialog();
+    systemDialog->show();
 
     TrackModel::routesToLoad.push_back(blueLine);
     int initResult = TrackModel::initializeTrackModel();

@@ -45,6 +45,7 @@ SOURCES += \
     TrainModel/TrainModelUpdateBlock.cpp \
     serialportdialog.cpp \
     system_main.cpp \
+    systemsettingsdialog.cpp \
     timetracker.cpp \
     weatherstation.cpp
 
@@ -84,6 +85,7 @@ HEADERS += \
     serialportdialog.h \
     mk1_util.hpp \
     system_main.h \
+    systemsettingsdialog.h \
     timetracker.h \
     weatherstation.h
 
@@ -94,7 +96,8 @@ FORMS += \
     TrainModel/TrainModelUI.ui \
     serialportdialog.ui \
     TrackModel/trackmodeldisplay.ui \
-    TrainModel/TrainModelUI.ui
+    TrainModel/TrainModelUI.ui \
+    systemsettingsdialog.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

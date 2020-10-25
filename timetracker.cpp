@@ -31,12 +31,23 @@ void TimeTracker::changeTime( const QDateTime &newTime )
     if( running ) play();
 }
 
+int TimeTracker::getResolution() { return resolution; }
+void TimeTracker::setResolution( int res )
+{
+    pause();
+
+    resolution = res;
+    updateTimer.setInterval(res);
+
+    play();
+}
+
 void TimeTracker::doTimeUpdate()
 {
     qint64 delta = roundf(resolution * timeScale);
     QDateTime newTime = lastUpdate.addMSecs(delta);
 
-    timeAdvanced(newTime, delta);
+    emit timeAdvanced(newTime, delta);
 
     lastUpdate = newTime;
 }
