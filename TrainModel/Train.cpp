@@ -19,9 +19,10 @@ Train::Train(int newNumCars)
     cout << "show train ui";
     controls = new TrainModelControls();
     cout << "made controls";
+    block = new TrainModelUpdateBlock();
     math = new TrainModelMath(newNumCars, block);
     cout << "made math";
-    block = new TrainModelUpdateBlock();
+    //block = new TrainModelUpdateBlock();
     cout << "made block";
     updateUI();
     cout << "made it to the end of const ";

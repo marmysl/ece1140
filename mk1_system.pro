@@ -95,8 +95,8 @@ FORMS += \
     TrackModel/layoutdialog.ui \
     TrainModel/TrainModelUI.ui \
     serialportdialog.ui \
-    TrackModel/trackmodeldisplay.ui \
-    TrainModel/TrainModelUI.ui
+    TrackModel/trackmodeldisplay.ui #\
+    #TrainModel/TrainModelUI.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

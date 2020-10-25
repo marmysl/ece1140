@@ -12,7 +12,7 @@ public:
     bool headlightsOn = 0;
     bool advertisementsOn = 0;
     bool announcementsOn = 0;
-    string announcements = 0;
+    string announcements = "";
     bool acOn = 0;
     bool heaterOn = 0;
     int temp = 72;

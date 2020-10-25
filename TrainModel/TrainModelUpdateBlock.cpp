@@ -4,47 +4,45 @@
 #include <cstdint>
 #include <string>
 
-using namespace TrackModel;
-
-TrainModelUpdateBlock::TrainModelUpdateBlock() {}
+TrainModelUpdateBlock::TrainModelUpdateBlock() {
+    blockDist = 0;
+    blockGrade = 0;
+    blockNum = 0;
+}
 
 void TrainModelUpdateBlock::updateTrackInfo(bool inYard){
     //update block num
     //update block length
     //send occupancy to Track Model
-    blockNum = this->updateBlock(blockNum, inYard);
-    blockDist = this->blockLength(blockNum);
-    blockGrade = TrainModelUpdateBlock::blockGradeUp(blockNum);
-    this->updateTrackCircuit(blockNum);
+    updateBlock(inYard);
+    blockLength();
+    blockGradeUp();
+    updateTrackCircuit();
 }
 
-int TrainModelUpdateBlock::updateBlock(int blockNum, bool first){
+void TrainModelUpdateBlock::updateBlock(bool first){
     std::string line = "Blue Line";
-    if (!first){removeOccupancy(line, blockNum);}
+    if (!first){TrackModel::removeOccupancy(line, blockNum);}
     blockNum = blockNum + 1;
-    addOccupancy(line, blockNum);
-    return blockNum;
+    TrackModel::addOccupancy(line, blockNum);
 }
 
-double TrainModelUpdateBlock::blockLength(int blockNum){
+void TrainModelUpdateBlock::blockLength(){
     std::string line = "Blue Line";
-    Route *blueLine = getRoute(line);
-    Block* blockInfo = blueLine -> getBlock(blockNum);
-    double blockDist = blockInfo -> length;
-    return blockDist;
+    TrackModel::Route *blueLine = TrackModel::getRoute(line);
+    TrackModel::Block* blockInfo = blueLine -> getBlock(blockNum);
+    blockDist = blockInfo -> length;
 }
 
-double TrainModelUpdateBlock::blockGradeUp(int blockNum){
+void TrainModelUpdateBlock::blockGradeUp(){
     std::string line = "Blue Line";
-    Route *blueLine = getRoute(line);
-    Block* blockInfo = blueLine -> getBlock(blockNum);
-    double newBlockGrade = blockInfo -> grade;
-    return newBlockGrade;
+    TrackModel::Route *blueLine = TrackModel::getRoute(line);
+    TrackModel::Block* blockInfo = blueLine -> getBlock(blockNum);
+    blockGrade = blockInfo -> grade;
 }
 
-uint64_t TrainModelUpdateBlock::updateTrackCircuit(int blockNum){
+void TrainModelUpdateBlock::updateTrackCircuit(){
     std::string line = "Blue Line";
-    TrackCircuitData newData = getTrackCircuit(line, blockNum);
-    uint64_t trackCircuitData = newData.getEncodedData();
-    return trackCircuitData;
+    TrackModel::TrackCircuitData newData = TrackModel::getTrackCircuit(line, blockNum);
+    trackCircuitData = newData.getEncodedData();
 }

@@ -9,14 +9,14 @@ class TrainModelMath
 {
 public:
     int numCars = 3;
-    double currVel;
-    double currPower;
-    double currForce;
-    double lastPos;
+    double currVel = 0;
+    double currPower = 0;
+    double currForce = 0;
+    double lastPos = 0;
     chrono::steady_clock::time_point lastTime;
-    bool newBlock;
-    int failureStatus;
-    int safeStoppingDist;
+    bool newBlock = false;
+    int failureStatus = 0;
+    int safeStoppingDist = 10;
     bool inYard = true;
     TrainModelUpdateBlock *block;
 

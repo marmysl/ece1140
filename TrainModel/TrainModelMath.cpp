@@ -1,4 +1,5 @@
 #include "TrainModelMath.h"
+#include "TrainModelUpdateBlock.h"
 #include <chrono>
 
 TrainModelMath::TrainModelMath(int newNumCars, TrainModelUpdateBlock *newBlock){
@@ -32,10 +33,11 @@ void TrainModelMath::setPower(double newPower){
         currVel = newCurrVel;
     }
     if (inYard && newPower!=0){
-        block->blockNum = 0;
-        block->updateTrackInfo(inYard);
         lastTime = chrono::steady_clock::now();
         lastPos = 0;
+        block->updateTrackInfo(inYard);
+        //lastTime = chrono::steady_clock::now();
+        //lastPos = 0;
         currPower = newPower;
         double newCurrVel = TrainModelMath::calcVelocity(newPower);
         currVel = newCurrVel;

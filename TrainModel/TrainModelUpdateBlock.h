@@ -8,25 +8,26 @@
 #include <cstdint>
 #include <string>
 
+using namespace std;
+
 class TrainModelUpdateBlock
 {
-
 public:
     double blockDist;
     double blockGrade;
-    double blockNum;
+    int blockNum;
     std::string lineType;
     uint64_t trackCircuitData;
     uint64_t beaconData;
-    int numPassengers;
+    int numPassengers = 0;
 
     TrainModelUpdateBlock();
     void updateTrackInfo(bool);
-    int updateBlock(int blockNum, bool first);
-    double blockLength(int blockNum);
-    double blockGradeUp(int blockNum);
-    uint64_t updateTrackCircuit(int blockNum);
+    void updateBlock(bool first);
+    void blockLength();
+    void blockGradeUp();
+    void updateTrackCircuit();
 };
 
-#endif // TRAINMODELUPDATEBLOCK_H
+#endif //TRAINMODELUPDATEBLOCK_H
 
