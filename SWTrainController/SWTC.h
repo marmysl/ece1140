@@ -9,9 +9,9 @@ class SWTC
         double powerCommand = 0;
         double kp;
         double ki;
-        double commandedSpeed;
-        double authority;
-        double setpointSpeed;
+        double commandedSpeed = 0.0;
+        double authority = 0.0;
+        double setpointSpeed = 0.0;
         double trainVelocity;
         unsigned signal;
         bool serviceBrakeEnabled = false;

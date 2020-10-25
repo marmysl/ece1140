@@ -114,13 +114,6 @@ void TrainControlWindow::on_sendPowerButton_clicked() // Currently a button, but
     temp++;
 }
 
-void TrainControlWindow::on_getCircuitInfoButton_clicked()
-{
-    swtc.decode(train->sendTrackCircuit());
-    ui->commspeed_->setText(QString::number(swtc.getCommandedSpeed()));
-    ui->authority_->setText(QString::number(swtc.getAuthority()));
-}
-
 void TrainControlWindow::on_serviceBrake_clicked()
 {
     std::cout << "Service brake has been applied.\n"; //debug

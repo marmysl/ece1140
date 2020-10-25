@@ -76,27 +76,14 @@
    <widget class="QPushButton" name="sendPowerButton">
     <property name="geometry">
      <rect>
-      <x>90</x>
-      <y>310</y>
-      <width>141</width>
-      <height>61</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>SET POWER</string>
-    </property>
-   </widget>
-   <widget class="QPushButton" name="getCircuitInfoButton">
-    <property name="geometry">
-     <rect>
-      <x>460</x>
-      <y>40</y>
-      <width>201</width>
+      <x>60</x>
+      <y>170</y>
+      <width>211</width>
       <height>41</height>
      </rect>
     </property>
     <property name="text">
-     <string>Get Track Circuit Info</string>
+     <string>SEND A  POWER COMMAND</string>
     </property>
    </widget>
    <widget class="QLabel" name="circuitInfo">
@@ -115,8 +102,8 @@
    <widget class="QLabel" name="currspeed">
     <property name="geometry">
      <rect>
-      <x>50</x>
-      <y>420</y>
+      <x>70</x>
+      <y>260</y>
       <width>121</width>
       <height>21</height>
      </rect>
@@ -141,8 +128,8 @@
    <widget class="QLabel" name="currspeed_">
     <property name="geometry">
      <rect>
-      <x>200</x>
-      <y>420</y>
+      <x>220</x>
+      <y>260</y>
       <width>58</width>
       <height>16</height>
      </rect>
@@ -193,8 +180,8 @@
    <widget class="QPushButton" name="serviceBrake">
     <property name="geometry">
      <rect>
-      <x>330</x>
-      <y>300</y>
+      <x>320</x>
+      <y>170</y>
       <width>171</width>
       <height>61</height>
      </rect>
@@ -206,8 +193,8 @@
    <widget class="QPushButton" name="emergencyBrake">
     <property name="geometry">
      <rect>
-      <x>330</x>
-      <y>370</y>
+      <x>320</x>
+      <y>240</y>
       <width>171</width>
       <height>61</height>
      </rect>
@@ -219,8 +206,8 @@
    <widget class="QLabel" name="powerOutput_">
     <property name="geometry">
      <rect>
-      <x>200</x>
-      <y>390</y>
+      <x>220</x>
+      <y>230</y>
       <width>58</width>
       <height>16</height>
      </rect>
@@ -232,8 +219,8 @@
    <widget class="QLabel" name="powerOutput">
     <property name="geometry">
      <rect>
-      <x>50</x>
-      <y>390</y>
+      <x>70</x>
+      <y>230</y>
       <width>121</width>
       <height>21</height>
      </rect>
@@ -245,8 +232,8 @@
    <widget class="QLabel" name="sbrake_">
     <property name="geometry">
      <rect>
-      <x>530</x>
-      <y>320</y>
+      <x>520</x>
+      <y>190</y>
       <width>401</width>
       <height>16</height>
      </rect>
@@ -258,14 +245,66 @@
    <widget class="QLabel" name="ebrake_">
     <property name="geometry">
      <rect>
-      <x>520</x>
-      <y>390</y>
+      <x>510</x>
+      <y>260</y>
       <width>411</width>
       <height>16</height>
      </rect>
     </property>
     <property name="text">
      <string/>
+    </property>
+   </widget>
+   <widget class="QLabel" name="setpointSpeed">
+    <property name="geometry">
+     <rect>
+      <x>70</x>
+      <y>290</y>
+      <width>101</width>
+      <height>16</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Setpoint Speed:</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="setpointSpeed_">
+    <property name="geometry">
+     <rect>
+      <x>220</x>
+      <y>290</y>
+      <width>58</width>
+      <height>16</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>0</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="inc_setspeed">
+    <property name="geometry">
+     <rect>
+      <x>70</x>
+      <y>330</y>
+      <width>171</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Increase Setpoint Speed</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="dec_setspeed">
+    <property name="geometry">
+     <rect>
+      <x>70</x>
+      <y>380</y>
+      <width>171</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Decrease Setpoint Speed</string>
     </property>
    </widget>
   </widget>
