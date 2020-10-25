@@ -12,14 +12,14 @@ private:
 
 public:
     bool update_flag;
-    std::vector<float> speedCTC;
-    std::vector<float> authCTC;
+    float speedCTC;
+    float authCTC;
     int destinationBlock;
 
-    void setSignal(int b, std::vector<float> &s, std::vector<float> &a);
+    void setSignal(int b, float s, float a);
     int getDest();
-    std::vector<float> getSpeed();
-    std::vector<float> getAuth();
+    float getSpeed();
+    float getAuth();
 };
 
 //END GUARD

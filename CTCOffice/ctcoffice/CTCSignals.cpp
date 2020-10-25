@@ -7,19 +7,17 @@ void CTCSignals::setFlag(bool flag) {
         update_flag = flag;
 }
 
-void CTCSignals::setSignal(int b, std::vector<float> &s, std::vector<float> &a) {
+void CTCSignals::setSignal(int b, float s, float a) {
         destinationBlock = b;
-        for(int i = 0; i < s.size(); i++) {
-            speedCTC.push_back(s[i]);
-            authCTC.push_back(a[i]);
-        }
+        speedCTC = s;
+        authCTC = a;
 }
 
-std::vector<float> CTCSignals::getSpeed() {
+float CTCSignals::getSpeed() {
     return speedCTC;
 }
 
-std::vector<float> CTCSignals::getAuth() {
+float CTCSignals::getAuth() {
     return authCTC;
 }
 

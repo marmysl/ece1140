@@ -2,30 +2,40 @@
 #include <iostream>
 #include <vector>
 #include "TrackController.h"
-
+#include "waysidecontainer.h"
 
 //using namespace std;
 
 TrackController::TrackController(){
-	region = 1;
-	block_count = 15;
-	section_length = 5;
-	section_count = 3;
-	cntrl_sections.push_back('A');
-	cntrl_sections.push_back('B');
-	cntrl_sections.push_back('C');
-	
-	for(int i = 1; i <= block_count; i++)
-		cntrl_blocks.push_back(i);
-	
+
+    block_count = 15;
+    section_length = 5;
+    section_count = 3;
+
 	cntrl_switches.push_back(5);
 	cntrl_switches.push_back(6);
 	cntrl_switches.push_back(11);
+
     //TrackModel::Route *blueLine = initTestLayout();
 	
 
 }
 
+void TrackController::setUpController(int id, std::vector<char> &s, std::vector<int> &b) {
+
+
+    region = id;
+
+    cntrl_sections.push_back('A');
+    cntrl_sections.push_back('B');
+    cntrl_sections.push_back('C');
+
+    for(int i = 1; i <= block_count; i++) {
+        cntrl_blocks.push_back(i);  }
+
+
+
+}
 int TrackController::getResult() {
 	std::cout << "region: " << region << "\n\n";
 	std::cout << "sections: ";
@@ -38,7 +48,7 @@ int TrackController::getResult() {
     for ( auto i = cntrl_switches.begin(); i != cntrl_switches.end(); ++i) 
         std::cout << *i << " ";
         
-        return 0;
+    return 0;
 }
 
 
