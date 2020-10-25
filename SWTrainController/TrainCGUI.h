@@ -28,6 +28,7 @@ public:
     void updateCircuitInfo();
     void updatePower();
     void updateBrakes();
+    void updateSpeed();
 
 private slots:
     void on_submit_clicked();
@@ -36,6 +37,10 @@ private slots:
     void on_serviceBrake_clicked();
 
     void on_emergencyBrake_clicked();
+
+    void on_inc_setspeed_clicked();
+
+    void on_dec_setspeed_clicked();
 
 private:
     Ui::TrainControlWindow *ui;

@@ -32,6 +32,7 @@ void TrainControlWindow::timerEvent(QTimerEvent *event)
     updatePower();
     updateCircuitInfo();
     updateBrakes();
+    updateSpeed();
 }
 
 // -------------------------------------------------------------------------------- Transmitter update functions
@@ -71,6 +72,11 @@ void TrainControlWindow :: updateBrakes()
         swtc.setServiceBrake(false);
         swtc.setEmergencyBrake(false);
     }
+}
+
+void TrainControlWindow :: updateSpeed()
+{
+    ui->setpointSpeed_->setText(QString::number(swtc.getSetpointSpeed()));
 }
 
 // ------------------------------------------------------------------------------------------- GUI buttons n' stuff
@@ -128,4 +134,16 @@ void TrainControlWindow::on_emergencyBrake_clicked()
 
     swtc.setPowerCommand(0.0); // set power command to zero
     swtc.setEmergencyBrake(true);
+}
+
+void TrainControlWindow::on_inc_setspeed_clicked()
+{
+    double current = swtc.getSetpointSpeed();
+    swtc.setSetpointSpeed(current + 1.0);
+}
+
+void TrainControlWindow::on_dec_setspeed_clicked()
+{
+    double current = swtc.getSetpointSpeed();
+    swtc.setSetpointSpeed(current - 1.0);
 }
