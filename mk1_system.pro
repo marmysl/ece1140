@@ -99,7 +99,6 @@ FORMS += \
     TrainModel/TrainModelUI.ui \
     serialportdialog.ui \
     TrackModel/trackmodeldisplay.ui \
-    TrainModel/TrainModelUI.ui \
     systemsettingsdialog.ui
 
 # Default rules for deployment.
