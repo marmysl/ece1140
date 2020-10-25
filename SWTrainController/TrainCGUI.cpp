@@ -37,7 +37,8 @@ void TrainControlWindow::timerEvent(QTimerEvent *event)
     train->setPower(swtc.getPowerCommand()); //feeds train new power every sec
     ui->powerOutput_->setText(QString::number(swtc.getPowerCommand()));
 
-    //train->setServiceBrake(Asdfsdf); //enable service brake flag
+    //train->setServiceBrake(swtc.getServiceBrakeFlag()); //set service brake flag
+    //train->setEmergencyBrake(swtc.getEmergencyBrakeFlag()); //set service brake flag
 
     // if the train has 0 velocity, set the brake flags to false (to reset)
     if ((train->getCurrentVelocity()) == 0.0)
