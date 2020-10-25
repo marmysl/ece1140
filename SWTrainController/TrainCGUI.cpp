@@ -29,6 +29,7 @@ void TrainControlWindow::timerEvent(QTimerEvent *event)
     count++;
     std::cout << "Timer has updated... " << count << std::endl; //debug
 
+    // Eventually put all of this stuff in a clearer way
     swtc.setTrainVelocity(train->getCurrentVelocity()); //gets the current speed of the train
     ui->currspeed_->setText(QString::number(swtc.getTrainVelocity()));
 
@@ -82,19 +83,9 @@ void TrainControlWindow::on_getCircuitInfoButton_clicked()
 
 }
 
-/* Slowly reduces the power commanded by calculating a new
- * power using the train's current velocity minus the decel rate,
- * until the train model's current velocity is 0 m/s */
 void TrainControlWindow::on_serviceBrake_clicked()
 {
     std::cout << "Service brake has been applied.\n"; //debug
 
-    // set power equal to zero
-    // if emergency brake: setEmergencyBrake too
-
-    /*while (swtc.getTrainVelocity() != 0)
-    {
-        // service brake decel = 1.2 m/s^2, currently running at 1s
-        swtc.setPowerCommand(swtc.calculatePower(swtc.getTrainVelocity() - 1.2));
-    }*/
+    swtc.setPowerCommand(0.0); // set power command to zero
 }
