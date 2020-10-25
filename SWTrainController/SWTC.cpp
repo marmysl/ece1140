@@ -61,3 +61,24 @@ double SWTC :: getKi()
 {
     return ki;
 }
+
+void SWTC :: setServiceBrake(bool flag)
+{
+    serviceBrakeEnabled = flag;
+}
+
+bool SWTC :: getServiceBrakeFlag()
+{
+    return serviceBrakeEnabled;
+}
+
+void SWTC :: setEmergencyBrake(bool flag)
+{
+    emergencyBrakeEnabled = flag;
+}
+
+bool SWTC :: getEmergencyBrakeFlag()
+{
+    return emergencyBrakeEnabled;
+}
+

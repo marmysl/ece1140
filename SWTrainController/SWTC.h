@@ -12,6 +12,8 @@ class SWTC
         double setpointSpeed;
         double trainVelocity;
         unsigned signal;
+        bool serviceBrakeEnabled = false;
+        bool emergencyBrakeEnabled = false;
     public:
         double calculatePower(double);
         void decode(unsigned);
@@ -24,6 +26,10 @@ class SWTC
         double getKp();
         void setKi(double);
         double getKi();
+        void setServiceBrake(bool);
+        bool getServiceBrakeFlag();
+        void setEmergencyBrake(bool);
+        bool getEmergencyBrakeFlag();
 };
 
 #endif // SWTC_H

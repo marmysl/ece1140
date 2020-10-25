@@ -32,6 +32,8 @@ private slots:
 
     void on_serviceBrake_clicked();
 
+    void on_emergencyBrake_clicked();
+
 private:
     Ui::TrainControlWindow *ui;
     int timerID;
