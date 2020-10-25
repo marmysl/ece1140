@@ -38,6 +38,13 @@ void TrainControlWindow::timerEvent(QTimerEvent *event)
     ui->powerOutput_->setText(QString::number(swtc.getPowerCommand()));
 
     //train->setServiceBrake(Asdfsdf); //enable service brake flag
+
+    // if the train has 0 velocity, set the brake flags to false (to reset)
+    if ((train->getCurrentVelocity()) == 0.0)
+    {
+        swtc.setServiceBrake(false);
+        swtc.setEmergencyBrake(false);
+    }
 }
 
 void TrainControlWindow::on_submit_clicked() //Submits Kp and Ki
