@@ -39,6 +39,7 @@ void TrainControlWindow::timerEvent(QTimerEvent *event)
 
     //train->setServiceBrake(swtc.getServiceBrakeFlag()); //set service brake flag
     //train->setEmergencyBrake(swtc.getEmergencyBrakeFlag()); //set service brake flag
+    updateCircuit();
 
     // if the train is actively braking, display on GUI for driver
     if (swtc.getEmergencyBrakeFlag() == true){
@@ -60,6 +61,14 @@ void TrainControlWindow::timerEvent(QTimerEvent *event)
         swtc.setEmergencyBrake(false);
     }
 }
+
+void TrainControlWindow :: updateCircuit()
+{
+    swtc.decode(train->sendTrackCircuit());
+    ui->commspeed_->setText(QString::number(swtc.getCommandedSpeed()));
+    ui->authority_->setText(QString::number(swtc.getAuthority()));
+}
+
 
 void TrainControlWindow::on_submit_clicked() //Submits Kp and Ki
 {
