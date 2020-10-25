@@ -2,6 +2,9 @@
 
 #include "hw_sw_interfaces.h"
 #include <unordered_map>
+#include <QApplication>
+
+extern QApplication *mk1_app;
 
 extern std::unordered_map<int, ITrainController *> activeTrains;
 extern int nextTrainId;

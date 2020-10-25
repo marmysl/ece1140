@@ -1,3 +1,5 @@
+#include "timetracker.h"
+#include "weatherstation.h"
 #include "serialportdialog.h"
 
 #include "system_main.h"
@@ -17,6 +19,7 @@
 
 TrackModel::RouteFile blueLine {"Blue Line", "blue_line.csv"};
 
+QApplication *mk1_app;
 SerialPortDialog *hwPortsDialog;
 
 std::unordered_map<int, ITrainController *> activeTrains;
@@ -48,14 +51,18 @@ void forgetTrain( int id )
 
 int main(int argc, char *argv[])
 {
-    QApplication a(argc, argv);
+    mk1_app = new QApplication(argc, argv);
+
+    // initialize system timer
+    systemClock = new TimeTracker(QDateTime::currentDateTime(), 500, 1800, mk1_app);
+    QObject::connect(systemClock, &TimeTracker::timeAdvanced, &weather, &WeatherStation::onTimeUpdate);
 
     TrackModel::routesToLoad.push_back(blueLine);
     int initResult = TrackModel::initializeTrackModel();
     if( initResult < 0 )
     {
         qDebug() << "Failed to load track model";
-        a.quit();
+        mk1_app->quit();
         return EXIT_FAILURE;
     }
 
@@ -66,7 +73,7 @@ int main(int argc, char *argv[])
     // if the dialog was X'd out then quit, because we can't confirm the HW config
     if( portsResult != QDialog::Accepted )
     {
-        a.quit();
+        mk1_app->quit();
         return EXIT_SUCCESS;
     }
 
@@ -75,5 +82,9 @@ int main(int argc, char *argv[])
     //init_SWTrackController();
     //init_HWTrainController();
 
-    return a.exec();
+    systemClock->play();
+
+    mk1_app->exec();
+
+    return EXIT_SUCCESS;
 }
