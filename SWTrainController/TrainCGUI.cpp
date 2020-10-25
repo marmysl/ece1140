@@ -31,11 +31,9 @@ void TrainControlWindow::timerEvent(QTimerEvent *event)
 
     swtc.setTrainVelocity(train->getCurrentVelocity()); //gets the current speed of the train
     ui->currspeed_->setText(QString::number(swtc.getTrainVelocity()));
-   // std::cout << "SWTC has received the current speed of train. It is " << swtc.getTrainVelocity() << std::endl; //debug
 
     train->setPower(swtc.getPowerCommand()); //feeds train new power every sec
     ui->powerOutput_->setText(QString::number(swtc.getPowerCommand()));
-    //std::cout << "SWTC has sent power command to train. It is " << swtc.getPowerCommand() << std::endl; //debug
 }
 
 void TrainControlWindow::on_submit_clicked() //Submits Kp and Ki
@@ -51,9 +49,10 @@ void TrainControlWindow::on_submit_clicked() //Submits Kp and Ki
     swtc.setKp(kp);
     swtc.setKi(ki);
 
-    // Disable textboxes (Kp and Ki are only set at dispatch)
+    // Disable textboxes and submit button
     ui->ki_textbox->setReadOnly(true);
     ui->kp_textbox->setReadOnly(true);
+    ui->submit->setDisabled(true);
 
     cout << "Kp and Ki have been set." << std::endl; //debug
 
