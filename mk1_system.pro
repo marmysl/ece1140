@@ -40,6 +40,7 @@ SOURCES += \
     TrackModel/trackmodel_types.cpp \
     TrackModel/trackmodeldisplay.cpp \
     TrainModel/Train.cpp \
+    TrainModel/TrainModelControls.cpp \
     TrainModel/TrainModelMath.cpp \
     TrainModel/TrainModelUI.cpp \
     TrainModel/TrainModelUpdateBlock.cpp \
@@ -78,6 +79,7 @@ HEADERS += \
     TrackModel/trackmodel_types.hpp \
     TrackModel/trackmodeldisplay.h \
     TrainModel/Train.h \
+    TrainModel/TrainModelControls.h \
     TrainModel/TrainModelMath.h \
     TrainModel/TrainModelUI.h \
     TrainModel/TrainModelUpdateBlock.h \

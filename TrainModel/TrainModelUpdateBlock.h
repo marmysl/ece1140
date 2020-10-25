@@ -12,11 +12,20 @@ class TrainModelUpdateBlock
 {
 
 public:
+    double blockDist;
+    double blockGrade;
+    double blockNum;
+    std::string lineType;
+    uint64_t trackCircuitData;
+    uint64_t beaconData;
+    int numPassengers;
+
     TrainModelUpdateBlock();
-    static int updateBlock(int blockNum, bool first);
-    static double blockLength(int blockNum);
-    static double blockGrade(int blockNum);
-    static uint64_t updateTrackCircuit(int blockNum);
+    void updateTrackInfo(bool);
+    int updateBlock(int blockNum, bool first);
+    double blockLength(int blockNum);
+    double blockGradeUp(int blockNum);
+    uint64_t updateTrackCircuit(int blockNum);
 };
 
 #endif // TRAINMODELUPDATEBLOCK_H

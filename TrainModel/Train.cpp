@@ -6,94 +6,147 @@
 
 #include "TrainModelMath.h"
 #include "TrainModelUpdateBlock.h"
+#include "TrainModelControls.h"
+
 using namespace std;
 
 Train::Train(int newNumCars)
 {
-    cout << "Create new Train Model with " << newNumCars << " cars" << endl;
-    numCars = newNumCars;
+    cout << "Created new Train Model with " << newNumCars << " cars" << endl;
     w = new TrainModelUI();
-    blockNum = 0;
+    cout << "made train ui";
     w->show();
+    cout << "show train ui";
+    controls = new TrainModelControls();
+    cout << "made controls";
+    math = new TrainModelMath(newNumCars, block);
+    cout << "made math";
+    block = new TrainModelUpdateBlock();
+    cout << "made block";
     updateUI();
+    cout << "made it to the end of const ";
 }
 
 void Train::setPower(double newPower){             //Called by train controller to set power
-    //Get current time
-    if (!inYard){
-        chrono::steady_clock::time_point newTime= chrono::steady_clock::now();
-
-        //Find elapsed time and convert to a double
-        auto elapsedTime = newTime - oldTime;
-        oldTime = newTime;
-        double milliSec = chrono::duration<double, milli>(elapsedTime).count();
-
-        //Find the distance travelled using old velocity
-        double distTravelled = TrainModelMath::travelledDist(milliSec, currVel);
-        double newPos = TrainModelMath::updatePosition(oldPos, distTravelled);
-
-        //compare new position to old to see if new block
-        if (newPos >= blockDist && blockNum<=10){
-            newPos = newPos - blockDist;
-            //update current block and information
-            this->updateTrackInfo();
-        }
-        oldPos = newPos;
-        currPower = newPower;
-        updateUI();
-        double newCurrVel = TrainModelMath::calcVelocity(newPower);
-        currVel = newCurrVel;
-    }
-    if (inYard && newPower!=0){
-        blockNum = 0;
-        this->updateTrackInfo();
-        oldTime = chrono::steady_clock::now();
-        oldPos = 0;
-        currPower = newPower;
-        updateUI();
-        double newCurrVel = TrainModelMath::calcVelocity(newPower);
-        currVel = newCurrVel;
-        inYard = false;
-    }
-}
-
-void Train::updateTrackInfo(){                            //Will update block information
-    //update block num
-    //update block length
-    //send occupancy to Track Model
-    blockNum = TrainModelUpdateBlock::updateBlock(blockNum, inYard);
-    blockDist = TrainModelUpdateBlock::blockLength(blockNum);
-    blockGrade = TrainModelUpdateBlock::blockGrade(blockNum);
+    math->setPower(newPower);
     updateUI();
-    this->setTrackCircuit(blockNum);
 }
 
-//ask about this ?
-void Train::setTrackCircuit(int blockNum){                   //Get curr track signal from Track Model when new block
-    //get tc info for block
-    //assign
-    trackCircuitData = TrainModelUpdateBlock::updateTrackCircuit(blockNum);
+uint64_t Train::sendTrackCircuit(){
+    return block->trackCircuitData;
 }
 
-uint64_t Train::sendTrackCircuit(){          //Train controller can call to get curr track signal
-    return trackCircuitData;
+double Train::getCurrentVelocity(){
+    return math->currVel;
 }
 
-
-double Train::getCurrentVelocity(){                //Called by train controller to get curr velocity
-    return currVel;
+void Train::setDoorStatus(bool doorStatus){
+    controls->toggleDoor(doorStatus);
 }
 
-double Train::getCurrentPosition(){                //will return current position
-    return oldPos;
+bool Train::getDoorStatus(){
+    return controls->doorOpen;
+}
+
+void Train::setCabinLights(bool lightStatus){
+    controls->toggleCabinLights(lightStatus);
+}
+
+bool Train::getCabinLights(){
+    return controls->cabinLights;
+}
+
+void Train::setHeadlights(bool headlightStatus){
+    controls->toggleHeadlights(headlightStatus);
+}
+
+bool Train::getHeadlights(){
+    return controls->headlightsOn;
+}
+
+void Train::setEmergencyBrake(bool eBrakeStatus){
+    emergencyBrake = eBrakeStatus;
+}
+
+bool Train::getEmergencyBrake(){
+    return emergencyBrake;
+}
+
+void Train::setSystemFailure(int failStat){
+    math->setFailureStatus(failStat);
+}
+
+int Train::getSystemFailure(){
+    return math->failureStatus;
+}
+
+void Train::setServiceBrake(bool servBrake){
+    serviceBrake = servBrake;
+}
+
+bool Train::getServiceBrake(){
+    return serviceBrake;
+}
+
+void Train::setTemp(int newTemp){
+    controls->setTemp(newTemp);
+}
+
+double Train::getTemp(){
+    return controls->temp;
+}
+
+void Train::setAC(bool acStatus){
+    controls->toggleAC(acStatus);
+}
+
+bool Train::getAC(){
+    return controls->acOn;
+}
+
+void Train::setHeater(bool heaterStatus){
+    controls->toggleHeater(heaterStatus);
+}
+
+bool Train::getHeater(){
+    return controls->heaterOn;
+}
+
+void Train::setAdvertisements(bool adStatus){
+    controls->toggleAdvertisments(adStatus);
+}
+
+bool Train::getAdvertisements(){
+    return controls->advertisementsOn;
+}
+
+void Train::setAnnouncements(bool annStatus, string annString){
+    controls->toggleAnnouncements(annStatus);
+    controls->setAnn(annString);
+}
+
+bool Train::getAnnouncements(){
+    return controls->announcementsOn;
+}
+
+uint64_t Train::getBeaconData(){
+    return block->beaconData;
+}
+
+string Train::getAnnouncementMsg(){
+    return controls->announcements;
+}
+
+double Train::getSafeStoppingDistance(){
+    return math->safeStoppingDist;
 }
 
 void Train::updateUI(){
-    w->updateNumCars(numCars);
-    w->updatePower(currPower);
-    w->updateVelocity(currVel);
-    w->updateVelocity(currVel);
-    w->updateBlockNum(blockNum);
-    w->updateBlockLength(blockDist);
-    w->updateBlockGrade(blockGrade);
+    w->updateNumCars(math->numCars);
+    w->updatePower(math->currPower);
+    w->updateVelocity(math->currVel);
+    w->updateBlockNum(block->blockNum);
+    w->updateBlockLength(block->blockDist);
+    w->updateBlockGrade(block->blockGrade);
 }
+
