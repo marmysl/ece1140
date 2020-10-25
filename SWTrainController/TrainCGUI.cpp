@@ -23,7 +23,7 @@ TrainControlWindow::~TrainControlWindow()
     delete ui;
 }
 
-/* Every timer event (1 second), update info about the train */
+/* ------------------------ Transmitter --------------------------------- */
 void TrainControlWindow::timerEvent(QTimerEvent *event)
 {
     count++;
@@ -40,7 +40,20 @@ void TrainControlWindow::timerEvent(QTimerEvent *event)
     //train->setServiceBrake(swtc.getServiceBrakeFlag()); //set service brake flag
     //train->setEmergencyBrake(swtc.getEmergencyBrakeFlag()); //set service brake flag
 
-    // if the train has 0 velocity, set the brake flags to false (to reset)
+    // if the train is actively braking, display on GUI for driver
+    if (swtc.getEmergencyBrakeFlag() == true){
+        ui->ebrake_->setText("The emergency brake is enabled!");
+    } else {
+        ui->ebrake_->setText("");
+    }
+
+    if (swtc.getServiceBrakeFlag() == true){
+        ui->sbrake_->setText("The service brake is enabled!");
+    } else {
+        ui->sbrake_->setText("");
+    }
+
+    // if the train has 0 velocity, reset the brake flags
     if ((train->getCurrentVelocity()) == 0.0)
     {
         swtc.setServiceBrake(false);
