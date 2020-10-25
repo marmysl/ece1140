@@ -100,3 +100,11 @@ void TrainControlWindow::on_serviceBrake_clicked()
     swtc.setPowerCommand(0.0); // set power command to zero
     swtc.setServiceBrake(true);
 }
+
+void TrainControlWindow::on_emergencyBrake_clicked()
+{
+    std::cout << "Emergency brake has been applied.\n"; //debug
+
+    swtc.setPowerCommand(0.0); // set power command to zero
+    swtc.setEmergencyBrake(true);
+}
