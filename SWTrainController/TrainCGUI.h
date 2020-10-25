@@ -32,7 +32,6 @@ public:
 private slots:
     void on_submit_clicked();
     void on_sendPowerButton_clicked();
-    void on_getCircuitInfoButton_clicked();
 
     void on_serviceBrake_clicked();
 
