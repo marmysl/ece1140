@@ -29,12 +29,15 @@ void TrainControlWindow::timerEvent(QTimerEvent *event)
     count++;
     std::cout << "Timer has updated... " << count << std::endl; //debug
 
+
     // Eventually put all of this stuff in a clearer way
     swtc.setTrainVelocity(train->getCurrentVelocity()); //gets the current speed of the train
     ui->currspeed_->setText(QString::number(swtc.getTrainVelocity()));
 
     train->setPower(swtc.getPowerCommand()); //feeds train new power every sec
     ui->powerOutput_->setText(QString::number(swtc.getPowerCommand()));
+
+    //train->setServiceBrake(Asdfsdf); //enable service brake flag
 }
 
 void TrainControlWindow::on_submit_clicked() //Submits Kp and Ki
@@ -88,4 +91,5 @@ void TrainControlWindow::on_serviceBrake_clicked()
     std::cout << "Service brake has been applied.\n"; //debug
 
     swtc.setPowerCommand(0.0); // set power command to zero
+    swtc.setServiceBrake(true);
 }
