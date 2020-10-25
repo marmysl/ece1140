@@ -1,6 +1,8 @@
 #ifndef TRAINCONTROLLER_H
 #define TRAINCONTROLLER_H
 
+#include "hw_sw_interfaces.h"
+
 #include <iostream>
 #include <stdio.h>
 #include <string>
@@ -12,14 +14,13 @@
 
 using namespace std;
 
-class TrainController : public QObject
+class TrainController : public QObject, public ITrainController
 {
     Q_OBJECT
 
     private:
         char incomingData[ARDUINO_BUF_LENGTH];
         char outgoingData[ARDUINO_BUF_LENGTH];
-		Train *train_model;
 		CabinControls *cabin_controller;
 		SpeedRegulator *speed_regulator;
 
@@ -31,7 +32,7 @@ class TrainController : public QObject
         void writeData();
 		string getInput();
 		string getOutput();
-		void dispatch();
+        void dispatch();
 
     public slots:
         void recieveData( char *buf, qint64 len );

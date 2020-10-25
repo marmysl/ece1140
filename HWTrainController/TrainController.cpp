@@ -1,5 +1,6 @@
 #include "TrainController.h"
 #include "SerialPort.hpp"
+#include "system_main.h"
 
 #include <QThread>
 #include <string>
@@ -9,9 +10,9 @@ TrainController::TrainController()
 {
     //Create objects and assign them to pointers
 
-	train_model = new Train(5);
+    train = new Train(5);
 	cout << "here" << endl;
-	speed_regulator = new SpeedRegulator(train_model);
+    speed_regulator = new SpeedRegulator(train);
 	speed_regulator -> decodeTrackSignal();
 	cabin_controller = new CabinControls();
 
@@ -28,11 +29,13 @@ TrainController::TrainController()
 
 TrainController::~TrainController()
 {
-	train_model = nullptr;
+    forgetTrain(id);
+
+    train = nullptr;
 	speed_regulator = nullptr;
     cabin_controller = nullptr;
     delete writeTimer;
-	delete train_model;
+    delete train;
 	delete speed_regulator;
 	delete cabin_controller;
 }

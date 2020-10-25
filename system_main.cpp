@@ -1,5 +1,7 @@
 #include "serialportdialog.h"
 
+#include "system_main.h"
+
 #include "CTCOffice/ctcoffice/ctc_main.h"
 #include "HWTrackController/HWTrackController_main.h"
 #include "SWTrackController/TrackController.h"
@@ -9,6 +11,7 @@
 #include "SWTrainController/SWTrainController_main.h"
 
 #include <iostream>
+#include <unordered_map>
 #include <QApplication>
 #include <QDebug>
 
@@ -16,20 +19,35 @@ TrackModel::RouteFile blueLine {"Blue Line", "blue_line.csv"};
 
 SerialPortDialog *hwPortsDialog;
 
-int mainArgc;
-char **mainArgv;
-
-TrainController *tc;
+std::unordered_map<int, ITrainController *> activeTrains;
+int nextTrainId = 1;
 
 void createNewTrain() {
-    tc = new TrainController();
+    ITrainController *newTrain;
+
+    if( nextTrainId == 1 )
+    {
+        newTrain = new TrainController();
+    }
+    else
+    {
+        newTrain = new SWTrainController();
+    }
+
+    newTrain->id = nextTrainId;
+    activeTrains.insert({nextTrainId, newTrain});
+
+    nextTrainId += 1;
 }
+
+void forgetTrain( int id )
+{
+    activeTrains.erase(id);
+}
+
 
 int main(int argc, char *argv[])
 {
-    mainArgc = argc;
-    mainArgv = argv;
-
     QApplication a(argc, argv);
 
     TrackModel::routesToLoad.push_back(blueLine);
