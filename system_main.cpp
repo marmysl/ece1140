@@ -1,6 +1,7 @@
 #include "timetracker.h"
 #include "weatherstation.h"
 #include "serialportdialog.h"
+#include "systemsettingsdialog.h"
 
 #include "system_main.h"
 
@@ -21,6 +22,7 @@ TrackModel::RouteFile blueLine {"Blue Line", "blue_line.csv"};
 
 QApplication *mk1_app;
 SerialPortDialog *hwPortsDialog;
+SystemSettingsDialog *systemDialog;
 
 std::unordered_map<int, ITrainController *> activeTrains;
 int nextTrainId = 1;
@@ -54,9 +56,12 @@ int main(int argc, char *argv[])
     mk1_app = new QApplication(argc, argv);
 
     // initialize system timer
-    QDateTime startTime = QDate(2020, 11, 20).startOfDay();
-    systemClock = new TimeTracker(startTime, 500, 1800, mk1_app);
-    QObject::connect(systemClock, &TimeTracker::timeAdvanced, &weather, &WeatherStation::onTimeUpdate);
+    systemClock = new TimeTracker(QDateTime::currentDateTime(), 100, 1, mk1_app);
+    weather = new WeatherStation(mk1_app);
+    QObject::connect(systemClock, &TimeTracker::timeAdvanced, weather, &WeatherStation::onTimeUpdate);
+
+    systemDialog = new SystemSettingsDialog();
+    systemDialog->show();
 
     TrackModel::routesToLoad.push_back(blueLine);
     int initResult = TrackModel::initializeTrackModel();
