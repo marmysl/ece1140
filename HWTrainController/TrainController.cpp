@@ -10,11 +10,9 @@ TrainController::TrainController()
 {
     //Create objects and assign them to pointers
 
-    train = new Train(5);
-	cout << "here" << endl;
-    speed_regulator = new SpeedRegulator(train);
-	speed_regulator -> decodeTrackSignal();
-	cabin_controller = new CabinControls();
+    trainModel = new Train(5);
+    speedRegulator = new SpeedRegulator(trainModel);
+    beacon = new BeaconDecoder();
 
     writeTimer = new QTimer();
     writeTimer->setInterval(ARDUINO_WAIT_TIME);
@@ -31,13 +29,13 @@ TrainController::~TrainController()
 {
     forgetTrain(id);
 
-    train = nullptr;
-	speed_regulator = nullptr;
-    cabin_controller = nullptr;
+    trainModel = nullptr;
+    speedRegulator = nullptr;
+    beacon = nullptr;
     delete writeTimer;
-    delete train;
-	delete speed_regulator;
-	delete cabin_controller;
+    delete trainModel;
+    delete speedRegulator;
+    delete beacon;
 }
 
 void TrainController::recieveData( char *buf, qint64 len )
@@ -48,6 +46,8 @@ void TrainController::recieveData( char *buf, qint64 len )
     if( len >= 0 )
     {
         string data(incomingData);
+        cout << "Incoming Length: " << data.length() << endl;
+        std::cout << "Incoming: " << data << std::endl;
 
           //Create a system to encode all data to be read from
           //char 0 = cabinLights
@@ -62,43 +62,39 @@ void TrainController::recieveData( char *buf, qint64 len )
           //char17 = joystick down
 
 
-        if(!data.empty())
+        if(data.length() == 19)
         {
-            std::cout << "Incoming: " << data.substr(0, 17) << std::endl;
 
-            if(data.substr(0,1) == "1") cabin_controller -> cabinLightsOn();
-            else cabin_controller -> cabinLightsOff();
+             if(data.substr(0,1) == "1") trainModel -> setCabinLights(1);
+             else trainModel -> setCabinLights(0);
 
-            if(data.substr(1,1) == "1") cabin_controller -> cabinAcOn();
-            else cabin_controller -> cabinAcOff();
+             if(data.substr(1,1) == "1") trainModel -> setAC(1);
+             else trainModel -> setAC(0);
 
-            if(data.substr(2,1) == "1") cabin_controller -> cabinHeatOn();
-            else cabin_controller -> cabinHeatOff();
+             if(data.substr(2,1) == "1") trainModel -> setHeater(1);
+             else trainModel -> setHeater(0);
 
-            if(data.substr(3,1) == "1") cabin_controller -> cabinDoorsOpen();
-            else cabin_controller -> cabinDoorsClosed();
+             if(data.substr(3,1) == "1") trainModel -> setDoorStatus(1);
+             else trainModel -> setDoorStatus(0);
 
-            if(data.substr(4,1) == "1") cabin_controller -> cabinAdvertisementsOn();
-            else cabin_controller -> cabinAdvertisementsOff();
+             if(data.substr(4,1) == "1") trainModel -> setAdvertisements(1);
+             else trainModel -> setAdvertisements(0);
 
-            if(data.substr(5,1) == "1") cabin_controller -> cabinAnnouncementsOn();
-            else cabin_controller -> cabinAnnouncementsOff();
+             if(data.substr(5,1) == "1") trainModel -> setAnnouncements(1, beacon -> getAnnouncement());
+             else trainModel -> setAnnouncements(0,beacon->getAnnouncement());
 
-            if(data.substr(16,1) == "1") speed_regulator -> incSetpointSpeed(.5);
+             if(data.substr(16,1) == "1") speedRegulator -> incSetpointSpeed(.5);
 
-            if(data.substr(17,1) == "1") speed_regulator -> incSetpointSpeed(-.5);
+             if(data.substr(17,1) == "1") speedRegulator -> incSetpointSpeed(-.5);
 
-            speed_regulator -> setKpAndKi(std::stod(data.substr(6,5)), std::stod(data.substr(11,5)));
-
-            speed_regulator -> calculatePowerCmd();
-            cout << "Power: " << speed_regulator -> getPowerCmd() << endl;
-        }
+             speedRegulator -> setKpAndKi(std::stod(data.substr(6,5)), std::stod(data.substr(11,5)));
+           }
     }
 }
 
 void TrainController::writeData()
 {
-	//Create a system to encode all data to be returned to the interface in the string
+    //Create a system to encode all data to be returned to the interface in the string
     //char 0 = cabinLights
     //char 1 = cabinAc
     //char 2 = cabinHeat
@@ -113,30 +109,41 @@ void TrainController::writeData()
     //char31-35 = currentSpeed
 
     string outgoing_s = "";
-    outgoing_s += to_string(cabin_controller -> getCabinLights());
-    outgoing_s += to_string(cabin_controller -> getCabinAc());
-    outgoing_s += to_string(cabin_controller -> getCabinHeat());
-    outgoing_s += to_string(cabin_controller -> getCabinDoors());
-    outgoing_s += to_string(cabin_controller -> getCabinAdvertisements());
-    outgoing_s += to_string(cabin_controller -> getCabinAnnouncements());
+    outgoing_s += to_string(trainModel -> getCabinLights());
+    outgoing_s += to_string(trainModel -> getAC());
+    outgoing_s += to_string(trainModel -> getHeater());
+    outgoing_s += to_string(trainModel -> getDoorStatus());
+    outgoing_s += to_string(trainModel -> getAdvertisements());
+    outgoing_s += to_string(trainModel -> getAnnouncements());
 
-    string authority(to_string(speed_regulator -> getAuthority()), 0, 5);
+    string authority(to_string(trainModel -> sendTrackCircuit()), 0, 5);
     outgoing_s += authority;
+    std::cout << "Authority: " << authority << std::endl;
 
-    string Kp(to_string(speed_regulator -> getKp()), 0, 5);
+    while(outgoing_s.length() != 11) outgoing_s += " ";
+
+    string Kp(to_string(speedRegulator -> getKp()), 0, 5);
     outgoing_s += Kp;
+    std::cout << "Kp: " << Kp << std::endl;
 
-    string Ki(to_string(speed_regulator -> getKi()), 0, 5);
+    string Ki(to_string(speedRegulator -> getKi()), 0, 5);
     outgoing_s += Ki;
+    std::cout << "Ki: " << Ki << std::endl;
 
-    string commandedSpeed(to_string(speed_regulator -> getCommandedSpeed()), 0, 5);
+    string commandedSpeed(to_string(trainModel -> sendTrackCircuit() << 32), 0, 5);
     outgoing_s += commandedSpeed;
+    std::cout << "Commanded Speed: " << commandedSpeed << std::endl;
 
-    string setpointSpeed(to_string(speed_regulator -> getSetpointSpeed()), 0, 5);
+    while(outgoing_s.length() != 26) outgoing_s += " ";
+
+    string setpointSpeed(to_string(speedRegulator -> getSetpointSpeed()), 0, 5);
     outgoing_s += setpointSpeed;
+    std::cout << "Setpoint Speed: " << setpointSpeed << std::endl;
 
-    string currentSpeed(to_string(speed_regulator -> getCurrentSpeed()), 0, 5);
+    string currentSpeed(to_string(trainModel -> getCurrentVelocity()), 0, 5);
     outgoing_s += currentSpeed;
+    std::cout << "Current Velocity: " << currentSpeed << std::endl;
+
 
     outgoing_s += "\n";
 
@@ -144,28 +151,4 @@ void TrainController::writeData()
     strcpy(outgoingData, outgoing_s.c_str());
 
     trainControllerPort.writeString(outgoing_s);
-}
-
-string TrainController::getInput()
-{
-	string data(incomingData);
-	return data;
-}
-string TrainController::getOutput()
-{
-	string data(outgoingData);
-	return data;
-}
-
-void TrainController::dispatch()
-{
-//    while(trainControllerPort.isConnected())
-//	{
-//        //recieveData();
-//		writeData(900);
-//		speed_regulator -> calculatePowerCmd();
-//		cout << "Power: " << speed_regulator -> getPowerCmd() << endl;
-//		cout << "Incoming: " << getInput() << endl;
-//		cout << "Outgoing: " << getOutput() << endl;
-//	}
 }

@@ -3,11 +3,7 @@
 
 #include <QAbstractTableModel>
 
-namespace TrackModel
-{
-    struct RouteStatus;
-    struct BlockStatus;
-}
+#include "trackmodel_status.h"
 
 class BlockTableModel : public QAbstractTableModel
 {
