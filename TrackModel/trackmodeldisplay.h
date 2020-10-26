@@ -4,14 +4,13 @@
 #include "tracklayout.hpp"
 #include "blocktablemodel.h"
 #include "switchtablemodel.h"
+#include "trackmodel_status.h"
 #include <QMainWindow>
 #include <QLabel>
 
 namespace Ui {
 class TrackModelDisplay;
 }
-
-namespace TrackModel { struct RouteStatus; struct StationStatus; }
 
 class TrackModelDisplay : public QMainWindow
 {

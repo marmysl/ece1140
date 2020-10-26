@@ -78,6 +78,7 @@ HEADERS += \
     TrackModel/tracklayout.hpp \
     TrackModel/trackmodel_controller.hpp \
     TrackModel/trackmodel_main.hpp \
+    TrackModel/trackmodel_status.h \
     TrackModel/trackmodel_train.hpp \
     TrackModel/trackmodel_types.hpp \
     TrackModel/trackmodeldisplay.h \
@@ -109,19 +110,4 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
 DISTFILES += \
-    CTCOffice/.qmake.stash \
-    CTCOffice/ctcoffice/ctcoffice_en_US.ts \
-    SWTrainController/.qmake.stash \
-    TrackModel/.gitignore \
-    TrackModel/.vscode/c_cpp_properties.json \
-    TrackModel/.vscode/launch.json \
-    TrackModel/.vscode/settings.json \
-    TrackModel/.vscode/tasks.json \
-    TrackModel/blue_line.csv \
-    TrackModel/trackmodel.exe \
-    TrainModel/.DS_Store
-
-#SUBDIRS += \
-#    CTCOffice/ctcoffice/ctcoffice.pro \
-#    SWTrainController/traincontroller.pro \
-#    TrainModel/TrainModel.pro
+    TrackModel/blue_line.csv
