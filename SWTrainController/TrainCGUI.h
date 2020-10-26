@@ -29,6 +29,7 @@ public:
     void updatePower();
     void updateBrakes();
     void updateSpeed();
+    void updateCabin();
 
 private slots:
     void on_submit_clicked();
@@ -41,6 +42,14 @@ private slots:
     void on_inc_setspeed_clicked();
 
     void on_dec_setspeed_clicked();
+
+    void on_door_button_clicked();
+
+    void on_lights_button_clicked();
+
+    void on_headlights_button_clicked();
+
+    void on_releasebrakebutton_clicked();
 
 private:
     Ui::TrainControlWindow *ui;

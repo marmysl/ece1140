@@ -16,6 +16,9 @@ class SWTC
         unsigned signal;
         bool serviceBrakeEnabled = false;
         bool emergencyBrakeEnabled = false;
+        bool doorsOpen = true;
+        bool cabinLightsOn = true;
+        bool headlightsOn = false;
     public:
         void calculatePower();
         void decode(uint64_t);
@@ -39,6 +42,12 @@ class SWTC
         double getAuthority();
         void setSetpointSpeed(double);
         double getSetpointSpeed();
+        void setDoorsOpen(bool);
+        bool getDoorsOpen();
+        void setCabinLightsOn(bool);
+        bool getCabinLightsOn();
+        void setHeadlightsOn(bool);
+        bool getHeadlightsOn();
 };
 
 #endif // SWTC_H
