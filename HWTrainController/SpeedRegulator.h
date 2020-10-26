@@ -6,38 +6,45 @@
 
 class SpeedRegulator
 {
-	private:
-		double commandedSpeed;
-		double authority;
-		double setpointSpeed;
-		double powerCmd;
-		double Kp;
-		double Ki;
-		Train *train_model;
-		
-	public:
+private:
+        Train *trainModel;
+        double setpointSpeed;
+        double Vcmd;
+        double powerCmd;
+        double Kp;
+        double Ki;
+        double uk;
+        double uk_1;
+        double ek;
+        double ek_1;
+        double T;
+        double maxPower;
 
-		//Constructor
-		SpeedRegulator(Train*);
+        //In this class, power is given in Watts
 
-		//Accessor Functions
-		double getAuthority();
-		double getCurrentSpeed();
-		double getCommandedSpeed();
-		double getSetpointSpeed();
-		double getPowerCmd();
+    public:
 
-		//Driver inputs
-		void incSetpointSpeed(double);
+        //Constructor
+        SpeedRegulator(Train*);
 
-		//Calculate powerCmd
-		void calculatePowerCmd();
+        //Method to choose proper Vcmd
+        void chooseVcmd();
 
-		void decodeTrackSignal();
+        //Method to inc/dec setpoint speed
+        void incSetpointSpeed(double);
 
-		void setKpAndKi(double propGain, double intGain);
-		double getKp();
-		double getKi();
+        //Calculate powerCmd
+        void calcPowerCmd();
+
+        //Sets Kp and Ki according to engineer input
+        void setKpAndKi(double propGain, double intGain);
+
+        //Accessor Methods
+        double getSetpointSpeed();
+        double getPowerCmd();
+        double getVcmd();
+        double getKp();
+        double getKi();
 
 };
 #endif

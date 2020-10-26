@@ -15,7 +15,7 @@ public:
 
     /*! Called when the train is sent onto the track */
     // probably should have more params, idk
-    virtual void dispatch() = 0;
+    //virtual void dispatch() = 0;
 };
 
 class ITrackController

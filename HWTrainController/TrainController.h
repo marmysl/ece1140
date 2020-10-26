@@ -7,10 +7,10 @@
 #include <stdio.h>
 #include <string>
 #include <QObject>
-#include "CabinControls.h"
 #include "SpeedRegulator.h"
 #include "TrainModel/Train.h"
 #include "SerialPort.hpp"
+#include "BeaconDecoder.h"
 
 using namespace std;
 
@@ -21,8 +21,9 @@ class TrainController : public QObject, public ITrainController
     private:
         char incomingData[ARDUINO_BUF_LENGTH];
         char outgoingData[ARDUINO_BUF_LENGTH];
-		CabinControls *cabin_controller;
-		SpeedRegulator *speed_regulator;
+        Train *trainModel;
+        SpeedRegulator *speedRegulator;
+        BeaconDecoder *beacon;
 
         QTimer *writeTimer;
 
@@ -30,9 +31,6 @@ class TrainController : public QObject, public ITrainController
 		TrainController();
         ~TrainController();
         void writeData();
-		string getInput();
-		string getOutput();
-        void dispatch();
 
     public slots:
         void recieveData( char *buf, qint64 len );
