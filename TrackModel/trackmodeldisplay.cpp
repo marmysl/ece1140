@@ -1,21 +1,28 @@
 #include "trackmodeldisplay.h"
 #include "ui_trackmodeldisplay.h"
 #include "trackmodel_main.hpp"
+#include "routingtestdialog.h"
+#include "weatherstation.h"
+#include "timetracker.h"
 
 #include <QDebug>
 
 TrackModelDisplay::TrackModelDisplay(QWidget *parent) :
-    QDialog(parent),
+    QMainWindow(parent),
     ui(new Ui::TrackModelDisplay)
 {
     ui->setupUi(this);
     setWindowFlags(windowFlags() & !(Qt::WindowStaysOnTopHint));
+
+    ui->statusBar->addPermanentWidget(&sysTimeLabel, 1);
 
     ui->blocktableView->setModel(&blockTable);
     ui->blocktableView->resizeColumnsToContents();
 
     ui->switchTableView->setModel(&switchTable);
     ui->switchTableView->resizeColumnsToContents();
+
+    connect(systemClock, &TimeTracker::timeAdvanced, this, &TrackModelDisplay::on_timeAdvanced);
 }
 
 TrackModelDisplay::~TrackModelDisplay()
@@ -168,4 +175,27 @@ void TrackModelDisplay::on_applyFaultsButton_clicked()
 void TrackModelDisplay::on_reloadLayoutButton_clicked()
 {
     TrackModel::initializeTrackModel();
+}
+
+void TrackModelDisplay::on_testRouteButton_clicked()
+{
+    RoutingTestDialog rtd(selectedRoute->layoutRoute, this);
+    rtd.exec();
+}
+
+void TrackModelDisplay::on_timeAdvanced( const QDateTime &newTime, qint64 delta )
+{
+    sysTimeLabel.setText("System Time:  " + newTime.toString());
+    ui->envTempLabel->setText(QString::fromStdString(weather.getTempFString()));
+
+    if( weather.isBelowFreezing() )
+    {
+        ui->heatersStatLabel->setText("On");
+        ui->heatersOnFlag->setValue(true);
+    }
+    else
+    {
+        ui->heatersStatLabel->setText("Off");
+        ui->heatersOnFlag->setValue(false);
+    }
 }

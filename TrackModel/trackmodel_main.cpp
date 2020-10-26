@@ -3,6 +3,7 @@
 #include "tracklayout.hpp"
 #include "trackmodel_main.hpp"
 #include "layoutdialog.h"
+#include "trackmodeldisplay.h"
 
 #include <QDebug>
 
@@ -19,7 +20,7 @@ namespace TrackModel {
         try {
             RouteStatus *routeInfo = routeStatusMap.at(route);
             BlockStatus *blockInfo = routeInfo->blockMap.at(blockId);
-            blockInfo->circuit = data;
+            blockInfo->setCircuitData(data);
 
             trackModelUi->notifyBlockUpdated(routeInfo, blockId);
         }
@@ -77,7 +78,7 @@ namespace TrackModel {
         try {
             RouteStatus *routeInfo = routeStatusMap.at(route);
             BlockStatus *blockInfo = routeInfo->blockMap.at(blockId);
-            return blockInfo->circuit;
+            return blockInfo->getCircuitData();
         }
         catch( const std::out_of_range &e ) {
             throw std::invalid_argument("route or block not found");

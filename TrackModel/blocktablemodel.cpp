@@ -136,10 +136,10 @@ QVariant BlockTableModel::data(const QModelIndex &index, int role) const
         return QVariant(TrackModel::getFaultString(block->faults));
 
     case COL_SPEED:
-        return QVariant(block->circuit.decodeSpeed());
+        return QVariant(block->getCircuitData().decodeSpeed());
 
     case COL_AUTH:
-        return QVariant(block->circuit.decodeAuthority());
+        return QVariant(block->getCircuitData().decodeAuthority());
 
     default:
         return QVariant::Invalid;

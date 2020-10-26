@@ -10,6 +10,7 @@ namespace TrackModel {
     class Block;
     class Station;
     class Switch;
+    class Linkable;
 
     extern Block *yard;
 
@@ -49,7 +50,13 @@ namespace TrackModel {
             Station *getStationByName( std::string stationName );
     };
 
-    class Block {
+    class Linkable
+    {
+    public:
+        virtual Block *getTarget() = 0;
+    };
+
+    class Block : public Linkable {
         public:
             int id;
             std::string section;
@@ -57,18 +64,25 @@ namespace TrackModel {
             float grade;
             float speedLimit;
 
+            BlockDir oneWay;
             Station *station;
 
-            Block *prevBlock;
-            Block *nextBlock;
+            Linkable *reverseLink;
+            Linkable *forwardLink;
 
-            Block( int id, std::string section, float length, float grade, float speedLimit );
+            Block( int id, std::string section, float length, float grade, float speedLimit, BlockDir oneWay = BLK_NODIR );
 
             // connect this block to another block in the given direction
-            void setLink( BlockDir direction, Block *newBlock );
+            void setLink( BlockDir direction, Linkable *newBlock );
+            Linkable *getLink( BlockDir direction );
+
+            Block *getNextBlock( BlockDir direction );
+
+            // Linkable interface
+            Block *getTarget();
     };
 
-    class Switch {
+    class Switch : public Linkable {
         public:
             Block *fromBlock;
             BlockDir fromBlockDir;
@@ -83,6 +97,9 @@ namespace TrackModel {
             // move the points of this switch to the given direction, and update block connections
             // returns: the new state of the switch
             void setDirection( SwitchState newState );
+
+            // Linkable interface
+            Block *getTarget();
     };
 
     class Station {
