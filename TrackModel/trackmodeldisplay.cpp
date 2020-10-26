@@ -186,9 +186,9 @@ void TrackModelDisplay::on_testRouteButton_clicked()
 void TrackModelDisplay::on_timeAdvanced( const QDateTime &newTime, qint64 delta )
 {
     sysTimeLabel.setText("System Time:  " + newTime.toString());
-    ui->envTempLabel->setText(QString::fromStdString(weather.getTempFString()));
+    ui->envTempLabel->setText(QString::fromStdString(weather->getTempFString()));
 
-    if( weather.isBelowFreezing() )
+    if( weather->isBelowFreezing() )
     {
         ui->heatersStatLabel->setText("On");
         ui->heatersOnFlag->setValue(true);
