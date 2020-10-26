@@ -56,7 +56,8 @@ int main(int argc, char *argv[])
     mk1_app = new QApplication(argc, argv);
 
     // initialize system timer
-    systemClock = new TimeTracker(QDateTime::currentDateTime(), 500, 1800, mk1_app);
+    systemClock = new TimeTracker(QDateTime::currentDateTime(), 100, 1, mk1_app);
+    weather = new WeatherStation(mk1_app);
     QObject::connect(systemClock, &TimeTracker::timeAdvanced, weather, &WeatherStation::onTimeUpdate);
 
     systemDialog = new SystemSettingsDialog();

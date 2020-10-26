@@ -38,6 +38,7 @@ void WeatherStation::forceTempF( float tempF )
 {
     forcingTemp = true;
     tempCelcius = convertFtoC(tempF);
+    emit tempChanged();
 }
 
 void WeatherStation::stopForcingTemp()
@@ -71,6 +72,9 @@ std::string WeatherStation::getTempCString()
 
 void WeatherStation::onTimeUpdate( const QDateTime &newTime, qint64 delta )
 {
-    tempCelcius = getTempCForTime(newTime);
-    emit tempChanged();
+    if( !forcingTemp )
+    {
+        tempCelcius = getTempCForTime(newTime);
+        emit tempChanged();
+    }
 }
