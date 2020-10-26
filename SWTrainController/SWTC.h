@@ -9,15 +9,18 @@ class SWTC
         double powerCommand = 0;
         double kp;
         double ki;
-        double commandedSpeed;
-        double authority;
-        double setpointSpeed;
+        double commandedSpeed = 0.0;
+        double authority = 0.0;
+        double setpointSpeed = 0.0;
         double trainVelocity;
         unsigned signal;
         bool serviceBrakeEnabled = false;
         bool emergencyBrakeEnabled = false;
+        bool doorsOpen = true;
+        bool cabinLightsOn = true;
+        bool headlightsOn = false;
     public:
-        double calculatePower(double);
+        void calculatePower();
         void decode(uint64_t);
 
         // Accessors & mutators
@@ -37,6 +40,14 @@ class SWTC
         double getCommandedSpeed();
         void setAuthority(double);
         double getAuthority();
+        void setSetpointSpeed(double);
+        double getSetpointSpeed();
+        void setDoorsOpen(bool);
+        bool getDoorsOpen();
+        void setCabinLightsOn(bool);
+        bool getCabinLightsOn();
+        void setHeadlightsOn(bool);
+        bool getHeadlightsOn();
 };
 
 #endif // SWTC_H

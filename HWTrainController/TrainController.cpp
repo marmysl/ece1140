@@ -147,7 +147,7 @@ void TrainController::writeData()
 
     outgoing_s += "\n";
 
-   std::cout << "Outgoing: " << outgoing_s << std::endl;
+    std::cout << "Outgoing: " << outgoing_s << std::endl;
     strcpy(outgoingData, outgoing_s.c_str());
 
     trainControllerPort.writeString(outgoing_s);
