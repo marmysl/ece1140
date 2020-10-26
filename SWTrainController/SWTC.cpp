@@ -3,19 +3,23 @@
 
 void SWTC :: calculatePower()
 {
-    double speed;
-    // Compare setpoint & commanded speed
-    if (setpointSpeed <= commandedSpeed){
-        speed = setpointSpeed;
-    } else {
-        speed = commandedSpeed;
+    // Only set the power when the brake flags are off.
+    if (serviceBrakeEnabled == false && emergencyBrakeEnabled == false)
+    {
+        double speed;
+        // Compare setpoint & commanded speed
+        if (setpointSpeed <= commandedSpeed){
+            speed = setpointSpeed;
+        } else {
+            speed = commandedSpeed;
+        }
+
+        double power = kp + ki / speed;
+
+        if (speed == 0) {power = 0;}
+
+        setPowerCommand(power);
     }
-
-    double power = kp + ki / speed;
-
-    if (speed == 0) {power = 0;}
-
-    setPowerCommand(power);
 }
 
 
@@ -32,7 +36,6 @@ void SWTC :: decode(uint64_t decodeSignal)  // decodes track circuit into speed 
 
     setCommandedSpeed(decodeSpeed);
     setAuthority(decodeAuth);
-
 }
 
 // ------------------------------------------------------------ Just accessors and mutators below here. Nothin fancy
@@ -124,4 +127,34 @@ void SWTC :: setSetpointSpeed(double speed)
 double SWTC :: getSetpointSpeed()
 {
     return setpointSpeed;
+}
+
+void SWTC :: setDoorsOpen(bool i)
+{
+    doorsOpen = i;
+}
+
+bool SWTC :: getDoorsOpen()
+{
+    return doorsOpen;
+}
+
+void SWTC :: setCabinLightsOn(bool i)
+{
+    cabinLightsOn = i;
+}
+
+bool SWTC :: getCabinLightsOn()
+{
+    return cabinLightsOn;
+}
+
+void SWTC :: setHeadlightsOn(bool i)
+{
+    headlightsOn = i;
+}
+
+bool SWTC :: getHeadlightsOn()
+{
+    return headlightsOn;
 }
