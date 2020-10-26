@@ -19,7 +19,7 @@ public:
    SWTrainController();
    //void calculatePower();
    //void decode(unsigned);
-   void dispatch() override;
+   //void dispatch() override;
 };
 
 #endif // SWTRAINCONTROLLER_H

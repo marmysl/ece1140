@@ -22,9 +22,9 @@ SOURCES += \
     HWTrackController/Region.cpp \
     HWTrackController/Track.cpp \
     HWTrackController/main_checker.cpp \
-    HWTrainController/CabinControls.cpp \
     HWTrainController/SpeedRegulator.cpp \
     HWTrainController/TrainController.cpp \
+    HWTrainController/BeaconDecoder.cpp \
     SWTrackController/BlockCntrl.cpp \
     SWTrackController/TrackController.cpp \
     SWTrackController/trackcntrl_main.cpp \
@@ -58,10 +58,10 @@ HEADERS += \
     HWTrackController/HWTrackController_main.h \
     HWTrackController/Region.hpp \
     HWTrackController/Track.hpp \
-    HWTrainController/CabinControls.h \
     HWTrainController/HWTrainController_main.h \
     HWTrainController/SpeedRegulator.h \
     HWTrainController/TrainController.h \
+    HWTrainController/BeaconDecoder.h \
     SWTrackController/BlockCntrl.h \
     SWTrackController/TrackController.h \
     SWTrainController/SWTC.h \
