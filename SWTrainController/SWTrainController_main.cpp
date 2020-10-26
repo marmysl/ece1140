@@ -21,7 +21,3 @@ SWTrainController :: SWTrainController() //Constructor: creates train and execut
 
 }
 
-void SWTrainController::dispatch()
-{
-    // <your code here>
-}

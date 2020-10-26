@@ -5,7 +5,7 @@
 #include <QTimer>
 #include <iostream>
 
-const int ARDUINO_WAIT_TIME = 2000;
+const int ARDUINO_WAIT_TIME = 900;
 const int ARDUINO_BUF_LENGTH = 255;
 
 class SerialConn : public QObject
