@@ -1,6 +1,7 @@
 #include <iostream>
 #include <iomanip>
 
+#include "TrainCGUI.h"
 #include "SWTrainController_main.h"
 
 #include <QApplication>

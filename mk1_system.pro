@@ -22,9 +22,9 @@ SOURCES += \
     HWTrackController/Region.cpp \
     HWTrackController/Track.cpp \
     HWTrackController/main_checker.cpp \
-    HWTrainController/CabinControls.cpp \
     HWTrainController/SpeedRegulator.cpp \
     HWTrainController/TrainController.cpp \
+    HWTrainController/BeaconDecoder.cpp \
     SWTrackController/BlockCntrl.cpp \
     SWTrackController/TrackController.cpp \
     SWTrackController/trackcntrl_main.cpp \
@@ -42,6 +42,7 @@ SOURCES += \
     TrackModel/trackmodeldisplay.cpp \
     TrackModel/trackrouter.cpp \
     TrainModel/Train.cpp \
+    TrainModel/TrainModelControls.cpp \
     TrainModel/TrainModelMath.cpp \
     TrainModel/TrainModelUI.cpp \
     TrainModel/TrainModelUpdateBlock.cpp \
@@ -60,10 +61,10 @@ HEADERS += \
     HWTrackController/HWTrackController_main.h \
     HWTrackController/Region.hpp \
     HWTrackController/Track.hpp \
-    HWTrainController/CabinControls.h \
     HWTrainController/HWTrainController_main.h \
     HWTrainController/SpeedRegulator.h \
     HWTrainController/TrainController.h \
+    HWTrainController/BeaconDecoder.h \
     SWTrackController/BlockCntrl.h \
     SWTrackController/TrackController.h \
     SWTrainController/SWTC.h \
@@ -84,10 +85,12 @@ HEADERS += \
     TrackModel/trackmodeldisplay.h \
     TrackModel/trackrouter.h \
     TrainModel/Train.h \
+    TrainModel/TrainModelControls.h \
     TrainModel/TrainModelMath.h \
     TrainModel/TrainModelUI.h \
     TrainModel/TrainModelUpdateBlock.h \
     binaryindicator.h \
+    hw_sw_interfaces.h \
     serialportdialog.h \
     mk1_util.hpp \
     system_main.h \
@@ -101,8 +104,8 @@ FORMS += \
     TrackModel/routingtestdialog.ui \
     TrainModel/TrainModelUI.ui \
     serialportdialog.ui \
-    TrackModel/trackmodeldisplay.ui \
-    TrainModel/TrainModelUI.ui
+    TrackModel/trackmodeldisplay.ui #\
+    #TrainModel/TrainModelUI.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
