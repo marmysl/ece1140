@@ -1,5 +1,6 @@
 #include "signalindicator.h"
 #include <QPainter>
+#include <algorithm>
 
 SignalIndicator::SignalIndicator(QWidget *parent) : QStyledItemDelegate(parent)
 {
@@ -33,26 +34,49 @@ void SignalIndicator::paint( QPainter *painter, const QStyleOptionViewItem &opti
 
     painter->save();
 
-    painter->fillRect(redArea(option.rect), QBrush(r));
-    painter->fillRect(yellowArea(option.rect), QBrush(y));
-    painter->fillRect(greenArea(option.rect), QBrush(g));
+    painter->fillRect(option.rect, QColor(40, 40, 40));
+
+    painter->setBrush(r);
+    painter->drawEllipse(redArea(option.rect));
+
+    painter->setBrush(y);
+    painter->drawEllipse(yellowArea(option.rect));
+
+    painter->setBrush(g);
+    painter->drawEllipse(greenArea(option.rect));
 
     painter->restore();
 }
 
 QRect SignalIndicator::redArea( const QRect a ) const
 {
-    return QRect(a.left(), a.top(), a.width() / 3, a.height());
+    int dim = std::min(a.width() / 3, a.height());
+    int xCent = a.width() / 6;
+
+    int left = a.left() + xCent - (dim / 2);
+    int top = a.top() + (a.height() / 2) - (dim / 2);
+
+    return QRect(left, top, dim, dim);
 }
 
 QRect SignalIndicator::yellowArea( const QRect a ) const
 {
-    int w = a.width() / 3;
-    return QRect(a.left() + w, a.top(), w, a.height());
+    int dim = std::min(a.width() / 3, a.height());
+    int xCent = a.width() / 2;
+
+    int left = a.left() + xCent - (dim / 2);
+    int top = a.top() + (a.height() / 2) - (dim / 2);
+
+    return QRect(left, top, dim, dim);
 }
 
 QRect SignalIndicator::greenArea( const QRect a ) const
 {
-    int w = a.width() - ((a.width() / 3) * 2);
-    return QRect(a.right() - w, a.top(), w, a.height());
+    int dim = std::min(a.width() / 3, a.height());
+    int xCent = a.width() - (a.width() / 6);
+
+    int left = a.left() + xCent - (dim / 2);
+    int top = a.top() + (a.height() / 2) - (dim / 2);
+
+    return QRect(left, top, dim, dim);
 }

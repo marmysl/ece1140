@@ -26,6 +26,9 @@ TrackModelDisplay::TrackModelDisplay(QWidget *parent) :
     ui->switchTableView->setModel(&switchTable);
     ui->switchTableView->resizeColumnsToContents();
 
+    ui->signalDirCombo->addItems({"FWD", "REV"});
+    ui->signalCombo->addItems({"Red", "Yellow", "Green"});
+
     connect(systemClock, &TimeTracker::timeAdvanced, this, &TrackModelDisplay::on_timeAdvanced);
 }
 
@@ -145,7 +148,9 @@ void TrackModelDisplay::on_blocktableView_clicked(const QModelIndex &index)
         ui->pwrFailCheck->setChecked(isFaultSet(curFaults, FAULT_POWER_FAIL));
         ui->circFailCheck->setChecked(isFaultSet(curFaults, FAULT_CIRCUIT_FAIL));
         ui->brknRailCheck->setChecked(isFaultSet(curFaults, FAULT_BROKEN_RAIL));
+
         ui->applyFaultsButton->setEnabled(true);
+        ui->applySignalButton->setEnabled(true);
     }
     else
     {
@@ -155,7 +160,9 @@ void TrackModelDisplay::on_blocktableView_clicked(const QModelIndex &index)
         ui->pwrFailCheck->setChecked(false);
         ui->circFailCheck->setChecked(false);
         ui->brknRailCheck->setChecked(false);
+
         ui->applyFaultsButton->setEnabled(false);
+        ui->applySignalButton->setEnabled(false);
     }
 }
 
@@ -203,4 +210,17 @@ void TrackModelDisplay::on_timeAdvanced( const QDateTime &newTime, qint64 delta 
         ui->heatersStatLabel->setText("Off");
         ui->heatersOnFlag->setValue(false);
     }
+}
+
+void TrackModelDisplay::on_applySignalButton_clicked()
+{
+    int selected = ui->signalCombo->currentIndex();
+
+    if( ui->signalDirCombo->currentIndex() )
+    {
+        selectedBlock->rSignal = static_cast<TrackModel::SignalState>(selected);
+    }
+    else selectedBlock->fSignal = static_cast<TrackModel::SignalState>(selected);
+
+    blockTable.on_blockStatusUpdated(selectedBlock->id());
 }
