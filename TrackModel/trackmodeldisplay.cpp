@@ -12,12 +12,16 @@ TrackModelDisplay::TrackModelDisplay(QWidget *parent) :
     ui(new Ui::TrackModelDisplay)
 {
     ui->setupUi(this);
-    setWindowFlags(windowFlags() & !(Qt::WindowStaysOnTopHint));
+    setWindowFlags(windowFlags() & ~(Qt::WindowStaysOnTopHint));
 
     ui->statusBar->addPermanentWidget(&sysTimeLabel, 1);
 
+    sigIndicatorDelegate = new SignalIndicator(this);
+
     ui->blocktableView->setModel(&blockTable);
     ui->blocktableView->resizeColumnsToContents();
+    ui->blocktableView->setItemDelegateForColumn(BlockTableModel::COL_RSIG, sigIndicatorDelegate);
+    ui->blocktableView->setItemDelegateForColumn(BlockTableModel::COL_FSIG, sigIndicatorDelegate);
 
     ui->switchTableView->setModel(&switchTable);
     ui->switchTableView->resizeColumnsToContents();
@@ -28,6 +32,7 @@ TrackModelDisplay::TrackModelDisplay(QWidget *parent) :
 TrackModelDisplay::~TrackModelDisplay()
 {
     delete ui;
+    delete sigIndicatorDelegate;
 }
 
 void TrackModelDisplay::setRegionList( std::vector<TrackModel::Route *> *routeList ) {
@@ -134,7 +139,7 @@ void TrackModelDisplay::on_blocktableView_clicked(const QModelIndex &index)
     selectedBlock = blockTable.getBlockAtIdx(row);
     if( selectedBlock != NULL )
     {
-        ui->faultBlockNum->display(selectedBlock->id());
+        ui->blockNumLabel->setText(QString("Editing Block %1").arg(selectedBlock->id()));
 
         BlockFault &curFaults = selectedBlock->faults;
         ui->pwrFailCheck->setChecked(isFaultSet(curFaults, FAULT_POWER_FAIL));
@@ -145,7 +150,7 @@ void TrackModelDisplay::on_blocktableView_clicked(const QModelIndex &index)
     else
     {
         // selectedBlock == NULL
-        ui->faultBlockNum->display(0);
+        ui->blockNumLabel->setText("No Block Selected");
 
         ui->pwrFailCheck->setChecked(false);
         ui->circFailCheck->setChecked(false);

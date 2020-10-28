@@ -7,23 +7,7 @@ BlockTableModel::BlockTableModel(QObject *parent)
 {
 }
 
-enum Columns
-{
-    COL_ID,
-    COL_SECTION,
-    COL_LENGTH,
-    COL_GRADE,
-    COL_LIMIT,
-    COL_ONEWAY,
-    COL_TUNNEL,
-    COL_OCCUPIED,
-    COL_FAULTS,
-    COL_SPEED,
-    COL_AUTH,
-    COL_STATION,
-};
-
-static const int NUM_COLUMNS = 12;
+static const int NUM_COLUMNS = 14;
 
 static QString columnHeaders[NUM_COLUMNS]
 {
@@ -34,11 +18,13 @@ static QString columnHeaders[NUM_COLUMNS]
     "Speed Limit",
     "Oneway",
     "Tunnel",
+    "R",
     "Occupied",
+    "F",
     "Faults",
-    "Speed Cmd",
-    "Auth Cmd",
-    "Station"
+    "Speed",
+    "Auth",
+    "Station Name"
 };
 
 static bool compBlockIds( TrackModel::BlockStatus *a, TrackModel::BlockStatus *b ) {
@@ -152,17 +138,23 @@ QVariant BlockTableModel::data(const QModelIndex &index, int role) const
     case COL_TUNNEL:
         return QVariant((block->layoutBlock->underground) ? "Yes" : "");
 
+    case COL_RSIG:
+        return QVariant(block->rSignal);
+
     case COL_OCCUPIED:
         return QVariant((block->isOccupied()) ? "Yes" : "No");
+
+    case COL_FSIG:
+        return QVariant(block->fSignal);
 
     case COL_FAULTS:
         return TrackModel::getFaultString(block->faults);
 
     case COL_SPEED:
-        return QVariant(block->getCircuitData().decodeSpeed());
+        return QString("%1 kph").arg(block->getCircuitData().decodeSpeed(), 0, 'g', 2);
 
     case COL_AUTH:
-        return QVariant(block->getCircuitData().decodeAuthority());
+        return QString("%1 km").arg(block->getCircuitData().decodeAuthority(), 0, 'g', 2);
 
     case COL_STATION:
         if( TrackModel::Station *s = block->layoutBlock->station ) return QString::fromStdString(s->name);

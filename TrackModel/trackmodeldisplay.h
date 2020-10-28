@@ -5,6 +5,7 @@
 #include "blocktablemodel.h"
 #include "switchtablemodel.h"
 #include "trackmodel_status.h"
+#include "signalindicator.h"
 #include <QMainWindow>
 #include <QLabel>
 
@@ -40,6 +41,7 @@ private:
     Ui::TrackModelDisplay *ui;
     TrackModel::RouteStatus *selectedRoute;
     BlockTableModel blockTable;
+    SignalIndicator *sigIndicatorDelegate;
     SwitchTableModel switchTable;
     TrackModel::StationStatus *selectedStation;
     TrackModel::BlockStatus *selectedBlock;

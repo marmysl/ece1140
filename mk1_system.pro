@@ -35,6 +35,7 @@ SOURCES += \
     TrackModel/blocktablemodel.cpp \
     TrackModel/layoutdialog.cpp \
     TrackModel/routingtestdialog.cpp \
+    TrackModel/signalindicator.cpp \
     TrackModel/switchtablemodel.cpp \
     TrackModel/tracklayout.cpp \
     TrackModel/trackmodel_main.cpp \
@@ -76,6 +77,7 @@ HEADERS += \
     TrackModel/blocktablemodel.h \
     TrackModel/layoutdialog.h \
     TrackModel/routingtestdialog.h \
+    TrackModel/signalindicator.h \
     TrackModel/switchtablemodel.h \
     TrackModel/tracklayout.hpp \
     TrackModel/trackmodel_controller.hpp \
