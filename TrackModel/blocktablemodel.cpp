@@ -20,9 +20,10 @@ enum Columns
     COL_FAULTS,
     COL_SPEED,
     COL_AUTH,
+    COL_STATION,
 };
 
-static const int NUM_COLUMNS = 11;
+static const int NUM_COLUMNS = 12;
 
 static QString columnHeaders[NUM_COLUMNS]
 {
@@ -36,7 +37,8 @@ static QString columnHeaders[NUM_COLUMNS]
     "Occupied",
     "Faults",
     "Speed Cmd",
-    "Auth Cmd"
+    "Auth Cmd",
+    "Station"
 };
 
 static bool compBlockIds( TrackModel::BlockStatus *a, TrackModel::BlockStatus *b ) {
@@ -161,6 +163,10 @@ QVariant BlockTableModel::data(const QModelIndex &index, int role) const
 
     case COL_AUTH:
         return QVariant(block->getCircuitData().decodeAuthority());
+
+    case COL_STATION:
+        if( TrackModel::Station *s = block->layoutBlock->station ) return QString::fromStdString(s->name);
+        else return QVariant();
 
     default:
         return QVariant::Invalid;
