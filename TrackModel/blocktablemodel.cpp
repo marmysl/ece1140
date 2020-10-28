@@ -14,21 +14,25 @@ enum Columns
     COL_LENGTH,
     COL_GRADE,
     COL_LIMIT,
+    COL_ONEWAY,
+    COL_TUNNEL,
     COL_OCCUPIED,
     COL_FAULTS,
     COL_SPEED,
     COL_AUTH,
 };
 
-static const int NUM_COLUMNS = 9;
+static const int NUM_COLUMNS = 11;
 
 static QString columnHeaders[NUM_COLUMNS]
 {
     "Block Id",
     "Section",
-    "Length (m)",
+    "Length",
     "Grade",
-    "Speed Limit (kph)",
+    "Speed Limit",
+    "Oneway",
+    "Tunnel",
     "Occupied",
     "Faults",
     "Speed Cmd",
@@ -100,11 +104,9 @@ int BlockTableModel::columnCount(const QModelIndex &parent) const
 
 QVariant BlockTableModel::data(const QModelIndex &index, int role) const
 {
-    if( role != Qt::DisplayRole ) return QVariant::Invalid;
+    using vsize_t = std::vector<TrackModel::BlockStatus *>::size_type;
 
     if (!index.isValid()) return QVariant::Invalid;
-
-    using vsize_t = std::vector<TrackModel::BlockStatus *>::size_type;
 
     vsize_t row = static_cast<vsize_t>(index.row());
     vsize_t column = static_cast<vsize_t>(index.column());
@@ -112,28 +114,47 @@ QVariant BlockTableModel::data(const QModelIndex &index, int role) const
     if( (column >= NUM_COLUMNS) || (row >= blockList.size()) ) return QVariant::Invalid;
     TrackModel::BlockStatus *block = blockList[row];
 
+    if( role == Qt::BackgroundRole )
+    {
+        if( column == COL_OCCUPIED )
+        {
+            return (block->isOccupied()) ? QBrush(QColor(255, 160, 160)) : QBrush(QColor(160, 255, 160));
+        }
+        else return QVariant::Invalid;
+    }
+    else if( role != Qt::DisplayRole ) return QVariant::Invalid;
+
+
     switch( column )
     {
     case COL_ID:
         return QVariant(block->layoutBlock->id);
 
     case COL_SECTION:
-        return QVariant(QString::fromStdString(block->layoutBlock->section));
+        return QString::fromStdString(block->layoutBlock->section);
 
     case COL_LENGTH:
-        return QVariant(block->layoutBlock->length);
+        return QString("%1 m").arg(block->layoutBlock->length);
 
     case COL_GRADE:
-        return QVariant(QString("%1%").arg(block->layoutBlock->grade * 100));
+        return QString("%1%").arg(block->layoutBlock->grade * 100);
 
     case COL_LIMIT:
-        return QVariant(block->layoutBlock->speedLimit);
+        return QString("%1 kph").arg(block->layoutBlock->speedLimit);
+
+    case COL_ONEWAY:
+        if( block->layoutBlock->oneWay == TrackModel::BLK_FORWARD ) return QVariant("FWD");
+        else if( block->layoutBlock->oneWay == TrackModel::BLK_REVERSE ) return QVariant("REV");
+        else return QVariant();
+
+    case COL_TUNNEL:
+        return QVariant((block->layoutBlock->underground) ? "Yes" : "");
 
     case COL_OCCUPIED:
         return QVariant((block->isOccupied()) ? "Yes" : "No");
 
     case COL_FAULTS:
-        return QVariant(TrackModel::getFaultString(block->faults));
+        return TrackModel::getFaultString(block->faults);
 
     case COL_SPEED:
         return QVariant(block->getCircuitData().decodeSpeed());

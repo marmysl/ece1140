@@ -54,7 +54,19 @@ namespace TrackModel {
     {
     public:
         virtual Block *getTarget() = 0;
+        virtual bool hasTarget( Block *tgt ) = 0;
     };
+
+    struct NextBlockData
+    {
+        Block *block;
+        BlockDir entryDir;
+    };
+
+    inline bool operator==( const NextBlockData &a, const NextBlockData &b )
+    {
+        return (a.block == b.block) && (a.entryDir == b.entryDir);
+    }
 
     class Block : public Linkable {
         public:
@@ -66,20 +78,29 @@ namespace TrackModel {
 
             BlockDir oneWay;
             Station *station;
+            bool underground;
 
             Linkable *reverseLink;
             Linkable *forwardLink;
 
-            Block( int id, std::string section, float length, float grade, float speedLimit, BlockDir oneWay = BLK_NODIR );
+            Block( int id, std::string section, float length, float grade, float speedLimit, BlockDir oneWay = BLK_NODIR, bool tunnel = false );
 
-            // connect this block to another block in the given direction
+            /*! Connect this block to another block in the given direction */
             void setLink( BlockDir direction, Linkable *newBlock );
+            /*! Get the outgoing link (Block/Switch) in the given direction */
             Linkable *getLink( BlockDir direction );
 
-            Block *getNextBlock( BlockDir direction );
+            /*! Find the next block in the given travel direction (relative to this block) */
+            NextBlockData getNextBlock( BlockDir direction );
+            /*! Find the entry direction into the given neighbor coming from this block */
+            BlockDir getEntryDir( Block *neighbor );
+
+            /*! Determine if this block is traversable in the given direction */
+            bool canTravelInDir( BlockDir direction );
 
             // Linkable interface
             Block *getTarget();
+            bool hasTarget( Block *tgt );
     };
 
     class Switch : public Linkable {
@@ -100,6 +121,7 @@ namespace TrackModel {
 
             // Linkable interface
             Block *getTarget();
+            bool hasTarget( Block *tgt );
     };
 
     class Station {
