@@ -71,6 +71,26 @@ namespace TrackModel {
         trackModelUi->notifySwitchUpdated(routeObj, switchBlockId);
     }
 
+    void setSignal( std::string route, int blockId, BlockDir direction, SignalState newState )
+    {
+        if( direction == BLK_NODIR ) return;
+
+        try
+        {
+            RouteStatus *routeInfo = routeStatusMap.at(route);
+            BlockStatus *blockInfo = routeInfo->blockMap.at(blockId);
+
+            if( direction == BLK_FORWARD ) blockInfo->fSignal = newState;
+            else blockInfo->rSignal = newState;
+
+            trackModelUi->notifyBlockUpdated(routeInfo, blockId);
+        }
+        catch( const std::out_of_range &e )
+        {
+            throw std::invalid_argument("route or block not found");
+        }
+    }
+
 
     // Train Model Interface
     //---------------------------------------------------------------------------------
