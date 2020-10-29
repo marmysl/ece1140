@@ -18,7 +18,8 @@ protected:
     const QColor FALSE_COLOR = {200, 0, 0};
 
     bool value;
-    void paintEvent(QPaintEvent *event);
+    void paintEvent(QPaintEvent *event) override;
+    QSize sizeHint() const override;
 };
 
 #endif // BINARYINDICATOR_H

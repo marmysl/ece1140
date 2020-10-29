@@ -216,23 +216,6 @@
          <string>Station Info</string>
         </property>
         <layout class="QGridLayout" name="gridLayout_2">
-         <item row="0" column="0">
-          <widget class="QLabel" name="label_4">
-           <property name="text">
-            <string>Station:</string>
-           </property>
-          </widget>
-         </item>
-         <item row="0" column="1">
-          <widget class="QComboBox" name="stationSelector"/>
-         </item>
-         <item row="1" column="0">
-          <widget class="QLabel" name="label_6">
-           <property name="text">
-            <string>Current Passengers:</string>
-           </property>
-          </widget>
-         </item>
          <item row="1" column="1">
           <widget class="QLabel" name="passCountLabel">
            <property name="text">
@@ -240,13 +223,6 @@
            </property>
            <property name="alignment">
             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-           </property>
-          </widget>
-         </item>
-         <item row="2" column="0">
-          <widget class="QLabel" name="label_5">
-           <property name="text">
-            <string>Set Passengers:</string>
            </property>
           </widget>
          </item>
@@ -258,18 +234,55 @@
            <property name="buttonSymbols">
             <enum>QAbstractSpinBox::UpDownArrows</enum>
            </property>
+           <property name="minimum">
+            <number>1</number>
+           </property>
            <property name="maximum">
             <number>999</number>
            </property>
           </widget>
          </item>
-         <item row="3" column="1">
+         <item row="0" column="0">
+          <widget class="QLabel" name="label_4">
+           <property name="text">
+            <string>Station:</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="1">
+          <widget class="QComboBox" name="stationSelector"/>
+         </item>
+         <item row="2" column="0">
+          <widget class="QLabel" name="label_5">
+           <property name="text">
+            <string>Add Passengers:</string>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="0">
+          <widget class="QLabel" name="label_6">
+           <property name="text">
+            <string>Current Passengers:</string>
+           </property>
+          </widget>
+         </item>
+         <item row="2" column="2">
           <widget class="QPushButton" name="applyStationPropsButton">
            <property name="enabled">
             <bool>false</bool>
            </property>
            <property name="text">
-            <string>Apply</string>
+            <string>Add to Station</string>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="2">
+          <widget class="QPushButton" name="clearPlatformButton">
+           <property name="enabled">
+            <bool>false</bool>
+           </property>
+           <property name="text">
+            <string>Clear Platform</string>
            </property>
           </widget>
          </item>

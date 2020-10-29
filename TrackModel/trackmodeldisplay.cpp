@@ -75,7 +75,6 @@ void TrackModelDisplay::notifySwitchUpdated( TrackModel::Route *route, int switc
 void TrackModelDisplay::updateStationDisplay()
 {
     ui->passCountLabel->setText(QString::number(selectedStation->numPassengers));
-    ui->passCountInput->setValue(selectedStation->numPassengers);
 }
 
 void TrackModelDisplay::notifyStationUpdated(TrackModel::Route *route, std::string stationName)
@@ -108,30 +107,44 @@ void TrackModelDisplay::on_stationSelector_currentTextChanged(const QString &arg
     }
 
     TrackModel::StationStatus *newStation = selectedRoute->getStationStatus(arg1.toStdString());
-    if( newStation == NULL )
+    if( !newStation )
     {
         qDebug() << "[TrackModel] Station " << arg1 << " not found";
-        selectedStation = NULL;
+        selectedStation = nullptr;
         ui->applyStationPropsButton->setEnabled(false);
+        ui->clearPlatformButton->setEnabled(false);
     }
     else
     {
         selectedStation = newStation;
         updateStationDisplay();
         ui->applyStationPropsButton->setEnabled(true);
+        ui->clearPlatformButton->setEnabled(true);
     }
 }
 
 void TrackModelDisplay::on_applyStationPropsButton_clicked()
 {
-    if( selectedStation == NULL ) return;
+    if( !selectedRoute || !selectedStation ) return;
 
-    int newCount = ui->passCountInput->value();
-    selectedStation->numPassengers = newCount;
+    int nToAdd = ui->passCountInput->value();
+
+    ticketSystem->sellTickets(selectedRoute->layoutRoute, selectedStation->layoutStation, systemClock->currentTime(), nToAdd);
+    selectedStation->numPassengers += nToAdd;
 
     updateStationDisplay();
 
-    qDebug() << "[TrackModel] Passenger count set to " << newCount << " at station " << selectedStation->name();
+    qDebug() << "[TrackModel]" << nToAdd << "passengers added to station" << selectedStation->name();
+}
+
+void TrackModelDisplay::on_clearPlatformButton_clicked()
+{
+    if( !selectedStation ) return;
+
+    selectedStation->numPassengers = 0;
+    updateStationDisplay();
+
+    qDebug() << "[TrackModel] Passengers cleared from station" << selectedStation->name();
 }
 
 void TrackModelDisplay::on_blocktableView_clicked(const QModelIndex &index)

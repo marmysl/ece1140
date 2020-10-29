@@ -33,6 +33,7 @@ private slots:
     void on_blocktableView_clicked(const QModelIndex &index);
     void on_applyFaultsButton_clicked();
     void on_applyStationPropsButton_clicked();
+    void on_clearPlatformButton_clicked();
     void on_reloadLayoutButton_clicked();
     void on_testRouteButton_clicked();
     void on_timeAdvanced( const QDateTime &newTime, qint64 delta );
