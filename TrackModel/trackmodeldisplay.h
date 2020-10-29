@@ -36,8 +36,8 @@ private slots:
     void on_reloadLayoutButton_clicked();
     void on_testRouteButton_clicked();
     void on_timeAdvanced( const QDateTime &newTime, qint64 delta );
-
     void on_applySignalButton_clicked();
+    void on_displayTicketsButton_clicked();
 
 private:
     Ui::TrackModelDisplay *ui;

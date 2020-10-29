@@ -30,7 +30,7 @@
       <item>
        <widget class="QComboBox" name="regionComboBox">
         <property name="sizePolicy">
-         <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+         <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
           <horstretch>0</horstretch>
           <verstretch>0</verstretch>
          </sizepolicy>
@@ -48,6 +48,13 @@
        <widget class="QPushButton" name="testRouteButton">
         <property name="text">
          <string>Test Routing</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="displayTicketsButton">
+        <property name="text">
+         <string>Display Tickets</string>
         </property>
        </widget>
       </item>

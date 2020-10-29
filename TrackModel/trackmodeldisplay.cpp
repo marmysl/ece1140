@@ -4,6 +4,8 @@
 #include "routingtestdialog.h"
 #include "weatherstation.h"
 #include "timetracker.h"
+#include "ticketsystem.h"
+#include "ticketsdialog.h"
 
 #include <QDebug>
 
@@ -223,4 +225,10 @@ void TrackModelDisplay::on_applySignalButton_clicked()
     else selectedBlock->fSignal = static_cast<TrackModel::SignalState>(selected);
 
     blockTable.on_blockStatusUpdated(selectedBlock->id());
+}
+
+void TrackModelDisplay::on_displayTicketsButton_clicked()
+{
+    TicketsDialog diag(this);
+    diag.exec();
 }

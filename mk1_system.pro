@@ -37,6 +37,7 @@ SOURCES += \
     TrackModel/routingtestdialog.cpp \
     TrackModel/signalindicator.cpp \
     TrackModel/switchtablemodel.cpp \
+    TrackModel/ticketsdialog.cpp \
     TrackModel/tracklayout.cpp \
     TrackModel/trackmodel_main.cpp \
     TrackModel/trackmodel_types.cpp \
@@ -51,6 +52,7 @@ SOURCES += \
     serialportdialog.cpp \
     system_main.cpp \
     systemsettingsdialog.cpp \
+    ticketsystem.cpp \
     timetracker.cpp \
     weatherstation.cpp
 
@@ -79,6 +81,7 @@ HEADERS += \
     TrackModel/routingtestdialog.h \
     TrackModel/signalindicator.h \
     TrackModel/switchtablemodel.h \
+    TrackModel/ticketsdialog.h \
     TrackModel/tracklayout.hpp \
     TrackModel/trackmodel_controller.hpp \
     TrackModel/trackmodel_main.hpp \
@@ -98,6 +101,7 @@ HEADERS += \
     mk1_util.hpp \
     system_main.h \
     systemsettingsdialog.h \
+    ticketsystem.h \
     timetracker.h \
     weatherstation.h
 
@@ -106,6 +110,7 @@ FORMS += \
     SWTrainController/SWTrainController.ui \
     TrackModel/layoutdialog.ui \
     TrackModel/routingtestdialog.ui \
+    TrackModel/ticketsdialog.ui \
     TrainModel/TrainModelUI.ui \
     serialportdialog.ui \
     TrackModel/trackmodeldisplay.ui \

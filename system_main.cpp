@@ -1,5 +1,6 @@
 #include "timetracker.h"
 #include "weatherstation.h"
+#include "ticketsystem.h"
 #include "serialportdialog.h"
 #include "systemsettingsdialog.h"
 
@@ -71,6 +72,9 @@ int main(int argc, char *argv[])
         mk1_app->quit();
         return EXIT_FAILURE;
     }
+
+    ticketSystem = new TicketSystem(mk1_app);
+    //ticketSystem->sellTickets(routes[0], routes[0]->stations[0], systemClock->currentTime(), 20);
 
     // display modal dialog to select HW component serial ports
     hwPortsDialog = new SerialPortDialog();
