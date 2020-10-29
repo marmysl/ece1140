@@ -31,6 +31,11 @@ void TimeTracker::changeTime( const QDateTime &newTime )
     if( running ) play();
 }
 
+QDateTime TimeTracker::currentTime()
+{
+    return lastUpdate;
+}
+
 int TimeTracker::getResolution() { return resolution; }
 void TimeTracker::setResolution( int res )
 {

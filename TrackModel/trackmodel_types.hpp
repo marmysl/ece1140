@@ -20,6 +20,8 @@ namespace TrackModel {
         SW_DIVERGING
     };
 
+    // Begin BlockFault
+    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     enum BlockFault {
         FAULT_NONE = 0,
         FAULT_BROKEN_RAIL = 1,
@@ -52,6 +54,15 @@ namespace TrackModel {
     }
 
     QString getFaultString( const BlockFault &faults );
+    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    // End BlockFault
+
+    enum SignalState
+    {
+        TSIG_RED = 0,
+        TSIG_YELLOW = 1,
+        TSIG_GREEN = 2
+    };
 
     struct TrackCircuitData {
         uint32_t speed;

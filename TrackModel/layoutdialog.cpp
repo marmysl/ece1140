@@ -87,19 +87,13 @@ void LayoutDialog::on_fileTableView_clicked(const QModelIndex &index)
 
     ui->nameInput->setEnabled(true);
     ui->openFileButton->setEnabled(true);
-    ui->applyButton->setEnabled(true);
 }
 
 void LayoutDialog::on_openFileButton_clicked()
 {
     QString fileName = QFileDialog::getOpenFileName(this, tr("Open Layout"), QFileInfo().absolutePath(), tr("Layout Files (*.csv)"));
     ui->fileLabel->setText(fileName);
-}
-
-void LayoutDialog::on_applyButton_clicked()
-{
-    TrackModel::routesToLoad[selectedIndex].name = ui->nameInput->text();
-    TrackModel::routesToLoad[selectedIndex].layoutFile = ui->fileLabel->text();
+    TrackModel::routesToLoad[selectedIndex].layoutFile = fileName;
     fileTable.signalChange(selectedIndex);
 }
 
@@ -134,4 +128,10 @@ void LayoutDialog::on_deleteButton_clicked()
         on_fileTableView_clicked(fileTable.index(0, 0));
     }
     else ui->fileTableView->clearSelection();
+}
+
+void LayoutDialog::on_nameInput_textEdited(const QString &arg1)
+{
+    TrackModel::routesToLoad[selectedIndex].name = arg1;
+    fileTable.signalChange(selectedIndex);
 }

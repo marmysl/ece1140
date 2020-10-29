@@ -10,6 +10,24 @@ class BlockTableModel : public QAbstractTableModel
     Q_OBJECT
 
 public:
+    enum Columns
+    {
+        COL_ID,
+        COL_SECTION,
+        COL_LENGTH,
+        COL_GRADE,
+        COL_LIMIT,
+        COL_ONEWAY,
+        COL_TUNNEL,
+        COL_RSIG,
+        COL_OCCUPIED,
+        COL_FSIG,
+        COL_FAULTS,
+        COL_SPEED,
+        COL_AUTH,
+        COL_STATION,
+    };
+
     explicit BlockTableModel(QObject *parent = nullptr);
 
     // Data manip:

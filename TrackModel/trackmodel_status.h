@@ -10,8 +10,11 @@ namespace TrackModel
         Block *layoutBlock;
         int trainCount;
         BlockFault faults;
+        SignalState rSignal;
+        SignalState fSignal;
 
-        BlockStatus( Block *block ) : layoutBlock(block), trainCount(0), faults(FAULT_NONE), circuit(TrackCircuitData()) {}
+        BlockStatus( Block *block ) : layoutBlock(block), trainCount(0), faults(FAULT_NONE),
+            rSignal(TSIG_RED), fSignal(TSIG_RED), circuit(TrackCircuitData()) {}
 
         TrackCircuitData getCircuitData()
         {

@@ -28,3 +28,8 @@ void BinaryIndicator::paintEvent( QPaintEvent *event )
         painter.fillRect(rect(), QBrush(FALSE_COLOR));
     }
 }
+
+QSize BinaryIndicator::sizeHint() const
+{
+    return QSize(23, 23);
+}
