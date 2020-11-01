@@ -30,8 +30,8 @@ SpeedRegulator::SpeedRegulator(Train *ptr)
 }
 void SpeedRegulator::calcPowerCmd()
 {
-    //Only calculate a nonzero power while the train has a nonzero authority
-    if((trainModel -> sendTrackCircuit() & 0xfffffff) > 0)
+    //Only calculate a nonzero power while the train has a nonzero authority and the brake is not being pulled
+    if(  ((trainModel -> sendTrackCircuit() & 0xfffffff) > 0) || (trainModel -> getServiceBrake() != 1) || (trainModel -> getEmergencyBrake() != 1) )
     {
         //Call the chooseVcmd() function to ensure there is no stale data for Vcmd
         chooseVcmd();
@@ -47,7 +47,12 @@ void SpeedRegulator::calcPowerCmd()
         powerCmd = (Kp * ek) + (Ki * uk);
 
         //Sends power command to the trainModel
-        trainModel -> setPower(0);
+        if(powerCmd < 120000) trainModel -> setPower(powerCmd);
+        else
+        {
+            powerCmd = 120000;
+            trainModel -> setPower(powerCmd);
+        }
 
         //Set ek_1 = ek for next power command calculation
         ek_1 = ek;
@@ -57,12 +62,23 @@ void SpeedRegulator::calcPowerCmd()
     }
     else
     {
-        //Set the power command to 0
-        powerCmd = 0;
-
-        //Send the power command to the train model
-        trainModel -> setPower(powerCmd);
+        powerCmdZero();
     }
+}
+void SpeedRegulator::powerCmdZero()
+{
+    //Set the powerCmd var to 0
+    powerCmd = 0;
+
+    //Update the train model
+    trainModel -> setPower(powerCmd);
+
+    //Set the PID loop variables to the 0 power
+    ek_1 = 0;
+    uk_1 = 0;
+
+    //Set the setpoint speed to 0
+    setpointSpeed = 0;
 }
 double SpeedRegulator::getPowerCmd()
 {
@@ -77,7 +93,9 @@ double SpeedRegulator::getSetpointSpeed()
 void SpeedRegulator::incSetpointSpeed(double inc)
 {
     //Increment/Decrement the speed of the train according to the joystick input
-    if((setpointSpeed + inc >= 0) && setpointSpeed <= 43 && (setpointSpeed + inc <= 43))
+
+    //Changes the setpoint speed only if it is within the range of speed as given by the Flexity Tram data sheet and if the emergency or service brakes are being pulled
+    if((setpointSpeed + inc >= 0) && setpointSpeed <= 43 && (setpointSpeed + inc <= 43) && trainModel -> getEmergencyBrake() != 1 && trainModel -> getServiceBrake() !=1 )
     {
         setpointSpeed += inc;
     }
@@ -107,4 +125,20 @@ double SpeedRegulator::getKp()
 double SpeedRegulator::getKi()
 {
     return Ki;
+}
+void SpeedRegulator::pullServiceBrake()
+{
+    //Sets the service brake flag in the train model to 1
+    trainModel -> setServiceBrake(1);
+
+    //Set the power command to 0
+    powerCmdZero();
+}
+void SpeedRegulator::pullEmergencyBrake()
+{
+    //Sets the emergency brake flag in the train model to 1
+    trainModel -> setEmergencyBrake(1);
+
+    //Set the power in the train model to 0
+    powerCmdZero();
 }
