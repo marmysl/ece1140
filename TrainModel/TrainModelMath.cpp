@@ -2,24 +2,46 @@
 #include "TrainModelUpdateBlock.h"
 #include <chrono>
 
-TrainModelMath::TrainModelMath(int newNumCars, TrainModelUpdateBlock *newBlock){
+TrainModelMath::TrainModelMath(int newNumCars, TrainModelUpdateBlock *newAssigBlock){
     numCars = newNumCars;
-    block = newBlock;
+    mass = numCars * 56.7;
+    block = newAssigBlock;
+
+    currVel = 0;
+    currPower = 0;
+    currForce = 0;
+    currAccel = 0;
+    lastVel = 0;
+    lastAccel = 0;
+    lastPos = 0;
+    elapsedTime = 0;
+    failureStatus = 0;
+    safeStoppingDist = 10;
+    inYard = true;
+    newBlock = false;
 }
 
 void TrainModelMath::setPower(double newPower){
+    //Calculate Force from power
+    currForce = newPower/lastVel;
+    limitForce();
+
+    //Find acceleration from force
+    currAccel = currForce/mass;
+    limitAccel();
+
     //Get current time
     if (!inYard){
         chrono::steady_clock::time_point newTime= chrono::steady_clock::now();
 
         //Find elapsed time and convert to a double
-        auto elapsedTime = newTime - lastTime;
+        auto changeTime = newTime - lastTime;
         lastTime = newTime;
-        double milliSec = chrono::duration<double, milli>(elapsedTime).count();
+        elapsedTime = chrono::duration<double, milli>(changeTime).count();
 
         //Find the distance travelled using old velocity
-        double distTravelled = this->travelledDist(milliSec, currVel);
-        double newPos = this->updatePosition(lastPos, distTravelled);
+        double distTravelled = travelledDist(elapsedTime, currVel);
+        double newPos = updatePosition(lastPos, distTravelled);
 
         //compare new position to old to see if new block
         if (newPos >= block->blockDist && block->blockNum<=10){
@@ -28,20 +50,20 @@ void TrainModelMath::setPower(double newPower){
             block->updateTrackInfo(inYard);
         }
         lastPos = newPos;
+        currVel = calcVelocity();
+        lastAccel = currAccel;
+        lastVel = currVel;
         currPower = newPower;
-        double newCurrVel = this->calcVelocity(newPower);
-        currVel = newCurrVel;
     }
     if (inYard && newPower!=0){
         lastTime = chrono::steady_clock::now();
         lastPos = 0;
         block->updateTrackInfo(inYard);
-        //lastTime = chrono::steady_clock::now();
-        //lastPos = 0;
-        currPower = newPower;
-        double newCurrVel = TrainModelMath::calcVelocity(newPower);
-        currVel = newCurrVel;
         inYard = false;
+        currVel = calcVelocity();
+        lastAccel = currAccel;
+        lastVel = currVel;
+        currPower = newPower;
     }
 }
 
@@ -54,17 +76,30 @@ double TrainModelMath::updatePosition(double oldPos, double change) {
     return oldPos+change;
 }
 
-double TrainModelMath::calcVelocity(double power) {
-    //return 20;
-    return power; //morgen debug
+double TrainModelMath::calcVelocity() {
+    double totalAcc = lastAccel + currAccel;
+    double vel = lastVel + ((elapsedTime/2)*totalAcc);
+    return vel;
 }
 
-void TrainModelMath::calcForce(){
-
+void TrainModelMath::limitForce(){
+    if (currForce > (mass*accel)){
+        currForce = mass*accel;
+    }
 }
 
-void TrainModelMath::getVel(){
-
+void TrainModelMath::limitAccel(){
+    if (currForce == 0 & currVel!=0){
+        currAccel = -1.2;
+    }
+    else if (currForce != 0){
+        if (currAccel > 0.5){
+            currAccel = 0.5;
+        }
+    }
+    else{
+        currAccel = 0;
+    }
 }
 
 void TrainModelMath::setFailureStatus(int newFailureStatus){

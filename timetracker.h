@@ -18,6 +18,10 @@ public:
 
     /*! Move the mk1 system time to the given value (does not trigger timeAdvanced) */
     void changeTime( const QDateTime &newTime );
+    QDateTime currentTime();
+
+    int getResolution();
+    void setResolution( int res );
 
 private:
     int resolution;

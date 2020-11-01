@@ -99,11 +99,7 @@ QVariant SwitchTableModel::data(const QModelIndex &index, int role) const
         return QVariant((sw->direction == TrackModel::SW_DIVERGING) ? "Diverging" : "Straight");
 
     case COL_LINK:
-        if( sw->direction == TrackModel::SW_DIVERGING )
-        {
-            return QVariant(sw->divergeBlock->id);
-        }
-        else return QVariant(sw->straightBlock->id);
+        return QVariant(sw->getTarget()->id);
 
     default:
         return QVariant::Invalid;

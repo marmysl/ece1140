@@ -1,26 +1,43 @@
 #include "trackmodeldisplay.h"
 #include "ui_trackmodeldisplay.h"
 #include "trackmodel_main.hpp"
+#include "routingtestdialog.h"
+#include "weatherstation.h"
+#include "timetracker.h"
+#include "ticketsystem.h"
+#include "ticketsdialog.h"
 
 #include <QDebug>
 
 TrackModelDisplay::TrackModelDisplay(QWidget *parent) :
-    QDialog(parent),
+    QMainWindow(parent),
     ui(new Ui::TrackModelDisplay)
 {
     ui->setupUi(this);
-    setWindowFlags(windowFlags() & !(Qt::WindowStaysOnTopHint));
+    setWindowFlags(windowFlags() & ~(Qt::WindowStaysOnTopHint));
+
+    ui->statusBar->addPermanentWidget(&sysTimeLabel, 1);
+
+    sigIndicatorDelegate = new SignalIndicator(this);
 
     ui->blocktableView->setModel(&blockTable);
     ui->blocktableView->resizeColumnsToContents();
+    ui->blocktableView->setItemDelegateForColumn(BlockTableModel::COL_RSIG, sigIndicatorDelegate);
+    ui->blocktableView->setItemDelegateForColumn(BlockTableModel::COL_FSIG, sigIndicatorDelegate);
 
     ui->switchTableView->setModel(&switchTable);
     ui->switchTableView->resizeColumnsToContents();
+
+    ui->signalDirCombo->addItems({"FWD", "REV"});
+    ui->signalCombo->addItems({"Red", "Yellow", "Green"});
+
+    connect(systemClock, &TimeTracker::timeAdvanced, this, &TrackModelDisplay::on_timeAdvanced);
 }
 
 TrackModelDisplay::~TrackModelDisplay()
 {
     delete ui;
+    delete sigIndicatorDelegate;
 }
 
 void TrackModelDisplay::setRegionList( std::vector<TrackModel::Route *> *routeList ) {
@@ -58,7 +75,6 @@ void TrackModelDisplay::notifySwitchUpdated( TrackModel::Route *route, int switc
 void TrackModelDisplay::updateStationDisplay()
 {
     ui->passCountLabel->setText(QString::number(selectedStation->numPassengers));
-    ui->passCountInput->setValue(selectedStation->numPassengers);
 }
 
 void TrackModelDisplay::notifyStationUpdated(TrackModel::Route *route, std::string stationName)
@@ -91,30 +107,44 @@ void TrackModelDisplay::on_stationSelector_currentTextChanged(const QString &arg
     }
 
     TrackModel::StationStatus *newStation = selectedRoute->getStationStatus(arg1.toStdString());
-    if( newStation == NULL )
+    if( !newStation )
     {
         qDebug() << "[TrackModel] Station " << arg1 << " not found";
-        selectedStation = NULL;
+        selectedStation = nullptr;
         ui->applyStationPropsButton->setEnabled(false);
+        ui->clearPlatformButton->setEnabled(false);
     }
     else
     {
         selectedStation = newStation;
         updateStationDisplay();
         ui->applyStationPropsButton->setEnabled(true);
+        ui->clearPlatformButton->setEnabled(true);
     }
 }
 
 void TrackModelDisplay::on_applyStationPropsButton_clicked()
 {
-    if( selectedStation == NULL ) return;
+    if( !selectedRoute || !selectedStation ) return;
 
-    int newCount = ui->passCountInput->value();
-    selectedStation->numPassengers = newCount;
+    int nToAdd = ui->passCountInput->value();
+
+    ticketSystem->sellTickets(selectedRoute->layoutRoute, selectedStation->layoutStation, systemClock->currentTime(), nToAdd);
+    selectedStation->numPassengers += nToAdd;
 
     updateStationDisplay();
 
-    qDebug() << "[TrackModel] Passenger count set to " << newCount << " at station " << selectedStation->name();
+    qDebug() << "[TrackModel]" << nToAdd << "passengers added to station" << selectedStation->name();
+}
+
+void TrackModelDisplay::on_clearPlatformButton_clicked()
+{
+    if( !selectedStation ) return;
+
+    selectedStation->numPassengers = 0;
+    updateStationDisplay();
+
+    qDebug() << "[TrackModel] Passengers cleared from station" << selectedStation->name();
 }
 
 void TrackModelDisplay::on_blocktableView_clicked(const QModelIndex &index)
@@ -127,23 +157,27 @@ void TrackModelDisplay::on_blocktableView_clicked(const QModelIndex &index)
     selectedBlock = blockTable.getBlockAtIdx(row);
     if( selectedBlock != NULL )
     {
-        ui->faultBlockNum->display(selectedBlock->id());
+        ui->blockNumLabel->setText(QString("Editing Block %1").arg(selectedBlock->id()));
 
         BlockFault &curFaults = selectedBlock->faults;
         ui->pwrFailCheck->setChecked(isFaultSet(curFaults, FAULT_POWER_FAIL));
         ui->circFailCheck->setChecked(isFaultSet(curFaults, FAULT_CIRCUIT_FAIL));
         ui->brknRailCheck->setChecked(isFaultSet(curFaults, FAULT_BROKEN_RAIL));
+
         ui->applyFaultsButton->setEnabled(true);
+        ui->applySignalButton->setEnabled(true);
     }
     else
     {
         // selectedBlock == NULL
-        ui->faultBlockNum->display(0);
+        ui->blockNumLabel->setText("No Block Selected");
 
         ui->pwrFailCheck->setChecked(false);
         ui->circFailCheck->setChecked(false);
         ui->brknRailCheck->setChecked(false);
+
         ui->applyFaultsButton->setEnabled(false);
+        ui->applySignalButton->setEnabled(false);
     }
 }
 
@@ -168,4 +202,46 @@ void TrackModelDisplay::on_applyFaultsButton_clicked()
 void TrackModelDisplay::on_reloadLayoutButton_clicked()
 {
     TrackModel::initializeTrackModel();
+}
+
+void TrackModelDisplay::on_testRouteButton_clicked()
+{
+    RoutingTestDialog rtd(selectedRoute->layoutRoute, this);
+    rtd.exec();
+}
+
+void TrackModelDisplay::on_timeAdvanced( const QDateTime &newTime, qint64 delta )
+{
+    sysTimeLabel.setText("System Time:  " + newTime.toString());
+    ui->envTempLabel->setText(QString::fromStdString(weather->getTempFString()));
+
+    if( weather->isBelowFreezing() )
+    {
+        ui->heatersStatLabel->setText("On");
+        ui->heatersOnFlag->setValue(true);
+    }
+    else
+    {
+        ui->heatersStatLabel->setText("Off");
+        ui->heatersOnFlag->setValue(false);
+    }
+}
+
+void TrackModelDisplay::on_applySignalButton_clicked()
+{
+    int selected = ui->signalCombo->currentIndex();
+
+    if( ui->signalDirCombo->currentIndex() )
+    {
+        selectedBlock->rSignal = static_cast<TrackModel::SignalState>(selected);
+    }
+    else selectedBlock->fSignal = static_cast<TrackModel::SignalState>(selected);
+
+    blockTable.on_blockStatusUpdated(selectedBlock->id());
+}
+
+void TrackModelDisplay::on_displayTicketsButton_clicked()
+{
+    TicketsDialog diag(this);
+    diag.exec();
 }

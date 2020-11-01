@@ -38,16 +38,11 @@ public:
 
 private slots:
     void on_buttonBox_accepted();
-
     void on_fileTableView_clicked(const QModelIndex &index);
-
     void on_openFileButton_clicked();
-
-    void on_applyButton_clicked();
-
     void on_addButton_clicked();
-
     void on_deleteButton_clicked();
+    void on_nameInput_textEdited(const QString &arg1);
 
 private:
     Ui::LayoutDialog *ui;

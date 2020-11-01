@@ -34,18 +34,25 @@ SOURCES += \
     SerialPort.cpp \
     TrackModel/blocktablemodel.cpp \
     TrackModel/layoutdialog.cpp \
+    TrackModel/routingtestdialog.cpp \
+    TrackModel/signalindicator.cpp \
     TrackModel/switchtablemodel.cpp \
+    TrackModel/ticketsdialog.cpp \
     TrackModel/tracklayout.cpp \
     TrackModel/trackmodel_main.cpp \
     TrackModel/trackmodel_types.cpp \
     TrackModel/trackmodeldisplay.cpp \
+    TrackModel/trackrouter.cpp \
     TrainModel/Train.cpp \
     TrainModel/TrainModelControls.cpp \
     TrainModel/TrainModelMath.cpp \
     TrainModel/TrainModelUI.cpp \
     TrainModel/TrainModelUpdateBlock.cpp \
+    binaryindicator.cpp \
     serialportdialog.cpp \
     system_main.cpp \
+    systemsettingsdialog.cpp \
+    ticketsystem.cpp \
     timetracker.cpp \
     weatherstation.cpp
 
@@ -71,22 +78,30 @@ HEADERS += \
     SerialPort.hpp \
     TrackModel/blocktablemodel.h \
     TrackModel/layoutdialog.h \
+    TrackModel/routingtestdialog.h \
+    TrackModel/signalindicator.h \
     TrackModel/switchtablemodel.h \
+    TrackModel/ticketsdialog.h \
     TrackModel/tracklayout.hpp \
     TrackModel/trackmodel_controller.hpp \
     TrackModel/trackmodel_main.hpp \
+    TrackModel/trackmodel_status.h \
     TrackModel/trackmodel_train.hpp \
     TrackModel/trackmodel_types.hpp \
     TrackModel/trackmodeldisplay.h \
+    TrackModel/trackrouter.h \
     TrainModel/Train.h \
     TrainModel/TrainModelControls.h \
     TrainModel/TrainModelMath.h \
     TrainModel/TrainModelUI.h \
     TrainModel/TrainModelUpdateBlock.h \
+    binaryindicator.h \
     hw_sw_interfaces.h \
     serialportdialog.h \
     mk1_util.hpp \
     system_main.h \
+    systemsettingsdialog.h \
+    ticketsystem.h \
     timetracker.h \
     weatherstation.h
 
@@ -94,10 +109,12 @@ FORMS += \
     CTCOffice/ctcoffice/mainwindow.ui \
     SWTrainController/SWTrainController.ui \
     TrackModel/layoutdialog.ui \
+    TrackModel/routingtestdialog.ui \
+    TrackModel/ticketsdialog.ui \
     TrainModel/TrainModelUI.ui \
     serialportdialog.ui \
-    TrackModel/trackmodeldisplay.ui #\
-    #TrainModel/TrainModelUI.ui
+    TrackModel/trackmodeldisplay.ui \
+    systemsettingsdialog.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
@@ -105,19 +122,4 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
 DISTFILES += \
-    CTCOffice/.qmake.stash \
-    CTCOffice/ctcoffice/ctcoffice_en_US.ts \
-    SWTrainController/.qmake.stash \
-    TrackModel/.gitignore \
-    TrackModel/.vscode/c_cpp_properties.json \
-    TrackModel/.vscode/launch.json \
-    TrackModel/.vscode/settings.json \
-    TrackModel/.vscode/tasks.json \
-    TrackModel/blue_line.csv \
-    TrackModel/trackmodel.exe \
-    TrainModel/.DS_Store
-
-#SUBDIRS += \
-#    CTCOffice/ctcoffice/ctcoffice.pro \
-#    SWTrainController/traincontroller.pro \
-#    TrainModel/TrainModel.pro
+    TrackModel/blue_line.csv
