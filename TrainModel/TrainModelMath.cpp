@@ -4,7 +4,7 @@
 
 TrainModelMath::TrainModelMath(int newNumCars, TrainModelUpdateBlock *newAssigBlock){
     numCars = newNumCars;
-    mass = numCars * 56.7;
+    mass = numCars * 56700;
     block = newAssigBlock;
 
     currVel = 0;
@@ -83,13 +83,13 @@ double TrainModelMath::calcVelocity() {
 }
 
 void TrainModelMath::limitForce(){
-    if (currForce > (mass*accel)){
-        currForce = mass*accel;
+    if (currForce > (mass*0.5)){
+        currForce = mass*0.5;
     }
 }
 
 void TrainModelMath::limitAccel(){
-    if (currForce == 0 & currVel!=0){
+    if (currForce == 0 & currVel>0){
         currAccel = -1.2;
     }
     else if (currForce != 0){
