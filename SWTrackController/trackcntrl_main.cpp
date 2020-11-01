@@ -9,8 +9,8 @@
 void timerEvent(QTimerEvent *event);
 
 int init_SWTrackController() {
-    int timerID = startTimer(1000); // timer event occurs every second
-    int count = 0;
+    //int timerID = startTimer(1000); // timer event occurs every second
+    //int count = 0;
 
     CTCSignals C1;
 
