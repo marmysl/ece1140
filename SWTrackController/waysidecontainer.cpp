@@ -5,6 +5,7 @@ WaysideContainer::WaysideContainer()
 
 }
 
+
 void WaysideContainer::addTrackObj(int id, std::vector<char> &s, std::vector<int> &b) {
     using namespace std;
     TrackController t;

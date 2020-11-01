@@ -12,6 +12,7 @@ public:
     std::vector<TrackController> waysides;
     void addTrackObj(int, std::vector<char> &, std::vector<int> &);
 
+
     //Block Container of Wayside
     std::vector<BlockCntrl> blocks;
     void addBlockObj(int num);

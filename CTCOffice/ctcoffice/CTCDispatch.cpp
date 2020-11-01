@@ -333,6 +333,6 @@ void CTCDispatch::sendTrackController(CTCSignals(&sig)){
     else{
         destblock = endblock;
     }
-    //sig.setSignal(destblock, speed, authority);
+    sig.setSignal(destblock, speed, authority);
 }
 

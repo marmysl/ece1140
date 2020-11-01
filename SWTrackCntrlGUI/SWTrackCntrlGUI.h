@@ -14,6 +14,7 @@ class SWTrackCntrlGUI : public QMainWindow
 public:
     SWTrackCntrlGUI(QWidget *parent = nullptr);
     ~SWTrackCntrlGUI();
+    void setTable();
 
 private:
     Ui::SWTrackCntrlGUI *ui;
