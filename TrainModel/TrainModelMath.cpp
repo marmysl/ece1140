@@ -2,7 +2,7 @@
 #include "TrainModelUpdateBlock.h"
 #include <chrono>
 
-TrainModelMath::TrainModelMath(int newNumCars, TrainModelUpdateBlock *newAssigBlock){
+TrainModelMath::TrainModelMath(int newNumCars, TrainModelUpdateBlock *newAssigBlock){    
     numCars = newNumCars;
     mass = numCars * 56700;
     block = newAssigBlock;
@@ -30,33 +30,36 @@ void TrainModelMath::setPower(double newPower){
     currAccel = currForce/mass;
     limitAccel();
 
+    //Find the current velocity
+    currVel = calcVelocity();
+
     //Get current time
     if (!inYard){
-        chrono::steady_clock::time_point newTime= chrono::steady_clock::now();
+        newTime = systemClock->currentTime();
 
         //Find elapsed time and convert to a double
-        auto changeTime = newTime - lastTime;
+        qint64 change;
+        change = lastTime.msecsTo(newTime);
+        elapsedTime = (double)change;
         lastTime = newTime;
-        elapsedTime = chrono::duration<double, milli>(changeTime).count();
 
         //Find the distance travelled using old velocity
         double distTravelled = travelledDist(elapsedTime, currVel);
         double newPos = updatePosition(lastPos, distTravelled);
 
         //compare new position to old to see if new block
-        if (newPos >= block->blockDist && block->blockNum<=10){
-            newPos = newPos - block->blockDist;
+        if (newPos >= block->blockDist && block->blockNum<=9){
+            newPos = newPos - (block->blockDist);
             //update current block and information
             block->updateTrackInfo(inYard);
         }
         lastPos = newPos;
-        currVel = calcVelocity();
         lastAccel = currAccel;
         lastVel = currVel;
         currPower = newPower;
     }
     if (inYard && newPower!=0){
-        lastTime = chrono::steady_clock::now();
+        lastTime = systemClock->currentTime();
         lastPos = 0;
         block->updateTrackInfo(inYard);
         inYard = false;
@@ -68,7 +71,8 @@ void TrainModelMath::setPower(double newPower){
 }
 
 double TrainModelMath::travelledDist(double time, double velocity) {
-    double dist = velocity * time;
+    double totalVel = lastVel + currVel;
+    double dist = lastPos + ((elapsedTime/2)*totalVel);
     return dist;
 }
 

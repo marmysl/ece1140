@@ -1,6 +1,9 @@
 #ifndef TRAINMODELMATH_H
 #define TRAINMODELMATH_H
-#include <chrono>
+#include <QObject>
+#include <QTimer>
+#include <QDateTime>
+#include "timetracker.h"
 #include "TrainModelUpdateBlock.h"
 
 using namespace std;
@@ -16,7 +19,8 @@ public:
     double lastVel = 0;
     double lastAccel = 0;
     double lastPos = 0;
-    chrono::steady_clock::time_point lastTime;
+    QDateTime lastTime;
+    QDateTime newTime;
     double elapsedTime = 0;
     bool newBlock = false;
     int failureStatus = 0;
@@ -32,12 +36,11 @@ public:
 
     TrainModelMath(int newNumCars, TrainModelUpdateBlock *block);
     TrainModelMath();
-    double travelledDist(double time, double velocity);
-    double updatePosition(double oldPos, double change);
+    double travelledDist();
+    double updatePosition(double change);
     double calcVelocity();
     void setPower(double);
     void updatePosition();
-    void travelledDist();
     void limitForce();
     void limitAccel();
     void setFailureStatus(int);
