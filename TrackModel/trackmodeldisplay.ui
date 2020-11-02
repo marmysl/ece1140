@@ -109,19 +109,6 @@
     </item>
     <item>
      <layout class="QGridLayout" name="trackTableGrid" columnstretch="3,1">
-      <item row="1" column="0">
-       <widget class="QTableView" name="blocktableView">
-        <property name="alternatingRowColors">
-         <bool>true</bool>
-        </property>
-        <property name="selectionMode">
-         <enum>QAbstractItemView::SingleSelection</enum>
-        </property>
-        <property name="selectionBehavior">
-         <enum>QAbstractItemView::SelectRows</enum>
-        </property>
-       </widget>
-      </item>
       <item row="0" column="0">
        <widget class="QLabel" name="label">
         <property name="text">
@@ -138,6 +125,29 @@
       </item>
       <item row="1" column="1">
        <widget class="QTableView" name="switchTableView"/>
+      </item>
+      <item row="1" column="0">
+       <widget class="QScrollArea" name="mapScrollArea">
+        <property name="widgetResizable">
+         <bool>true</bool>
+        </property>
+         <widget class="RouteMapView" name="routeMap" native="true">
+          <property name="geometry">
+           <rect>
+            <x>0</x>
+            <y>0</y>
+            <width>120</width>
+            <height>80</height>
+           </rect>
+          </property>
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+        </widget>
+       </widget>
       </item>
      </layout>
     </item>
@@ -300,6 +310,12 @@
    <class>BinaryIndicator</class>
    <extends>QWidget</extends>
    <header>binaryindicator.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>RouteMapView</class>
+   <extends>QWidget</extends>
+   <header>TrackModel/routemapview.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>

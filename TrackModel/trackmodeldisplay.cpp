@@ -20,11 +20,6 @@ TrackModelDisplay::TrackModelDisplay(QWidget *parent) :
 
     sigIndicatorDelegate = new SignalIndicator(this);
 
-    ui->blocktableView->setModel(&blockTable);
-    ui->blocktableView->resizeColumnsToContents();
-    ui->blocktableView->setItemDelegateForColumn(BlockTableModel::COL_RSIG, sigIndicatorDelegate);
-    ui->blocktableView->setItemDelegateForColumn(BlockTableModel::COL_FSIG, sigIndicatorDelegate);
-
     ui->switchTableView->setModel(&switchTable);
     ui->switchTableView->resizeColumnsToContents();
 
@@ -50,7 +45,9 @@ void TrackModelDisplay::setRegionList( std::vector<TrackModel::Route *> *routeLi
 
 void TrackModelDisplay::setRoute( TrackModel::RouteStatus *newRoute ) {
     selectedRoute = newRoute;
-    blockTable.resetRoute(newRoute);
+    //blockTable.resetRoute(newRoute);
+    ui->routeMap->setRoute(newRoute);
+
     switchTable.resetRoute(newRoute->layoutRoute);
 
     ui->stationSelector->clear();

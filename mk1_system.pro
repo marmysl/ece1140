@@ -34,6 +34,7 @@ SOURCES += \
     SerialPort.cpp \
     TrackModel/blocktablemodel.cpp \
     TrackModel/layoutdialog.cpp \
+    TrackModel/routemapview.cpp \
     TrackModel/routingtestdialog.cpp \
     TrackModel/signalindicator.cpp \
     TrackModel/switchtablemodel.cpp \
@@ -78,6 +79,7 @@ HEADERS += \
     SerialPort.hpp \
     TrackModel/blocktablemodel.h \
     TrackModel/layoutdialog.h \
+    TrackModel/routemapview.h \
     TrackModel/routingtestdialog.h \
     TrackModel/signalindicator.h \
     TrackModel/switchtablemodel.h \
