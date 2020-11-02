@@ -20,6 +20,13 @@ public:
     void updateBlockLength(double length);
     void updateBlockGrade(double grade);
     void updateNumCars(int cars);
+    void updateDoors(bool);
+    void updateCabinLights(bool);
+    void updateTemp(int);
+    void updateHeater(bool);
+    void updateAC(bool);
+    void updateAds(bool);
+    void updateAnnouncements(bool, std::string);
 
 private:
     Ui::TrainModelUI *ui;

@@ -19,10 +19,6 @@ Train::Train(int newNumCars)
     block = new TrainModelUpdateBlock();
     math = new TrainModelMath(newNumCars, block);
     updateUI();
-
-    //Meara added these because lack of initialization was causing problems
-    serviceBrake = 0;
-    emergencyBrake = 0;
 }
 
 void Train::setPower(double newPower){             //Called by train controller to set power
@@ -40,6 +36,7 @@ double Train::getCurrentVelocity(){
 
 void Train::setDoorStatus(bool doorStatus){
     controls->toggleDoor(doorStatus);
+    w->updateDoors(controls->doorOpen);
 }
 
 bool Train::getDoorStatus(){
@@ -48,6 +45,7 @@ bool Train::getDoorStatus(){
 
 void Train::setCabinLights(bool lightStatus){
     controls->toggleCabinLights(lightStatus);
+    w->updateCabinLights(controls->cabinLights);
 }
 
 bool Train::getCabinLights(){
@@ -88,6 +86,7 @@ bool Train::getServiceBrake(){
 
 void Train::setTemp(int newTemp){
     controls->setTemp(newTemp);
+    w->updateTemp(controls->getTemp());
 }
 
 double Train::getTemp(){
@@ -100,10 +99,12 @@ void Train::setAC(bool acStatus){
 
 bool Train::getAC(){
     return controls->acOn;
+    w->updateAC(controls->acOn);
 }
 
 void Train::setHeater(bool heaterStatus){
     controls->toggleHeater(heaterStatus);
+    w->updateHeater(controls->heaterOn);
 }
 
 bool Train::getHeater(){
@@ -112,6 +113,7 @@ bool Train::getHeater(){
 
 void Train::setAdvertisements(bool adStatus){
     controls->toggleAdvertisments(adStatus);
+    w->updateAds(controls->advertisementsOn);
 }
 
 bool Train::getAdvertisements(){
