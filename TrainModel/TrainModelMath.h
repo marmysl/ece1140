@@ -37,10 +37,8 @@ public:
     TrainModelMath(int newNumCars, TrainModelUpdateBlock *block);
     TrainModelMath();
     double travelledDist();
-    double updatePosition(double change);
     double calcVelocity();
     void setPower(double);
-    void updatePosition();
     void limitForce();
     void limitAccel();
     void setFailureStatus(int);

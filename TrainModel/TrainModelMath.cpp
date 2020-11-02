@@ -1,6 +1,6 @@
 #include "TrainModelMath.h"
 #include "TrainModelUpdateBlock.h"
-#include <chrono>
+#include <iostream>
 
 TrainModelMath::TrainModelMath(int newNumCars, TrainModelUpdateBlock *newAssigBlock){    
     numCars = newNumCars;
@@ -30,9 +30,6 @@ void TrainModelMath::setPower(double newPower){
     currAccel = currForce/mass;
     limitAccel();
 
-    //Find the current velocity
-    currVel = calcVelocity();
-
     //Get current time
     if (!inYard){
         newTime = systemClock->currentTime();
@@ -40,12 +37,14 @@ void TrainModelMath::setPower(double newPower){
         //Find elapsed time and convert to a double
         qint64 change;
         change = lastTime.msecsTo(newTime);
-        elapsedTime = (double)change;
+        elapsedTime = (double)change/1000;
         lastTime = newTime;
 
+        //Find the current velocity
+        currVel = calcVelocity();
+
         //Find the distance travelled using old velocity
-        double distTravelled = travelledDist(elapsedTime, currVel);
-        double newPos = updatePosition(lastPos, distTravelled);
+        double newPos = travelledDist();
 
         //compare new position to old to see if new block
         if (newPos >= block->blockDist && block->blockNum<=9){
@@ -70,14 +69,10 @@ void TrainModelMath::setPower(double newPower){
     }
 }
 
-double TrainModelMath::travelledDist(double time, double velocity) {
+double TrainModelMath::travelledDist() {
     double totalVel = lastVel + currVel;
     double dist = lastPos + ((elapsedTime/2)*totalVel);
     return dist;
-}
-
-double TrainModelMath::updatePosition(double oldPos, double change) {
-    return oldPos+change;
 }
 
 double TrainModelMath::calcVelocity() {
