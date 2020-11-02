@@ -1,46 +1,62 @@
 #pragma once
 
 #include "tracklayout.hpp"
+#include <QObject>
 
 namespace TrackModel
 {
-    struct BlockStatus
+    class BlockStatus : public QObject
     {
+        Q_OBJECT
+
     public:
         Block *layoutBlock;
-        int trainCount;
-        BlockFault faults;
-        SignalState rSignal;
-        SignalState fSignal;
 
-        BlockStatus( Block *block ) : layoutBlock(block), trainCount(0), faults(FAULT_NONE),
-            rSignal(TSIG_RED), fSignal(TSIG_RED), circuit(TrackCircuitData()) {}
+        BlockStatus( Block *block ) : layoutBlock(block),
+            circuit(TrackCircuitData()), faults(FAULT_NONE), trainCount(0),
+            rSignal(TSIG_RED), fSignal(TSIG_RED) {}
 
-        TrackCircuitData getCircuitData()
-        {
-            if( isFaultSet(faults, FAULT_CIRCUIT_FAIL) ) return TrackCircuitData(0);
-            else return circuit;
-        }
+        TrackCircuitData getCircuitData() const;
+        void setCircuitData( const TrackCircuitData &data );
 
-        void setCircuitData( const TrackCircuitData &data )
-        {
-            circuit = data;
-        }
+        BlockFault getFaults() const;
+        void setFaults( BlockFault newFaults );
+        void addFault( BlockFault newFault );
+        void clearFault( BlockFault toClear );
+
+        void incTrainCount();
+        void decTrainCount();
+
+        SignalState getSignal( BlockDir dir );
+        void setSignal( BlockDir dir, SignalState state );
 
         bool isOccupied() {
             return trainCount > 0;
         }
 
-        inline int id() {
+        int id() {
             return layoutBlock->id;
         }
 
     private:
         TrackCircuitData circuit;
+        BlockFault faults;
+        int trainCount;
+        SignalState rSignal;
+        SignalState fSignal;
+
+    signals:
+        void dataChanged( int senderId );
     };
 
-    struct StationStatus
+
+    // StationStatus
+    //------------------------------------------------------------------------------------
+    class StationStatus : public QObject
     {
+        Q_OBJECT
+
+    public:
         Station *layoutStation;
         int numPassengers;
 
@@ -49,20 +65,26 @@ namespace TrackModel
         inline QString name() {
             return QString::fromStdString(layoutStation->name);
         }
+
+    signals:
+        void dataChanged( const QString &name );
     };
 
-    struct RouteStatus
+
+    // RouteStatus
+    //------------------------------------------------------------------------------------
+    class RouteStatus : public QObject
     {
+        Q_OBJECT
+
+    public:
         Route *layoutRoute;
         std::unordered_map<int, BlockStatus *> blockMap;
         std::vector<StationStatus *> stationList;
 
         RouteStatus( Route *r ) : layoutRoute(r) {}
 
-        void addBlock( Block *b )
-        {
-            blockMap[b->id] = new BlockStatus(b);
-        }
+        void addBlock( Block *b );
 
         void addStation( Station *s )
         {
@@ -89,5 +111,11 @@ namespace TrackModel
             }
             return nullptr;
         }
+
+    public slots:
+        void on_blockUpdated( int blockId );
+
+    signals:
+        void blockUpdated( RouteStatus *sender, int blockId );
     };
 }

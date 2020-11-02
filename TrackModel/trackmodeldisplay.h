@@ -2,8 +2,6 @@
 #define TRACKMODELDISPLAY_H
 
 #include "tracklayout.hpp"
-#include "blocktablemodel.h"
-#include "switchtablemodel.h"
 #include "trackmodel_status.h"
 #include "signalindicator.h"
 #include <QMainWindow>
@@ -23,14 +21,13 @@ public:
 
     void setRegionList( std::vector<TrackModel::Route *> *routeList );
     void setRoute( TrackModel::RouteStatus *newRoute );
-    void notifyBlockUpdated( TrackModel::RouteStatus *route, int blockId );
     void notifySwitchUpdated( TrackModel::Route *route, int switchId );
     void notifyStationUpdated( TrackModel::Route *route, std::string stationName );
 
 private slots:
     void on_regionComboBox_currentTextChanged(const QString &arg1);
     void on_stationSelector_currentTextChanged(const QString &arg1);
-    void on_blocktableView_clicked(const QModelIndex &index);
+    void on_blockSelector_currentIndexChanged(int index);
     void on_applyFaultsButton_clicked();
     void on_applyStationPropsButton_clicked();
     void on_clearPlatformButton_clicked();
@@ -40,14 +37,18 @@ private slots:
     void on_applySignalButton_clicked();
     void on_displayTicketsButton_clicked();
 
+public slots:
+    // status updates
+    void on_block_updated( TrackModel::RouteStatus *sender, int blockId );
+
 private:
     Ui::TrackModelDisplay *ui;
     TrackModel::RouteStatus *selectedRoute;
-    BlockTableModel blockTable;
     SignalIndicator *sigIndicatorDelegate;
-    SwitchTableModel switchTable;
     TrackModel::StationStatus *selectedStation;
     TrackModel::BlockStatus *selectedBlock;
+
+    std::vector<int> blockSelectList;
 
     QLabel sysTimeLabel;
 

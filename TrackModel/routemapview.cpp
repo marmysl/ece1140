@@ -2,7 +2,7 @@
 #include <unordered_set>
 #include <QPainter>
 
-RouteMapView::RouteMapView(QWidget *parent) : QWidget(parent), yardStat(BlockStatus(yard))
+RouteMapView::RouteMapView(QWidget *parent) : QWidget(parent), yardStat(yard)
 {
 
 }
@@ -216,18 +216,20 @@ static void createDirCap( QPoint pts[], int x, int y, int width, int height )
     //pts[3] = QPoint(x, y + height);
 }
 
-void RouteMapView::drawBlock( QPainter &painter, BlockRepr &repr )
+void RouteMapView::drawBlock( BlockRepr &repr, QPainter *painter )
 {
     QRect outline(repr.left, repr.top, BLOCK_LENGTH, BLOCK_THICKNESS);
+
+    const int TEXT_THICK = (ROW_OFFSET - BLOCK_THICKNESS) / 3;
 
     if( !repr.stat->id() )
     {
         // yard
-        painter.fillRect(outline, YARD_COLOR);
+        painter->fillRect(outline, YARD_COLOR);
 
-        painter.setPen(QPen(LINK_COLOR, LINK_THICK));
-        QRect textOutline(repr.left, repr.top + BLOCK_THICKNESS, BLOCK_LENGTH, ROW_OFFSET / 2);
-        painter.drawText(textOutline, Qt::AlignHCenter | Qt::AlignTop, "Yard");
+        painter->setPen(QPen(LINK_COLOR, LINK_THICK));
+        QRect textOutline(repr.left, repr.top + BLOCK_THICKNESS, BLOCK_LENGTH, TEXT_THICK);
+        painter->drawText(textOutline, Qt::AlignHCenter | Qt::AlignTop, "Yard");
         return;
     }
 
@@ -236,38 +238,76 @@ void RouteMapView::drawBlock( QPainter &painter, BlockRepr &repr )
     else fillCol = UNNOCC_COLOR;
 
     BlockDir ow = repr.stat->layoutBlock->oneWay;
-    painter.setPen(Qt::NoPen);
-    painter.setBrush(fillCol);
+    painter->setPen(Qt::NoPen);
+    painter->setBrush(fillCol);
     if( ow == repr.orient )
     {
         // pointing right
         QPoint pts[3];
         createDirCap(pts, repr.left + BLOCK_LENGTH, repr.top + BLOCK_THICKNESS / 2, -BLOCK_LENGTH / 5, BLOCK_THICKNESS * 2);
-        painter.drawPolygon(pts, 3);
+        painter->drawPolygon(pts, 3);
     }
     else if( oppositeDir(ow) == repr.orient )
     {
         // pointing left
         QPoint pts[3];
         createDirCap(pts, repr.left, repr.top + BLOCK_THICKNESS / 2, BLOCK_LENGTH / 5, BLOCK_THICKNESS * 2);
-        painter.drawPolygon(pts, 3);
+        painter->drawPolygon(pts, 3);
     }
 
-    painter.fillRect(outline, fillCol);
+    painter->fillRect(outline, fillCol);
 
-    painter.setPen(QPen(LINK_COLOR, LINK_THICK));
+    // Station
+    painter->setPen(QPen(LINK_COLOR, LINK_THICK));
 
     if( repr.stat->layoutBlock->station )
     {
         outline = QRect(repr.left + BLOCK_LENGTH / 5, repr.top - BLOCK_THICKNESS, (BLOCK_LENGTH * 3) / 5, BLOCK_THICKNESS);
-        painter.fillRect(outline, STATION_COLOR);
+        painter->fillRect(outline, STATION_COLOR);
 
-        QRect statTextOut(repr.left - LINK_WIDTH / 2, repr.top - ROW_OFFSET / 2, BLOCK_LENGTH + LINK_WIDTH, ROW_OFFSET / 2 - BLOCK_THICKNESS);
-        painter.drawText(statTextOut, Qt::AlignHCenter | Qt::AlignBottom, QString::fromStdString(repr.stat->layoutBlock->station->name));
+        QRect statTextOut(repr.left - LINK_WIDTH / 2, repr.top - BLOCK_THICKNESS - TEXT_THICK, BLOCK_LENGTH + LINK_WIDTH, TEXT_THICK);
+        painter->drawText(statTextOut, Qt::AlignHCenter | Qt::AlignBottom, QString::fromStdString(repr.stat->layoutBlock->station->name));
     }
 
-    QRect textOutline(repr.left, repr.top + BLOCK_THICKNESS, BLOCK_LENGTH, ROW_OFFSET / 2);
-    painter.drawText(textOutline, Qt::AlignHCenter | Qt::AlignTop, QString::number(repr.stat->id()));
+
+    // block num
+    QRect textOutline(repr.left, repr.top + BLOCK_THICKNESS, BLOCK_LENGTH, TEXT_THICK);
+    painter->drawText(textOutline, Qt::AlignHCenter | Qt::AlignTop, QString::number(repr.stat->id()));
+
+    // faults
+    BlockFault faults = repr.stat->getFaults();
+    if( faults != FAULT_NONE )
+    {
+        painter->setPen(QPen(FAULT_COLOR, LINK_THICK));
+        textOutline = QRect(repr.left, repr.top + BLOCK_THICKNESS + TEXT_THICK, BLOCK_LENGTH, TEXT_THICK);
+        painter->drawText(textOutline, Qt::AlignHCenter | Qt::AlignTop, getFaultAbbrev(faults));
+    }
+}
+
+void RouteMapView::drawSwitch( SwitchRepr &repr, QPainter *painter )
+{
+    // draw active links
+    painter->setPen(QPen(SWITCH_ACTIVE_COLOR, LINK_THICK));
+    if( repr.stat->direction == SW_DIVERGING )
+    {
+        painter->drawLine(repr.start, repr.divEnd);
+    }
+    else
+    {
+        painter->drawLine(repr.start, repr.straightEnd);
+    }
+
+    // draw inactive links
+    painter->setPen(QPen(NOLINK_COLOR, LINK_THICK));
+    if( repr.stat->direction == SW_DIVERGING )
+    {
+        painter->drawLine(repr.start, repr.straightEnd);
+    }
+    else
+    {
+        // straight
+        painter->drawLine(repr.start, repr.divEnd);
+    }
 }
 
 void RouteMapView::paintEvent( QPaintEvent *event )
@@ -285,35 +325,13 @@ void RouteMapView::paintEvent( QPaintEvent *event )
     for( auto &sw : switches )
     {
         SwitchRepr &repr = sw.second;
-
-        // draw active links
-        painter.setPen(QPen(SWITCH_ACTIVE_COLOR, LINK_THICK));
-        if( repr.stat->direction == SW_DIVERGING )
-        {
-            painter.drawLine(repr.start, repr.divEnd);
-        }
-        else
-        {
-            painter.drawLine(repr.start, repr.straightEnd);
-        }
-
-        // draw inactive links
-        painter.setPen(QPen(NOLINK_COLOR, LINK_THICK));
-        if( repr.stat->direction == SW_DIVERGING )
-        {
-            painter.drawLine(repr.start, repr.straightEnd);
-        }
-        else
-        {
-            // straight
-            painter.drawLine(repr.start, repr.divEnd);
-        }
+        drawSwitch(repr, &painter);
     }
 
     painter.setPen(QPen(LINK_COLOR, LINK_THICK));
     for( auto &blk : blocks )
     {
         BlockRepr &repr = blk.second;
-        drawBlock(painter, repr);
+        drawBlock(repr, &painter);
     }
 }

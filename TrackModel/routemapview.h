@@ -56,8 +56,8 @@ public:
     void setRoute( RouteStatus *route );
 
 private:
-    const QColor UNNOCC_COLOR = {120, 255, 120};
-    const QColor OCC_COLOR = {255, 120, 120};
+    const QColor UNNOCC_COLOR = {120, 255, 100};
+    const QColor OCC_COLOR = {255, 20, 0};
     const QColor YARD_COLOR = {200, 0, 200};
 
     const QColor LINK_COLOR = {230, 230, 230};
@@ -65,6 +65,7 @@ private:
     const QColor SWITCH_ACTIVE_COLOR = {255, 230, 0};
 
     const QColor STATION_COLOR = {80, 100, 230};
+    const QColor FAULT_COLOR = {255, 20, 0};
 
     RouteStatus *route;
     BlockStatus yardStat;
@@ -73,7 +74,8 @@ private:
     std::vector<LinkRepr> links;
 
 protected:
-    void drawBlock( QPainter&, BlockRepr& );
+    void drawBlock( BlockRepr&, QPainter* );
+    void drawSwitch( SwitchRepr&, QPainter* );
     void paintEvent( QPaintEvent * );
 
 signals:

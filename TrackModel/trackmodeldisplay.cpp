@@ -20,9 +20,6 @@ TrackModelDisplay::TrackModelDisplay(QWidget *parent) :
 
     sigIndicatorDelegate = new SignalIndicator(this);
 
-    ui->switchTableView->setModel(&switchTable);
-    ui->switchTableView->resizeColumnsToContents();
-
     ui->signalDirCombo->addItems({"FWD", "REV"});
     ui->signalCombo->addItems({"Red", "Yellow", "Green"});
 
@@ -45,10 +42,13 @@ void TrackModelDisplay::setRegionList( std::vector<TrackModel::Route *> *routeLi
 
 void TrackModelDisplay::setRoute( TrackModel::RouteStatus *newRoute ) {
     selectedRoute = newRoute;
-    //blockTable.resetRoute(newRoute);
     ui->routeMap->setRoute(newRoute);
 
-    switchTable.resetRoute(newRoute->layoutRoute);
+    blockSelectList.clear();
+    for( auto &kvp : newRoute->blockMap ) blockSelectList.push_back(kvp.first);
+    std::sort(blockSelectList.begin(), blockSelectList.end());
+
+    for( int &n : blockSelectList ) ui->blockSelector->addItem(QString::number(n));
 
     ui->stationSelector->clear();
     for( auto &s : newRoute->layoutRoute->stations )
@@ -57,16 +57,10 @@ void TrackModelDisplay::setRoute( TrackModel::RouteStatus *newRoute ) {
     }
 }
 
-void TrackModelDisplay::notifyBlockUpdated( TrackModel::RouteStatus *route, int blockId )
-{
-    if( route != selectedRoute ) return;
-    blockTable.on_blockStatusUpdated(blockId);
-}
-
 void TrackModelDisplay::notifySwitchUpdated( TrackModel::Route *route, int switchId )
 {
     if( route != selectedRoute->layoutRoute ) return;
-    switchTable.on_switchStatusUpdated(switchId);
+    ui->routeMap->update();
 }
 
 void TrackModelDisplay::updateStationDisplay()
@@ -144,19 +138,17 @@ void TrackModelDisplay::on_clearPlatformButton_clicked()
     qDebug() << "[TrackModel] Passengers cleared from station" << selectedStation->name();
 }
 
-void TrackModelDisplay::on_blocktableView_clicked(const QModelIndex &index)
+void TrackModelDisplay::on_blockSelector_currentIndexChanged(int index)
 {
     // when a row in the block table is selected
-    int row = index.row();
+    int blockNum = blockSelectList[index];
 
     using namespace TrackModel;
 
-    selectedBlock = blockTable.getBlockAtIdx(row);
-    if( selectedBlock != NULL )
+    selectedBlock = selectedRoute->getBlockStatus(blockNum);
+    if( selectedBlock )
     {
-        ui->blockNumLabel->setText(QString("Editing Block %1").arg(selectedBlock->id()));
-
-        BlockFault &curFaults = selectedBlock->faults;
+        BlockFault curFaults = selectedBlock->getFaults();
         ui->pwrFailCheck->setChecked(isFaultSet(curFaults, FAULT_POWER_FAIL));
         ui->circFailCheck->setChecked(isFaultSet(curFaults, FAULT_CIRCUIT_FAIL));
         ui->brknRailCheck->setChecked(isFaultSet(curFaults, FAULT_BROKEN_RAIL));
@@ -167,7 +159,6 @@ void TrackModelDisplay::on_blocktableView_clicked(const QModelIndex &index)
     else
     {
         // selectedBlock == NULL
-        ui->blockNumLabel->setText("No Block Selected");
 
         ui->pwrFailCheck->setChecked(false);
         ui->circFailCheck->setChecked(false);
@@ -189,8 +180,7 @@ void TrackModelDisplay::on_applyFaultsButton_clicked()
     if( ui->circFailCheck->isChecked() ) newFaults |= FAULT_CIRCUIT_FAIL;
     if( ui->brknRailCheck->isChecked() ) newFaults |= FAULT_BROKEN_RAIL;
 
-    selectedBlock->faults = newFaults;
-    blockTable.on_blockStatusUpdated(selectedBlock->id());
+    selectedBlock->setFaults(newFaults);
 
     qDebug() << "[TrackModel] Applied faults " << getFaultString(newFaults) << " to block " << selectedBlock->id();
 }
@@ -228,17 +218,20 @@ void TrackModelDisplay::on_applySignalButton_clicked()
 {
     int selected = ui->signalCombo->currentIndex();
 
-    if( ui->signalDirCombo->currentIndex() )
-    {
-        selectedBlock->rSignal = static_cast<TrackModel::SignalState>(selected);
-    }
-    else selectedBlock->fSignal = static_cast<TrackModel::SignalState>(selected);
-
-    blockTable.on_blockStatusUpdated(selectedBlock->id());
+    BlockDir side = (ui->signalDirCombo->currentIndex()) ? BLK_FORWARD : BLK_REVERSE;
+    selectedBlock->setSignal(side, static_cast<TrackModel::SignalState>(selected));
 }
 
 void TrackModelDisplay::on_displayTicketsButton_clicked()
 {
     TicketsDialog diag(this);
     diag.exec();
+}
+
+void TrackModelDisplay::on_block_updated( TrackModel::RouteStatus *sender, int blockId )
+{
+    if( sender == selectedRoute )
+    {
+        ui->routeMap->update();
+    }
 }

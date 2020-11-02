@@ -32,15 +32,14 @@ SOURCES += \
     SWTrainController/SWTrainController_main.cpp \
     SWTrainController/TrainCGUI.cpp \
     SerialPort.cpp \
-    TrackModel/blocktablemodel.cpp \
     TrackModel/layoutdialog.cpp \
     TrackModel/routemapview.cpp \
     TrackModel/routingtestdialog.cpp \
     TrackModel/signalindicator.cpp \
-    TrackModel/switchtablemodel.cpp \
     TrackModel/ticketsdialog.cpp \
     TrackModel/tracklayout.cpp \
     TrackModel/trackmodel_main.cpp \
+    TrackModel/trackmodel_status.cpp \
     TrackModel/trackmodel_types.cpp \
     TrackModel/trackmodeldisplay.cpp \
     TrackModel/trackrouter.cpp \
@@ -77,12 +76,10 @@ HEADERS += \
     SWTrainController/TrainCGUI.h \
     SWTrainController/ui_SWTrainController.h \
     SerialPort.hpp \
-    TrackModel/blocktablemodel.h \
     TrackModel/layoutdialog.h \
     TrackModel/routemapview.h \
     TrackModel/routingtestdialog.h \
     TrackModel/signalindicator.h \
-    TrackModel/switchtablemodel.h \
     TrackModel/ticketsdialog.h \
     TrackModel/tracklayout.hpp \
     TrackModel/trackmodel_controller.hpp \
