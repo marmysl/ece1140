@@ -4,15 +4,16 @@
 #include "tracklayout.hpp"
 #include "blocktablemodel.h"
 #include "switchtablemodel.h"
-#include <QDialog>
+#include "trackmodel_status.h"
+#include "signalindicator.h"
+#include <QMainWindow>
+#include <QLabel>
 
 namespace Ui {
 class TrackModelDisplay;
 }
 
-namespace TrackModel { struct RouteStatus; struct StationStatus; }
-
-class TrackModelDisplay : public QDialog
+class TrackModelDisplay : public QMainWindow
 {
     Q_OBJECT
 
@@ -32,16 +33,23 @@ private slots:
     void on_blocktableView_clicked(const QModelIndex &index);
     void on_applyFaultsButton_clicked();
     void on_applyStationPropsButton_clicked();
-
+    void on_clearPlatformButton_clicked();
     void on_reloadLayoutButton_clicked();
+    void on_testRouteButton_clicked();
+    void on_timeAdvanced( const QDateTime &newTime, qint64 delta );
+    void on_applySignalButton_clicked();
+    void on_displayTicketsButton_clicked();
 
 private:
     Ui::TrackModelDisplay *ui;
     TrackModel::RouteStatus *selectedRoute;
     BlockTableModel blockTable;
+    SignalIndicator *sigIndicatorDelegate;
     SwitchTableModel switchTable;
     TrackModel::StationStatus *selectedStation;
     TrackModel::BlockStatus *selectedBlock;
+
+    QLabel sysTimeLabel;
 
     void updateStationDisplay();
 };

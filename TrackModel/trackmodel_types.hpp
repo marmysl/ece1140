@@ -6,15 +6,22 @@
 
 namespace TrackModel {
     enum BlockDir {
-        BLK_FORWARD,
-        BLK_REVERSE
+        BLK_NODIR = 0,
+        BLK_FORWARD = 1,
+        BLK_REVERSE = -1
     };
+
+    inline BlockDir oppositeDir( const BlockDir &d ) {
+        return static_cast<BlockDir>(-d);
+    }
 
     enum SwitchState {
         SW_STRAIGHT,
         SW_DIVERGING
     };
 
+    // Begin BlockFault
+    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     enum BlockFault {
         FAULT_NONE = 0,
         FAULT_BROKEN_RAIL = 1,
@@ -47,15 +54,37 @@ namespace TrackModel {
     }
 
     QString getFaultString( const BlockFault &faults );
+    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    // End BlockFault
+
+    enum SignalState
+    {
+        TSIG_RED = 0,
+        TSIG_YELLOW = 1,
+        TSIG_GREEN = 2
+    };
 
     struct TrackCircuitData {
         uint32_t speed;
         uint32_t authority;
 
+        static uint64_t encodeFromFloat( float speedKph, float authKm ) {
+            return fromFloat(speedKph, authKm).getEncodedData();
+        }
+
+        static uint64_t encodeFromFixed( uint32_t speed, uint32_t auth ) {
+            return fromFixed(speed, auth).getEncodedData();
+        }
+
+        static inline uint32_t floatToFixed( float floatVal )
+        {
+            return static_cast<uint32_t>(floatVal * 4096);
+        }
+
         TrackCircuitData() : speed(0), authority(0) {};
 
         TrackCircuitData( uint64_t data ) :
-            speed((uint32_t)(data >> 32)), authority((uint32_t)(data & 0xFFFFFFFFul)) {}
+            speed(static_cast<uint32_t>(data >> 32)), authority(static_cast<uint32_t>(data & 0xFFFFFFFFul)) {}
 
         static TrackCircuitData fromFixed( uint32_t speed, uint32_t auth ) {
             TrackCircuitData d;
@@ -66,29 +95,21 @@ namespace TrackModel {
 
         static TrackCircuitData fromFloat( float speedKph, float authKm ) {
             TrackCircuitData d;
-            d.speed = (uint32_t)(speedKph * 4096);
-            d.authority = (uint32_t)(authKm * 4096);
+            d.speed = floatToFixed(speedKph);
+            d.authority = floatToFixed(authKm);
             return d;
         }
 
         float decodeSpeed() {
-            return ((float)speed) / 4096;
+            return static_cast<float>(speed) / 4096;
         }
 
         float decodeAuthority() {
-            return ((float)authority) / 4096;
+            return static_cast<float>(authority) / 4096;
         }
 
         uint64_t getEncodedData() {
-            return ((uint64_t)speed << 32) | (uint64_t)authority;
-        }
-
-        static uint64_t encodeFromFloat( float speedKph, float authKm ) {
-            return fromFloat(speedKph, authKm).getEncodedData();
-        }
-
-        static uint64_t encodeFromFixed( uint32_t speed, uint32_t auth ) {
-            return fromFixed(speed, auth).getEncodedData();
+            return (static_cast<uint64_t>(speed) << 32) | static_cast<uint64_t>(authority);
         }
     };
 

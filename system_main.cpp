@@ -1,6 +1,8 @@
 #include "timetracker.h"
 #include "weatherstation.h"
+#include "ticketsystem.h"
 #include "serialportdialog.h"
+#include "systemsettingsdialog.h"
 
 #include "system_main.h"
 
@@ -21,6 +23,7 @@ TrackModel::RouteFile blueLine {"Blue Line", "blue_line.csv"};
 
 QApplication *mk1_app;
 SerialPortDialog *hwPortsDialog;
+SystemSettingsDialog *systemDialog;
 
 std::unordered_map<int, ITrainController *> activeTrains;
 int nextTrainId = 1;
@@ -54,8 +57,12 @@ int main(int argc, char *argv[])
     mk1_app = new QApplication(argc, argv);
 
     // initialize system timer
-    systemClock = new TimeTracker(QDateTime::currentDateTime(), 500, 1800, mk1_app);
-    QObject::connect(systemClock, &TimeTracker::timeAdvanced, &weather, &WeatherStation::onTimeUpdate);
+    systemClock = new TimeTracker(QDateTime::currentDateTime(), 100, 1, mk1_app);
+    weather = new WeatherStation(mk1_app);
+    QObject::connect(systemClock, &TimeTracker::timeAdvanced, weather, &WeatherStation::onTimeUpdate);
+
+    systemDialog = new SystemSettingsDialog();
+    systemDialog->show();
 
     TrackModel::routesToLoad.push_back(blueLine);
     int initResult = TrackModel::initializeTrackModel();
@@ -65,6 +72,9 @@ int main(int argc, char *argv[])
         mk1_app->quit();
         return EXIT_FAILURE;
     }
+
+    ticketSystem = new TicketSystem(mk1_app);
+    //ticketSystem->sellTickets(routes[0], routes[0]->stations[0], systemClock->currentTime(), 20);
 
     // display modal dialog to select HW component serial ports
     hwPortsDialog = new SerialPortDialog();

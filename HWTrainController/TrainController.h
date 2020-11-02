@@ -28,11 +28,17 @@ class TrainController : public QObject, public ITrainController
         QTimer *writeTimer;
 
 	public:
+
+        //Constructor and Destructor
 		TrainController();
         ~TrainController();
+
+        //Method that writes data to the Serial Port
         void writeData();
 
     public slots:
+
+        //Method that receives data from the Serial Port
         void recieveData( char *buf, qint64 len );
 };
 

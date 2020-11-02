@@ -4,7 +4,7 @@
 
 const float TAU = 6.28318530717958647692;
 
-WeatherStation weather;
+WeatherStation *weather;
 
 float WeatherStation::getTempCForTime( const QDateTime &time )
 {
@@ -19,14 +19,36 @@ float WeatherStation::getTempCForTime( const QDateTime &time )
     return annualVar + dailyVar;
 }
 
+float WeatherStation::convertFtoC( float tempF )
+{
+    return (tempF - 32) / 1.8f;
+}
+
+float WeatherStation::convertCtoF( float tempC )
+{
+    return (tempC * 1.8f) + 32;
+}
+
 WeatherStation::WeatherStation(QObject *parent) : QObject(parent)
 {
     tempCelcius = 12.0f; // avg october temp
 }
 
+void WeatherStation::forceTempF( float tempF )
+{
+    forcingTemp = true;
+    tempCelcius = convertFtoC(tempF);
+    emit tempChanged();
+}
+
+void WeatherStation::stopForcingTemp()
+{
+    forcingTemp = false;
+}
+
 float WeatherStation::getTempFheit()
 {
-    return (tempCelcius * 1.8f) + 32;
+    return convertCtoF(tempCelcius);
 }
 
 bool WeatherStation::isBelowFreezing()
@@ -50,6 +72,9 @@ std::string WeatherStation::getTempCString()
 
 void WeatherStation::onTimeUpdate( const QDateTime &newTime, qint64 delta )
 {
-    tempCelcius = getTempCForTime(newTime);
-    tempChanged();
+    if( !forcingTemp )
+    {
+        tempCelcius = getTempCForTime(newTime);
+        emit tempChanged();
+    }
 }

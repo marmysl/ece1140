@@ -73,7 +73,10 @@ void SerialConn::checkIncoming()
     if( port.canReadLine() )
     {
         qint64 nRead = port.readLine(buffer, ARDUINO_BUF_LENGTH);
-        if( nRead > 0 ) dataReceived(buffer, nRead);
+        if( nRead > 0 )
+        {
+            emit dataReceived(buffer, nRead);
+        }
     }
 }
 

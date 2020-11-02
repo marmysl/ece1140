@@ -10,6 +10,7 @@ namespace TrackModel {
     class Block;
     class Station;
     class Switch;
+    class Linkable;
 
     extern Block *yard;
 
@@ -49,7 +50,25 @@ namespace TrackModel {
             Station *getStationByName( std::string stationName );
     };
 
-    class Block {
+    class Linkable
+    {
+    public:
+        virtual Block *getTarget() = 0;
+        virtual bool hasTarget( Block *tgt ) = 0;
+    };
+
+    struct NextBlockData
+    {
+        Block *block;
+        BlockDir entryDir;
+    };
+
+    inline bool operator==( const NextBlockData &a, const NextBlockData &b )
+    {
+        return (a.block == b.block) && (a.entryDir == b.entryDir);
+    }
+
+    class Block : public Linkable {
         public:
             int id;
             std::string section;
@@ -57,18 +76,34 @@ namespace TrackModel {
             float grade;
             float speedLimit;
 
+            BlockDir oneWay;
             Station *station;
+            bool underground;
 
-            Block *prevBlock;
-            Block *nextBlock;
+            Linkable *reverseLink;
+            Linkable *forwardLink;
 
-            Block( int id, std::string section, float length, float grade, float speedLimit );
+            Block( int id, std::string section, float length, float grade, float speedLimit, BlockDir oneWay = BLK_NODIR, bool tunnel = false );
 
-            // connect this block to another block in the given direction
-            void setLink( BlockDir direction, Block *newBlock );
+            /*! Connect this block to another block in the given direction */
+            void setLink( BlockDir direction, Linkable *newBlock );
+            /*! Get the outgoing link (Block/Switch) in the given direction */
+            Linkable *getLink( BlockDir direction );
+
+            /*! Find the next block in the given travel direction (relative to this block) */
+            NextBlockData getNextBlock( BlockDir direction );
+            /*! Find the entry direction into the given neighbor coming from this block */
+            BlockDir getEntryDir( Block *neighbor );
+
+            /*! Determine if this block is traversable in the given direction */
+            bool canTravelInDir( BlockDir direction );
+
+            // Linkable interface
+            Block *getTarget();
+            bool hasTarget( Block *tgt );
     };
 
-    class Switch {
+    class Switch : public Linkable {
         public:
             Block *fromBlock;
             BlockDir fromBlockDir;
@@ -83,6 +118,10 @@ namespace TrackModel {
             // move the points of this switch to the given direction, and update block connections
             // returns: the new state of the switch
             void setDirection( SwitchState newState );
+
+            // Linkable interface
+            Block *getTarget();
+            bool hasTarget( Block *tgt );
     };
 
     class Station {
