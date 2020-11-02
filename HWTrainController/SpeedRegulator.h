@@ -36,6 +36,9 @@ private:
         //Calculate powerCmd
         void calcPowerCmd();
 
+        //Set the power command to 0
+        void powerCmdZero();
+
         //Sets Kp and Ki according to engineer input
         void setKpAndKi(double propGain, double intGain);
 
@@ -45,6 +48,12 @@ private:
         double getVcmd();
         double getKp();
         double getKi();
+
+        //Method to pull the service brake
+        void pullServiceBrake();
+
+        //Method to pull the emergency brake
+        void pullEmergencyBrake();
 
 };
 #endif

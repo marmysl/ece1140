@@ -19,6 +19,10 @@ Train::Train(int newNumCars)
     block = new TrainModelUpdateBlock();
     math = new TrainModelMath(newNumCars, block);
     updateUI();
+
+    //Meara added these because lack of initialization was causing problems
+    serviceBrake = 0;
+    emergencyBrake = 0;
 }
 
 void Train::setPower(double newPower){             //Called by train controller to set power
