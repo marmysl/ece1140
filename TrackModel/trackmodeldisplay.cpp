@@ -71,7 +71,7 @@ void TrackModelDisplay::updateStationDisplay()
 void TrackModelDisplay::notifyStationUpdated(TrackModel::Route *route, std::string stationName)
 {
     if( route != selectedRoute->layoutRoute ) return;
-    if( selectedStation == NULL || stationName.compare(selectedStation->layoutStation->name) ) return;
+    if( !selectedStation || stationName.compare(selectedStation->layoutStation->name) ) return;
     updateStationDisplay();
 }
 
@@ -81,7 +81,7 @@ void TrackModelDisplay::on_regionComboBox_currentTextChanged(const QString &arg1
 
     TrackModel::RouteStatus *newRoute = TrackModel::getRouteStatus(arg1);
 
-    if( newRoute == NULL ) {
+    if( !newRoute ) {
         qDebug() << "[TrackModel] Region " << arg1 << " not found";
     }
     else {
@@ -93,8 +93,9 @@ void TrackModelDisplay::on_stationSelector_currentTextChanged(const QString &arg
 {
     if( arg1.isEmpty() )
     {
-        selectedStation = NULL;
+        selectedStation = nullptr;
         ui->applyStationPropsButton->setEnabled(false);
+        return;
     }
 
     TrackModel::StationStatus *newStation = selectedRoute->getStationStatus(arg1.toStdString());
@@ -173,7 +174,7 @@ void TrackModelDisplay::on_applyFaultsButton_clicked()
 {
     using namespace TrackModel;
 
-    if( selectedBlock == NULL ) return;
+    if( !selectedBlock ) return;
 
     BlockFault newFaults = FAULT_NONE;
     if( ui->pwrFailCheck->isChecked() ) newFaults |= FAULT_POWER_FAIL;

@@ -12,6 +12,9 @@ void RouteMapView::setRoute( RouteStatus *route )
     if( route == this->route ) return;
 
     this->route = route;
+    blocks.clear();
+    switches.clear();
+    links.clear();
 
     struct ExistBlock
     {
@@ -216,6 +219,27 @@ static void createDirCap( QPoint pts[], int x, int y, int width, int height )
     //pts[3] = QPoint(x, y + height);
 }
 
+void RouteMapView::drawSignals( BlockRepr &repr, QPainter *painter )
+{
+    static QColor sigColors[3]
+    {
+        SIG_RED, SIG_YELLOW, SIG_GREEN
+    };
+
+    const int RADIUS = BLOCK_THICKNESS * 3 / 4;
+    QPoint center(repr.left, repr.top - BLOCK_THICKNESS);
+
+    painter->setPen(Qt::NoPen);
+    QColor &col = sigColors[repr.stat->getSignal(oppositeDir(repr.orient))];
+    painter->setBrush(col);
+    painter->drawEllipse(center, RADIUS, RADIUS);
+
+    center.setX(repr.left + BLOCK_LENGTH);
+    col = sigColors[repr.stat->getSignal(repr.orient)];
+    painter->setBrush(col);
+    painter->drawEllipse(center, RADIUS, RADIUS);
+}
+
 void RouteMapView::drawBlock( BlockRepr &repr, QPainter *painter )
 {
     QRect outline(repr.left, repr.top, BLOCK_LENGTH, BLOCK_THICKNESS);
@@ -282,6 +306,8 @@ void RouteMapView::drawBlock( BlockRepr &repr, QPainter *painter )
         textOutline = QRect(repr.left, repr.top + BLOCK_THICKNESS + TEXT_THICK, BLOCK_LENGTH, TEXT_THICK);
         painter->drawText(textOutline, Qt::AlignHCenter | Qt::AlignTop, getFaultAbbrev(faults));
     }
+
+    drawSignals(repr, painter);
 }
 
 void RouteMapView::drawSwitch( SwitchRepr &repr, QPainter *painter )
