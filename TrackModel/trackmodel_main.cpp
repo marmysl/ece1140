@@ -21,8 +21,6 @@ namespace TrackModel {
             RouteStatus *routeInfo = routeStatusMap.at(route);
             BlockStatus *blockInfo = routeInfo->blockMap.at(blockId);
             blockInfo->setCircuitData(data);
-
-            trackModelUi->notifyBlockUpdated(routeInfo, blockId);
         }
         catch( const std::out_of_range &e ) {
             throw std::invalid_argument("route or block not found");
@@ -33,7 +31,7 @@ namespace TrackModel {
         try {
             RouteStatus *routeInfo = routeStatusMap.at(route);
             BlockStatus *blockInfo = routeInfo->blockMap.at(blockId);
-            return blockInfo->trainCount > 0;
+            return blockInfo->isOccupied();
         }
         catch( const std::invalid_argument &e ) {
             throw std::invalid_argument("route or block not found");
@@ -44,7 +42,7 @@ namespace TrackModel {
         try {
             RouteStatus *routeInfo = routeStatusMap.at(route);
             BlockStatus *blockInfo = routeInfo->blockMap.at(blockId);
-            return blockInfo->faults;
+            return blockInfo->getFaults();
         }
         catch( const std::out_of_range &e ) {
             throw std::invalid_argument("route or block not found");
@@ -65,9 +63,8 @@ namespace TrackModel {
         Route *routeObj = getRoute(route);
         Switch *s = routeObj->getSwitch(switchBlockId);
 
-        if( s == NULL ) throw std::invalid_argument("Requested switch not found");
+        if( !s ) throw std::invalid_argument("Requested switch not found");
         s->setDirection(newDirection);
-
         trackModelUi->notifySwitchUpdated(routeObj, switchBlockId);
     }
 
@@ -80,10 +77,7 @@ namespace TrackModel {
             RouteStatus *routeInfo = routeStatusMap.at(route);
             BlockStatus *blockInfo = routeInfo->blockMap.at(blockId);
 
-            if( direction == BLK_FORWARD ) blockInfo->fSignal = newState;
-            else blockInfo->rSignal = newState;
-
-            trackModelUi->notifyBlockUpdated(routeInfo, blockId);
+            blockInfo->setSignal(direction, newState);
         }
         catch( const std::out_of_range &e )
         {
@@ -109,9 +103,7 @@ namespace TrackModel {
         try {
             RouteStatus *routeInfo = routeStatusMap.at(route);
             BlockStatus *blockInfo = routeInfo->blockMap.at(blockId);
-            blockInfo->trainCount += 1;
-
-            trackModelUi->notifyBlockUpdated(routeInfo, blockId);
+            blockInfo->incTrainCount();
         }
         catch( const std::out_of_range &e ) {
             throw std::invalid_argument("route or block not found");
@@ -122,7 +114,7 @@ namespace TrackModel {
         try {
             RouteStatus *routeInfo = routeStatusMap.at(route);
             BlockStatus *blockInfo = routeInfo->blockMap.at(blockId);
-            blockInfo->trainCount -= 1;
+            blockInfo->decTrainCount();
         }
         catch( const std::out_of_range &e ) {
             throw std::invalid_argument("route or block not found");
@@ -164,6 +156,8 @@ namespace TrackModel {
         for( Station *&s : route->stations ) {
             rs->addStation(s);
         }
+
+        QObject::connect(rs, &RouteStatus::blockUpdated, trackModelUi, &TrackModelDisplay::on_block_updated);
     }
 
     // apply the given fault to this block
@@ -173,10 +167,8 @@ namespace TrackModel {
             RouteStatus *routeInfo = routeStatusMap.at(route);
             BlockStatus *blockInfo = routeInfo->getBlockStatus(block);
 
-            blockInfo->faults = blockInfo->faults | fault;
-            trackModelUi->notifyBlockUpdated(routeInfo, block);
-
-            return blockInfo->faults;
+            blockInfo->addFault(fault);
+            return blockInfo->getFaults();
         }
         catch( const std::out_of_range &e ) {
             throw std::invalid_argument("route or block not found");
@@ -190,10 +182,8 @@ namespace TrackModel {
             RouteStatus *routeInfo = routeStatusMap.at(route);
             BlockStatus *blockInfo = routeInfo->getBlockStatus(block);
 
-            blockInfo->faults = blockInfo->faults & ~fault;
-            trackModelUi->notifyBlockUpdated(routeInfo, block);
-
-            return blockInfo->faults;
+            blockInfo->clearFault(fault);
+            return blockInfo->getFaults();
         }
         catch( const std::out_of_range &e ) {
             throw std::invalid_argument("route or block not found");
@@ -221,6 +211,12 @@ namespace TrackModel {
         LayoutDialog diag;
         diag.exec();
 
+        // Instantiate UI
+        if( !trackModelUi )
+        {
+            trackModelUi = new TrackModelDisplay();
+        }
+
         for( RouteFile rf : routesToLoad ) {
             Route *newRoute = new Route(rf.name.toStdString());
 
@@ -240,13 +236,8 @@ namespace TrackModel {
             initRouteState(newRoute);
         }
 
-        if( trackModelUi == NULL ) {
-            // Instantiate the UI singleton
-            trackModelUi = new TrackModelDisplay();
-            trackModelUi->show();
-        }
-
         trackModelUi->setRegionList(&routes);
+        trackModelUi->show();
 
         return 0;
     }
