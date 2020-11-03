@@ -9,6 +9,11 @@ class SWTC
         double powerCommand = 0;
         double kp;
         double ki;
+        double e_k;
+        double e_k_1 = 0.0; // initialize e_k-1 to 0 for first sample
+        double u_k;
+        double u_k_1 = 0.0; // initialize u_k-1 to 0 for first sample
+        double T = 1.0; // Sample timing for u_k calculation, also used for timer rate
         double commandedSpeed = 0.0;
         double authority = 0.0;
         double setpointSpeed = 0.0;
@@ -32,16 +37,20 @@ class SWTC
         double getKp();
         void setKi(double);
         double getKi();
+        double getT();
+
         void setServiceBrake(bool);
         bool getServiceBrakeFlag();
         void setEmergencyBrake(bool);
         bool getEmergencyBrakeFlag();
+
         void setCommandedSpeed(double);
         double getCommandedSpeed();
         void setAuthority(double);
         double getAuthority();
         void setSetpointSpeed(double);
         double getSetpointSpeed();
+
         void setDoorsOpen(bool);
         bool getDoorsOpen();
         void setCabinLightsOn(bool);

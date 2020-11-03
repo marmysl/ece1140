@@ -6,7 +6,7 @@ void SWTC :: calculatePower()
     // Only set the power when the brake flags are off.
     if (serviceBrakeEnabled == false && emergencyBrakeEnabled == false)
     {
-        double speed;
+        /*double speed;
         // Compare setpoint & commanded speed
         if (setpointSpeed <= commandedSpeed){
             speed = setpointSpeed;
@@ -18,8 +18,31 @@ void SWTC :: calculatePower()
 
         if (speed == 0) {power = 0;}
 
-        setPowerCommand(power);
+        setPowerCommand(power);*/
     }
+
+
+    // Determine speed to set to: Setpoint or Commanded
+    // (do not regulate to setpoint if past commanded)
+    double speed; // speed we are regulating to
+    // Compare setpoint & commanded speed
+    if (setpointSpeed <= commandedSpeed){
+        speed = setpointSpeed;
+    } else {
+        speed = commandedSpeed;
+    }
+
+    // Calculate e_k
+    e_k = speed - trainVelocity;
+
+    // Calculate u_k
+    u_k = u_k_1 + (T / 2) * (e_k - e_k_1);
+
+    // Set e_k to e_k_1 for next sample
+    e_k_1 = e_k;
+
+    // Calculate p_cmd
+    powerCommand = kp * e_k + ki * u_k;
 }
 
 
@@ -157,4 +180,9 @@ void SWTC :: setHeadlightsOn(bool i)
 bool SWTC :: getHeadlightsOn()
 {
     return headlightsOn;
+}
+
+double SWTC :: getT()
+{
+    return T;
 }
