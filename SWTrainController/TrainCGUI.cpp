@@ -53,7 +53,7 @@ void TrainControlWindow :: updatePower()
     ui->currspeed_->setText(QString::number(swtc.getTrainVelocity()));
 
     train->setPower(swtc.getPowerCommand());
-    ui->powerOutput_->setText(QString::number(swtc.getPowerCommand()));
+    ui->powerOutput_->setText(QString::number(swtc.getPowerCommand() / 1000));
 }
 
 void TrainControlWindow :: updateBrakes()
@@ -147,18 +147,6 @@ void TrainControlWindow::on_submit_clicked() //Submits Kp and Ki
 
     cout << "The initial power for 5m/s has been set by the train controller.\n";
 
-}
-
-void TrainControlWindow::on_sendPowerButton_clicked()
-{
-    std::cout << "Setting power command to " << temp << std::endl;
-
-    //power = swtc.calculatePower();
-    swtc.setPowerCommand(temp);
-
-    std::cout << "Power command set.\n";
-
-    temp++;
 }
 
 void TrainControlWindow::on_serviceBrake_clicked()
