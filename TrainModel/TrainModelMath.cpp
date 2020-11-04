@@ -78,6 +78,9 @@ double TrainModelMath::travelledDist() {
 double TrainModelMath::calcVelocity() {
     double totalAcc = lastAccel + currAccel;
     double vel = lastVel + ((elapsedTime/2)*totalAcc);
+
+    if (vel < 0){ vel=0; }
+
     return vel;
 }
 
