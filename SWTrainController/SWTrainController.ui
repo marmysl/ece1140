@@ -18,7 +18,7 @@
     <property name="geometry">
      <rect>
       <x>60</x>
-      <y>30</y>
+      <y>40</y>
       <width>58</width>
       <height>16</height>
      </rect>
@@ -31,7 +31,7 @@
     <property name="geometry">
      <rect>
       <x>60</x>
-      <y>90</y>
+      <y>80</y>
       <width>58</width>
       <height>16</height>
      </rect>
@@ -44,7 +44,7 @@
     <property name="geometry">
      <rect>
       <x>120</x>
-      <y>30</y>
+      <y>40</y>
       <width>91</width>
       <height>31</height>
      </rect>
@@ -73,19 +73,6 @@
      <string>Submit</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="sendPowerButton">
-    <property name="geometry">
-     <rect>
-      <x>60</x>
-      <y>170</y>
-      <width>211</width>
-      <height>41</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>SEND A  POWER COMMAND</string>
-    </property>
-   </widget>
    <widget class="QLabel" name="circuitInfo">
     <property name="geometry">
      <rect>
@@ -102,8 +89,8 @@
    <widget class="QLabel" name="currspeed">
     <property name="geometry">
      <rect>
-      <x>70</x>
-      <y>260</y>
+      <x>60</x>
+      <y>200</y>
       <width>121</width>
       <height>21</height>
      </rect>
@@ -128,8 +115,8 @@
    <widget class="QLabel" name="currspeed_">
     <property name="geometry">
      <rect>
-      <x>220</x>
-      <y>260</y>
+      <x>210</x>
+      <y>200</y>
       <width>58</width>
       <height>16</height>
      </rect>
@@ -206,8 +193,8 @@
    <widget class="QLabel" name="powerOutput_">
     <property name="geometry">
      <rect>
-      <x>220</x>
-      <y>230</y>
+      <x>210</x>
+      <y>170</y>
       <width>58</width>
       <height>16</height>
      </rect>
@@ -219,8 +206,8 @@
    <widget class="QLabel" name="powerOutput">
     <property name="geometry">
      <rect>
-      <x>70</x>
-      <y>230</y>
+      <x>60</x>
+      <y>170</y>
       <width>121</width>
       <height>21</height>
      </rect>
@@ -258,8 +245,8 @@
    <widget class="QLabel" name="setpointSpeed">
     <property name="geometry">
      <rect>
-      <x>70</x>
-      <y>290</y>
+      <x>60</x>
+      <y>230</y>
       <width>101</width>
       <height>16</height>
      </rect>
@@ -271,8 +258,8 @@
    <widget class="QLabel" name="setpointSpeed_">
     <property name="geometry">
      <rect>
-      <x>220</x>
-      <y>290</y>
+      <x>210</x>
+      <y>230</y>
       <width>58</width>
       <height>16</height>
      </rect>
@@ -284,8 +271,8 @@
    <widget class="QPushButton" name="inc_setspeed">
     <property name="geometry">
      <rect>
-      <x>70</x>
-      <y>330</y>
+      <x>60</x>
+      <y>270</y>
       <width>191</width>
       <height>31</height>
      </rect>
@@ -297,8 +284,8 @@
    <widget class="QPushButton" name="dec_setspeed">
     <property name="geometry">
      <rect>
-      <x>70</x>
-      <y>380</y>
+      <x>60</x>
+      <y>320</y>
       <width>191</width>
       <height>31</height>
      </rect>
@@ -454,6 +441,32 @@
     </property>
     <property name="flat">
      <bool>false</bool>
+    </property>
+   </widget>
+   <widget class="QLabel" name="kW">
+    <property name="geometry">
+     <rect>
+      <x>270</x>
+      <y>170</y>
+      <width>31</width>
+      <height>16</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>kW</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label">
+    <property name="geometry">
+     <rect>
+      <x>90</x>
+      <y>10</y>
+      <width>211</width>
+      <height>16</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Recommended Value: 250</string>
     </property>
    </widget>
   </widget>
