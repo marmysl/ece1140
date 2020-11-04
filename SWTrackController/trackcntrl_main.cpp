@@ -28,51 +28,52 @@ int init_SWTrackController() {
 
     std::string route = "Blue";
 
-    TrackModel::TrackCircuitData block1 = TrackModel::TrackCircuitData::fromFloat(30,9);
-    TrackModel::setTrackCircuit(route, 1, block1);
+    TrackModel::TrackCircuitData tcdata = TrackModel::TrackCircuitData::fromFloat(30,9);
+    TrackModel::setTrackCircuit(route, 1, tcdata);
 
-    TrackModel::TrackCircuitData block2 = TrackModel::TrackCircuitData::fromFloat(30,8);
-    TrackModel::setTrackCircuit(route, 2, block2);
+    tcdata = TrackModel::TrackCircuitData::fromFloat(30,8);
+    TrackModel::setTrackCircuit(route, 2, tcdata);
 
-    TrackModel::TrackCircuitData block3 = TrackModel::TrackCircuitData::fromFloat(30,7);
-    TrackModel::setTrackCircuit(route, 3, block3);
+    tcdata = TrackModel::TrackCircuitData::fromFloat(30,7);
+    TrackModel::setTrackCircuit(route, 3, tcdata);
 
-    TrackModel::TrackCircuitData block4 = TrackModel::TrackCircuitData::fromFloat(30,6);
-    TrackModel::setTrackCircuit(route, 4, block4);
+    tcdata = TrackModel::TrackCircuitData::fromFloat(30,6);
+    TrackModel::setTrackCircuit(route, 4, tcdata);
 
-    TrackModel::TrackCircuitData block5 = TrackModel::TrackCircuitData::fromFloat(30,5);
-    TrackModel::setTrackCircuit(route, 5, block5);
+    tcdata = TrackModel::TrackCircuitData::fromFloat(30,5);
+    TrackModel::setTrackCircuit(route, 5, tcdata);
 
-    TrackModel::TrackCircuitData block6 = TrackModel::TrackCircuitData::fromFloat(30,4);
-    TrackModel::setTrackCircuit(route, 6, block6);
+    tcdata = TrackModel::TrackCircuitData::fromFloat(30,4);
+    TrackModel::setTrackCircuit(route, 6, tcdata);
 
-    TrackModel::TrackCircuitData block7 = TrackModel::TrackCircuitData::fromFloat(30,3);
-    TrackModel::setTrackCircuit(route, 7, block7);
+    tcdata = TrackModel::TrackCircuitData::fromFloat(30,3);
+    TrackModel::setTrackCircuit(route, 7, tcdata);
 
-    TrackModel::TrackCircuitData block8 = TrackModel::TrackCircuitData::fromFloat(20,2);
-    TrackModel::setTrackCircuit(route, 8, block8);
+    tcdata = TrackModel::TrackCircuitData::fromFloat(20,2);
+    TrackModel::setTrackCircuit(route, 8, tcdata);
 
-    TrackModel::TrackCircuitData block9 = TrackModel::TrackCircuitData::fromFloat(20,1);
-    TrackModel::setTrackCircuit(route, 9, block9);
+    tcdata = TrackModel::TrackCircuitData::fromFloat(20,1);
+    TrackModel::setTrackCircuit(route, 9, tcdata);
 
-    TrackModel::TrackCircuitData block10 = TrackModel::TrackCircuitData::fromFloat(10,0);
-    TrackModel::setTrackCircuit(route, 10, block10);
+    tcdata = TrackModel::TrackCircuitData::fromFloat(10,0);
+    TrackModel::setTrackCircuit(route, 10, tcdata);
 
-    TrackModel::TrackCircuitData block11 = TrackModel::TrackCircuitData::fromFloat(30,4);
-    TrackModel::setTrackCircuit(route, 11, block11);
+    tcdata = TrackModel::TrackCircuitData::fromFloat(30,4);
+    TrackModel::setTrackCircuit(route, 11, tcdata);
 
-    TrackModel::TrackCircuitData block12 = TrackModel::TrackCircuitData::fromFloat(30,3);
-    TrackModel::setTrackCircuit(route, 12, block12);
+    tcdata = TrackModel::TrackCircuitData::fromFloat(30,3);
+    TrackModel::setTrackCircuit(route, 12, tcdata);
 
-    TrackModel::TrackCircuitData block13 = TrackModel::TrackCircuitData::fromFloat(30,2);
-    TrackModel::setTrackCircuit(route, 13, block13);
+    tcdata = TrackModel::TrackCircuitData::fromFloat(30,2);
+    TrackModel::setTrackCircuit(route, 13, tcdata);
 
-    TrackModel::TrackCircuitData block14 = TrackModel::TrackCircuitData::fromFloat(30,1);
-    TrackModel::setTrackCircuit(route, 14, block14);
+    tcdata = TrackModel::TrackCircuitData::fromFloat(30,1);
+    TrackModel::setTrackCircuit(route, 14, tcdata);
 
-    TrackModel::TrackCircuitData block15 = TrackModel::TrackCircuitData::fromFloat(30,0);
-    TrackModel::setTrackCircuit(route, 15, block15);
+    tcdata = TrackModel::TrackCircuitData::fromFloat(30,0);
+    TrackModel::setTrackCircuit(route, 15, tcdata);
 
+    //TrackModel::getCircuitData();
 
     for (auto i = wayside_vector.blocks.begin(); i != wayside_vector.blocks.end(); ++i) {
         i -> setOcc();    }
