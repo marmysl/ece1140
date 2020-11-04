@@ -130,9 +130,9 @@ void TrainControlWindow::on_submit_clicked() //Submits Kp and Ki
     temp2 =  ui->ki_textbox->toPlainText();
     ki = temp2.toDouble();
 
-    //set Kp and Ki in the SWTC class for math stuffs later
-    swtc.setKp(kp);
-    swtc.setKi(ki);
+    //set Kp and Ki in the SWTC class, multiply by 1000 for tuning
+    swtc.setKp(kp * 1000);
+    swtc.setKi(ki * 1000);
 
     // Disable textboxes and submit button
     ui->ki_textbox->setReadOnly(true);
