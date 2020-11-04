@@ -19,6 +19,7 @@ const int serviceBrakeOut = 33; //verified
 const int emergencyBrakeOut = 32; //verified
 const int serviceBrakeIn = 36; //verified
 const int emergencyBrakeIn = 28; //verified
+const int releaseBrake = 40; //verified
 
 //Headlights Pins
 const int headlightsIn = 38; //verified
@@ -36,10 +37,12 @@ void brakeSetup()
   pinMode(emergencyBrakeIn, INPUT);
   pinMode(serviceBrakeOut, OUTPUT);
   pinMode(emergencyBrakeOut, OUTPUT);
+  pinMode(releaseBrake, INPUT);
   digitalWrite(serviceBrakeIn, LOW);
   digitalWrite(emergencyBrakeIn, LOW);
   digitalWrite(emergencyBrakeOut, LOW);
   digitalWrite(serviceBrakeOut, LOW);
+  digitalWrite(releaseBrake, LOW);
 }
 
 void securitySetup()

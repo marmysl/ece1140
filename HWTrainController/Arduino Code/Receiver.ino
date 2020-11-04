@@ -21,16 +21,19 @@ void reciever()
     //char31-35 = currentSpeed
     //char36 = service brake
     //char37 = emergency brake
-    //char 38-42 = power command
-    //char 43 = failure code
-    //char 44 = cabinHeadlights
-    //char 45 = newline
- 
-  if (receivedString.length() == 45)
-  {
-    lcd.clear();
-    lcd.print(receivedString);
+    //char 38-43 = power command
+    //char 44 = failure code
+    //char 45 = cabinHeadlights
+    //char 46 = newline
 
+//    lcd.clear();
+//    lcd.setCursor(0,0);
+//    lcd.print(receivedString);
+//    lcd.setCursor(0,3);
+//    lcd.print(receivedString.length());
+
+  if (receivedString.length() == 46)
+  {
     //Adjusts cabin control outputs based on input data
     if (receivedString.substring(0,1).equals("1")) digitalWrite(CabinLightsOut, HIGH);
     else if (receivedString.substring(0,1).equals("0")) digitalWrite(CabinLightsOut, LOW);
@@ -52,13 +55,16 @@ void reciever()
     commandedSpeed = receivedString.substring(21,26);
     setpointSpeed = receivedString.substring(26,31);
     currentSpeed = receivedString.substring(31,36);
-    power  = receivedString.substring(38,43);
+    power  = receivedString.substring(38,44);
 
     if(receivedString.substring(36,37).equals("1")) digitalWrite(serviceBrakeOut, HIGH);
     else digitalWrite(serviceBrakeOut, LOW);
     if(receivedString.substring(37,38).equals("1")) digitalWrite(emergencyBrakeOut, HIGH);
     else digitalWrite(emergencyBrakeOut, LOW);
-    if(receivedString.substring(44,45).equals("1")) digitalWrite(headlightsOut, HIGH);
+    if(receivedString.substring(45,46).equals("1")) digitalWrite(headlightsOut, HIGH);
     else digitalWrite(headlightsOut, LOW);
+    
+    failureCode = receivedString.substring(44,45).toInt();
   }
+  
 }
