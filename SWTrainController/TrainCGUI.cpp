@@ -113,8 +113,7 @@ void TrainControlWindow :: updateCabin()
 
 
     // Send updates to the train, if needed
-    bool temporary = swtc.getDoorsOpen();
-    train->setDoorStatus(temporary);
+    train->setDoorStatus(swtc.getDoorsOpen());
     train->setCabinLights(swtc.getCabinLightsOn());
     train->setHeadlights(swtc.getHeadlightsOn());
 
