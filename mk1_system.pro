@@ -75,12 +75,12 @@ HEADERS += \
     SWTrackController/BlockCntrl.h \
     SWTrackController/TrackController.h \
     SWTrackController/blockcontainer.h \
+    SWTrackController/trackcntrl_main.h \
     SWTrackController/tracklogic.h \
     SWTrackController/waysidecontainer.h \
     SWTrainController/SWTC.h \
     SWTrainController/SWTrainController_main.h \
     SWTrainController/TrainCGUI.h \
-    SWTrainController/ui_SWTrainController.h \
     SerialPort.hpp \
     TrackModel/layoutdialog.h \
     TrackModel/routemapview.h \

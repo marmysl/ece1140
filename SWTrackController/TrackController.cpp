@@ -36,6 +36,12 @@ void TrackController::setUpController(int id, std::vector<char> &s, std::vector<
 
 
 }
+
+void TrackController::setSignalsInstance(CTCSignals &s){
+
+    ctc_wayside = s;
+}
+
 int TrackController::getResult() {
 	std::cout << "region: " << region << "\n\n";
 	std::cout << "sections: ";

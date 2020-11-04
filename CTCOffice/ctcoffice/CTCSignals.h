@@ -11,15 +11,19 @@ private:
     void setFlag(bool);
 
 public:
+
     bool update_flag;
     float speedCTC;
     float authCTC;
     int destinationBlock;
+    int receiving_wayside;
 
-    void setSignal(int b, float s, float a);
+    void setSignal(int, float, float);
     int getDest();
     float getSpeed();
     float getAuth();
+    void setUp(int);
+
 };
 
 //END GUARD

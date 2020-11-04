@@ -1,18 +1,11 @@
-#include "waysidecontainer.h"
-#include "tracklogic.h"
-#include "CTCOffice/ctcoffice/CTCSignals.h"
-#include "../TrackModel/trackmodel_controller.hpp"
-#include "../TrackModel/trackmodel_main.hpp"
-#include <vector>
-#include <iostream>
+#include "trackcntrl_main.h"
 
-void timerEvent(QTimerEvent *event);
 
 int init_SWTrackController() {
     //int timerID = startTimer(1000); // timer event occurs every second
     //int count = 0;
 
-    CTCSignals C1;
+
 
     WaysideContainer wayside_vector;
 
@@ -25,59 +18,59 @@ int init_SWTrackController() {
     for(int i = 1; i <= 15; i++) {
         b.push_back(i);     }
 
-    wayside_vector.addTrackObj(1, s, b);
+    //wayside_vector.addTrackObj(1, s, b);
 	
     //timer implementation
 
 
-
-    wayside_vector.blocks.begin() -> setSpdAuth(1, C1.speedCTC, C1.authCTC);
+    //CTCSignals C1 = wayside_vector.signals.begin();
+   // wayside_vector.blocks.begin() -> setSpdAuth(1, C1.speedCTC, C1.authCTC);
 
     std::string route = "Blue";
 
-    TrackModel::TrackCircuitData block1 = TrackModel::TrackCircuitData::fromFloat(30,500);
+    TrackModel::TrackCircuitData block1 = TrackModel::TrackCircuitData::fromFloat(30,9);
     TrackModel::setTrackCircuit(route, 1, block1);
 
-    TrackModel::TrackCircuitData block2 = TrackModel::TrackCircuitData::fromFloat(30,450);
+    TrackModel::TrackCircuitData block2 = TrackModel::TrackCircuitData::fromFloat(30,8);
     TrackModel::setTrackCircuit(route, 2, block2);
 
-    TrackModel::TrackCircuitData block3 = TrackModel::TrackCircuitData::fromFloat(30,400);
+    TrackModel::TrackCircuitData block3 = TrackModel::TrackCircuitData::fromFloat(30,7);
     TrackModel::setTrackCircuit(route, 3, block3);
 
-    TrackModel::TrackCircuitData block4 = TrackModel::TrackCircuitData::fromFloat(30,350);
+    TrackModel::TrackCircuitData block4 = TrackModel::TrackCircuitData::fromFloat(30,6);
     TrackModel::setTrackCircuit(route, 4, block4);
 
-    TrackModel::TrackCircuitData block5 = TrackModel::TrackCircuitData::fromFloat(30,300);
+    TrackModel::TrackCircuitData block5 = TrackModel::TrackCircuitData::fromFloat(30,5);
     TrackModel::setTrackCircuit(route, 5, block5);
 
-    TrackModel::TrackCircuitData block6 = TrackModel::TrackCircuitData::fromFloat(30,250);
+    TrackModel::TrackCircuitData block6 = TrackModel::TrackCircuitData::fromFloat(30,4);
     TrackModel::setTrackCircuit(route, 6, block6);
 
-    TrackModel::TrackCircuitData block7 = TrackModel::TrackCircuitData::fromFloat(30,200);
+    TrackModel::TrackCircuitData block7 = TrackModel::TrackCircuitData::fromFloat(30,3);
     TrackModel::setTrackCircuit(route, 7, block7);
 
-    TrackModel::TrackCircuitData block8 = TrackModel::TrackCircuitData::fromFloat(20,150);
+    TrackModel::TrackCircuitData block8 = TrackModel::TrackCircuitData::fromFloat(20,2);
     TrackModel::setTrackCircuit(route, 8, block8);
 
-    TrackModel::TrackCircuitData block9 = TrackModel::TrackCircuitData::fromFloat(20,100);
+    TrackModel::TrackCircuitData block9 = TrackModel::TrackCircuitData::fromFloat(20,1);
     TrackModel::setTrackCircuit(route, 9, block9);
 
-    TrackModel::TrackCircuitData block10 = TrackModel::TrackCircuitData::fromFloat(10,50);
+    TrackModel::TrackCircuitData block10 = TrackModel::TrackCircuitData::fromFloat(10,0);
     TrackModel::setTrackCircuit(route, 10, block10);
 
-    TrackModel::TrackCircuitData block11 = TrackModel::TrackCircuitData::fromFloat(30,250);
+    TrackModel::TrackCircuitData block11 = TrackModel::TrackCircuitData::fromFloat(30,4);
     TrackModel::setTrackCircuit(route, 11, block11);
 
-    TrackModel::TrackCircuitData block12 = TrackModel::TrackCircuitData::fromFloat(30,200);
+    TrackModel::TrackCircuitData block12 = TrackModel::TrackCircuitData::fromFloat(30,3);
     TrackModel::setTrackCircuit(route, 12, block12);
 
-    TrackModel::TrackCircuitData block13 = TrackModel::TrackCircuitData::fromFloat(30,150);
+    TrackModel::TrackCircuitData block13 = TrackModel::TrackCircuitData::fromFloat(30,2);
     TrackModel::setTrackCircuit(route, 13, block13);
 
-    TrackModel::TrackCircuitData block14 = TrackModel::TrackCircuitData::fromFloat(30,100);
+    TrackModel::TrackCircuitData block14 = TrackModel::TrackCircuitData::fromFloat(30,1);
     TrackModel::setTrackCircuit(route, 14, block14);
 
-    TrackModel::TrackCircuitData block15 = TrackModel::TrackCircuitData::fromFloat(30,50);
+    TrackModel::TrackCircuitData block15 = TrackModel::TrackCircuitData::fromFloat(30,0);
     TrackModel::setTrackCircuit(route, 15, block15);
 
 

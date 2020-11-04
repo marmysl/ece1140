@@ -16,6 +16,7 @@ void WaysideContainer::addTrackObj(int id, std::vector<char> &s, std::vector<int
         addBlockObj(i);
     }
 
+    addCTCObj(id);
 }
 
 void WaysideContainer::addBlockObj(int num) {
@@ -23,4 +24,10 @@ void WaysideContainer::addBlockObj(int num) {
     BlockCntrl b;
     b.setUpBlock(num);
     blocks.push_back(b);
+}
+void WaysideContainer::addCTCObj(int num) {
+    using namespace std;
+    CTCSignals c;
+    c.setUp(num);
+    sig.push_back(c);
 }

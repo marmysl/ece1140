@@ -2,18 +2,18 @@
 #ifndef TrackController_h
 #define TrackController_h
 
-
+#include "CTCOffice/ctcoffice/CTCSignals.h"
 #include <vector>
 #include <string>
 
-int init_SWTrackController();
+//int init_SWTrackController();
 
 //FlashLight class declaration
 class TrackController
 {
 	
 	public:
-	
+        CTCSignals ctc_wayside;
         int region;
         std::string line;
         std::vector<char> cntrl_sections;
@@ -27,7 +27,7 @@ class TrackController
 
         TrackController();
         void setUpController(int, std::vector<char> &, std::vector<int> &);
-		 
+        void setSignalsInstance(CTCSignals &);
 		int getResult();
 };
 

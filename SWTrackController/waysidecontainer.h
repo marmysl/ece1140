@@ -3,6 +3,7 @@
 
 #include "TrackController.h"
 #include "BlockCntrl.h"
+#include "CTCOffice/ctcoffice/CTCSignals.h"
 #include <vector>
 
 class WaysideContainer
@@ -16,6 +17,10 @@ public:
     //Block Container of Wayside
     std::vector<BlockCntrl> blocks;
     void addBlockObj(int num);
+
+    //CTC Signals Container for Wayside
+    std::vector<CTCSignals> sig;
+    void addCTCObj(int num);
 };
 
 #endif // WAYSIDECONTAINER_H

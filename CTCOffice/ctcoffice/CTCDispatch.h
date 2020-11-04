@@ -7,6 +7,7 @@
 //#include "../../SWTrackController/CTCSignals.h"
 #include "CTCSignals.h"
 #include "../../TrackModel/tracklayout.hpp"
+#include "../../SWTrackController/trackcntrl_main.h"
 
 class CTCDispatch
 {
@@ -18,12 +19,14 @@ class CTCDispatch
         float timeStart;
         float timeArrival;
     public:
+        std::vector<CTCSignals> wayside_signals;
+
         std::vector<float> authority;
         std::vector<float> speed;
         void setAuthority(std::string, int);
         void setSpeed(std::string, int, float, float);
-        void sendTrackController(CTCSignals &c);
-        void dispatch(CTCSignals &c);
+        void sendTrackController(CTCSignals &);
+        void dispatch(CTCSignals &);
 
         void setLine(std::string);
         std::string getline();

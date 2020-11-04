@@ -24,3 +24,9 @@ float CTCSignals::getAuth() {
 int CTCSignals::getDest() {
     return destinationBlock;
 }
+
+void CTCSignals::setUp(int id) {
+    receiving_wayside = id;
+
+}
+
