@@ -31,7 +31,7 @@ void setup() {
   Serial.begin(9600);
   
   //Initialize the LCD
-  lcd.begin(16,4);
+  lcd.begin(20,4);
   lcd.clear();
   lcd.backlight();
 
@@ -45,9 +45,12 @@ void setup() {
   //Configure login success pin
   pinMode(loginSuccess, OUTPUT);
   digitalWrite(loginSuccess, LOW);
-  login();
-  //Kp_in = "44.44";
-  //Ki_in = "55.55";
+
+  //Initiate the login process
+  //Recommended values are  Kp = 300 and Ki = 400
+  //login();
+  Kp_in = "300.0";
+  Ki_in = "400.0";
 
  }
 

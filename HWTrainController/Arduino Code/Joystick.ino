@@ -13,6 +13,7 @@ String  power  = "";
 
 //Integer to keep track of which menu the LCD is displaying
 int joystickCount;
+
 void speedRegulatorSetup()
 {
   //Set joystickCount to 0
@@ -25,53 +26,47 @@ void joystick()
   else if(analogRead(X_pin) > 900) joystickCount++;
   
   //Handles the joystick swiping (left/right joystick motions display different menus
-  if(abs(joystickCount) % 6 == 0)
+  if(abs(joystickCount) % 4 == 0)
   {
     lcd.clear();
     lcd.setCursor(0,0);
     lcd.print("Current Speed: ");
     lcd.setCursor(0,1);
     lcd.print(currentSpeed);
-  }
-  else if(abs(joystickCount) % 6 == 1)
-  {
-    lcd.clear();
-    lcd.setCursor(0,0);
-    lcd.print("Commanded Speed: ");
-    lcd.setCursor(0,1);
-    lcd.print(commandedSpeed);
-  }
-  else if(abs(joystickCount) % 6 == 2)
-  {
-    lcd.clear();
-    lcd.setCursor(0,0);
-    lcd.print("Authority: ");
-    lcd.setCursor(0,1);
-    lcd.print(authority);
-  }
-  else if(abs(joystickCount) % 6 == 3)
-  {
-    lcd.clear();
-    lcd.setCursor(0,0);
-    lcd.print("Distance to Station: ");
-    lcd.setCursor(0,1);
-    lcd.print("Not developed");
-  }
-  else if(abs(joystickCount) % 6 == 4)
-  {
-    lcd.clear();
-    lcd.setCursor(0,0);
+    lcd.setCursor(0,2);
     lcd.print("Setpoint Speed: ");
-    lcd.setCursor(0,1);
+    lcd.setCursor(0,3);
     lcd.print(setpointSpeed);
   }
-  else if(abs(joystickCount) % 6 == 5)
+  else if(abs(joystickCount) % 4 == 1)
   {
     lcd.clear();
     lcd.setCursor(0,0);
     lcd.print("Kp: " + Kp);
     lcd.setCursor(0,1);
     lcd.print("Ki: " + Ki);
+    lcd.setCursor(0,2);
+    lcd.print("Power:" + power);
+  }
+  else if(abs(joystickCount) % 4 == 2)
+  {
+    lcd.clear();
+    lcd.setCursor(0,0);
+    lcd.print("Commanded Speed: ");
+    lcd.setCursor(0,1);
+    lcd.print(commandedSpeed);
+    lcd.setCursor(0,2);
+    lcd.print("Authority: ");
+    lcd.setCursor(0,3);
+    lcd.print(authority);
+  }
+  else if(abs(joystickCount) % 4 == 3)
+  {
+    lcd.clear();
+    lcd.setCursor(0,0);
+    lcd.print("Distance to Station: ");
+    lcd.setCursor(0,1);
+    lcd.print("Not developed");
   }
   delay(200);
 }

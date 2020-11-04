@@ -47,7 +47,7 @@ void TrainController::recieveData( char *buf, qint64 len )
     {
         string data(incomingData);
         //cout << "Incoming Length: " << data.length() << endl;
-        std::cout << "Incoming: " << data << std::endl;
+        std::cout << "Incoming: " << data.length() << std::endl;
 
           //Create a system to encode all data to be read from
           //char 0 = cabinLights
@@ -64,9 +64,10 @@ void TrainController::recieveData( char *buf, qint64 len )
           //char19 = emergency brake
           //char20 = resolve failure button
           //char21 = headlights
+          //char22 = release brake
 
 
-        if(data.length() == 24)
+        if(data.length() == 25)
         {
              std::cout << "Incoming: " << data << std::endl;
              if(data.substr(0,1) == "1") trainModel -> setCabinLights(1);
@@ -87,9 +88,9 @@ void TrainController::recieveData( char *buf, qint64 len )
              if(data.substr(5,1) == "1") trainModel -> setAnnouncements(1, beacon -> getAnnouncement());
              else trainModel -> setAnnouncements(0,beacon->getAnnouncement());
 
-             if(data.substr(16,1) == "1") speedRegulator -> incSetpointSpeed(2);
+             if(data.substr(16,1) == "1") speedRegulator -> incSetpointSpeed(5);
 
-             if(data.substr(17,1) == "1") speedRegulator -> incSetpointSpeed(-2);
+             if(data.substr(17,1) == "1") speedRegulator -> incSetpointSpeed(-5);
 
              speedRegulator -> setKpAndKi(std::stod(data.substr(6,5)), std::stod(data.substr(11,5)));
 
@@ -98,7 +99,14 @@ void TrainController::recieveData( char *buf, qint64 len )
              if(data.substr(20,1) == "1") trainModel -> setSystemFailure(0);
              if(data.substr(21,1) == "1") trainModel -> setHeadlights(1);
              else trainModel -> setHeadlights(0);
+
+             if(data.substr(22,1) == "1")
+             {
+                 trainModel -> setServiceBrake(0);
+                 trainModel -> setEmergencyBrake(0);
+             }
            }
+
     }
 }
 
@@ -119,9 +127,9 @@ void TrainController::writeData()
     //char31-35 = currentSpeed
     //char36 = service brake
     //char37 = emergency brake
-    //char 38-42 = power command
-    //char 43 = failure code
-    //char 44 = headlights
+    //char 38-43 = power command
+    //char 44 = failure code
+    //char 45 = headlights
 
     string outgoing_s = "";
     outgoing_s += to_string(trainModel -> getCabinLights());
@@ -131,7 +139,7 @@ void TrainController::writeData()
     outgoing_s += to_string(trainModel -> getAdvertisements());
     outgoing_s += to_string(trainModel -> getAnnouncements());
 
-    string authority(to_string(trainModel -> sendTrackCircuit()), 0, 5);
+    string authority(to_string(trainModel -> sendTrackCircuit() & 0xffffffff), 0, 5);
     outgoing_s += authority;
 
     while(outgoing_s.length() <= 10) outgoing_s += " ";
@@ -146,7 +154,7 @@ void TrainController::writeData()
 
     while(outgoing_s.length() <= 20) outgoing_s += " ";
 
-    string commandedSpeed(to_string(trainModel -> sendTrackCircuit() << 32), 0, 5);
+    string commandedSpeed(to_string(trainModel -> sendTrackCircuit() >> 32), 0, 5);
     outgoing_s += commandedSpeed;
     while(outgoing_s.length() <= 25) outgoing_s += " ";
 
@@ -165,8 +173,9 @@ void TrainController::writeData()
     outgoing_s+= to_string(trainModel -> getEmergencyBrake());
     std::cout << "Emergency Brake: " << trainModel -> getEmergencyBrake() << std::endl;
 
-    string power(to_string(speedRegulator -> getPowerCmd()), 0, 5);
-    while(outgoing_s.length() <= 42) outgoing_s += " ";
+    string power(to_string(speedRegulator -> getPowerCmd()), 0, 6);
+    outgoing_s += power;
+    while(outgoing_s.length() <= 43) outgoing_s += " ";
 
     outgoing_s += to_string(trainModel -> getSystemFailure());
 

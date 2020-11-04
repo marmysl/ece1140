@@ -19,6 +19,7 @@ void transmitter()
   //char19 = emergencyBrake
   //char20 = resolve failure button
   //char 21 = headlights
+  //char 22 = release brake
   
   outgoingData = "";
   
@@ -64,6 +65,9 @@ void transmitter()
   else outgoingData += "0";
 
   if(digitalRead(headlightsIn) == HIGH) outgoingData += "1";
+  else outgoingData += "0";
+
+  if(digitalRead(releaseBrake) == HIGH) outgoingData += "1";
   else outgoingData += "0";
 
   Serial.println(outgoingData);
