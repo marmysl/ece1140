@@ -22,6 +22,8 @@ TrainModelMath::TrainModelMath(int newNumCars, TrainModelUpdateBlock *newAssigBl
 }
 
 void TrainModelMath::setPower(double newPower){
+    currPower = newPower;
+
     //Calculate Force from power
     currForce = newPower/lastVel;
     limitForce();
@@ -86,6 +88,12 @@ double TrainModelMath::calcVelocity() {
 
 void TrainModelMath::limitForce(){
     if (currForce > (mass*0.5)){
+        currForce = mass*0.5;
+    }
+    else if (currPower == 0 && lastVel == 0){
+        currForce = 0;
+    }
+    else if (lastVel == 0){
         currForce = mass*0.5;
     }
 }
