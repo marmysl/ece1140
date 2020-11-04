@@ -39,9 +39,9 @@ void TrainModelUI::updateNumCars(int cars){
 }
 
 void TrainModelUI::updateDoors(bool door){
-    std::string doorStr = "Closed";
-    if(door){std::string doorStr = "Open";}
-    ui->numCarLabel->setText(QString::fromStdString(doorStr));
+    QString doorStr = "Closed";
+    if(door){doorStr = "Open";}
+    ui->doorLabel->setText(doorStr);
 }
 
 void TrainModelUI::updateCabinLights(bool lights){
