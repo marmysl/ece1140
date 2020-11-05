@@ -151,9 +151,9 @@ bool enterKpKi()
     lcd.clear();
     lcd.setCursor(0,0);
     lcd.print("Error - invalid Kp");
-    lcd.setCursor(1,0);
+    lcd.setCursor(0,1);
     lcd.print("and Ki values.");
-    lcd.setCursor(2,0);
+    lcd.setCursor(0,2);
     lcd.print("Re-enter values.");
     delay(2000);
     return false;
@@ -181,11 +181,14 @@ void login()
 
 void logout()
 {
-  lcd.setCursor(0,0);
-  lcd.print("Logout Confirmation:");
-  lcd.setCursor(1,0);
-  lcd.print("(A = yes, B = no)");
-  char customKey = customKeypad.getKey();
-  if(customKey == 'A') login();
-  else return;
+  if(digitalRead(LogoutIn) == HIGH)
+  {
+    lcd.setCursor(0,0);
+    lcd.print("Logout Confirmation:");
+    lcd.setCursor(1,0);
+    lcd.print("(A = yes, B = no)");
+    char customKey = customKeypad.getKey();
+    if(customKey == 'A') login();
+    else return;
+  }
 }
