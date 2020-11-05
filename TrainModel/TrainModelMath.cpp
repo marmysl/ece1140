@@ -1,70 +1,115 @@
 #include "TrainModelMath.h"
 #include "TrainModelUpdateBlock.h"
-#include <chrono>
+#include <iostream>
 
-TrainModelMath::TrainModelMath(int newNumCars, TrainModelUpdateBlock *newBlock){
+TrainModelMath::TrainModelMath(int newNumCars, TrainModelUpdateBlock *newAssigBlock){    
     numCars = newNumCars;
-    block = newBlock;
+    mass = numCars * 56700;
+    block = newAssigBlock;
+
+    currVel = 0;
+    currPower = 0;
+    currForce = 0;
+    currAccel = 0;
+    lastVel = 0;
+    lastAccel = 0;
+    lastPos = 0;
+    elapsedTime = 0;
+    failureStatus = 0;
+    safeStoppingDist = 10;
+    inYard = true;
+    newBlock = false;
 }
 
 void TrainModelMath::setPower(double newPower){
+    currPower = newPower;
+
+    //Calculate Force from power
+    currForce = newPower/lastVel;
+    limitForce();
+
+    //Find acceleration from force
+    currAccel = currForce/mass;
+    limitAccel();
+
     //Get current time
     if (!inYard){
-        chrono::steady_clock::time_point newTime= chrono::steady_clock::now();
+        newTime = systemClock->currentTime();
 
         //Find elapsed time and convert to a double
-        auto elapsedTime = newTime - lastTime;
+        qint64 change;
+        change = lastTime.msecsTo(newTime);
+        elapsedTime = (double)change/1000;
         lastTime = newTime;
-        double milliSec = chrono::duration<double, milli>(elapsedTime).count();
+
+        //Find the current velocity
+        currVel = calcVelocity();
 
         //Find the distance travelled using old velocity
-        double distTravelled = this->travelledDist(milliSec, currVel);
-        double newPos = this->updatePosition(lastPos, distTravelled);
+        double newPos = travelledDist();
 
         //compare new position to old to see if new block
-        if (newPos >= block->blockDist && block->blockNum<=10){
-            newPos = newPos - block->blockDist;
+        if (newPos >= block->blockDist && block->blockNum<=9){
+            newPos = newPos - (block->blockDist);
             //update current block and information
             block->updateTrackInfo(inYard);
         }
         lastPos = newPos;
+        lastAccel = currAccel;
+        lastVel = currVel;
         currPower = newPower;
-        double newCurrVel = this->calcVelocity(newPower);
-        currVel = newCurrVel;
     }
     if (inYard && newPower!=0){
-        lastTime = chrono::steady_clock::now();
+        lastTime = systemClock->currentTime();
         lastPos = 0;
         block->updateTrackInfo(inYard);
-        //lastTime = chrono::steady_clock::now();
-        //lastPos = 0;
-        currPower = newPower;
-        double newCurrVel = TrainModelMath::calcVelocity(newPower);
-        currVel = newCurrVel;
         inYard = false;
+        currVel = calcVelocity();
+        lastAccel = currAccel;
+        lastVel = currVel;
+        currPower = newPower;
     }
 }
 
-double TrainModelMath::travelledDist(double time, double velocity) {
-    double dist = velocity * time;
+double TrainModelMath::travelledDist() {
+    double totalVel = lastVel + currVel;
+    double dist = lastPos + ((elapsedTime/2)*totalVel);
     return dist;
 }
 
-double TrainModelMath::updatePosition(double oldPos, double change) {
-    return oldPos+change;
+double TrainModelMath::calcVelocity() {
+    double totalAcc = lastAccel + currAccel;
+    double vel = lastVel + ((elapsedTime/2)*totalAcc);
+
+    if (vel < 0){ vel=0; }
+
+    return vel;
 }
 
-double TrainModelMath::calcVelocity(double power) {
-    //return 20;
-    return power; //morgen debug
+void TrainModelMath::limitForce(){
+    if (currForce > (mass*0.5)){
+        currForce = mass*0.5;
+    }
+    else if (currPower == 0 && lastVel == 0){
+        currForce = 0;
+    }
+    else if (lastVel == 0){
+        currForce = mass*0.5;
+    }
 }
 
-void TrainModelMath::calcForce(){
-
-}
-
-void TrainModelMath::getVel(){
-
+void TrainModelMath::limitAccel(){
+    if (currForce == 0 & currVel>0){
+        currAccel = -1.2;
+    }
+    else if (currForce != 0){
+        if (currAccel > 0.5){
+            currAccel = 0.5;
+        }
+    }
+    else{
+        currAccel = 0;
+    }
 }
 
 void TrainModelMath::setFailureStatus(int newFailureStatus){

@@ -39,15 +39,15 @@ void TrainModelUI::updateNumCars(int cars){
 }
 
 void TrainModelUI::updateDoors(bool door){
-    std::string doorStr = "Closed";
-    if(door){std::string doorStr = "Open";}
-    ui->numCarLabel->setText(QString::fromStdString(doorStr));
+    QString doorStr = "Closed";
+    if(door){doorStr = "Open";}
+    ui->doorLabel->setText(doorStr);
 }
 
 void TrainModelUI::updateCabinLights(bool lights){
-    std::string lightStr = "Off";
-    if(lights){std::string lightStr = "On";}
-    ui->cabinLightLabel->setText(QString::fromStdString(lightStr));
+    QString lightStr = "Off";
+    if(lights){lightStr = "On";}
+    ui->cabinLightLabel->setText(lightStr);
 }
 
 void TrainModelUI::updateTemp(int temp){
@@ -55,19 +55,19 @@ void TrainModelUI::updateTemp(int temp){
 }
 
 void TrainModelUI::updateHeater(bool heat){
-    std::string heatStr = "Off";
-    if(heat){std::string heatStr = "On";}
-    ui->heaterLabel->setText(QString::fromStdString(heatStr));
+    QString heatStr = "Off";
+    if(heat){heatStr = "On";}
+    ui->heaterLabel->setText(heatStr);
 }
 
 void TrainModelUI::updateAC(bool ac){
-    std::string acStr = "Off";
-    if(ac){std::string acStr = "On";}
-    ui->acLabel->setText(QString::fromStdString(acStr));
+    QString acStr = "Off";
+    if(ac){acStr = "On";}
+    ui->acLabel->setText(acStr);
 }
 
 void TrainModelUI::updateAds(bool ads){
-    std::string adsStr = "Off";
-    if(ads){std::string adsStr = "On";}
-    ui->adLabel->setText(QString::fromStdString(adsStr));
+    QString adsStr = "Off";
+    if(ads){adsStr = "On";}
+    ui->adLabel->setText(adsStr);
     }

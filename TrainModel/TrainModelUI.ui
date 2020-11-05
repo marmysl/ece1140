@@ -162,7 +162,7 @@
        <string>Door Status:</string>
       </property>
      </widget>
-     <widget class="QLabel" name="label_10">
+     <widget class="QLabel" name="doorLabel">
       <property name="geometry">
        <rect>
         <x>150</x>

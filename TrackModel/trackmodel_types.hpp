@@ -54,6 +54,7 @@ namespace TrackModel {
     }
 
     QString getFaultString( const BlockFault &faults );
+    QString getFaultAbbrev( const BlockFault &faults );
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // End BlockFault
 
@@ -110,6 +111,16 @@ namespace TrackModel {
 
         uint64_t getEncodedData() {
             return (static_cast<uint64_t>(speed) << 32) | static_cast<uint64_t>(authority);
+        }
+
+        inline bool operator==( const TrackCircuitData &other ) const
+        {
+            return (speed == other.speed) && (authority == other.authority);
+        }
+
+        inline bool operator!=( const TrackCircuitData &other ) const
+        {
+            return !(operator==(other));
         }
     };
 

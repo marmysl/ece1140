@@ -31,7 +31,7 @@ int nextTrainId = 1;
 void createNewTrain() {
     ITrainController *newTrain;
 
-    if( nextTrainId == 1 )
+    if( trainControllerPort.isConnected() && (nextTrainId == 1) )
     {
         newTrain = new TrainController();
     }

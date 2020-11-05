@@ -53,7 +53,7 @@ void TrainControlWindow :: updatePower()
     ui->currspeed_->setText(QString::number(swtc.getTrainVelocity()));
 
     train->setPower(swtc.getPowerCommand());
-    ui->powerOutput_->setText(QString::number(swtc.getPowerCommand()));
+    ui->powerOutput_->setText(QString::number(swtc.getPowerCommand() / 1000));
 }
 
 void TrainControlWindow :: updateBrakes()
@@ -113,8 +113,7 @@ void TrainControlWindow :: updateCabin()
 
 
     // Send updates to the train, if needed
-    bool temporary = swtc.getDoorsOpen();
-    train->setDoorStatus(temporary);
+    train->setDoorStatus(swtc.getDoorsOpen());
     train->setCabinLights(swtc.getCabinLightsOn());
     train->setHeadlights(swtc.getHeadlightsOn());
 
@@ -130,9 +129,9 @@ void TrainControlWindow::on_submit_clicked() //Submits Kp and Ki
     temp2 =  ui->ki_textbox->toPlainText();
     ki = temp2.toDouble();
 
-    //set Kp and Ki in the SWTC class for math stuffs later
-    swtc.setKp(kp);
-    swtc.setKi(ki);
+    //set Kp and Ki in the SWTC class, multiply by 1000 for tuning
+    swtc.setKp(kp * 1000);
+    swtc.setKi(ki * 1000);
 
     // Disable textboxes and submit button
     ui->ki_textbox->setReadOnly(true);
@@ -147,18 +146,6 @@ void TrainControlWindow::on_submit_clicked() //Submits Kp and Ki
 
     cout << "The initial power for 5m/s has been set by the train controller.\n";
 
-}
-
-void TrainControlWindow::on_sendPowerButton_clicked()
-{
-    std::cout << "Setting power command to " << temp << std::endl;
-
-    //power = swtc.calculatePower();
-    swtc.setPowerCommand(temp);
-
-    std::cout << "Power command set.\n";
-
-    temp++;
 }
 
 void TrainControlWindow::on_serviceBrake_clicked()
