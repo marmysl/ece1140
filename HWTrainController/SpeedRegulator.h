@@ -3,6 +3,9 @@
 
 #include <cstdint>
 #include "../TrainModel/Train.h"
+#include <QObject>
+#include <QTimer>
+#include <QDateTime>
 
 class SpeedRegulator
 {
@@ -19,6 +22,8 @@ private:
         double ek_1;
         double T;
         double maxPower;
+        QDateTime prevTime;
+        QDateTime currTime;
 
         //In this class, power is given in Watts
 

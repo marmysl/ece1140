@@ -22,8 +22,11 @@ SpeedRegulator::SpeedRegulator(Train *ptr)
     ek = 0;
     ek_1 = 0;
 
-    //Initialize the period T to be 1
-    T = 1;
+    //Initialize the period T to be 0
+    T = 0;
+
+    //Initialize the prevTime to be the current time
+    prevTime = systemClock -> currentTime();
 
     //Initialize the maxPower to be 120,000 watts
     maxPower = 120000; //this value comes from Flexity 2 Tram datasheet
@@ -31,7 +34,7 @@ SpeedRegulator::SpeedRegulator(Train *ptr)
 void SpeedRegulator::calcPowerCmd()
 {
     //Only calculate a nonzero power while the train has a nonzero authority and the brake is not being pulled
-    if(  ((trainModel -> sendTrackCircuit() & 0xfffffff) > 0) || (trainModel -> getServiceBrake() != 1) || (trainModel -> getEmergencyBrake() != 1) )
+    if(  ((trainModel -> sendTrackCircuit() & 0xffffffff) > 0) && (trainModel -> getServiceBrake() != 1) && (trainModel -> getEmergencyBrake() != 1) )
     {
         //Call the chooseVcmd() function to ensure there is no stale data for Vcmd
         chooseVcmd();
@@ -39,8 +42,21 @@ void SpeedRegulator::calcPowerCmd()
         //Calculate the values for ek
         ek = Vcmd - trainModel -> getCurrentVelocity();
 
+        //Calculate the value of T:
+            //Calculate the current time
+            currTime = systemClock -> currentTime();
+            std::cout <<"Current Time: " << currTime.toSecsSinceEpoch() << std::endl;
+            std::cout <<"Previous Time: " << prevTime.toSecsSinceEpoch() << std::endl;
+
+            //Find the elapsed time and convert to a double
+            qint64 elapsedTime = prevTime.msecsTo(currTime);
+            std::cout << "Elapsed Time = " << double(elapsedTime/1000) << std::endl;
+
+            //Set T to the elapsed time
+            T = (double)elapsedTime/1000;
+
         //Choose the correct value of uk
-        if(powerCmd < maxPower) uk = uk_1 + T*(ek + ek_1);
+        if(powerCmd < maxPower) uk = uk_1 + (T/2)*(ek + ek_1);
         else uk = uk_1;
 
         //Calculate the power command
@@ -59,6 +75,9 @@ void SpeedRegulator::calcPowerCmd()
 
         //Set uk_1 = ek for next power command calculation
         uk_1 = uk;
+
+        //Set previous time to current time for next power command calculation
+        prevTime = currTime;
     }
     else
     {
@@ -82,7 +101,6 @@ void SpeedRegulator::powerCmdZero()
 }
 double SpeedRegulator::getPowerCmd()
 {
-    chooseVcmd();
     calcPowerCmd();
     return powerCmd;
 }
@@ -115,8 +133,8 @@ void SpeedRegulator::chooseVcmd()
 }
 void SpeedRegulator::setKpAndKi(double propGain, double intGain)
 {
-    Kp = propGain;
-    Ki = intGain;
+    Kp = propGain*1000;
+    Ki = intGain*1000;
 }
 double SpeedRegulator::getKp()
 {

@@ -35,7 +35,6 @@ SOURCES += \
     TrackModel/layoutdialog.cpp \
     TrackModel/routemapview.cpp \
     TrackModel/routingtestdialog.cpp \
-    TrackModel/signalindicator.cpp \
     TrackModel/ticketsdialog.cpp \
     TrackModel/tracklayout.cpp \
     TrackModel/trackmodel_main.cpp \
@@ -79,7 +78,6 @@ HEADERS += \
     TrackModel/layoutdialog.h \
     TrackModel/routemapview.h \
     TrackModel/routingtestdialog.h \
-    TrackModel/signalindicator.h \
     TrackModel/ticketsdialog.h \
     TrackModel/tracklayout.hpp \
     TrackModel/trackmodel_controller.hpp \
@@ -107,6 +105,7 @@ HEADERS += \
 FORMS += \
     CTCOffice/ctcoffice/mainwindow.ui \
     SWTrainController/SWTrainController.ui \
+    TrackModel/blockgeodialog.ui \
     TrackModel/layoutdialog.ui \
     TrackModel/routingtestdialog.ui \
     TrackModel/ticketsdialog.ui \
