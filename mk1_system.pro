@@ -15,6 +15,7 @@ layoutFiles.path = $$OUT_PWD
 
 SOURCES += \
     CTCOffice/ctcoffice/CTCDispatch.cpp \
+    CTCOffice/ctcoffice/CTCMode.cpp \
     CTCOffice/ctcoffice/CTCSignals.cpp \
     CTCOffice/ctcoffice/ctc_main.cpp \
     CTCOffice/ctcoffice/mainwindow.cpp \
@@ -57,6 +58,7 @@ SOURCES += \
 
 HEADERS += \
     CTCOffice/ctcoffice/CTCDispatch.h \
+    CTCOffice/ctcoffice/CTCMode.h \
     CTCOffice/ctcoffice/CTCSignals.h \
     CTCOffice/ctcoffice/ctc_main.h \
     CTCOffice/ctcoffice/mainwindow.h \
