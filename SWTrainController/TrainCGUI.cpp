@@ -140,6 +140,9 @@ void TrainControlWindow::on_submit_clicked() //Submits Kp and Ki
 
     cout << "Kp and Ki have been set." << std::endl; //debug
 
+    //Disable service brake flag once Kp and Ki are set
+    swtc.setServiceBrake(false);
+
     //Calculate the initial power for the yard speed (5 m/s)
     swtc.setSetpointSpeed(yardSpeed);
     swtc.calculatePower();
