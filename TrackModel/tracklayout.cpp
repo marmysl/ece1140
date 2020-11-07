@@ -90,6 +90,7 @@ void Route::loadLayout( std::string fileName ) {
     int fileLine = 1;
 
     std::vector<LinkInfo> voidLinks = std::vector<LinkInfo> ();
+    int startBlockId = -1;
 
     std::string sectionName;
     int blockNum;
@@ -106,6 +107,39 @@ void Route::loadLayout( std::string fileName ) {
 
     // for each line of the config file
     while( getline(layoutFile, nextLine) ) {
+
+        // check if line is commented
+        if( (nextLine.length() == 0) || (nextLine.at(0) == '#') )
+        {
+            fileLine += 1;
+            continue;
+        }
+
+        // check for spawn block
+        if( nextLine.at(0) == '$' )
+        {
+            int lastIdx = nextLine.length() - 1;
+
+            if( lastIdx < 2 ) throw LayoutParseError("Invalid start block definition");
+
+            BlockDir spawnDir;
+            if( nextLine.at(lastIdx) == 'R' ) spawnDir = BLK_REVERSE;
+            else if( nextLine.at(lastIdx) == 'F' ) spawnDir = BLK_FORWARD;
+            else throw LayoutParseError("Invalid exit block direction");
+
+            try
+            {
+                startBlockId = parseIntStrict(nextLine.substr(1, lastIdx - 1));
+            }
+            catch( const std::invalid_argument &e )
+            {
+                throw LayoutParseError("Invalid start block id");
+            }
+
+            fileLine += 1;
+            continue;
+        }
+
         state = LL_SECTION;
         auto iter = nextLine.begin();
 
@@ -132,7 +166,7 @@ void Route::loadLayout( std::string fileName ) {
                             break;
 
                         case LL_GRADE:
-                            grade = parseFloatStrict(bufStr);
+                            grade = parseFloatStrict(bufStr) / 100.0f; // convert % to grade
                             break;
 
                         case LL_SPEED:
@@ -259,6 +293,12 @@ void Route::loadLayout( std::string fileName ) {
 
     // eof
     layoutFile.close();
+
+    // find spawn block
+    if( startBlockId > 0 ) startBlockId = 1;
+
+    spawnBlock = getBlock(startBlockId);
+    if( !spawnBlock ) throw LayoutParseError("No valid initial block specified");
 
     // loop thru uninitialized switches and connect those suckers
     for( LinkInfo &links : voidLinks )
