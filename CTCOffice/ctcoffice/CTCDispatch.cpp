@@ -338,3 +338,12 @@ void CTCDispatch::sendTrackController(CTCSignals(&ctc)){
     //ctc_track_controller = ctc;
 }
 
+CTCMode* CTCDispatch::getCTCMode()
+{
+    return m;
+}
+
+void CTCDispatch::setCTCMode(CTCMode* mode)
+{
+    m = mode;
+}

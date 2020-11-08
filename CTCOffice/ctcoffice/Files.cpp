@@ -4,6 +4,8 @@
 #include <fstream>
 #include <iostream>
 
+#include <QFileInfo>
+
 Files::Files(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::Files)
@@ -17,7 +19,8 @@ Files::~Files()
 }
 
 void Files::mapDisplay(){
-    QPixmap mapfile("/Users/christopherkeach/Documents/Junior Semester 1/1140/Github/map.png");
+
+    QPixmap mapfile("map.png");
     ui->lblMap->setPixmap(mapfile);
     ui->lblMap->setScaledContents(true);
 }

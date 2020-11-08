@@ -15,7 +15,6 @@ CTCMode::CTCMode()
 }
 
 void CTCMode::setMode(bool m){
-    mode = m;
 
     if(m == 0){
         automaticDispatch();
@@ -41,3 +40,4 @@ void CTCMode::automaticDispatch(){
 void CTCMode::manualDispatch(){
 
 }
+
