@@ -44,6 +44,8 @@ private slots:
 
     void on_comboDisplayLine_currentIndexChanged(const QString &arg1);
 
+    CTCMode* getCTCMode();
+
 private:
     Ui::MainWindow *ui;
 };
