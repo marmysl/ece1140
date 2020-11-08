@@ -72,6 +72,16 @@ namespace TrackModel {
         return (a.block == b.block) && (a.entryDir == b.entryDir);
     }
 
+    struct PlatformData
+    {
+        Station *station;
+        PlatformSide side;
+
+        PlatformData() : station(nullptr), side(PS_NONE) {}
+
+        inline bool exists() { return (station != nullptr); }
+    };
+
     class Block : public Linkable {
         public:
             int id;
@@ -81,7 +91,7 @@ namespace TrackModel {
             float speedLimit;
 
             BlockDir oneWay;
-            Station *station;
+            PlatformData platform;
             bool underground;
 
             Linkable *reverseLink;
@@ -101,6 +111,9 @@ namespace TrackModel {
 
             /*! Determine if this block is traversable in the given direction */
             bool canTravelInDir( BlockDir direction );
+
+            /*! Get info about the platform in the given travel direction */
+            PlatformData getPlatformInDir( BlockDir dir );
 
             // Linkable interface
             Block *getTarget();

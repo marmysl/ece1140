@@ -304,13 +304,15 @@ void RouteMapView::drawBlock( BlockRepr &repr, QPainter *painter )
     // Station
     painter->setPen(QPen(LINK_COLOR, LINK_THICK));
 
-    if( repr.stat->layoutBlock->station )
+    PlatformData& platform = repr.stat->layoutBlock->platform;
+    if( platform.exists() )
     {
         outline = QRect(repr.left + BLOCK_LENGTH / 5, repr.top - BLOCK_THICKNESS, (BLOCK_LENGTH * 3) / 5, BLOCK_THICKNESS);
         painter->fillRect(outline, STATION_COLOR);
 
-        QRect statTextOut(repr.left - LINK_WIDTH / 2, repr.top - BLOCK_THICKNESS - TEXT_THICK, BLOCK_LENGTH + LINK_WIDTH, TEXT_THICK);
-        painter->drawText(statTextOut, Qt::AlignHCenter | Qt::AlignBottom, QString::fromStdString(repr.stat->layoutBlock->station->name));
+        QRect statTextOut(repr.left - BLOCK_LENGTH / 2, repr.top - BLOCK_THICKNESS - TEXT_THICK, BLOCK_LENGTH * 2, TEXT_THICK);
+        QString stationLabel = QString("%0:%1").arg(QString::fromStdString(platform.station->name)).arg(charForSide(platform.side));
+        painter->drawText(statTextOut, Qt::AlignHCenter | Qt::AlignBottom, stationLabel);
     }
 
 

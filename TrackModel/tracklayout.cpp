@@ -302,9 +302,33 @@ void Route::loadLayout( std::string fileName ) {
 
         // check for station
         if( !station.empty() ) {
-            Station *newStation = new Station(station);
-            newBlock->station = newStation;
-            stations.push_back(newStation);
+            size_t colonIdx = station.find(':');
+            PlatformSide side = PS_RIGHT;
+            if( colonIdx != std::string::npos )
+            {
+                // found colon
+                char sideC = station.at(colonIdx + 1);
+                if( sideC == 'L' ) side = PS_LEFT;
+                station = station.substr(0, colonIdx);
+            }
+
+            for( Station *s : stations )
+            {
+                if( !station.compare(s->name) )
+                {
+                    newBlock->platform.station = s;
+                    newBlock->platform.side = side;
+                }
+            }
+
+            // create new if we didn't find
+            if( !newBlock->platform.exists() )
+            {
+                Station *newStation = new Station(station);
+                newBlock->platform.station = newStation;
+                newBlock->platform.side = side;
+                stations.push_back(newStation);
+            }
         }
 
         // proceed to next line
@@ -438,7 +462,7 @@ Station *Route::getStationByName( std::string stationName ) {
 // Block Members
 Block::Block( int id, std::string section, float length, float grade, float speedLimit, BlockDir oneWay, bool tunnel ) :
     id(id), section(section), length(length), grade(grade), speedLimit(speedLimit), oneWay(oneWay),
-    station(nullptr), underground(tunnel), reverseLink(nullptr), forwardLink(nullptr) {}
+    platform(), underground(tunnel), reverseLink(nullptr), forwardLink(nullptr) {}
 
 Block *Block::getTarget()
 {
@@ -510,6 +534,17 @@ bool Block::canTravelInDir( BlockDir direction )
 {
     if( oneWay == BLK_NODIR ) return true;
     else return (direction == oneWay);
+}
+
+PlatformData Block::getPlatformInDir( BlockDir dir )
+{
+    if( dir == BLK_REVERSE )
+    {
+        PlatformData ret = platform;
+        ret.side = oppositeSide(platform.side);
+        return ret;
+    }
+    else return platform;
 }
 
 
