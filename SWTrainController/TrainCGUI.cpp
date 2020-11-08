@@ -45,6 +45,12 @@ void TrainControlWindow :: updateCircuitInfo()
     swtc.decode(train->sendTrackCircuit());
     ui->commspeed_->setText(QString::number(swtc.getCommandedSpeed()));
     ui->authority_->setText(QString::number(swtc.getAuthority()));
+
+    if (swtc.getAuthority() == 0) {
+        ui->auth_exceeded_->setText("STOPPING! The train has zero authority.");
+    } else {
+        ui->auth_exceeded_->setText("");
+    }
 }
 
 void TrainControlWindow :: updatePower()
@@ -179,7 +185,6 @@ void TrainControlWindow::on_lights_button_clicked()
 void TrainControlWindow::on_headlights_button_clicked()
 {
     swtc.setHeadlightsOn(!swtc.getHeadlightsOn());
-    swtc.setAuthority(0);
 }
 
 void TrainControlWindow::on_releasebrakebutton_clicked()

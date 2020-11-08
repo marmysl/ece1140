@@ -37,7 +37,7 @@ void SWTC :: calculatePower()
     }
 
     // If authority is 0, set the power command to zero and the service brake flag on.
-    if ((authority = 0)) {
+    if (authority == 0) {
         powerCommand = 0.0;
     }
 }
