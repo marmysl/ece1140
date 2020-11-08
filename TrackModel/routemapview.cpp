@@ -39,18 +39,44 @@ void RouteMapView::setRoute( RouteStatus *route )
         nextColumn[i] = {nullptr, BLK_NODIR};
     }
 
-    BlockRepr yardRepr(left, top, BLK_FORWARD, &yardStat);
-    blocks.insert({0, yardRepr});
-    int lnY = top + BLOCK_THICKNESS / 2;
-    links.push_back(LinkRepr(left + BLOCK_LENGTH, lnY, left + BLOCK_LENGTH + LINK_WIDTH, lnY));
+    int startId;
+    BlockDir startDir;
 
-    searchedNodes.insert({0, ExistBlock(QPoint(left, top), BLK_FORWARD)});
+    if( route->layoutRoute->displayStartBlk > 0 )
+    {
+        startId = route->layoutRoute->displayStartBlk;
+        startDir = route->layoutRoute->displayStartDir;
+    }
+    else
+    {
+        BlockRepr yardRepr(left, top, BLK_FORWARD, &yardStat);
+        blocks.insert({0, yardRepr});
+        int lnY = top + BLOCK_THICKNESS / 2;
+        links.push_back(LinkRepr(left + BLOCK_LENGTH, lnY, left + BLOCK_LENGTH + LINK_WIDTH, lnY));
 
-    left += BLOCK_LENGTH + LINK_WIDTH;
+        searchedNodes.insert({0, ExistBlock(QPoint(left, top), BLK_FORWARD)});
 
-    int startId = route->layoutRoute->spawnBlock->id;
-    curBlocks[0] = {route->getBlockStatus(startId), BLK_FORWARD};
-    searchedNodes.insert({startId, ExistBlock(QPoint(left, top), BLK_FORWARD)});
+        startId = route->layoutRoute->spawnBlock->id;
+        startDir = route->layoutRoute->spawnDir;
+
+        left += BLOCK_LENGTH + LINK_WIDTH;
+    }
+
+    BlockStatus *startBlock = route->getBlockStatus(startId);
+    curBlocks[0] = {startBlock, startDir};
+    searchedNodes.insert({startId, ExistBlock(QPoint(left, top), startDir)});
+
+    NextBlockData startBlkPrev = startBlock->layoutBlock->getNextBlock(oppositeDir(startDir));
+    if( startBlkPrev.block->id )
+    {
+        BlockStatus *loopPrevBS = route->getBlockStatus(startBlkPrev.block->id);
+        curBlocks[1] = {loopPrevBS, startBlkPrev.entryDir};
+        searchedNodes.insert({startBlkPrev.block->id, ExistBlock(QPoint(left, top + ROW_OFFSET), startBlkPrev.entryDir)});
+
+        int lnY = top + BLOCK_THICKNESS / 2;
+        links.push_back(LinkRepr(left, lnY, left, lnY + ROW_OFFSET));
+    }
+
     bool hasNext = true;
 
     while( hasNext )
@@ -67,17 +93,17 @@ void RouteMapView::setRoute( RouteStatus *route )
                 BlockRepr newRep(left, top, curBlocks[row].second, curBlk);
                 blocks.insert({curBlocks[row].first->id(), newRep});
 
-                Linkable *l = curBlk->layoutBlock->getLink(curBlocks[row].second);
-                if( Switch *s = dynamic_cast<Switch *>(l) )
+                if( curBlk->id() )
                 {
-                    // process straight branch
-                    Block *straight = s->straightBlock;
-                    if( straight->id )
+                    Linkable *l = curBlk->layoutBlock->getLink(curBlocks[row].second);
+                    if( Switch *s = dynamic_cast<Switch *>(l) )
                     {
+                        // process straight branch
+                        Block *straight = s->straightBlock;
                         if( searchedNodes.find(straight->id) == searchedNodes.end() )
                         {
                             // didn't process this block
-                            BlockStatus *sStat = route->getBlockStatus(straight->id);
+                            BlockStatus *sStat = straight->id ? route->getBlockStatus(straight->id) : &yardStat;
                             BlockDir entryDir = curBlk->layoutBlock->getEntryDir(straight);
                             nextColumn[row] = {sStat, entryDir};
                             hasNext = true;
@@ -86,15 +112,12 @@ void RouteMapView::setRoute( RouteStatus *route )
                             QPoint nextPt(left + BLOCK_LENGTH + LINK_WIDTH, top);
                             searchedNodes[straight->id] = ExistBlock(nextPt, entryDir);
                         }
-                    }
 
-                    Block *diverge = s->divergeBlock;
-                    if( diverge->id && (searchedNodes.find(diverge->id) == searchedNodes.end()) )
-                    {
+                        Block *diverge = s->divergeBlock;
                         if( searchedNodes.find(diverge->id) == searchedNodes.end() )
                         {
                             // didn't process this block
-                            BlockStatus *sStat = route->getBlockStatus(diverge->id);
+                            BlockStatus *sStat = diverge->id ? route->getBlockStatus(diverge->id) : &yardStat;
                             BlockDir entryDir = curBlk->layoutBlock->getEntryDir(diverge);
 
                             nextColumn[branchRow] = {sStat, entryDir};
@@ -108,12 +131,9 @@ void RouteMapView::setRoute( RouteStatus *route )
                             if( branchRow == 0 ) branchRow = n_rows - 1;
                         }
                     }
-                }
-                else if( l )
-                {
-                    Block *next = l->getTarget();
-                    if( next->id )
+                    else if( l )
                     {
+                        Block *next = l->getTarget();
                         auto other = searchedNodes.find(next->id);
                         if( other != searchedNodes.end() )
                         {
@@ -137,7 +157,7 @@ void RouteMapView::setRoute( RouteStatus *route )
                         else
                         {
                             // didn't process this block
-                            BlockStatus *nStat = route->getBlockStatus(next->id);
+                            BlockStatus *nStat = next->id ? route->getBlockStatus(next->id) : &yardStat;
                             BlockDir entryDir = curBlk->layoutBlock->getEntryDir(next);
                             nextColumn[row] = {nStat, entryDir};
 
@@ -240,6 +260,28 @@ void RouteMapView::drawSignals( BlockRepr &repr, QPainter *painter )
     painter->drawEllipse(center, RADIUS, RADIUS);
 }
 
+void RouteMapView::drawCrossbuck( BlockRepr &repr, QPainter *painter )
+{
+    const int LINE_THICK = BLOCK_THICKNESS / 2;
+    painter->setPen(QPen(LINK_COLOR, LINE_THICK));
+
+    int left = repr.left + BLOCK_LENGTH / 3;
+    int right = repr.left + (2 * BLOCK_LENGTH) / 3;
+    int top = repr.top - BLOCK_THICKNESS * 3;
+    int bottom = repr.top - BLOCK_THICKNESS;
+
+    painter->drawLine(left, top, right, bottom);
+    painter->drawLine(left, bottom, right, top);
+
+    painter->setPen(Qt::NoPen);
+    if( repr.stat->getCrossingState() ) painter->setBrush(SIG_RED);
+    else painter->setBrush(NOLINK_COLOR);
+
+    const int RADIUS = (3 * BLOCK_THICKNESS) / 4;
+    QPoint center(repr.left + BLOCK_LENGTH / 2, repr.top - BLOCK_THICKNESS * 2);
+    painter->drawEllipse(center, RADIUS, RADIUS);
+}
+
 void RouteMapView::drawBlock( BlockRepr &repr, QPainter *painter )
 {
     QRect outline(repr.left, repr.top, BLOCK_LENGTH, BLOCK_THICKNESS);
@@ -284,13 +326,15 @@ void RouteMapView::drawBlock( BlockRepr &repr, QPainter *painter )
     // Station
     painter->setPen(QPen(LINK_COLOR, LINK_THICK));
 
-    if( repr.stat->layoutBlock->station )
+    PlatformData& platform = repr.stat->layoutBlock->platform;
+    if( platform.exists() )
     {
         outline = QRect(repr.left + BLOCK_LENGTH / 5, repr.top - BLOCK_THICKNESS, (BLOCK_LENGTH * 3) / 5, BLOCK_THICKNESS);
         painter->fillRect(outline, STATION_COLOR);
 
-        QRect statTextOut(repr.left - LINK_WIDTH / 2, repr.top - BLOCK_THICKNESS - TEXT_THICK, BLOCK_LENGTH + LINK_WIDTH, TEXT_THICK);
-        painter->drawText(statTextOut, Qt::AlignHCenter | Qt::AlignBottom, QString::fromStdString(repr.stat->layoutBlock->station->name));
+        QRect statTextOut(repr.left - BLOCK_LENGTH / 2, repr.top - BLOCK_THICKNESS - TEXT_THICK, BLOCK_LENGTH * 2, TEXT_THICK);
+        QString stationLabel = QString("%0:%1").arg(QString::fromStdString(platform.station->name)).arg(charForSide(platform.side));
+        painter->drawText(statTextOut, Qt::AlignHCenter | Qt::AlignBottom, stationLabel);
     }
 
 
@@ -308,6 +352,11 @@ void RouteMapView::drawBlock( BlockRepr &repr, QPainter *painter )
     }
 
     drawSignals(repr, painter);
+
+    if( repr.stat->layoutBlock->crossing )
+    {
+        drawCrossbuck(repr, painter);
+    }
 }
 
 void RouteMapView::drawSwitch( SwitchRepr &repr, QPainter *painter )

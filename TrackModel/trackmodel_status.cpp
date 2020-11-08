@@ -89,6 +89,15 @@ void BlockStatus::setSignal( BlockDir dir, SignalState state )
     if( mod ) emit dataChanged(id());
 }
 
+void BlockStatus::setCrossingState( bool newState )
+{
+    if( (layoutBlock->crossing) && (newState != crossingActive) )
+    {
+        crossingActive = newState;
+        emit dataChanged(id());
+    }
+}
+
 
 // RouteStatus
 void RouteStatus::addBlock( Block *b )

@@ -3,13 +3,29 @@
 
 #include "tracklayout.hpp"
 #include "trackmodel_status.h"
-#include "signalindicator.h"
 #include <QMainWindow>
+#include <QDialog>
 #include <QLabel>
 
 namespace Ui {
 class TrackModelDisplay;
+class BlockGeoDialog;
 }
+
+class BlockGeoDialog : public QDialog
+{
+    Q_OBJECT
+
+public:
+    explicit BlockGeoDialog(QWidget *parent = nullptr);
+    ~BlockGeoDialog();
+
+    void setBlock( TrackModel::Block *block );
+
+private:
+    Ui::BlockGeoDialog *ui;
+    TrackModel::Block *displayBlock;
+};
 
 class TrackModelDisplay : public QMainWindow
 {
@@ -36,17 +52,18 @@ private slots:
     void on_timeAdvanced( const QDateTime &newTime, qint64 delta );
     void on_applySignalButton_clicked();
     void on_displayTicketsButton_clicked();
+    void on_showBlockGeoButton_clicked();
 
 public slots:
     // status updates
-    void on_block_updated( TrackModel::RouteStatus *sender, int blockId );
+    void on_blockUpdated( TrackModel::RouteStatus *sender, int blockId );
 
 private:
     Ui::TrackModelDisplay *ui;
     TrackModel::RouteStatus *selectedRoute;
-    SignalIndicator *sigIndicatorDelegate;
     TrackModel::StationStatus *selectedStation;
     TrackModel::BlockStatus *selectedBlock;
+    BlockGeoDialog *layoutBlockDiag;
 
     std::vector<int> blockSelectList;
 

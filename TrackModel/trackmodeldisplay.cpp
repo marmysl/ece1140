@@ -6,6 +6,7 @@
 #include "timetracker.h"
 #include "ticketsystem.h"
 #include "ticketsdialog.h"
+#include "ui_blockgeodialog.h"
 
 #include <QDebug>
 
@@ -18,7 +19,7 @@ TrackModelDisplay::TrackModelDisplay(QWidget *parent) :
 
     ui->statusBar->addPermanentWidget(&sysTimeLabel, 1);
 
-    sigIndicatorDelegate = new SignalIndicator(this);
+    layoutBlockDiag = new BlockGeoDialog(this);
 
     ui->signalDirCombo->addItems({"FWD", "REV"});
     ui->signalCombo->addItems({"Red", "Yellow", "Green"});
@@ -29,7 +30,7 @@ TrackModelDisplay::TrackModelDisplay(QWidget *parent) :
 TrackModelDisplay::~TrackModelDisplay()
 {
     delete ui;
-    delete sigIndicatorDelegate;
+    delete layoutBlockDiag;
 }
 
 void TrackModelDisplay::setRegionList( std::vector<TrackModel::Route *> *routeList ) {
@@ -51,10 +52,15 @@ void TrackModelDisplay::setRoute( TrackModel::RouteStatus *newRoute ) {
     for( int &n : blockSelectList ) ui->blockSelector->addItem(QString::number(n));
 
     ui->stationSelector->clear();
+    QStringList stationList;
+
     for( auto &s : newRoute->layoutRoute->stations )
     {
-        ui->stationSelector->addItem(QString::fromStdString(s->name));
+        stationList.push_back(QString::fromStdString(s->name));
     }
+
+    std::sort(stationList.begin(), stationList.end());
+    ui->stationSelector->addItems(stationList);
 }
 
 void TrackModelDisplay::notifySwitchUpdated( TrackModel::Route *route, int switchId )
@@ -154,8 +160,15 @@ void TrackModelDisplay::on_blockSelector_currentIndexChanged(int index)
         ui->circFailCheck->setChecked(isFaultSet(curFaults, FAULT_CIRCUIT_FAIL));
         ui->brknRailCheck->setChecked(isFaultSet(curFaults, FAULT_BROKEN_RAIL));
 
+        TrackCircuitData data = selectedBlock->getCircuitData();
+        ui->speedCmdLabel->setText(QString("Speed Cmd: %0 kph").arg(data.decodeSpeed()));
+        ui->authCmdLabel->setText(QString("Auth Cmd: %0").arg(data.decodeAuthority()));
+
+        layoutBlockDiag->setBlock(selectedBlock->layoutBlock);
+
         ui->applyFaultsButton->setEnabled(true);
         ui->applySignalButton->setEnabled(true);
+        ui->showBlockGeoButton->setEnabled(true);
     }
     else
     {
@@ -165,8 +178,12 @@ void TrackModelDisplay::on_blockSelector_currentIndexChanged(int index)
         ui->circFailCheck->setChecked(false);
         ui->brknRailCheck->setChecked(false);
 
+        ui->speedCmdLabel->setText(QString("Speed Cmd:"));
+        ui->authCmdLabel->setText(QString("Auth Cmd:"));
+
         ui->applyFaultsButton->setEnabled(false);
         ui->applySignalButton->setEnabled(false);
+        ui->showBlockGeoButton->setEnabled(false);
     }
 }
 
@@ -229,10 +246,75 @@ void TrackModelDisplay::on_displayTicketsButton_clicked()
     diag.exec();
 }
 
-void TrackModelDisplay::on_block_updated( TrackModel::RouteStatus *sender, int blockId )
+void TrackModelDisplay::on_blockUpdated( TrackModel::RouteStatus *sender, int blockId )
 {
     if( sender == selectedRoute )
     {
         ui->routeMap->update();
+
+        if( selectedBlock && (selectedBlock->id() == blockId) )
+        {
+            TrackCircuitData data = selectedBlock->getCircuitData();
+            ui->speedCmdLabel->setText(QString("Speed Cmd: %0 kph").arg(data.decodeSpeed()));
+            ui->authCmdLabel->setText(QString("Auth Cmd: %0").arg(data.decodeAuthority()));
+        }
     }
+}
+
+void TrackModelDisplay::on_showBlockGeoButton_clicked()
+{
+    if( !selectedBlock ) return;
+    layoutBlockDiag->show();
+}
+
+
+// BlockGeoDialog
+//============================================================================================
+BlockGeoDialog::BlockGeoDialog(QWidget *parent) : QDialog(parent), ui(new Ui::BlockGeoDialog)
+{
+    ui->setupUi(this);
+}
+
+BlockGeoDialog::~BlockGeoDialog()
+{
+    delete ui;
+}
+
+const QString NODIR_STR("None");
+const QString REV_STR("Reverse");
+const QString FWD_STR("Forward");
+static inline const QString& onewayStr( BlockDir dir )
+{
+    if( dir == BLK_NODIR ) return NODIR_STR;
+    else return (dir == BLK_FORWARD) ? FWD_STR : REV_STR;
+}
+
+const QString NA_STR("N/A");
+const QString UNDERGROUND("Underground");
+const QString ABOVEGROUND("Aboveground");
+
+void BlockGeoDialog::setBlock( TrackModel::Block *block )
+{
+    displayBlock = block;
+
+    setWindowTitle(QString("Block %0").arg(block->id));
+    ui->blockIdLabel->setText(QString::number(block->id));
+    ui->sectionLabel->setText(QString::fromStdString(block->section));
+    ui->lengthLabel->setText(QString("%0 m").arg(block->length));
+    ui->gradeLabel->setText(QString("%0%").arg(block->grade * 100));
+    ui->speedLimitLabel->setText(QString("%0 kph").arg(block->speedLimit));
+    ui->onewayLabel->setText(onewayStr(block->oneWay));
+
+    PlatformData& platform = block->platform;
+    if( platform.exists() )
+    {
+        QString stationStr = QString("%0%1").arg(QString::fromStdString(platform.station->name)).arg(charForSide(platform.side));
+        ui->stationLabel->setText(stationStr);
+    }
+    else
+    {
+        ui->stationLabel->setText(NA_STR);
+    }
+
+    ui->tunnelLabel->setText(block->underground ? UNDERGROUND : ABOVEGROUND);
 }

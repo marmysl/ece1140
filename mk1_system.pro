@@ -38,7 +38,6 @@ SOURCES += \
     TrackModel/layoutdialog.cpp \
     TrackModel/routemapview.cpp \
     TrackModel/routingtestdialog.cpp \
-    TrackModel/signalindicator.cpp \
     TrackModel/ticketsdialog.cpp \
     TrackModel/tracklayout.cpp \
     TrackModel/trackmodel_main.cpp \
@@ -85,7 +84,6 @@ HEADERS += \
     TrackModel/layoutdialog.h \
     TrackModel/routemapview.h \
     TrackModel/routingtestdialog.h \
-    TrackModel/signalindicator.h \
     TrackModel/ticketsdialog.h \
     TrackModel/tracklayout.hpp \
     TrackModel/trackmodel_controller.hpp \
@@ -113,6 +111,7 @@ HEADERS += \
 FORMS += \
     CTCOffice/ctcoffice/mainwindow.ui \
     SWTrainController/SWTrainController.ui \
+    TrackModel/blockgeodialog.ui \
     TrackModel/layoutdialog.ui \
     TrackModel/routingtestdialog.ui \
     TrackModel/ticketsdialog.ui \
@@ -127,4 +126,7 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
 DISTFILES += \
-    TrackModel/blue_line.csv
+    blue_line.csv \
+    purple_line.csv \
+    red_line.csv \
+    green_line.csv
