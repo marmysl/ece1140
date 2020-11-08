@@ -34,6 +34,10 @@ namespace TrackModel {
             std::string name;
 
             Block *spawnBlock;
+            BlockDir spawnDir;
+
+            int displayStartBlk;
+            BlockDir displayStartDir;
 
             Route( std::string name );
 
@@ -68,6 +72,16 @@ namespace TrackModel {
         return (a.block == b.block) && (a.entryDir == b.entryDir);
     }
 
+    struct PlatformData
+    {
+        Station *station;
+        PlatformSide side;
+
+        PlatformData() : station(nullptr), side(PS_NONE) {}
+
+        inline bool exists() { return (station != nullptr); }
+    };
+
     class Block : public Linkable {
         public:
             int id;
@@ -77,13 +91,14 @@ namespace TrackModel {
             float speedLimit;
 
             BlockDir oneWay;
-            Station *station;
+            PlatformData platform;
             bool underground;
+            bool crossing;
 
             Linkable *reverseLink;
             Linkable *forwardLink;
 
-            Block( int id, std::string section, float length, float grade, float speedLimit, BlockDir oneWay = BLK_NODIR, bool tunnel = false );
+            Block( int id, std::string section, float length, float grade, float speedLimit, BlockDir oneWay = BLK_NODIR, bool tunnel = false, bool cross = false );
 
             /*! Connect this block to another block in the given direction */
             void setLink( BlockDir direction, Linkable *newBlock );
@@ -97,6 +112,9 @@ namespace TrackModel {
 
             /*! Determine if this block is traversable in the given direction */
             bool canTravelInDir( BlockDir direction );
+
+            /*! Get info about the platform in the given travel direction */
+            PlatformData getPlatformInDir( BlockDir dir );
 
             // Linkable interface
             Block *getTarget();

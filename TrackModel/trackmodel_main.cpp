@@ -87,6 +87,21 @@ namespace TrackModel {
         }
     }
 
+    void setCrossing( std::string route, int blockId, bool newState )
+    {
+        try
+        {
+            RouteStatus *routeInfo = routeStatusMap.at(route);
+            BlockStatus *blockInfo = routeInfo->blockMap.at(blockId);
+
+            blockInfo->setCrossingState(newState);
+        }
+        catch( const std::out_of_range &e )
+        {
+            throw std::invalid_argument("route or block not found");
+        }
+    }
+
 
     // Train Model Interface
     //---------------------------------------------------------------------------------
@@ -159,7 +174,7 @@ namespace TrackModel {
             rs->addStation(s);
         }
 
-        QObject::connect(rs, &RouteStatus::blockUpdated, trackModelUi, &TrackModelDisplay::on_block_updated);
+        QObject::connect(rs, &RouteStatus::blockUpdated, trackModelUi, &TrackModelDisplay::on_blockUpdated);
     }
 
     // apply the given fault to this block
@@ -230,9 +245,6 @@ namespace TrackModel {
                 qDebug() << e.what() << '\n';
                 return -1;
             }
-
-            Block *first = newRoute->getBlock(1);
-            newRoute->spawnBlock = first;
 
             routes.push_back(newRoute);
             initRouteState(newRoute);

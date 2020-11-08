@@ -17,8 +17,6 @@ MainWindow::MainWindow(QWidget *parent)
 {
     ui->setupUi(this);
 
-    ui->comboLine->addItem("Blue Line");
-
     ui->comboDestinationType->addItem("Station");
     ui->comboDestinationType->addItem("Block");
 

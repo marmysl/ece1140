@@ -56,7 +56,7 @@ private slots:
 
 public slots:
     // status updates
-    void on_block_updated( TrackModel::RouteStatus *sender, int blockId );
+    void on_blockUpdated( TrackModel::RouteStatus *sender, int blockId );
 
 private:
     Ui::TrackModelDisplay *ui;

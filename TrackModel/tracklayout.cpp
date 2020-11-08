@@ -23,7 +23,8 @@ Route *TrackModel::getRoute( std::string name ) {
 }
 
 // Route Members
-Route::Route( std::string name ) : name(name) {}
+Route::Route( std::string name ) :
+    name(name), displayStartBlk(-1), displayStartDir(BLK_FORWARD) {}
 
 static int parseIntStrict( std::string str ) {
     size_t lenParsed;
@@ -54,19 +55,22 @@ void Route::loadLayout( std::string fileName ) {
 
     // oh boy a parser
     enum ParseState {
-        LL_SECTION, LL_ID, LL_LEN, LL_GRADE, LL_SPEED, LL_ONEWAY, LL_TUNNEL,
+        LL_SECTION, LL_ID, LL_LEN, LL_GRADE, LL_SPEED, LL_ONEWAY, LL_TAGS,
         LL_PREV_BLK, LL_NEXT_BLK, LL_BRANCH_A, LL_BRANCH_B, LL_STATION
     };
 
     const char *stateNames[] {
-        "Section", "BlockId", "Length", "Grade", "Speed Limit", "One Way", "Tunnel",
+        "Section", "BlockId", "Length", "Grade", "Speed Limit", "One Way", "Tags",
         "Prev Block", "Next Block", "Branch Rev", "Branch Fwd", "Station"
     };
+
+    const int TUNNEL_FLAG = 1;
+    const int CROSSING_FLAG = 2;
 
     // getline() <-------------------------------------------------------------------------------------------
     //   |                                                                                                   |
     //   v                                                                                                   |
-    // section -> id -> len -> grade -> speed -> oneway -> tunnel -> prev -> next -> branchA -> branchB -> station
+    // section -> id -> len -> grade -> speed -> oneway -> tags -> prev -> next -> branchA -> branchB -> station
 
     struct LinkInfo {
         int prevStraight;
@@ -90,6 +94,8 @@ void Route::loadLayout( std::string fileName ) {
     int fileLine = 1;
 
     std::vector<LinkInfo> voidLinks = std::vector<LinkInfo> ();
+    int parsedStartBlockId = -1;
+    BlockDir parsedStartDir = BLK_FORWARD;
 
     std::string sectionName;
     int blockNum;
@@ -103,9 +109,62 @@ void Route::loadLayout( std::string fileName ) {
     int branchFwd;
     std::string station;
     bool isTunnel;
+    bool hasCrossing;
 
     // for each line of the config file
     while( getline(layoutFile, nextLine) ) {
+
+        // check if line is commented
+        if( (nextLine.length() == 0) || (nextLine.at(0) == '#') )
+        {
+            fileLine += 1;
+            continue;
+        }
+
+        // check for spawn block
+        if( nextLine.at(0) == '$' )
+        {
+            int beforeCommaIdx = nextLine.find_first_of(',') - 1;
+
+            if( beforeCommaIdx < 2 ) throw LayoutParseError("Invalid exit block definition");
+
+            if( nextLine.at(beforeCommaIdx) == 'R' ) parsedStartDir = BLK_REVERSE;
+            else if( nextLine.at(beforeCommaIdx) == 'F' ) parsedStartDir = BLK_FORWARD;
+            else throw LayoutParseError("Invalid exit block direction");
+
+            try
+            {
+                parsedStartBlockId = parseIntStrict(nextLine.substr(1, beforeCommaIdx - 1));
+            }
+            catch( const std::invalid_argument &e )
+            {
+                throw LayoutParseError("Invalid exit block id");
+            }
+
+            int afterFirstCommaIdx = beforeCommaIdx + 2;
+            int beforeNextCommaIdx = nextLine.find_first_of(',', afterFirstCommaIdx) - 1;
+            int dispLen = beforeNextCommaIdx - afterFirstCommaIdx + 1;
+            if( dispLen >= 2 )
+            {
+                // display start specified
+                if( nextLine.at(beforeNextCommaIdx) == 'R' ) displayStartDir = BLK_REVERSE;
+                else if( nextLine.at(beforeNextCommaIdx) == 'F' ) displayStartDir = BLK_FORWARD;
+                else throw LayoutParseError("Invalid display start direction");
+
+                try
+                {
+                    displayStartBlk = parseIntStrict(nextLine.substr(afterFirstCommaIdx, dispLen - 1));
+                }
+                catch( const std::invalid_argument &e )
+                {
+                    throw LayoutParseError("Invalid display start id");
+                }
+            }
+
+            fileLine += 1;
+            continue;
+        }
+
         state = LL_SECTION;
         auto iter = nextLine.begin();
 
@@ -132,7 +191,7 @@ void Route::loadLayout( std::string fileName ) {
                             break;
 
                         case LL_GRADE:
-                            grade = parseFloatStrict(bufStr);
+                            grade = parseFloatStrict(bufStr) / 100.0f; // convert % to grade
                             break;
 
                         case LL_SPEED:
@@ -152,9 +211,18 @@ void Route::loadLayout( std::string fileName ) {
                             }
                             break;
 
-                        case LL_TUNNEL:
-                            if( bufStr.length() == 0 ) isTunnel = false;
-                            else isTunnel = parseIntStrict(bufStr) != 0;
+                        case LL_TAGS:
+                            if( bufStr.length() == 0 )
+                            {
+                                isTunnel = false;
+                                hasCrossing = false;
+                            }
+                            else
+                            {
+                                int flags = parseIntStrict(bufStr);
+                                isTunnel = flags & TUNNEL_FLAG;
+                                hasCrossing = flags & CROSSING_FLAG;
+                            }
                             break;
 
                         case LL_PREV_BLK:
@@ -233,7 +301,7 @@ void Route::loadLayout( std::string fileName ) {
         }
 
         // eol reached w/ valid data, process what we read
-        Block *newBlock = new Block(blockNum, sectionName, length, grade, speedLimit, oneway, isTunnel);
+        Block *newBlock = new Block(blockNum, sectionName, length, grade, speedLimit, oneway, isTunnel, hasCrossing);
         blocks.insert(std::pair<int, Block*>(blockNum, newBlock));
 
 
@@ -247,9 +315,33 @@ void Route::loadLayout( std::string fileName ) {
 
         // check for station
         if( !station.empty() ) {
-            Station *newStation = new Station(station);
-            newBlock->station = newStation;
-            stations.push_back(newStation);
+            size_t colonIdx = station.find(':');
+            PlatformSide side = PS_RIGHT;
+            if( colonIdx != std::string::npos )
+            {
+                // found colon
+                char sideC = station.at(colonIdx + 1);
+                if( sideC == 'L' ) side = PS_LEFT;
+                station = station.substr(0, colonIdx);
+            }
+
+            for( Station *s : stations )
+            {
+                if( !station.compare(s->name) )
+                {
+                    newBlock->platform.station = s;
+                    newBlock->platform.side = side;
+                }
+            }
+
+            // create new if we didn't find
+            if( !newBlock->platform.exists() )
+            {
+                Station *newStation = new Station(station);
+                newBlock->platform.station = newStation;
+                newBlock->platform.side = side;
+                stations.push_back(newStation);
+            }
         }
 
         // proceed to next line
@@ -259,6 +351,13 @@ void Route::loadLayout( std::string fileName ) {
 
     // eof
     layoutFile.close();
+
+    // find spawn block
+    if( parsedStartBlockId <= 0 ) parsedStartBlockId = 1;
+
+    spawnBlock = getBlock(parsedStartBlockId);
+    spawnDir = parsedStartDir;
+    if( !spawnBlock ) throw LayoutParseError("No valid initial block specified");
 
     // loop thru uninitialized switches and connect those suckers
     for( LinkInfo &links : voidLinks )
@@ -374,9 +473,10 @@ Station *Route::getStationByName( std::string stationName ) {
 
 //-----------------------------------------------------------------------
 // Block Members
-Block::Block( int id, std::string section, float length, float grade, float speedLimit, BlockDir oneWay, bool tunnel ) :
+Block::Block( int id, std::string section, float length, float grade, float speedLimit, BlockDir oneWay, bool tunnel, bool cross ) :
     id(id), section(section), length(length), grade(grade), speedLimit(speedLimit), oneWay(oneWay),
-    station(nullptr), underground(tunnel), reverseLink(nullptr), forwardLink(nullptr) {}
+    platform(), underground(tunnel), crossing(cross),
+    reverseLink(nullptr), forwardLink(nullptr) {}
 
 Block *Block::getTarget()
 {
@@ -448,6 +548,17 @@ bool Block::canTravelInDir( BlockDir direction )
 {
     if( oneWay == BLK_NODIR ) return true;
     else return (direction == oneWay);
+}
+
+PlatformData Block::getPlatformInDir( BlockDir dir )
+{
+    if( dir == BLK_REVERSE )
+    {
+        PlatformData ret = platform;
+        ret.side = oppositeSide(platform.side);
+        return ret;
+    }
+    else return platform;
 }
 
 

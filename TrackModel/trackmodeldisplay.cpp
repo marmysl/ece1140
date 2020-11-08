@@ -52,10 +52,15 @@ void TrackModelDisplay::setRoute( TrackModel::RouteStatus *newRoute ) {
     for( int &n : blockSelectList ) ui->blockSelector->addItem(QString::number(n));
 
     ui->stationSelector->clear();
+    QStringList stationList;
+
     for( auto &s : newRoute->layoutRoute->stations )
     {
-        ui->stationSelector->addItem(QString::fromStdString(s->name));
+        stationList.push_back(QString::fromStdString(s->name));
     }
+
+    std::sort(stationList.begin(), stationList.end());
+    ui->stationSelector->addItems(stationList);
 }
 
 void TrackModelDisplay::notifySwitchUpdated( TrackModel::Route *route, int switchId )
@@ -241,11 +246,18 @@ void TrackModelDisplay::on_displayTicketsButton_clicked()
     diag.exec();
 }
 
-void TrackModelDisplay::on_block_updated( TrackModel::RouteStatus *sender, int blockId )
+void TrackModelDisplay::on_blockUpdated( TrackModel::RouteStatus *sender, int blockId )
 {
     if( sender == selectedRoute )
     {
         ui->routeMap->update();
+
+        if( selectedBlock && (selectedBlock->id() == blockId) )
+        {
+            TrackCircuitData data = selectedBlock->getCircuitData();
+            ui->speedCmdLabel->setText(QString("Speed Cmd: %0 kph").arg(data.decodeSpeed()));
+            ui->authCmdLabel->setText(QString("Auth Cmd: %0").arg(data.decodeAuthority()));
+        }
     }
 }
 
@@ -292,6 +304,17 @@ void BlockGeoDialog::setBlock( TrackModel::Block *block )
     ui->gradeLabel->setText(QString("%0%").arg(block->grade * 100));
     ui->speedLimitLabel->setText(QString("%0 kph").arg(block->speedLimit));
     ui->onewayLabel->setText(onewayStr(block->oneWay));
-    ui->stationLabel->setText(block->station ? QString::fromStdString(block->station->name) : NA_STR);
+
+    PlatformData& platform = block->platform;
+    if( platform.exists() )
+    {
+        QString stationStr = QString("%0%1").arg(QString::fromStdString(platform.station->name)).arg(charForSide(platform.side));
+        ui->stationLabel->setText(stationStr);
+    }
+    else
+    {
+        ui->stationLabel->setText(NA_STR);
+    }
+
     ui->tunnelLabel->setText(block->underground ? UNDERGROUND : ABOVEGROUND);
 }

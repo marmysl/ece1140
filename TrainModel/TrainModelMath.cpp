@@ -24,15 +24,15 @@ TrainModelMath::TrainModelMath(int newNumCars, TrainModelUpdateBlock *newAssigBl
 void TrainModelMath::setPower(double newPower){
     currPower = newPower;
 
-    //Calculate Force from power
+    //Calculate Force from Power input
     currForce = newPower/lastVel;
     limitForce();
 
-    //Find acceleration from force
+    //Find acceleration from calculated force
     currAccel = currForce/mass;
     limitAccel();
 
-    //Get current time
+    //Get current time, don't use last time until out of yard
     if (!inYard){
         newTime = systemClock->currentTime();
 
@@ -54,6 +54,8 @@ void TrainModelMath::setPower(double newPower){
             //update current block and information
             block->updateTrackInfo(inYard);
         }
+
+        //Set current calculations as last calculations for next call
         lastPos = newPos;
         lastAccel = currAccel;
         lastVel = currVel;
@@ -83,6 +85,8 @@ double TrainModelMath::calcVelocity() {
 
     if (vel < 0){ vel=0; }
 
+    if (lastVel <= 0 && (serviceBrake || emergencyBrake)){ vel=0; }
+
     return vel;
 }
 
@@ -100,12 +104,11 @@ void TrainModelMath::limitForce(){
 
 void TrainModelMath::limitAccel(){
     if (currForce == 0 & currVel>0){
-        currAccel = -1.2;
+        if(emergencyBrake){currAccel = -2.73;}
+        else{currAccel = -1.2;}
     }
     else if (currForce != 0){
-        if (currAccel > 0.5){
-            currAccel = 0.5;
-        }
+        if (currAccel > 0.5){currAccel = 0.5;}
     }
     else{
         currAccel = 0;
@@ -118,4 +121,12 @@ void TrainModelMath::setFailureStatus(int newFailureStatus){
 
 int TrainModelMath::getFailureStatus(){
     return failureStatus;
+}
+
+void TrainModelMath::setEBrake(bool status){
+    emergencyBrake = status;
+}
+
+void TrainModelMath::setSBrake(bool status){
+    serviceBrake = status;
 }

@@ -19,7 +19,7 @@ class SWTC
         double setpointSpeed = 0.0;
         double trainVelocity;
         unsigned signal;
-        bool serviceBrakeEnabled = false;
+        bool serviceBrakeEnabled = true;
         bool emergencyBrakeEnabled = false;
         bool doorsOpen = true;
         bool cabinLightsOn = true;
