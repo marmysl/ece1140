@@ -7,6 +7,7 @@
 #include "system_main.h"
 
 #include "CTCOffice/ctcoffice/ctc_main.h"
+#include "CTCOffice/ctcoffice/CTCMode.h"
 #include "HWTrackController/HWTrackController_main.h"
 #include "SWTrackController/TrackController.h"
 #include "TrackModel/tracklayout.hpp"
@@ -28,12 +29,12 @@ SystemSettingsDialog *systemDialog;
 std::unordered_map<int, ITrainController *> activeTrains;
 int nextTrainId = 1;
 
-void createNewTrain() {
+void createNewTrain(CTCMode *mode) {
     ITrainController *newTrain;
 
     if( trainControllerPort.isConnected() && (nextTrainId == 1) )
     {
-        newTrain = new TrainController();
+        newTrain = new TrainController(mode);
     }
     else
     {

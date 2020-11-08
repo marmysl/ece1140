@@ -6,11 +6,14 @@
 #include <QObject>
 #include <QTimer>
 #include <QDateTime>
+#include "../CTCOffice/ctcoffice/CTCMode.h"
+
 
 class SpeedRegulator
 {
 private:
         Train *trainModel;
+        CTCMode *mode;
         double setpointSpeed;
         double Vcmd;
         double powerCmd;
@@ -30,7 +33,7 @@ private:
     public:
 
         //Constructor
-        SpeedRegulator(Train*);
+        SpeedRegulator(Train*, CTCMode*);
 
         //Method to choose proper Vcmd
         void chooseVcmd();

@@ -316,7 +316,7 @@ float CTCDispatch::getTimeArrival(){
 }
 
 void CTCDispatch::dispatch(CTCSignals(&c)){
-    createNewTrain();
+    createNewTrain(m);
 
     setAuthority(station, endblock);
     setSpeed(station, endblock, timeStart, timeArrival);
@@ -338,3 +338,12 @@ void CTCDispatch::sendTrackController(CTCSignals(&ctc)){
     //ctc_track_controller = ctc;
 }
 
+CTCMode* CTCDispatch::getCTCMode()
+{
+    return m;
+}
+
+void CTCDispatch::setCTCMode(CTCMode* mode)
+{
+    m = mode;
+}

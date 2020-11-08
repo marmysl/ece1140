@@ -1,17 +1,19 @@
 #include "TrainController.h"
 #include "SerialPort.hpp"
 #include "system_main.h"
+#include "../CTCOffice/ctcoffice/CTCMode.h"
 
 #include <QThread>
 #include <string>
 #include <QTimer>
 
-TrainController::TrainController()
+TrainController::TrainController(CTCMode *m)
 {
     //Create objects and assign them to pointers
 
     trainModel = new Train(5);
-    speedRegulator = new SpeedRegulator(trainModel);
+    mode = m;
+    speedRegulator = new SpeedRegulator(trainModel, mode);
     beacon = new BeaconDecoder();
 
     writeTimer = new QTimer();
@@ -130,6 +132,8 @@ void TrainController::writeData()
     //char 38-43 = power command
     //char 44 = failure code
     //char 45 = headlights
+    //char 46 = mode
+    //char 47 = newline
 
     string outgoing_s = "";
     outgoing_s += to_string(trainModel -> getCabinLights());
@@ -180,6 +184,8 @@ void TrainController::writeData()
     outgoing_s += to_string(trainModel -> getSystemFailure());
 
     outgoing_s += to_string(trainModel -> getHeadlights());
+
+    outgoing_s += to_string(mode -> getMode());
 
     outgoing_s += "\n";
 

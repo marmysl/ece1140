@@ -11,6 +11,8 @@
 #include "TrainModel/Train.h"
 #include "SerialPort.hpp"
 #include "BeaconDecoder.h"
+#include "../CTCOffice/ctcoffice/CTCMode.h"
+
 
 using namespace std;
 
@@ -24,13 +26,14 @@ class TrainController : public QObject, public ITrainController
         Train *trainModel;
         SpeedRegulator *speedRegulator;
         BeaconDecoder *beacon;
+        CTCMode *mode;
 
         QTimer *writeTimer;
 
 	public:
 
         //Constructor and Destructor
-		TrainController();
+        TrainController(CTCMode *m);
         ~TrainController();
 
         //Method that writes data to the Serial Port
