@@ -36,6 +36,9 @@ namespace TrackModel {
             Block *spawnBlock;
             BlockDir spawnDir;
 
+            int displayStartBlk;
+            BlockDir displayStartDir;
+
             Route( std::string name );
 
             // Initialize track layout from CSV file

@@ -23,7 +23,8 @@ Route *TrackModel::getRoute( std::string name ) {
 }
 
 // Route Members
-Route::Route( std::string name ) : name(name) {}
+Route::Route( std::string name ) :
+    name(name), displayStartBlk(-1), displayStartDir(BLK_FORWARD) {}
 
 static int parseIntStrict( std::string str ) {
     size_t lenParsed;
@@ -119,21 +120,41 @@ void Route::loadLayout( std::string fileName ) {
         // check for spawn block
         if( nextLine.at(0) == '$' )
         {
-            int lastIdx = nextLine.find_first_of(',') - 1;
+            int beforeCommaIdx = nextLine.find_first_of(',') - 1;
 
-            if( lastIdx < 2 ) throw LayoutParseError("Invalid start block definition");
+            if( beforeCommaIdx < 2 ) throw LayoutParseError("Invalid exit block definition");
 
-            if( nextLine.at(lastIdx) == 'R' ) parsedStartDir = BLK_REVERSE;
-            else if( nextLine.at(lastIdx) == 'F' ) parsedStartDir = BLK_FORWARD;
+            if( nextLine.at(beforeCommaIdx) == 'R' ) parsedStartDir = BLK_REVERSE;
+            else if( nextLine.at(beforeCommaIdx) == 'F' ) parsedStartDir = BLK_FORWARD;
             else throw LayoutParseError("Invalid exit block direction");
 
             try
             {
-                parsedStartBlockId = parseIntStrict(nextLine.substr(1, lastIdx - 1));
+                parsedStartBlockId = parseIntStrict(nextLine.substr(1, beforeCommaIdx - 1));
             }
             catch( const std::invalid_argument &e )
             {
-                throw LayoutParseError("Invalid start block id");
+                throw LayoutParseError("Invalid exit block id");
+            }
+
+            int afterFirstCommaIdx = beforeCommaIdx + 2;
+            int beforeNextCommaIdx = nextLine.find_first_of(',', afterFirstCommaIdx) - 1;
+            int dispLen = beforeNextCommaIdx - afterFirstCommaIdx + 1;
+            if( dispLen >= 2 )
+            {
+                // display start specified
+                if( nextLine.at(beforeNextCommaIdx) == 'R' ) displayStartDir = BLK_REVERSE;
+                else if( nextLine.at(beforeNextCommaIdx) == 'F' ) displayStartDir = BLK_FORWARD;
+                else throw LayoutParseError("Invalid display start direction");
+
+                try
+                {
+                    displayStartBlk = parseIntStrict(nextLine.substr(afterFirstCommaIdx, dispLen - 1));
+                }
+                catch( const std::invalid_argument &e )
+                {
+                    throw LayoutParseError("Invalid display start id");
+                }
             }
 
             fileLine += 1;
