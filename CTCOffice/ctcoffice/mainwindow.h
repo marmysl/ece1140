@@ -1,8 +1,9 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 #include "CTCDispatch.h"
-#include "CTCSignals.h"
+#include "../../SWTrackController/CTCSignals.h"
 #include "CTCMode.h"
+#include "Files.h"
 
 #include <QMainWindow>
 
@@ -20,6 +21,8 @@ public:
     CTCDispatch ctc;
     CTCMode m;
 
+public slots:
+    void updateRoute();
 private slots:
     void on_timeStart_userTimeChanged(const QTime &time);
 
@@ -36,6 +39,10 @@ private slots:
     void on_AutomaticButton_clicked();
 
     void on_ManualButton_clicked();
+
+    void on_btnMap_clicked();
+
+    void on_comboDisplayLine_currentIndexChanged(const QString &arg1);
 
 private:
     Ui::MainWindow *ui;

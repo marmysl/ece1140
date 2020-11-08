@@ -6,6 +6,10 @@
 #include <QString>
 #include <iostream>
 #include <QDebug>
+#include <QGraphicsScene>
+#include <QGraphicsView>
+#include <QGraphicsPixmapItem>
+#include "CTCHashmap.h"
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -29,6 +33,8 @@ MainWindow::MainWindow(QWidget *parent)
     QFont font2 = ui->comboLine->font();
     font2.setPointSize(60);
     ui->btnCancel->setFont(font2);
+
+    updateRoute();
 }
 
 MainWindow::~MainWindow()
@@ -151,4 +157,29 @@ void MainWindow::on_ManualButton_clicked()
     ui->ManualButton->repaint();
 
     m.setMode(1);
+}
+
+void MainWindow::on_btnMap_clicked()
+{
+    Files *ctcDisplay;
+    ctcDisplay = new Files();
+    ctcDisplay->mapDisplay();
+    ctcDisplay->show();
+}
+
+void MainWindow::on_comboDisplayLine_currentIndexChanged(const QString &arg1)
+{
+    if(arg1.isEmpty()){
+        return;
+    }
+    CTCRouteStatus *temp;
+    temp = ctcmap.getRouteStatus(arg1.toStdString());
+    ui->blockDisplay->setRoute(temp);
+}
+
+void MainWindow::updateRoute(){
+    for(auto& rte : TrackModel::routes){
+        ui->comboDisplayLine->addItem(QString::fromStdString(rte->name));
+        ui->comboLine->addItem(QString::fromStdString(rte->name));
+    }
 }

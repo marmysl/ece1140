@@ -14,9 +14,12 @@ layoutFiles.path = $$OUT_PWD
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+    CTCOffice/ctcoffice/CTCBlockDisplay.cpp \
+    CTCOffice/ctcoffice/CTCBlockStatus.cpp \
     CTCOffice/ctcoffice/CTCDispatch.cpp \
+    CTCOffice/ctcoffice/CTCHashmap.cpp \
     CTCOffice/ctcoffice/CTCMode.cpp \
-    CTCOffice/ctcoffice/CTCSignals.cpp \
+    CTCOffice/ctcoffice/Files.cpp \
     CTCOffice/ctcoffice/ctc_main.cpp \
     CTCOffice/ctcoffice/mainwindow.cpp \
     HWTrackController/FailureDetector.cpp \
@@ -27,6 +30,7 @@ SOURCES += \
     HWTrainController/TrainController.cpp \
     HWTrainController/BeaconDecoder.cpp \
     SWTrackController/BlockCntrl.cpp \
+    SWTrackController/CTCSignals.cpp \
     SWTrackController/TrackController.cpp \
     SWTrackController/trackcntrl_main.cpp \
     SWTrainController/SWTC.cpp \
@@ -57,9 +61,12 @@ SOURCES += \
     weatherstation.cpp
 
 HEADERS += \
+    CTCOffice/ctcoffice/CTCBlockDisplay.h \
+    CTCOffice/ctcoffice/CTCBlockStatus.h \
     CTCOffice/ctcoffice/CTCDispatch.h \
+    CTCOffice/ctcoffice/CTCHashmap.h \
     CTCOffice/ctcoffice/CTCMode.h \
-    CTCOffice/ctcoffice/CTCSignals.h \
+    CTCOffice/ctcoffice/Files.h \
     CTCOffice/ctcoffice/ctc_main.h \
     CTCOffice/ctcoffice/mainwindow.h \
     HWTrackController/FailureDetector.hpp \
@@ -71,6 +78,7 @@ HEADERS += \
     HWTrainController/TrainController.h \
     HWTrainController/BeaconDecoder.h \
     SWTrackController/BlockCntrl.h \
+    SWTrackController/CTCSignals.h \
     SWTrackController/TrackController.h \
     SWTrainController/SWTC.h \
     SWTrainController/SWTrainController_main.h \
@@ -105,6 +113,7 @@ HEADERS += \
     weatherstation.h
 
 FORMS += \
+    CTCOffice/ctcoffice/Files.ui \
     CTCOffice/ctcoffice/mainwindow.ui \
     SWTrainController/SWTrainController.ui \
     TrackModel/blockgeodialog.ui \
