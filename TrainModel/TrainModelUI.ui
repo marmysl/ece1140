@@ -76,7 +76,7 @@
      </rect>
     </property>
     <property name="currentIndex">
-     <number>0</number>
+     <number>1</number>
     </property>
     <widget class="QWidget" name="errors">
      <attribute name="title">
@@ -162,7 +162,7 @@
        <string>Door Status:</string>
       </property>
      </widget>
-     <widget class="QLabel" name="label_10">
+     <widget class="QLabel" name="doorLabel">
       <property name="geometry">
        <rect>
         <x>150</x>

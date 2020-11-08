@@ -61,11 +61,11 @@ bool Train::getHeadlights(){
 }
 
 void Train::setEmergencyBrake(bool eBrakeStatus){
-    emergencyBrake = eBrakeStatus;
+    math->setEBrake(eBrakeStatus);
 }
 
 bool Train::getEmergencyBrake(){
-    return emergencyBrake;
+    return math->emergencyBrake;
 }
 
 void Train::setSystemFailure(int failStat){
@@ -77,11 +77,11 @@ int Train::getSystemFailure(){
 }
 
 void Train::setServiceBrake(bool servBrake){
-    serviceBrake = servBrake;
+    math->setSBrake(servBrake);
 }
 
 bool Train::getServiceBrake(){
-    return serviceBrake;
+    return math->serviceBrake;
 }
 
 void Train::setTemp(int newTemp){
