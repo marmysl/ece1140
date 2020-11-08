@@ -49,8 +49,20 @@ void RouteMapView::setRoute( RouteStatus *route )
     left += BLOCK_LENGTH + LINK_WIDTH;
 
     int startId = route->layoutRoute->spawnBlock->id;
-    curBlocks[0] = {route->getBlockStatus(startId), BLK_FORWARD};
-    searchedNodes.insert({startId, ExistBlock(QPoint(left, top), BLK_FORWARD)});
+    BlockDir startDir = route->layoutRoute->spawnDir;
+
+    BlockStatus *spawnBlock = route->getBlockStatus(startId);
+    curBlocks[0] = {spawnBlock, route->layoutRoute->spawnDir};
+    searchedNodes.insert({startId, ExistBlock(QPoint(left, top), startDir)});
+
+    NextBlockData startBlkPrev = spawnBlock->layoutBlock->getNextBlock(oppositeDir(startDir));
+    if( startBlkPrev.block->id )
+    {
+        BlockStatus *loopPrevBS = route->getBlockStatus(startBlkPrev.block->id);
+        curBlocks[1] = {loopPrevBS, startBlkPrev.entryDir};
+        searchedNodes.insert({startBlkPrev.block->id, ExistBlock(QPoint(left, top + ROW_OFFSET), startBlkPrev.entryDir)});
+    }
+
     bool hasNext = true;
 
     while( hasNext )

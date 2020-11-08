@@ -91,6 +91,7 @@ void Route::loadLayout( std::string fileName ) {
 
     std::vector<LinkInfo> voidLinks = std::vector<LinkInfo> ();
     int startBlockId = -1;
+    BlockDir startDir = BLK_FORWARD;
 
     std::string sectionName;
     int blockNum;
@@ -118,11 +119,10 @@ void Route::loadLayout( std::string fileName ) {
         // check for spawn block
         if( nextLine.at(0) == '$' )
         {
-            int lastIdx = nextLine.length() - 1;
+            int lastIdx = nextLine.find_first_of(',') - 1;
 
             if( lastIdx < 2 ) throw LayoutParseError("Invalid start block definition");
 
-            BlockDir spawnDir;
             if( nextLine.at(lastIdx) == 'R' ) spawnDir = BLK_REVERSE;
             else if( nextLine.at(lastIdx) == 'F' ) spawnDir = BLK_FORWARD;
             else throw LayoutParseError("Invalid exit block direction");
@@ -295,9 +295,10 @@ void Route::loadLayout( std::string fileName ) {
     layoutFile.close();
 
     // find spawn block
-    if( startBlockId > 0 ) startBlockId = 1;
+    if( startBlockId <= 0 ) startBlockId = 1;
 
     spawnBlock = getBlock(startBlockId);
+    spawnDir = startDir;
     if( !spawnBlock ) throw LayoutParseError("No valid initial block specified");
 
     // loop thru uninitialized switches and connect those suckers

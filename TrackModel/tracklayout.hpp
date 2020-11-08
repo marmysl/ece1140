@@ -34,6 +34,7 @@ namespace TrackModel {
             std::string name;
 
             Block *spawnBlock;
+            BlockDir spawnDir;
 
             Route( std::string name );
 

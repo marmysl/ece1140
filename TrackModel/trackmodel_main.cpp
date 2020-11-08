@@ -229,9 +229,6 @@ namespace TrackModel {
                 return -1;
             }
 
-            Block *first = newRoute->getBlock(1);
-            newRoute->spawnBlock = first;
-
             routes.push_back(newRoute);
             initRouteState(newRoute);
         }
