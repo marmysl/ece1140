@@ -120,4 +120,7 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
 DISTFILES += \
-    TrackModel/blue_line.csv
+    blue_line.csv \
+    purple_line.csv \
+    red_line.csv \
+    green_line.csv
