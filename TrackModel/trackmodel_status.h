@@ -30,6 +30,9 @@ namespace TrackModel
         SignalState getSignal( BlockDir dir );
         void setSignal( BlockDir dir, SignalState state );
 
+        void setCrossingState(bool);
+        bool getCrossingState() { return crossingActive; }
+
         bool isOccupied() {
             return trainCount > 0;
         }
@@ -44,6 +47,7 @@ namespace TrackModel
         int trainCount;
         SignalState rSignal;
         SignalState fSignal;
+        bool crossingActive;
 
     signals:
         void dataChanged( int senderId );

@@ -93,11 +93,12 @@ namespace TrackModel {
             BlockDir oneWay;
             PlatformData platform;
             bool underground;
+            bool crossing;
 
             Linkable *reverseLink;
             Linkable *forwardLink;
 
-            Block( int id, std::string section, float length, float grade, float speedLimit, BlockDir oneWay = BLK_NODIR, bool tunnel = false );
+            Block( int id, std::string section, float length, float grade, float speedLimit, BlockDir oneWay = BLK_NODIR, bool tunnel = false, bool cross = false );
 
             /*! Connect this block to another block in the given direction */
             void setLink( BlockDir direction, Linkable *newBlock );

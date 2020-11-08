@@ -81,6 +81,7 @@ protected:
     void drawBlock( BlockRepr&, QPainter* );
     void drawSignals( BlockRepr&, QPainter* );
     void drawSwitch( SwitchRepr&, QPainter* );
+    void drawCrossbuck( BlockRepr&, QPainter* );
     void paintEvent( QPaintEvent * );
 
 signals:

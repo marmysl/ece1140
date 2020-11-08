@@ -246,11 +246,18 @@ void TrackModelDisplay::on_displayTicketsButton_clicked()
     diag.exec();
 }
 
-void TrackModelDisplay::on_block_updated( TrackModel::RouteStatus *sender, int blockId )
+void TrackModelDisplay::on_blockUpdated( TrackModel::RouteStatus *sender, int blockId )
 {
     if( sender == selectedRoute )
     {
         ui->routeMap->update();
+
+        if( selectedBlock && (selectedBlock->id() == blockId) )
+        {
+            TrackCircuitData data = selectedBlock->getCircuitData();
+            ui->speedCmdLabel->setText(QString("Speed Cmd: %0 kph").arg(data.decodeSpeed()));
+            ui->authCmdLabel->setText(QString("Auth Cmd: %0").arg(data.decodeAuthority()));
+        }
     }
 }
 

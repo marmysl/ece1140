@@ -260,6 +260,28 @@ void RouteMapView::drawSignals( BlockRepr &repr, QPainter *painter )
     painter->drawEllipse(center, RADIUS, RADIUS);
 }
 
+void RouteMapView::drawCrossbuck( BlockRepr &repr, QPainter *painter )
+{
+    const int LINE_THICK = BLOCK_THICKNESS / 2;
+    painter->setPen(QPen(LINK_COLOR, LINE_THICK));
+
+    int left = repr.left + BLOCK_LENGTH / 3;
+    int right = repr.left + (2 * BLOCK_LENGTH) / 3;
+    int top = repr.top - BLOCK_THICKNESS * 3;
+    int bottom = repr.top - BLOCK_THICKNESS;
+
+    painter->drawLine(left, top, right, bottom);
+    painter->drawLine(left, bottom, right, top);
+
+    painter->setPen(Qt::NoPen);
+    if( repr.stat->getCrossingState() ) painter->setBrush(SIG_RED);
+    else painter->setBrush(NOLINK_COLOR);
+
+    const int RADIUS = (3 * BLOCK_THICKNESS) / 4;
+    QPoint center(repr.left + BLOCK_LENGTH / 2, repr.top - BLOCK_THICKNESS * 2);
+    painter->drawEllipse(center, RADIUS, RADIUS);
+}
+
 void RouteMapView::drawBlock( BlockRepr &repr, QPainter *painter )
 {
     QRect outline(repr.left, repr.top, BLOCK_LENGTH, BLOCK_THICKNESS);
@@ -330,6 +352,11 @@ void RouteMapView::drawBlock( BlockRepr &repr, QPainter *painter )
     }
 
     drawSignals(repr, painter);
+
+    if( repr.stat->layoutBlock->crossing )
+    {
+        drawCrossbuck(repr, painter);
+    }
 }
 
 void RouteMapView::drawSwitch( SwitchRepr &repr, QPainter *painter )

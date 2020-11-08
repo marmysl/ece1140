@@ -55,19 +55,22 @@ void Route::loadLayout( std::string fileName ) {
 
     // oh boy a parser
     enum ParseState {
-        LL_SECTION, LL_ID, LL_LEN, LL_GRADE, LL_SPEED, LL_ONEWAY, LL_TUNNEL,
+        LL_SECTION, LL_ID, LL_LEN, LL_GRADE, LL_SPEED, LL_ONEWAY, LL_TAGS,
         LL_PREV_BLK, LL_NEXT_BLK, LL_BRANCH_A, LL_BRANCH_B, LL_STATION
     };
 
     const char *stateNames[] {
-        "Section", "BlockId", "Length", "Grade", "Speed Limit", "One Way", "Tunnel",
+        "Section", "BlockId", "Length", "Grade", "Speed Limit", "One Way", "Tags",
         "Prev Block", "Next Block", "Branch Rev", "Branch Fwd", "Station"
     };
+
+    const int TUNNEL_FLAG = 1;
+    const int CROSSING_FLAG = 2;
 
     // getline() <-------------------------------------------------------------------------------------------
     //   |                                                                                                   |
     //   v                                                                                                   |
-    // section -> id -> len -> grade -> speed -> oneway -> tunnel -> prev -> next -> branchA -> branchB -> station
+    // section -> id -> len -> grade -> speed -> oneway -> tags -> prev -> next -> branchA -> branchB -> station
 
     struct LinkInfo {
         int prevStraight;
@@ -106,6 +109,7 @@ void Route::loadLayout( std::string fileName ) {
     int branchFwd;
     std::string station;
     bool isTunnel;
+    bool hasCrossing;
 
     // for each line of the config file
     while( getline(layoutFile, nextLine) ) {
@@ -207,9 +211,18 @@ void Route::loadLayout( std::string fileName ) {
                             }
                             break;
 
-                        case LL_TUNNEL:
-                            if( bufStr.length() == 0 ) isTunnel = false;
-                            else isTunnel = parseIntStrict(bufStr) != 0;
+                        case LL_TAGS:
+                            if( bufStr.length() == 0 )
+                            {
+                                isTunnel = false;
+                                hasCrossing = false;
+                            }
+                            else
+                            {
+                                int flags = parseIntStrict(bufStr);
+                                isTunnel = flags & TUNNEL_FLAG;
+                                hasCrossing = flags & CROSSING_FLAG;
+                            }
                             break;
 
                         case LL_PREV_BLK:
@@ -288,7 +301,7 @@ void Route::loadLayout( std::string fileName ) {
         }
 
         // eol reached w/ valid data, process what we read
-        Block *newBlock = new Block(blockNum, sectionName, length, grade, speedLimit, oneway, isTunnel);
+        Block *newBlock = new Block(blockNum, sectionName, length, grade, speedLimit, oneway, isTunnel, hasCrossing);
         blocks.insert(std::pair<int, Block*>(blockNum, newBlock));
 
 
@@ -460,9 +473,10 @@ Station *Route::getStationByName( std::string stationName ) {
 
 //-----------------------------------------------------------------------
 // Block Members
-Block::Block( int id, std::string section, float length, float grade, float speedLimit, BlockDir oneWay, bool tunnel ) :
+Block::Block( int id, std::string section, float length, float grade, float speedLimit, BlockDir oneWay, bool tunnel, bool cross ) :
     id(id), section(section), length(length), grade(grade), speedLimit(speedLimit), oneWay(oneWay),
-    platform(), underground(tunnel), reverseLink(nullptr), forwardLink(nullptr) {}
+    platform(), underground(tunnel), crossing(cross),
+    reverseLink(nullptr), forwardLink(nullptr) {}
 
 Block *Block::getTarget()
 {

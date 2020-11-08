@@ -21,4 +21,7 @@ namespace TrackModel {
 
     /*! change the state of the signal at the given end of the block */
     void setSignal( std::string route, int blockId, BlockDir direction, SignalState newState );
+
+    /*! change the state of the level crossing at the given block */
+    void setCrossing( std::string route, int blockId, bool newState );
 }
