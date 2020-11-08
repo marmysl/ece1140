@@ -5,7 +5,7 @@
 #include <iostream>
 #include <string>
 //#include "../../SWTrackController/CTCSignals.h"
-#include "CTCSignals.h"
+#include "../../SWTrackController/CTCSignals.h"
 #include "../../TrackModel/tracklayout.hpp"
 
 class CTCDispatch
