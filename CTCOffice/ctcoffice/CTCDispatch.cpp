@@ -320,10 +320,11 @@ void CTCDispatch::dispatch(CTCSignals(&c)){
 
     setAuthority(station, endblock);
     setSpeed(station, endblock, timeStart, timeArrival);
+
     sendTrackController(c);
 }
 
-void CTCDispatch::sendTrackController(CTCSignals(&sig)){
+void CTCDispatch::sendTrackController(CTCSignals(&ctc)){
     int destblock;
     if(station == "Station B"){
         destblock = 10;
@@ -333,6 +334,16 @@ void CTCDispatch::sendTrackController(CTCSignals(&sig)){
     else{
         destblock = endblock;
     }
-    sig.setSignal(destblock, speed, authority);
+    //ctc.setSignal(destblock, speed, authority);
+    //ctc_track_controller = ctc;
 }
 
+CTCMode* CTCDispatch::getCTCMode()
+{
+    return m;
+}
+
+void CTCDispatch::setCTCMode(CTCMode* mode)
+{
+    m = mode;
+}

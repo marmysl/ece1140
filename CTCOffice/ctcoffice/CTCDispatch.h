@@ -5,8 +5,9 @@
 #include <iostream>
 #include <string>
 //#include "../../SWTrackController/CTCSignals.h"
-#include "CTCSignals.h"
+#include "../../SWTrackController/CTCSignals.h"
 #include "../../TrackModel/tracklayout.hpp"
+#include "CTCMode.h"
 
 class CTCDispatch
 {
@@ -17,6 +18,7 @@ class CTCDispatch
         std::string station;
         float timeStart;
         float timeArrival;
+        CTCMode* m = nullptr;
     public:
         std::vector<float> authority;
         std::vector<float> speed;
@@ -37,6 +39,8 @@ class CTCDispatch
         float getTimeStart();
         void setTimeArrival(std::string);
         float getTimeArrival();
+        void setCTCMode(CTCMode*);
+        CTCMode* getCTCMode();
 };
 
 #endif // CTCDISPATCH_H
