@@ -4,6 +4,8 @@
 #include "trackmodel_main.hpp"
 #include "layoutdialog.h"
 #include "trackmodeldisplay.h"
+#include "CTCOffice/ctcoffice/CTCHashmap.h"
+#include "CTCOffice/ctcoffice/ctc_main.h"
 
 #include <QDebug>
 
@@ -238,6 +240,11 @@ namespace TrackModel {
 
         trackModelUi->setRegionList(&routes);
         trackModelUi->show();
+
+        ctcmap.resetLayout();
+        if(ctcMainWindow){
+            ctcMainWindow->updateRoute();
+        }
 
         return 0;
     }

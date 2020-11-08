@@ -6,6 +6,10 @@
 #include <QString>
 #include <iostream>
 #include <QDebug>
+#include <QGraphicsScene>
+#include <QGraphicsView>
+#include <QGraphicsPixmapItem>
+#include "CTCHashmap.h"
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -29,6 +33,8 @@ MainWindow::MainWindow(QWidget *parent)
     QFont font2 = ui->comboLine->font();
     font2.setPointSize(60);
     ui->btnCancel->setFont(font2);
+
+    updateRoute();
 }
 
 MainWindow::~MainWindow()
@@ -115,4 +121,65 @@ void MainWindow::on_comboDestinationType_currentIndexChanged(const QString &arg1
     }
 
     ctc.setDestinationType(destinationType);
+}
+
+void MainWindow::on_AutomaticButton_clicked()
+{
+    ui->AutomaticButton->setEnabled(false);
+    ui->ManualButton->setEnabled(true);
+
+    ui->comboLine->setEnabled(false);
+    ui->comboDestination->setEnabled(false);
+    ui->comboDestinationType->setEnabled(false);
+    ui->timeStart->setEnabled(false);
+    ui->timeArrival->setEnabled(false);
+    ui->btnDispatch->setEnabled(false);
+    ui->btnCancel->setEnabled(false);
+
+    ui->AutomaticButton->repaint();
+
+    m.setMode(0);
+}
+
+void MainWindow::on_ManualButton_clicked()
+{
+    ui->ManualButton->setEnabled(false);
+    ui->AutomaticButton->setEnabled(true);
+
+    ui->comboLine->setEnabled(true);
+    ui->comboDestination->setEnabled(true);
+    ui->comboDestinationType->setEnabled(true);
+    ui->timeStart->setEnabled(true);
+    ui->timeArrival->setEnabled(true);
+    ui->btnDispatch->setEnabled(true);
+    ui->btnCancel->setEnabled(true);
+
+    ui->ManualButton->repaint();
+
+    m.setMode(1);
+}
+
+void MainWindow::on_btnMap_clicked()
+{
+    Files *ctcDisplay;
+    ctcDisplay = new Files();
+    ctcDisplay->mapDisplay();
+    ctcDisplay->show();
+}
+
+void MainWindow::on_comboDisplayLine_currentIndexChanged(const QString &arg1)
+{
+    if(arg1.isEmpty()){
+        return;
+    }
+    CTCRouteStatus *temp;
+    temp = ctcmap.getRouteStatus(arg1.toStdString());
+    ui->blockDisplay->setRoute(temp);
+}
+
+void MainWindow::updateRoute(){
+    for(auto& rte : TrackModel::routes){
+        ui->comboDisplayLine->addItem(QString::fromStdString(rte->name));
+        ui->comboLine->addItem(QString::fromStdString(rte->name));
+    }
 }
