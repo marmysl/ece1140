@@ -3,7 +3,7 @@
 
 void SWTC :: calculatePower()
 {
-    // Only set the power when the brake flags are off.
+    // Only set the power when the brake flags are off
 
     if (serviceBrakeEnabled == false && emergencyBrakeEnabled == false)
     {
@@ -19,6 +19,10 @@ void SWTC :: calculatePower()
             speed = commandedSpeed;
         }
 
+        // Safety measure in case garbage commanded speed or train velocity are sent
+        if (speed < 0) {speed = 0;}
+        if (trainVelocity < 0) {trainVelocity = 0;}
+
         // Calculate e_k
         e_k = speed - trainVelocity;
 
@@ -31,18 +35,24 @@ void SWTC :: calculatePower()
         // Calculate p_cmd
         powerCommand = kp * e_k + ki * u_k;
     }
+
+    // If authority is 0, set the power command to zero and the service brake flag on.
+    if (authority == 0) {
+        powerCommand = 0.0;
+    }
 }
 
 
-void SWTC :: decode(uint64_t decodeSignal)  // decodes track circuit into speed & auth //switch to void?
+void SWTC :: decode(uint64_t decodeSignal)
 {
+    // Decode
     double decodeSpeed = decodeSignal >> 32;
     double decodeAuth = decodeSignal & 0xfffffff;
 
 
-    // TEMP: Hard coding commanded speed and authority since track controller gives 0
-    decodeSpeed = 25.0;
-    decodeAuth = 45.0;
+    // TEMP: Hard coding commanded speed and authority until we have track controllers
+    // decodeSpeed = 25.0;
+    // decodeAuth = 1.0;
 
 
     setCommandedSpeed(decodeSpeed);
