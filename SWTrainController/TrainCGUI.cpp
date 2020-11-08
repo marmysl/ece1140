@@ -45,6 +45,12 @@ void TrainControlWindow :: updateCircuitInfo()
     swtc.decode(train->sendTrackCircuit());
     ui->commspeed_->setText(QString::number(swtc.getCommandedSpeed()));
     ui->authority_->setText(QString::number(swtc.getAuthority()));
+
+    if (swtc.getAuthority() == 0) {
+        ui->auth_exceeded_->setText("STOPPING! The train has zero authority.");
+    } else {
+        ui->auth_exceeded_->setText("");
+    }
 }
 
 void TrainControlWindow :: updatePower()
@@ -58,6 +64,10 @@ void TrainControlWindow :: updatePower()
 
 void TrainControlWindow :: updateBrakes()
 {
+    // Update brake flags in train model
+    train->setServiceBrake(swtc.getServiceBrakeFlag());
+    train->setEmergencyBrake(swtc.getEmergencyBrakeFlag());
+
     // if the train is actively braking, display on GUI for driver
     if (swtc.getEmergencyBrakeFlag() == true){
         ui->releasebrakebutton->show();
@@ -72,12 +82,6 @@ void TrainControlWindow :: updateBrakes()
     } else {
         ui->sbrake_->setText("");
     }
-
-    /*// if the train has 0 velocity, reset the brake flags
-    if ((train->getCurrentVelocity()) == 0.0) {
-        swtc.setServiceBrake(false);
-        swtc.setEmergencyBrake(false);
-    }*/
 }
 
 void TrainControlWindow :: updateSpeed()
@@ -90,22 +94,11 @@ void TrainControlWindow :: updateCabin()
     // Update current status of the cabin
     QString doors, lights, headlights;
 
-    if (train->getDoorStatus())
-        doors = "OPEN";
-    else
-        doors = "CLOSED";
+    doors = (train->getDoorStatus()) ? "OPEN" : "CLOSED";
 
-    //doors = (train->getDoorStatus()) ? "OPEN" : "CLOSED";
+    lights = (train->getCabinLights()) ? "ON" : "OFF";
 
-    if (train->getCabinLights())
-        lights = "ON";
-    else
-        lights = "OFF";
-
-    if (train->getHeadlights())
-        headlights = "ON";
-    else
-        headlights = "OFF";
+    headlights = (train->getHeadlights()) ? "ON" : "OFF";
 
     ui->doors_->setText(doors);
     ui->lights_->setText(lights);
