@@ -8,9 +8,9 @@ using namespace std;
 // Constructor
 Track :: Track(Region &r) {
 	cout << " In Track class\n";
-	route = r.getRoute();
-	blockNum = r.getCurrentBlock();
-	authority = r.getAuthority();
+    //route = r.getRoute();
+    //blockNum = r.getCurrentBlock();
+    //authority = r.getAuthority();
 	blockOccupancy = 0;
 	lights = 0;
 
@@ -69,7 +69,7 @@ void Track :: pickupSpeedLimit(Region &r){
 
 	speedLimit = 10;
 
-	r.setSpeedLimit(blockNum, speedLimit);
+    //r.setSpeedLimit(blockNum, speedLimit);
 }
 
 int Track :: getLights() {

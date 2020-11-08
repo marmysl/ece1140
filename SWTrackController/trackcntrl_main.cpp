@@ -1,5 +1,6 @@
 #include "trackcntrl_main.h"
 
+CTCSignals ctc_track_controller;
 
 int init_SWTrackController() {
     //int timerID = startTimer(1000); // timer event occurs every second
@@ -26,7 +27,7 @@ int init_SWTrackController() {
     //CTCSignals C1 = wayside_vector.signals.begin();
    // wayside_vector.blocks.begin() -> setSpdAuth(1, C1.speedCTC, C1.authCTC);
 
-    std::string route = "Blue";
+    std::string route = "Blue Line";
 
     TrackModel::TrackCircuitData tcdata = TrackModel::TrackCircuitData::fromFloat(30,9);
     TrackModel::setTrackCircuit(route, 1, tcdata);

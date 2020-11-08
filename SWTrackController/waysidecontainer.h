@@ -20,7 +20,7 @@ public:
 
     //CTC Signals Container for Wayside
     std::vector<CTCSignals> sig;
-    void addCTCObj(int num);
+    //void addCTCObj(int num);
 };
 
 #endif // WAYSIDECONTAINER_H

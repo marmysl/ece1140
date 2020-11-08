@@ -41,8 +41,8 @@ void SWTC :: decode(uint64_t decodeSignal)  // decodes track circuit into speed 
 
 
     // TEMP: Hard coding commanded speed and authority since track controller gives 0
-    decodeSpeed = 25.0;
-    decodeAuth = 45.0;
+    //decodeSpeed = 25.0;
+   // decodeAuth = 45.0;
 
 
     setCommandedSpeed(decodeSpeed);

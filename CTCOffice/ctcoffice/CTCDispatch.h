@@ -19,7 +19,7 @@ class CTCDispatch
         float timeStart;
         float timeArrival;
     public:
-        std::vector<CTCSignals> wayside_signals;
+
 
         std::vector<float> authority;
         std::vector<float> speed;

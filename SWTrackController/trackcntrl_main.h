@@ -12,7 +12,7 @@
 #include <iostream>
 
 
-static CTCSignals ctc_track_controller;
+extern CTCSignals ctc_track_controller;
 
 
 void timerEvent(QTimerEvent *event);

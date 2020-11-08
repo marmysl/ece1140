@@ -15,14 +15,13 @@ public:
     bool update_flag;
     float speedCTC;
     float authCTC;
-    int destinationBlock;
-    int receiving_wayside;
+    bool r1;
+    bool r2;
 
     void setSignal(int, float, float);
-    int getDest();
+    bool getRoute(int);
     float getSpeed();
     float getAuth();
-    void setUp(int);
 
 };
 
