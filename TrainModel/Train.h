@@ -17,11 +17,7 @@ public:
     TrainModelControls *controls;
     TrainModelMath *math;
     TrainModelUpdateBlock *block;
-
     int systemFailure = 0;
-    bool emergencyBrake = false;
-    bool inYard = true;
-    bool serviceBrake = false;
 
     Train(int newNumCars);
     uint64_t sendTrackCircuit();
