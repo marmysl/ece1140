@@ -33,6 +33,8 @@ SOURCES += \
     SWTrackController/CTCSignals.cpp \
     SWTrackController/TrackController.cpp \
     SWTrackController/trackcntrl_main.cpp \
+    SWTrackController/tracklogic.cpp \
+    SWTrackController/waysidecontainer.cpp \
     SWTrainController/SWTC.cpp \
     SWTrainController/SWTrainController_main.cpp \
     SWTrainController/TrainCGUI.cpp \
@@ -80,10 +82,12 @@ HEADERS += \
     SWTrackController/BlockCntrl.h \
     SWTrackController/CTCSignals.h \
     SWTrackController/TrackController.h \
+    SWTrackController/trackcntrl_main.h \
+    SWTrackController/tracklogic.h \
+    SWTrackController/waysidecontainer.h \
     SWTrainController/SWTC.h \
     SWTrainController/SWTrainController_main.h \
     SWTrainController/TrainCGUI.h \
-    SWTrainController/ui_SWTrainController.h \
     SerialPort.hpp \
     TrackModel/layoutdialog.h \
     TrackModel/routemapview.h \

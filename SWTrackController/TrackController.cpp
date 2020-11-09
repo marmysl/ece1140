@@ -2,28 +2,42 @@
 #include <iostream>
 #include <vector>
 #include "TrackController.h"
-
+#include "waysidecontainer.h"
 
 //using namespace std;
 
 TrackController::TrackController(){
-	region = 1;
-	block_count = 15;
-	section_length = 5;
-	section_count = 3;
-	cntrl_sections.push_back('A');
-	cntrl_sections.push_back('B');
-	cntrl_sections.push_back('C');
-	
-	for(int i = 1; i <= block_count; i++)
-		cntrl_blocks.push_back(i);
-	
-	cntrl_switches.push_back(5);
-	cntrl_switches.push_back(6);
-	cntrl_switches.push_back(11);
-    //TrackModel::Route *blueLine = initTestLayout();
-	
 
+
+}
+
+void TrackController::setUpController(int id, std::string &l, std::vector<char> &s, std::vector<int> &b) {
+
+
+    region = id;
+    line = l;
+    for (auto i = s.begin(); i != s.end(); i++) {
+        cntrl_sections.push_back(*i);
+    }
+    for (auto i = b.begin(); i != b.end(); i++) {
+        cntrl_blocks.push_back(*i);
+        addBlockObj(*i);
+    }
+
+}
+
+void TrackController::addBlockObj(int num) {
+    using namespace std;
+    BlockCntrl b;
+    b.setUpBlock(line, num);
+    blocks.push_back(b);
+}
+
+void TrackController::setSignalsInstance(CTCSignals &s){
+
+    for ( auto i = blocks.begin(); i != blocks.end(); i++) {
+        i -> setSpdAuth(s.speedCTC, s.authCTC);
+    }
 }
 
 int TrackController::getResult() {
@@ -38,8 +52,18 @@ int TrackController::getResult() {
     for ( auto i = cntrl_switches.begin(); i != cntrl_switches.end(); ++i) 
         std::cout << *i << " ";
         
-        return 0;
+    return 0;
 }
 
+void TrackController::setSpdAuth() {
 
 
+    for ( auto i = blocks.begin(); i != blocks.end(); i++) {
+        i -> setSpdAuth(ctc_wayside.speedCTC, ctc_wayside.authCTC);
+    }
+
+}
+
+void TrackController::setRoute() {
+
+}

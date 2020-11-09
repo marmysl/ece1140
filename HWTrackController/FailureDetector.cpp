@@ -8,17 +8,17 @@ using namespace std;
 FailureDetector :: FailureDetector()
 {
 	failureCode = 0;
-	blockNum = getCurrentBlock();
-	route = getRoute();
+    //blockNum = getCurrentBlock();
+    //route = getRoute();
 	cout << "\nin failure detector - block num is " << blockNum << endl;
 }
 
 int FailureDetector :: detectFailure()
 {
-	failureCode = TrackModel::getFaults(route, blockNum);
+    //failureCode = TrackModel::getFaults(route, blockNum);
 
 	if (failureCode != 0) {
-		displayFailure();
+        //displayFailure();
 	}
 
 	return failureCode;
