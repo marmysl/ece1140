@@ -90,7 +90,7 @@ int main(int argc, char *argv[])
 
     init_CTC(argc, argv);
     //init_HWTrackController();
-    //init_SWTrackController();
+    init_SWTrackController();
     //init_HWTrainController();
 
     systemClock->play();

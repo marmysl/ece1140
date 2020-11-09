@@ -1,52 +1,34 @@
-#include "BlockCntrl.h"
-#include "CTCSignals.h"
-#include "TrackController.h"
+#include "trackcntrl_main.h"
+
+CTCSignals ctc_track_controller;
+
+WaysideContainer wayside_vector;
 
 int init_SWTrackController() {
-
-    BlockContainer B_Container;
-
-
-    using namespace std;
-    for (int i = 0; i < 15; i++) {
-        B_Container.addBlockObj(i);
-    }
+    //int timerID = startTimer(1000); // timer event occurs every second
+    //int count = 0;
 
 
-    for (int i = 0; i < 15; i++ )
-        B_Container.blocks[i].getResult();
+    std::vector<char> s;
+    s.push_back('A');
+    s.push_back('B');
+    s.push_back('C');
+
+    std::vector<int> b;
+    for(int i = 1; i <= 15; i++) {
+        b.push_back(i);     }
+
+    std::string track_line = "Blue Line";
+
+    wayside_vector.addTrackObj(1, track_line, s, b);
+    //wayside_vector.addCTCObj(ctc_track_controller);
 
 
-
-    CTCSignals C1;
-
-
-    std::vector<float> s_temp {50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50};
-    std::vector<float> a_temp {14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1};
-    int dest_temp = 10;
-   // C1.setSignal(dest_temp, s_temp, a_temp);
-
-    while(true) {
-
-        while(C1.update_flag == true) {
-            int m = 0;
-
-            //for ( auto i = blocks.begin(); i != blocks.end(); ++i) {
-                //i -> setSpdAuth(m+1, C1.ctc_spd.at(m), C1.ctc_auth.at(m));
-                //i -> setCircuit();
-                m++;
-            //}
-
-            C1.update_flag = false;
-
-        }
-
-        //for (auto i = blocks.begin(); i != blocks.end(); ++i) {
-            //i -> setOcc();
-        //}
-
-    }
-
-    return 0;
+	return 0;
 }
 
+void alertWaysideSystem(CTCSignals &temp) {
+
+    wayside_vector.addCTCObj(temp);
+    //std::cout << "\n\nspeed: " << temp.speedCTC << ", authority: " << temp.authCTC << "\n\n";
+}

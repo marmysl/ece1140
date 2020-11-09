@@ -7,6 +7,7 @@
 
 #include "system_main.h"
 
+
 //useful cout replacement command while using QT Creator Application Output
 //qDebug() << QString::fromStdString(station);
 //qDebug() << QString::number(hours);
@@ -324,7 +325,8 @@ void CTCDispatch::dispatch(CTCSignals(&c)){
     sendTrackController(c);
 }
 
-void CTCDispatch::sendTrackController(CTCSignals(&ctc)){
+void CTCDispatch::sendTrackController(CTCSignals &ctc){
+
     int destblock;
     if(station == "Station B"){
         destblock = 10;
@@ -334,8 +336,9 @@ void CTCDispatch::sendTrackController(CTCSignals(&ctc)){
     else{
         destblock = endblock;
     }
-    //ctc.setSignal(destblock, speed, authority);
-    //ctc_track_controller = ctc;
+
+    ctc.setSignal(destblock, 10, 1);
+    alertWaysideSystem(ctc);
 }
 
 CTCMode* CTCDispatch::getCTCMode()
@@ -347,3 +350,4 @@ void CTCDispatch::setCTCMode(CTCMode* mode)
 {
     m = mode;
 }
+

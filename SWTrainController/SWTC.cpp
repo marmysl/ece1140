@@ -50,6 +50,7 @@ void SWTC :: decode(uint64_t decodeSignal)
     double decodeAuth = decodeSignal & 0xfffffff;
 
 
+
     // TEMP: Hard coding commanded speed and authority until we have track controllers
     // decodeSpeed = 25.0;
     // decodeAuth = 1.0;
