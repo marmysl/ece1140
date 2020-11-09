@@ -27,6 +27,7 @@ private:
         double maxPower;
         QDateTime prevTime;
         QDateTime currTime;
+        double powers[3];
 
         //In this class, power is given in Watts
 
@@ -43,6 +44,7 @@ private:
 
         //Calculate powerCmd
         void calcPowerCmd();
+        void calcThreePowers();
 
         //Set the power command to 0
         void powerCmdZero();
