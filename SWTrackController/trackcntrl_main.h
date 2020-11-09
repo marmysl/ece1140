@@ -9,11 +9,13 @@
 #include "../TrackModel/tracklayout.hpp"
 
 #include <vector>
+#include <string>
 #include <iostream>
 
 
 extern CTCSignals ctc_track_controller;
 
+void alertWaysideSystem(CTCSignals &);
 
 void timerEvent(QTimerEvent *event);
 

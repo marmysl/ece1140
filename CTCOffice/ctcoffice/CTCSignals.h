@@ -18,7 +18,7 @@ public:
     bool r1;
     bool r2;
 
-    void setSignal(int, float, float);
+    void setSignal(int, float, int);
     bool getRoute(int);
     float getSpeed();
     float getAuth();

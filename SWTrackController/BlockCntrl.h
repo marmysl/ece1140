@@ -3,18 +3,18 @@
 #define BlockCntrl_h
 
 #include <cstdint>
-#include "TrackController.h"
+#include <string>
 
-
-class BlockCntrl : virtual public TrackController
+class BlockCntrl
 {
 	private:
 		
 		char section; 
 	
 	public:
-	
+
         int block_num; //change to block_id
+        std::string line;
         bool block_occ;
         bool switch_head;
         bool switch_tail;
@@ -25,9 +25,9 @@ class BlockCntrl : virtual public TrackController
         uint32_t block_authority;
         bool block_fail;
         BlockCntrl();
-        void setUpBlock(int);
+        void setUpBlock(std::string &, int);
         void setCircuit();
-        void setSpdAuth(int, float, float);
+        void setSpdAuth(float, int);
         void setOcc();
         void getOcc();
         void setSwitch(int,bool);

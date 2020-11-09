@@ -9,6 +9,8 @@
 #include "../../TrackModel/tracklayout.hpp"
 #include "../../SWTrackController/trackcntrl_main.h"
 
+//CTCSignals ctc_track_controller;
+
 class CTCDispatch
 {
     private:

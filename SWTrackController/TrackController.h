@@ -3,6 +3,8 @@
 #define TrackController_h
 
 #include "CTCOffice/ctcoffice/CTCSignals.h"
+#include "BlockCntrl.h"
+#include "tracklogic.h"
 #include <vector>
 #include <string>
 
@@ -14,6 +16,8 @@ class TrackController
 	
 	public:
         CTCSignals ctc_wayside;
+        TrackLogic PLC;
+        std::vector<BlockCntrl> blocks;
         int region;
         std::string line;
         std::vector<char> cntrl_sections;
@@ -26,8 +30,11 @@ class TrackController
 		int section_count;
 
         TrackController();
-        void setUpController(int, std::vector<char> &, std::vector<int> &);
+        void setUpController(int, std::string &, std::vector<char> &, std::vector<int> &);
         void setSignalsInstance(CTCSignals &);
+        void addBlockObj(int);
+        void setSpdAuth();
+        void setRoute();
 		int getResult();
 };
 

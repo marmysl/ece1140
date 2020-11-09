@@ -7,7 +7,7 @@ void CTCSignals::setFlag(bool flag) {
         update_flag = flag;
 }
 
-void CTCSignals::setSignal(int b, float s, float a) {
+void CTCSignals::setSignal(int r, float s, int a) {
 
         speedCTC = s;
         authCTC = a;

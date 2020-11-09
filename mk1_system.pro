@@ -27,7 +27,6 @@ SOURCES += \
     HWTrainController/BeaconDecoder.cpp \
     SWTrackController/BlockCntrl.cpp \
     SWTrackController/TrackController.cpp \
-    SWTrackController/blockcontainer.cpp \
     SWTrackController/trackcntrl_main.cpp \
     SWTrackController/tracklogic.cpp \
     SWTrackController/waysidecontainer.cpp \
@@ -73,7 +72,6 @@ HEADERS += \
     HWTrainController/BeaconDecoder.h \
     SWTrackController/BlockCntrl.h \
     SWTrackController/TrackController.h \
-    SWTrackController/blockcontainer.h \
     SWTrackController/trackcntrl_main.h \
     SWTrackController/tracklogic.h \
     SWTrackController/waysidecontainer.h \
