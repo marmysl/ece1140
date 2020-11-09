@@ -2,7 +2,7 @@
 #ifndef TrackController_h
 #define TrackController_h
 
-#include "CTCOffice/ctcoffice/CTCSignals.h"
+#include "CTCSignals.h"
 #include "BlockCntrl.h"
 #include "tracklogic.h"
 #include <vector>

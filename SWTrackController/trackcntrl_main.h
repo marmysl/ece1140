@@ -3,7 +3,7 @@
 
 #include "waysidecontainer.h"
 #include "tracklogic.h"
-#include "CTCOffice/ctcoffice/CTCSignals.h"
+#include "CTCSignals.h"
 #include "../TrackModel/trackmodel_controller.hpp"
 #include "../TrackModel/trackmodel_main.hpp"
 #include "../TrackModel/tracklayout.hpp"

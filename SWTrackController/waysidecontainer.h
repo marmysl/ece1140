@@ -4,7 +4,7 @@
 #include "trackcntrl_main.h"
 #include "TrackController.h"
 #include "BlockCntrl.h"
-#include "CTCOffice/ctcoffice/CTCSignals.h"
+#include "CTCSignals.h"
 #include <vector>
 
 class WaysideContainer

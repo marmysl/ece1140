@@ -316,16 +316,17 @@ float CTCDispatch::getTimeArrival(){
     return timeArrival;
 }
 
-void CTCDispatch::dispatch(CTCSignals &temp){
+void CTCDispatch::dispatch(CTCSignals &c){
     createNewTrain();
 
     setAuthority(station, endblock);
     setSpeed(station, endblock, timeStart, timeArrival);
 
-    sendTrackController(temp);
+    sendTrackController(c);
 }
 
 void CTCDispatch::sendTrackController(CTCSignals &ctc){
+
     int destblock;
     if(station == "Station B"){
         destblock = 10;
@@ -335,9 +336,18 @@ void CTCDispatch::sendTrackController(CTCSignals &ctc){
     else{
         destblock = endblock;
     }
+
     ctc.setSignal(destblock, 10, 1);
     alertWaysideSystem(ctc);
 }
 
+CTCMode* CTCDispatch::getCTCMode()
+{
+    return m;
+}
 
+void CTCDispatch::setCTCMode(CTCMode* mode)
+{
+    m = mode;
+}
 
