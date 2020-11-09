@@ -7,12 +7,10 @@ RoutingTestDialog::RoutingTestDialog(TrackModel::Route *route, QWidget *parent) 
     route(route), ui(new Ui::RoutingTestDialog)
 {
     ui->setupUi(this);
-    int nBlk = route->blocks.size() + 1;
+    int nBlk = route->blocks.size();
     blockList = new int[nBlk];
 
-    blockList[0] = 0;
-
-    int i = 1;
+    int i = 0;
     for( auto &kvp : route->blocks )
     {
         blockList[i] = kvp.first;

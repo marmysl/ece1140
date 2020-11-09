@@ -8,8 +8,6 @@
 
 using namespace TrackModel;
 
-Block *TrackModel::yard = new Block(0, "Yard", 1, 0, 10000);
-
 std::vector<Route *> TrackModel::routes = std::vector<Route *>();
 
 Route *TrackModel::getRoute( std::string name ) {
@@ -359,6 +357,12 @@ void Route::loadLayout( std::string fileName ) {
     spawnDir = parsedStartDir;
     if( !spawnBlock ) throw LayoutParseError("No valid initial block specified");
 
+    Block *yard = new Block(0, "Yard", 50, 0, 100);
+    blocks.insert(std::pair<int, Block*>(0, yard));
+
+    LinkInfo yardExit(yard, -1, parsedStartBlockId, -1, -1);
+    voidLinks.push_back(yardExit);
+
     // loop thru uninitialized switches and connect those suckers
     for( LinkInfo &links : voidLinks )
     {
@@ -433,8 +437,6 @@ void Route::loadLayout( std::string fileName ) {
 
 Block *Route::getBlock( int blockId ) {
     Block *requested;
-
-    if( blockId == 0 ) return yard;
 
     try {
         requested = blocks.at(blockId);
