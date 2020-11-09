@@ -1,7 +1,7 @@
 #include "SpeedRegulator.h"
 #include <iostream>
 
-SpeedRegulator::SpeedRegulator(Train *ptr)
+SpeedRegulator::SpeedRegulator(Train *t, CTCMode *m)
 {
     //CalculatePowerCmd();
     powerCmd = 0;
@@ -14,7 +14,8 @@ SpeedRegulator::SpeedRegulator(Train *ptr)
     Ki = 0.000;
 
     //Set trainModel object to the pointer in the parameters
-    trainModel = ptr;
+    trainModel = t;
+    mode = m;
 
     //Initialize the PID control variables to 0
     uk = 0;
@@ -61,6 +62,7 @@ void SpeedRegulator::calcPowerCmd()
 
         //Calculate the power command
         powerCmd = (Kp * ek) + (Ki * uk);
+        trainModel -> setPower(powerCmd);
 
         //Sends power command to the trainModel
         if(powerCmd < 120000) trainModel -> setPower(powerCmd);
@@ -123,12 +125,19 @@ void SpeedRegulator::incSetpointSpeed(double inc)
 }
 void SpeedRegulator::chooseVcmd()
 {
-    //If the setpoint speed is greater than or equal to the commanded speed, the lesser of the speeds is the commanded speed
-    //The commmanded speed will be Vcmd and will generate the power command
-    if(setpointSpeed >= trainModel -> sendTrackCircuit() >> 32) Vcmd = trainModel -> sendTrackCircuit() >> 32;
+    //If the train is in automatic mode, speed is automatically set to the commanded speed
+    if(mode -> getMode() == 0) Vcmd = trainModel -> sendTrackCircuit() >> 32;
 
-    //If the commanded speed is greater than the setpoint speed, then the velocity for the power command will be the setpoint speed
-    else Vcmd = setpointSpeed;
+    //If the train is in manual mode, Vmd is chosen differently
+    else
+    {
+        //If the setpoint speed is greater than or equal to the commanded speed, the lesser of the speeds is the commanded speed
+        //The commmanded speed will be Vcmd and will generate the power command
+        if(setpointSpeed >= trainModel -> sendTrackCircuit() >> 32) Vcmd = trainModel -> sendTrackCircuit() >> 32;
+
+        //If the commanded speed is greater than the setpoint speed, then the velocity for the power command will be the setpoint speed
+        else Vcmd = setpointSpeed;
+    }
 
 }
 void SpeedRegulator::setKpAndKi(double propGain, double intGain)

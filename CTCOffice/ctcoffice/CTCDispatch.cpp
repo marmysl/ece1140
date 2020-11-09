@@ -316,8 +316,8 @@ float CTCDispatch::getTimeArrival(){
     return timeArrival;
 }
 
-void CTCDispatch::dispatch(CTCSignals &c){
-    createNewTrain();
+void CTCDispatch::dispatch(CTCSignals(&c)){
+    createNewTrain(m);
 
     setAuthority(station, endblock);
     setSpeed(station, endblock, timeStart, timeArrival);
