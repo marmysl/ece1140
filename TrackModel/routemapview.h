@@ -72,7 +72,6 @@ private:
     const QColor SIG_RED = {180, 10, 0};
 
     RouteStatus *route;
-    BlockStatus yardStat;
     std::unordered_map<int, BlockRepr> blocks;
     std::unordered_map<int, SwitchRepr> switches;
     std::vector<LinkRepr> links;
