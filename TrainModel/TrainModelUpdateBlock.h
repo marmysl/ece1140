@@ -21,7 +21,7 @@ public:
     uint64_t beaconData;
     int numPassengers = 0;
 
-    TrainModelUpdateBlock();
+    TrainModelUpdateBlock(std::string);
     void updateTrackInfo(bool);
     void updateBlock(bool first);
     void blockLength();

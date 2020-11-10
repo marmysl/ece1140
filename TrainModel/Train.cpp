@@ -10,13 +10,13 @@
 
 using namespace std;
 
-Train::Train(int newNumCars)
+Train::Train(int newNumCars, string lineType)
 {
     cout << "Created new Train Model with " << newNumCars << " cars" << endl;
     w = new TrainModelUI();
     w->show();
     controls = new TrainModelControls();
-    block = new TrainModelUpdateBlock();
+    block = new TrainModelUpdateBlock(lineType);
     math = new TrainModelMath(newNumCars, block);
     updateUI();
 }

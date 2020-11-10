@@ -4,7 +4,8 @@
 #include <cstdint>
 #include <string>
 
-TrainModelUpdateBlock::TrainModelUpdateBlock() {
+TrainModelUpdateBlock::TrainModelUpdateBlock(std::string lineTypeNew) {
+    lineType = lineTypeNew;
     blockDist = 0;
     blockGrade = 0;
     blockNum = 0;
@@ -21,28 +22,24 @@ void TrainModelUpdateBlock::updateTrackInfo(bool inYard){
 }
 
 void TrainModelUpdateBlock::updateBlock(bool first){
-    std::string line = "Blue Line";
-    if (!first){TrackModel::removeOccupancy(line, blockNum);}
+    if (!first){TrackModel::removeOccupancy(lineType, blockNum);}
     blockNum = blockNum + 1;
-    TrackModel::addOccupancy(line, blockNum);
+    TrackModel::addOccupancy(lineType, blockNum);
 }
 
 void TrainModelUpdateBlock::blockLength(){
-    std::string line = "Blue Line";
-    TrackModel::Route *blueLine = TrackModel::getRoute(line);
+    TrackModel::Route *blueLine = TrackModel::getRoute(lineType);
     TrackModel::Block* blockInfo = blueLine -> getBlock(blockNum);
     blockDist = blockInfo -> length;
 }
 
 void TrainModelUpdateBlock::blockGradeUp(){
-    std::string line = "Blue Line";
-    TrackModel::Route *blueLine = TrackModel::getRoute(line);
+    TrackModel::Route *blueLine = TrackModel::getRoute(lineType);
     TrackModel::Block* blockInfo = blueLine -> getBlock(blockNum);
     blockGrade = blockInfo -> grade;
 }
 
 void TrainModelUpdateBlock::updateTrackCircuit(){
-    std::string line = "Blue Line";
-    TrackModel::TrackCircuitData newData = TrackModel::getTrackCircuit(line, blockNum);
+    TrackModel::TrackCircuitData newData = TrackModel::getTrackCircuit(lineType, blockNum);
     trackCircuitData = newData.getEncodedData();
 }
