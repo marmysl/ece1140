@@ -34,7 +34,7 @@ void createNewTrain(CTCMode *mode, int numCars, std::string lineType) {
 
     if( trainControllerPort.isConnected() && (nextTrainId == 1) )
     {
-        newTrain = new TrainController(mode /*, numCars, lineType*/);
+        newTrain = new TrainController(mode, numCars, lineType);
     }
     else
     {

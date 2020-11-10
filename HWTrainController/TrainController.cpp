@@ -7,11 +7,11 @@
 #include <string>
 #include <QTimer>
 
-TrainController::TrainController(CTCMode *m)
+TrainController::TrainController(CTCMode *m, int numCars, std::string lineType)
 {
     //Create objects and assign them to pointers
 
-    trainModel = new Train(5);
+    trainModel = new Train(numCars, lineType);
     mode = m;
     speedRegulator = new SpeedRegulator(trainModel, mode);
     beacon = new BeaconDecoder();
