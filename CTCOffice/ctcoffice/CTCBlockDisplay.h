@@ -74,7 +74,6 @@ private:
     const QColor SIG_RED = {180, 10, 0};
 
     CTCRouteStatus *route;
-    CTCBlockStatus yardStat;
     std::unordered_map<int, BlockRepr> blocks;
     std::unordered_map<int, SwitchRepr> switches;
     std::vector<LinkRepr> links;
@@ -83,6 +82,7 @@ protected:
     void drawBlock( BlockRepr&, QPainter* );
     void drawSignals( BlockRepr&, QPainter* );
     void drawSwitch( SwitchRepr&, QPainter* );
+    void drawCrossbuck( BlockRepr&, QPainter* );
     void paintEvent( QPaintEvent * );
 
 };
