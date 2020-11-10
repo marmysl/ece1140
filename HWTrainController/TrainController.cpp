@@ -55,7 +55,7 @@ void TrainController::recieveData( char *buf, qint64 len )
           //char 0 = cabinLights
           //char 1 = cabinAc
           //char 2 = cabinHeat
-          //char 3 = cabinDoorsClosed
+          //char 3 = cabinDoorsClosedLeft
           //char 4 = cabinAdvertisements
           //char 5 = cabinAnnouncements
           //char6-10 = Kp
@@ -67,9 +67,10 @@ void TrainController::recieveData( char *buf, qint64 len )
           //char20 = resolve failure button
           //char21 = headlights
           //char22 = release brake
+          //char23 = cabinDoorsClosedRight
 
 
-        if(data.length() == 25)
+        if(data.length() == 26)
         {
              std::cout << "Incoming: " << data << std::endl;
              if(data.substr(0,1) == "1") trainModel -> setCabinLights(1);
@@ -82,6 +83,9 @@ void TrainController::recieveData( char *buf, qint64 len )
              else trainModel -> setHeater(0);
 
              if(data.substr(3,1) == "1") trainModel -> setDoorStatus(1);
+             else trainModel -> setDoorStatus(0);
+
+             if(data.substr(23,1) == "1") trainModel -> setDoorStatus(1);
              else trainModel -> setDoorStatus(0);
 
              if(data.substr(4,1) == "1") trainModel -> setAdvertisements(1);
@@ -118,7 +122,7 @@ void TrainController::writeData()
     //char 0 = cabinLights
     //char 1 = cabinAc
     //char 2 = cabinHeat
-    //char 3 = cabinDoorsClosed
+    //char 3 = cabinDoorsClosedLeft
     //char 4 = cabinAdvertisements
     //char 5 = cabinAnnouncements
     //char6-10 = authority
@@ -133,6 +137,7 @@ void TrainController::writeData()
     //char 44 = failure code
     //char 45 = headlights
     //char 46 = mode
+    //char 47 = cabinDoorsClosedRight
     //char 47 = newline
 
     string outgoing_s = "";
@@ -186,6 +191,8 @@ void TrainController::writeData()
     outgoing_s += to_string(trainModel -> getHeadlights());
 
     outgoing_s += to_string(mode -> getMode());
+
+    outgoing_s += to_string(trainModel -> getDoorStatus());
 
     outgoing_s += "\n";
 
