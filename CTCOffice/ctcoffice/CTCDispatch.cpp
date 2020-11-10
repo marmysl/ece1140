@@ -336,8 +336,9 @@ void CTCDispatch::sendTrackController(CTCSignals &ctc){
     else{
         destblock = endblock;
     }
-
-    ctc.setSignal(destblock, 10, 1);
+    //auto i = speed.begin();
+    //float s = *i;
+    ctc.setSignal(1, 40, 9);
     alertWaysideSystem(ctc);
 }
 

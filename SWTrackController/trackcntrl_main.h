@@ -13,7 +13,7 @@
 #include <iostream>
 
 
-extern CTCSignals ctc_track_controller;
+//extern CTCSignals ctc_track_controller;
 
 void alertWaysideSystem(CTCSignals &);
 

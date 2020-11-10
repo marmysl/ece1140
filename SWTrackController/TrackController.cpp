@@ -35,6 +35,8 @@ void TrackController::addBlockObj(int num) {
 
 void TrackController::setSignalsInstance(CTCSignals &s){
 
+    route = s.routeCTC;
+
     for ( auto i = blocks.begin(); i != blocks.end(); i++) {
         i -> setSpdAuth(s.speedCTC, s.authCTC);
     }
@@ -58,9 +60,9 @@ int TrackController::getResult() {
 void TrackController::setSpdAuth() {
 
 
-    for ( auto i = blocks.begin(); i != blocks.end(); i++) {
-        i -> setSpdAuth(ctc_wayside.speedCTC, ctc_wayside.authCTC);
-    }
+    //for ( auto i = blocks.begin(); i != blocks.end(); i++) {
+     //   i -> setSpdAuth(ctc_wayside.speedCTC, ctc_wayside.authCTC);
+ //   }
 
 }
 

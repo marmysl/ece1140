@@ -24,6 +24,7 @@ class TrackController
         std::vector<int> cntrl_blocks;
         std::vector<int> cntrl_switches;
         int dest_block;
+        bool route;
         int start_block;
 		int block_count;
 		int section_length;

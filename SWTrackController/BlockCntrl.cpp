@@ -46,7 +46,7 @@ int BlockCntrl::getRes() {
 
 void BlockCntrl::setCircuit() {
 
-    if (block_num == 15 || block_num == 10) {
+   /* if (block_num == 15 || block_num == 10) {
         block_speed = 0;
         block_authority = 0;
     }
@@ -54,12 +54,12 @@ void BlockCntrl::setCircuit() {
         block_speed = 40;
     }
     if (block_num < 10) {
-        block_authority = 10 - block_num - 1;
+        block_authority = 10 - block_num;
     }
     if (block_num >10) {
-        block_authority = 15 - block_num - 1;
+        block_authority = 15 - block_num;
     }
-
+*/
     TrackModel::TrackCircuitData data = TrackModel::TrackCircuitData::fromFloat(block_speed, block_authority);
 	
     TrackModel::setTrackCircuit(line, block_num, data);
