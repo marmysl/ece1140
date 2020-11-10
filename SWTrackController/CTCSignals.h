@@ -15,6 +15,7 @@ public:
     bool update_flag;
     float speedCTC;
     float authCTC;
+    int exitBlock;
     bool r1;
     bool r2;
 
@@ -22,6 +23,7 @@ public:
     bool getRoute(int);
     float getSpeed();
     float getAuth();
+    int getExit();
 
 };
 

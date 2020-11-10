@@ -27,6 +27,7 @@ class HWTrackController : public QObject, public ITrackController
         HWTrackController();
         ~HWTrackController();
         void writeData();
+        Region* returnRegion();
 
     public slots:
         void recieveData( char *buf, qint64 len );
