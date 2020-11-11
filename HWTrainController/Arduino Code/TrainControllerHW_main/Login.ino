@@ -112,7 +112,7 @@ bool enterKpKi()
   //Prompt user to enter in Ki
   lcd.clear();
   lcd.setCursor(0, 0); 
-  lcd.print("Enter Ki:");
+  lcd.print("Enter Ki: (300)");
   do
   {
     do
@@ -129,7 +129,7 @@ bool enterKpKi()
   //Prompt user to enter in Kp
   lcd.clear();
   lcd.setCursor(0, 0); 
-  lcd.print("Enter Kp:");
+  lcd.print("Enter Kp: (400)");
   i = 0;
   do
   {
@@ -170,13 +170,11 @@ bool enterKpKi()
 
 void login()
 {
-  digitalWrite(loginSuccess, LOW);
   
   while(!engineerLogin());
   while(!enterKpKi());
   while(!driverLogin());
 
-  digitalWrite(loginSuccess, HIGH);
 }
 
 void logout()

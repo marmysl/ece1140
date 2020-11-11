@@ -22,8 +22,8 @@ void speedRegulatorSetup()
 
 void joystick()
 {
-  if(analogRead(X_pin) < 100) joystickCount--;
-  else if(analogRead(X_pin) > 900) joystickCount++;
+  if(analogRead(X_pin) < 50) joystickCount--;
+  else if(analogRead(X_pin) > 1000) joystickCount++;
   
   //Handles the joystick swiping (left/right joystick motions display different menus
   if(abs(joystickCount) % 4 == 0)
@@ -32,21 +32,21 @@ void joystick()
     lcd.setCursor(0,0);
     lcd.print("Current Speed: ");
     lcd.setCursor(0,1);
-    lcd.print(currentSpeed);
+    lcd.print(currentSpeed + " mi/hr");
     lcd.setCursor(0,2);
-    lcd.print("Setpoint Speed: ");
+    lcd.print("Setpoint Speed:");
     lcd.setCursor(0,3);
-    lcd.print(setpointSpeed);
+    lcd.print(setpointSpeed + " mi/hr");
   }
   else if(abs(joystickCount) % 4 == 1)
   {
     lcd.clear();
     lcd.setCursor(0,0);
-    lcd.print("Kp: " + Kp);
+    lcd.print("Kp: " + Kp + " W/(m/s)");
     lcd.setCursor(0,1);
-    lcd.print("Ki: " + Ki);
+    lcd.print("Ki: " + Ki + " W/m");
     lcd.setCursor(0,2);
-    lcd.print("Power:" + power);
+    lcd.print("Power:" + power + " kW");
   }
   else if(abs(joystickCount) % 4 == 2)
   {
@@ -54,19 +54,19 @@ void joystick()
     lcd.setCursor(0,0);
     lcd.print("Commanded Speed: ");
     lcd.setCursor(0,1);
-    lcd.print(commandedSpeed);
+    lcd.print(commandedSpeed + " m/s");
     lcd.setCursor(0,2);
     lcd.print("Authority: ");
     lcd.setCursor(0,3);
-    lcd.print(authority);
+    lcd.print(authority + " blocks");
   }
   else if(abs(joystickCount) % 4 == 3)
   {
     lcd.clear();
     lcd.setCursor(0,0);
-    lcd.print("Distance to Station: ");
+    lcd.print("Next Station: ");
     lcd.setCursor(0,1);
-    lcd.print("Not developed");
+    lcd.print("Dormont");
   }
   delay(200);
 }

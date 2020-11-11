@@ -84,8 +84,8 @@ void TrainController::recieveData( char *buf, qint64 len )
              if(data.substr(2,1) == "1") trainModel -> setHeater(1);
              else trainModel -> setHeater(0);
 
-             if(data.substr(3,1) == "1") trainModel -> setDoorStatus(1);
-             else trainModel -> setDoorStatus(0);
+             if(data.substr(3,1) == "1") trainModel -> setLeftDoorStatus(1);
+             else trainModel -> setLeftDoorStatus(0);
 
              if(data.substr(4,1) == "1") trainModel -> setAdvertisements(1);
              else trainModel -> setAdvertisements(0);
@@ -111,8 +111,8 @@ void TrainController::recieveData( char *buf, qint64 len )
                  trainModel -> setEmergencyBrake(0);
              }
 
-             if(data.substr(23,1) == "1") trainModel -> setDoorStatus(1);
-             else trainModel -> setDoorStatus(0);
+             if(data.substr(23,1) == "1") trainModel -> setRightDoorStatus(1);
+             else trainModel -> setRightDoorStatus(0);
            }
 
 
@@ -147,7 +147,7 @@ void TrainController::writeData()
     outgoing_s += to_string(trainModel -> getCabinLights());
     outgoing_s += to_string(trainModel -> getAC());
     outgoing_s += to_string(trainModel -> getHeater());
-    outgoing_s += to_string(trainModel -> getDoorStatus());
+    outgoing_s += to_string(trainModel -> getLeftDoorStatus());
     outgoing_s += to_string(trainModel -> getAdvertisements());
     outgoing_s += to_string(trainModel -> getAnnouncements());
 
@@ -183,9 +183,7 @@ void TrainController::writeData()
     while(outgoing_s.length() <= 35) outgoing_s += " ";
 
     outgoing_s+= to_string(trainModel -> getServiceBrake());
-    std::cout << "Service Brake: " << trainModel -> getServiceBrake() << std::endl;
     outgoing_s+= to_string(trainModel -> getEmergencyBrake());
-    std::cout << "Emergency Brake: " << trainModel -> getEmergencyBrake() << std::endl;
 
     string power(to_string(speedRegulator -> getPowerCmd()), 0, 6);
     outgoing_s += power;
@@ -197,7 +195,7 @@ void TrainController::writeData()
 
     outgoing_s += to_string(mode -> getMode());
 
-    outgoing_s += to_string(trainModel -> getDoorStatus());
+    outgoing_s += to_string(trainModel -> getRightDoorStatus());
 
     outgoing_s += "\n";
 
