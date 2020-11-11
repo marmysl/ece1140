@@ -62,8 +62,13 @@ void Region :: initialize(int db, float ss, float ac) {
     //setAuthority(ac, db);
     //setCommandedSpeed(ss, db);
 
-    int i = 0;
-    while (i <= db){
+    // Yard Speed
+    blocks[0].sugSpeed = 5;
+    blocks[0].commSpeed = 5;
+    blocks[0].auth = 2;
+
+    int i = 1;
+    while (i <= db){ 
         blocks[i].sugSpeed = ss;
         blocks[i].commSpeed = ss;
         blocks[i].auth = ac;
@@ -71,6 +76,7 @@ void Region :: initialize(int db, float ss, float ac) {
         i++;
     }
 
+    // If past destination, speed and authority are 0
     unsigned int j;
     for (j = db + 1; j < blocks.size(); j++){
         blocks[j].sugSpeed = 0;

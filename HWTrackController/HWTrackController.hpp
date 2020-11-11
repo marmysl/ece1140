@@ -7,7 +7,7 @@
 #include <stdio.h>
 #include <string>
 #include <QObject>
-#include "Region.hpp"
+#include "HWTrackController_main.h"
 #include "SerialPort.hpp"
 
 using namespace std;
@@ -19,15 +19,14 @@ class HWTrackController : public QObject, public ITrackController
     private:
         char incomingData[ARDUINO_BUF_LENGTH];
         char outgoingData[ARDUINO_BUF_LENGTH];
-        Region *reg;
 
         QTimer *writeTimer;
+        Region *regptr;
 
     public:
         HWTrackController();
         ~HWTrackController();
         void writeData();
-        Region* returnRegion();
 
     public slots:
         void recieveData( char *buf, qint64 len );
