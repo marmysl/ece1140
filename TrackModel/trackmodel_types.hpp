@@ -131,7 +131,7 @@ namespace TrackModel {
     enum PlatformSide
     {
         PS_LEFT = -1,
-        PS_NONE = 0,
+        PS_BOTH = 0,
         PS_RIGHT = 1
     };
 
@@ -143,6 +143,6 @@ namespace TrackModel {
     inline char charForSide( const PlatformSide& side )
     {
         if( side ) return (side == PS_LEFT) ? 'L' : 'R';
-        else return 'N';
+        else return 'B';
     }
 }

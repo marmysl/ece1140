@@ -75,7 +75,7 @@ namespace TrackModel {
         Station *station;
         PlatformSide side;
 
-        PlatformData() : station(nullptr), side(PS_NONE) {}
+        PlatformData() : station(nullptr), side(PS_BOTH) {}
 
         inline bool exists() { return (station != nullptr); }
     };

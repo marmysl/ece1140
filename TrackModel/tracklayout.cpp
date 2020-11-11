@@ -314,15 +314,24 @@ void Route::loadLayout( std::string fileName ) {
         // check for station
         if( !station.empty() ) {
             size_t colonIdx = station.find(':');
-            PlatformSide side = PS_RIGHT;
+            PlatformSide side = PS_BOTH;
             if( colonIdx != std::string::npos )
             {
                 // found colon
                 char sideC = station.at(colonIdx + 1);
                 if( sideC == 'L' ) side = PS_LEFT;
+                else if( sideC == 'R' ) side = PS_RIGHT;
+                else
+                {
+                    buf.str(std::string());
+                    buf.clear();
+                    buf << "Invalid platform side on line " << fileLine;
+                    throw LayoutParseError(buf.str());
+                }
                 station = station.substr(0, colonIdx);
             }
 
+            // check for existing station
             for( Station *s : stations )
             {
                 if( !station.compare(s->name) )

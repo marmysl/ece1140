@@ -334,7 +334,13 @@ void RouteMapView::drawBlock( BlockRepr &repr, QPainter *painter )
         painter->fillRect(outline, STATION_COLOR);
 
         QRect statTextOut(repr.left - BLOCK_LENGTH / 2, repr.top - BLOCK_THICKNESS - TEXT_THICK, BLOCK_LENGTH * 2, TEXT_THICK);
-        QString stationLabel = QString("%0:%1").arg(QString::fromStdString(platform.station->name)).arg(charForSide(platform.side));
+        QString stationLabel;
+        if( platform.side != PS_BOTH )
+        {
+            stationLabel = QString("%0:%1").arg(QString::fromStdString(platform.station->name)).arg(charForSide(platform.side));
+        }
+        else stationLabel = QString::fromStdString(platform.station->name);
+
         painter->drawText(statTextOut, Qt::AlignHCenter | Qt::AlignBottom, stationLabel);
     }
 
