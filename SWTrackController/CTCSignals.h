@@ -7,22 +7,20 @@
 
 
 class CTCSignals {
-private:
-    void setFlag(bool);
+
 public:
 
-    bool update_flag;
     float speedCTC;
-    float authCTC;
-    int exitBlock;
-    bool r1;
-    bool r2;
+    int authCTC;
+    int green_exit[12];
+    int red_exit[10];
+    int blue_exit[1];
 
-    void setSignal(int, float, int);
-    bool getRoute(int);
+
+    int setSignal(std::string &, int[], float, int);
     float getSpeed();
-    float getAuth();
-    int getExit();
+    int getAuth();
+    int getExit(int, std::string &);
 
 
 };
