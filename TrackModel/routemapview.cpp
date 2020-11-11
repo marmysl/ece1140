@@ -2,7 +2,7 @@
 #include <unordered_set>
 #include <QPainter>
 
-RouteMapView::RouteMapView(QWidget *parent) : QWidget(parent), yardStat(yard)
+RouteMapView::RouteMapView(QWidget *parent) : QWidget(parent)
 {
 
 }
@@ -49,7 +49,8 @@ void RouteMapView::setRoute( RouteStatus *route )
     }
     else
     {
-        BlockRepr yardRepr(left, top, BLK_FORWARD, &yardStat);
+        BlockStatus *yardStat = route->getBlockStatus(0);
+        BlockRepr yardRepr(left, top, BLK_FORWARD, yardStat);
         blocks.insert({0, yardRepr});
         int lnY = top + BLOCK_THICKNESS / 2;
         links.push_back(LinkRepr(left + BLOCK_LENGTH, lnY, left + BLOCK_LENGTH + LINK_WIDTH, lnY));
@@ -103,7 +104,7 @@ void RouteMapView::setRoute( RouteStatus *route )
                         if( searchedNodes.find(straight->id) == searchedNodes.end() )
                         {
                             // didn't process this block
-                            BlockStatus *sStat = straight->id ? route->getBlockStatus(straight->id) : &yardStat;
+                            BlockStatus *sStat = route->getBlockStatus(straight->id);
                             BlockDir entryDir = curBlk->layoutBlock->getEntryDir(straight);
                             nextColumn[row] = {sStat, entryDir};
                             hasNext = true;
@@ -117,7 +118,7 @@ void RouteMapView::setRoute( RouteStatus *route )
                         if( searchedNodes.find(diverge->id) == searchedNodes.end() )
                         {
                             // didn't process this block
-                            BlockStatus *sStat = diverge->id ? route->getBlockStatus(diverge->id) : &yardStat;
+                            BlockStatus *sStat = route->getBlockStatus(diverge->id);
                             BlockDir entryDir = curBlk->layoutBlock->getEntryDir(diverge);
 
                             nextColumn[branchRow] = {sStat, entryDir};
@@ -157,7 +158,7 @@ void RouteMapView::setRoute( RouteStatus *route )
                         else
                         {
                             // didn't process this block
-                            BlockStatus *nStat = next->id ? route->getBlockStatus(next->id) : &yardStat;
+                            BlockStatus *nStat = route->getBlockStatus(next->id);
                             BlockDir entryDir = curBlk->layoutBlock->getEntryDir(next);
                             nextColumn[row] = {nStat, entryDir};
 

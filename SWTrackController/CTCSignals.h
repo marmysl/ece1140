@@ -7,17 +7,23 @@
 
 
 class CTCSignals {
-
+private:
+    void setFlag(bool);
 public:
 
+    bool update_flag;
     float speedCTC;
-    int authCTC;
-    bool routeCTC;
+    float authCTC;
+    int exitBlock;
+    bool r1;
+    bool r2;
 
-    void setSignal(bool, float, int);
+    void setSignal(int, float, int);
     bool getRoute(int);
     float getSpeed();
-    int getAuth();
+    float getAuth();
+    int getExit();
+
 
 };
 

@@ -16,6 +16,5 @@ int init_CTC(int argc, char *argv[])
 {
     ctcMainWindow = new MainWindow();
     ctcMainWindow->show();
-
     return 0;
 }

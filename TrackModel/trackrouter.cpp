@@ -11,13 +11,10 @@ TrainPathInfo::~TrainPathInfo() {}
 
 TrackRouter::TrackRouter( Route *route ) : layout(route)
 {
-    nodeCount = layout->blocks.size() + 1;
+    nodeCount = layout->blocks.size();
     nodeList = new PathNode[nodeCount];
 
-    nodeList[0].block = yard;
-    nodeMap.insert({yard, nodeList});
-
-    int i = 1;
+    int i = 0;
     for( auto &kvp : layout->blocks )
     {
         nodeList[i].block = kvp.second;

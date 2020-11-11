@@ -33,11 +33,13 @@ bool CTCMode::getMode(){
     return mode;
 }
 
-void CTCMode::automaticDispatch(){
-
+void CTCMode::automaticDispatch()
+{
+    mode = 0;
 }
 
-void CTCMode::manualDispatch(){
-
+void CTCMode::manualDispatch()
+{
+    mode = 1;
 }
 

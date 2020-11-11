@@ -8,13 +8,13 @@
 
 using namespace std;
 
-SWTrainController :: SWTrainController() //Constructor: creates train and executes GUI
+SWTrainController :: SWTrainController(int numCars, std::string lineType) //Constructor: creates train and executes GUI
 {
     cout << "Train Controller created" << endl;
     cout.flush();
 
     TrainControlWindow *w = new TrainControlWindow();
-    train = new Train(3); // create train object each time a TC is initialized
+    train = new Train(numCars, lineType); // create train object each time a TC is initialized
     w->train = train;
 
     w->show();

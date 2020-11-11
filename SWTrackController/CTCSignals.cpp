@@ -3,24 +3,24 @@
 #include <vector>
 
 
-void CTCSignals::setSignal(bool r, float s, int a) {
+void CTCSignals::setFlag(bool flag) {
+        update_flag = flag;
+}
 
+void CTCSignals::setSignal(int r, float s, int a) {
+        exitBlock = r;
         speedCTC = s;
         authCTC = a;
-        routeCTC= r;
-        std::cout << " This is set Signal SW Track Controller. This is the speed, authority and route from CTC.\n Speed: " << speedCTC << "\n Authority: " << authCTC << "\n Route: " << routeCTC << "\n";
 }
 
 float CTCSignals::getSpeed() {
     return speedCTC;
 }
 
-int CTCSignals::getAuth() {
+float CTCSignals::getAuth() {
     return authCTC;
 }
 
-bool CTCSignals::getRoute(int wayside_id) {
-    return routeCTC;
+int  CTCSignals::getExit() {
+    return exitBlock;
 }
-
-

@@ -16,12 +16,16 @@ public:
     double blockDist;
     double blockGrade;
     int blockNum;
+    TrackModel::Route *route;
+    TrackModel::Block *block;
+    TrackModel::BlockDir blockDir;
+    TrackModel::NextBlockData blockData;
     std::string lineType;
     uint64_t trackCircuitData;
     uint64_t beaconData;
     int numPassengers = 0;
 
-    TrainModelUpdateBlock();
+    TrainModelUpdateBlock(std::string);
     void updateTrackInfo(bool);
     void updateBlock(bool first);
     void blockLength();

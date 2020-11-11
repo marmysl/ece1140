@@ -49,7 +49,17 @@ void TrackModelDisplay::setRoute( TrackModel::RouteStatus *newRoute ) {
     for( auto &kvp : newRoute->blockMap ) blockSelectList.push_back(kvp.first);
     std::sort(blockSelectList.begin(), blockSelectList.end());
 
-    for( int &n : blockSelectList ) ui->blockSelector->addItem(QString::number(n));
+    for( int &n : blockSelectList )
+    {
+        if( n )
+        {
+            ui->blockSelector->addItem(QString::number(n));
+        }
+        else
+        {
+            ui->blockSelector->addItem(QString("0 (Yard)"));
+        }
+    }
 
     ui->stationSelector->clear();
     QStringList stationList;
@@ -308,7 +318,7 @@ void BlockGeoDialog::setBlock( TrackModel::Block *block )
     PlatformData& platform = block->platform;
     if( platform.exists() )
     {
-        QString stationStr = QString("%0%1").arg(QString::fromStdString(platform.station->name)).arg(charForSide(platform.side));
+        QString stationStr = QString("%0 (%1)").arg(QString::fromStdString(platform.station->name)).arg(charForSide(platform.side));
         ui->stationLabel->setText(stationStr);
     }
     else

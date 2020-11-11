@@ -12,8 +12,6 @@ namespace TrackModel {
     class Switch;
     class Linkable;
 
-    extern Block *yard;
-
     extern std::vector<Route *> routes;
 
     // Get the route with the given name

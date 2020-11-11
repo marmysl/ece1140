@@ -33,6 +33,9 @@ MainWindow::MainWindow(QWidget *parent)
     ui->btnCancel->setFont(font2);
 
     updateRoute();
+
+    //Added by Meara
+    ctc.setCTCMode(&m);
 }
 
 MainWindow::~MainWindow()
