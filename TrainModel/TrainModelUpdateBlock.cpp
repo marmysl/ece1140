@@ -9,6 +9,10 @@ TrainModelUpdateBlock::TrainModelUpdateBlock(std::string lineTypeNew) {
     blockDist = 0;
     blockGrade = 0;
     blockNum = 0;
+    route = TrackModel::getRoute(lineType);
+    block = route->getBlock(0);
+    blockDir = TrackModel::BLK_FORWARD;
+    updateTrackCircuit();
 }
 
 void TrainModelUpdateBlock::updateTrackInfo(bool inYard){
@@ -23,19 +27,20 @@ void TrainModelUpdateBlock::updateTrackInfo(bool inYard){
 
 void TrainModelUpdateBlock::updateBlock(bool first){
     if (!first){TrackModel::removeOccupancy(lineType, blockNum);}
-    blockNum = blockNum + 1;
+    blockData = block->getNextBlock(blockDir);
+    block = blockData.block;
+    blockDir = blockData.entryDir;
+    blockNum = block->id;
     TrackModel::addOccupancy(lineType, blockNum);
 }
 
 void TrainModelUpdateBlock::blockLength(){
-    TrackModel::Route *blueLine = TrackModel::getRoute(lineType);
-    TrackModel::Block* blockInfo = blueLine -> getBlock(blockNum);
+    TrackModel::Block* blockInfo = route -> getBlock(blockNum);
     blockDist = blockInfo -> length;
 }
 
 void TrainModelUpdateBlock::blockGradeUp(){
-    TrackModel::Route *blueLine = TrackModel::getRoute(lineType);
-    TrackModel::Block* blockInfo = blueLine -> getBlock(blockNum);
+    TrackModel::Block* blockInfo = route -> getBlock(blockNum);
     blockGrade = blockInfo -> grade;
 }
 

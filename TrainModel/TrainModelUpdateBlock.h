@@ -16,6 +16,10 @@ public:
     double blockDist;
     double blockGrade;
     int blockNum;
+    TrackModel::Route *route;
+    TrackModel::Block *block;
+    TrackModel::BlockDir blockDir;
+    TrackModel::NextBlockData blockData;
     std::string lineType;
     uint64_t trackCircuitData;
     uint64_t beaconData;
