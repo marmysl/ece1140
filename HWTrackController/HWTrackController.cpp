@@ -6,13 +6,9 @@
 #include <string>
 #include <QTimer>
 
-//Region reg;
-
 HWTrackController::HWTrackController()
 {
     //regptr = &reg;
-
-
 
     writeTimer = new QTimer();
     writeTimer->setInterval(ARDUINO_WAIT_TIME);
@@ -27,7 +23,7 @@ HWTrackController::HWTrackController()
 HWTrackController::~HWTrackController()
 {
     delete writeTimer;
-   // delete regptr;
+    //delete regptr;
 }
 
 void HWTrackController::recieveData( char *buf, qint64 len )
@@ -79,7 +75,12 @@ void HWTrackController::writeData()
     //outgoing_s += "1A0412.011.030.001";
     //outgoing_s += "\n";
 
-    //outgoing_s += to_string(regptr->detectTrain(regptr->getCurrentBlock()));
+//    outgoing_s += to_string(regptr->detectTrain(regptr->getCurrentBlock(10)));
+//    outgoing_s += regptr->getSection(10);
+//    outgoing_s += to_string(regptr->getCurrentBlock(10));
+//    outgoing_s +=
+
+
 
     //std::cout << "Outgoing Track Controller: " << outgoing_s << std::endl;
 

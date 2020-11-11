@@ -65,7 +65,7 @@ void Region :: initialize(int db, float ss, float ac) {
     // Yard Speed
     blocks[0].sugSpeed = 5;
     blocks[0].commSpeed = 5;
-    blocks[0].auth = 2;
+    blocks[0].auth = 1;
 
     int i = 1;
     while (i <= db){ 
@@ -82,7 +82,7 @@ void Region :: initialize(int db, float ss, float ac) {
         blocks[j].sugSpeed = 0;
         blocks[j].commSpeed = 0;
         blocks[j].auth = 0;
-        std:: cout << "Block " << i << " Speed and Authority: " << blocks[j].commSpeed << ", " << blocks[j].auth << std::endl;
+        std:: cout << "Block " << j << " Speed and Authority: " << blocks[j].commSpeed << ", " << blocks[j].auth << std::endl;
     }
 
     setCircuit();
