@@ -31,11 +31,12 @@ SpeedRegulator::SpeedRegulator(Train *t, CTCMode *m)
 
     //Initialize the maxPower to be 120,000 watts
     maxPower = 120000; //this value comes from Flexity 2 Tram datasheet
+
 }
 void SpeedRegulator::calcPowerCmd()
 {
     //Only calculate a nonzero power while the train has a nonzero authority and the brake is not being pulled
-    if(  ((trainModel -> sendTrackCircuit() & 0xffffffff) > 0) && (trainModel -> getServiceBrake() != 1) && (trainModel -> getEmergencyBrake() != 1) )
+    if(  ((trainModel -> sendTrackCircuit() & 0xffffffff) / 4096 > 0) && (trainModel -> getServiceBrake() != 1) && (trainModel -> getEmergencyBrake() != 1) )
     {
         //Call the chooseVcmd() function to ensure there is no stale data for Vcmd
         chooseVcmd();
@@ -126,14 +127,14 @@ void SpeedRegulator::incSetpointSpeed(double inc)
 void SpeedRegulator::chooseVcmd()
 {
     //If the train is in automatic mode, speed is automatically set to the commanded speed
-    if(mode -> getMode() == 0) Vcmd = trainModel -> sendTrackCircuit() >> 32;
+    if(mode -> getMode() == 0) Vcmd = (trainModel -> sendTrackCircuit() >> 32) / 4096;
 
     //If the train is in manual mode, Vmd is chosen differently
     else
     {
         //If the setpoint speed is greater than or equal to the commanded speed, the lesser of the speeds is the commanded speed
         //The commmanded speed will be Vcmd and will generate the power command
-        if(setpointSpeed >= trainModel -> sendTrackCircuit() >> 32) Vcmd = trainModel -> sendTrackCircuit() >> 32;
+        if(setpointSpeed >= (trainModel -> sendTrackCircuit() >> 32) / 4096) Vcmd = (trainModel -> sendTrackCircuit() >> 32) / 4096;
 
         //If the commanded speed is greater than the setpoint speed, then the velocity for the power command will be the setpoint speed
         else Vcmd = setpointSpeed;
