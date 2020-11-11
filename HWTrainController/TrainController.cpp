@@ -151,7 +151,7 @@ void TrainController::writeData()
     outgoing_s += to_string(trainModel -> getAdvertisements());
     outgoing_s += to_string(trainModel -> getAnnouncements());
 
-    string authority(to_string(  (trainModel -> sendTrackCircuit() & 0xffffffff) ), 0, 5);
+    string authority(to_string(  (( trainModel -> sendTrackCircuit() & 0xffffffff) / 4096) ), 0, 5);
     outgoing_s += authority;
 
     while(outgoing_s.length() <= 10) outgoing_s += " ";
@@ -166,7 +166,7 @@ void TrainController::writeData()
 
     while(outgoing_s.length() <= 20) outgoing_s += " ";
 
-    double speed = (trainModel -> sendTrackCircuit() >> 32);
+    double speed = ((trainModel -> sendTrackCircuit() >> 32) / 4096);
     string commandedSpeed( to_string(speed), 0, 5 );
     std::cout << "TrackCircuit = " << trainModel -> sendTrackCircuit() << std::endl;
     outgoing_s += commandedSpeed;
