@@ -21,13 +21,18 @@ class TrainController : public QObject, public ITrainController
     Q_OBJECT
 
     private:
+
+        //Arrays for serial port communication
         char incomingData[ARDUINO_BUF_LENGTH];
         char outgoingData[ARDUINO_BUF_LENGTH];
+
+        //Pointers to classes to distribute arduino data
         Train *trainModel;
         SpeedRegulator *speedRegulator;
         BeaconDecoder *beacon;
         CTCMode *mode;
 
+        //Timer to write/read data
         QTimer *writeTimer;
 
 	public:
@@ -38,6 +43,9 @@ class TrainController : public QObject, public ITrainController
 
         //Method that writes data to the Serial Port
         void writeData();
+
+        //Methods used for testing:
+
 
     public slots:
 

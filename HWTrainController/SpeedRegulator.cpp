@@ -1,7 +1,7 @@
 #include "SpeedRegulator.h"
 #include <iostream>
 
-SpeedRegulator::SpeedRegulator(Train *t, CTCMode *m)
+SpeedRegulator::SpeedRegulator(Train *t, bool m)
 {
     //CalculatePowerCmd();
     powerCmd = 0;
@@ -26,6 +26,9 @@ SpeedRegulator::SpeedRegulator(Train *t, CTCMode *m)
     //Initialize the period T to be 0
     T = 0;
 
+    //Initialize Vcmd to 0
+    Vcmd = 0;
+
     //Initialize the prevTime to be the current time
     prevTime = systemClock -> currentTime();
 
@@ -39,12 +42,18 @@ SpeedRegulator::SpeedRegulator(Train *t, CTCMode *m)
 
     //Pull the service brake until train starts moving
     pullServiceBrake();
+
+    //Initialize the mode to be 0
+    mode = m;
+
+    //Decode the track circuit
+    decodeTrackCircuit();
 }
 void SpeedRegulator::calcThreePowers()
 {
     //CALCULATE POWER 0
     //Only calculate a nonzero power while the train has a nonzero authority and the brake is not being pulled
-    if(  ((trainModel -> sendTrackCircuit() & 0xffffffff) > 0) && (trainModel -> getServiceBrake() != 1) && (trainModel -> getEmergencyBrake() != 1) )
+    if(  (getAuthority() > 0) && (trainModel -> getServiceBrake() != 1) && (trainModel -> getEmergencyBrake() != 1) )
     {
         //Call the chooseVcmd() function to ensure there is no stale data for Vcmd
         chooseVcmd();
@@ -73,14 +82,15 @@ void SpeedRegulator::calcThreePowers()
         double power0 = (Kp * ek) + (Ki * uk);
 
         //Ensures the power command is not larger than the capacity of the train
-        if(powerCmd < 120000) powers[0] = power0;
+        if(power0 <= 120000 && power0 >= -120000) powers[0] = power0;
+        else if(power0 < -120000) powers[0] = -120000;
         else powers[0] = 120000;
     }
     else powers[0] = 0;
 
     //CALCULATE POWER 1
     //Only calculate a nonzero power while the train has a nonzero authority and the brake is not being pulled
-    if(  ((trainModel -> sendTrackCircuit() & 0xffffffff) > 0) && (trainModel -> getServiceBrake() != 1) && (trainModel -> getEmergencyBrake() != 1) )
+    if(  (getAuthority() > 0) && (trainModel -> getServiceBrake() != 1) && (trainModel -> getEmergencyBrake() != 1) )
     {
         //Call the chooseVcmd() function to ensure there is no stale data for Vcmd
         chooseVcmd();
@@ -109,14 +119,15 @@ void SpeedRegulator::calcThreePowers()
         double power1 = (Kp * ek) + (Ki * uk);
 
         //Ensures the power command is not larger than the capacity of the train
-        if(powerCmd < 120000) powers[1] = power1;
+        if(power1 <= 120000 && power1 >= -120000) powers[1] = power1;
+        else if(power1 < -120000) powers[1] = -120000;
         else powers[1] = 120000;
     }
     else powers[1] = 0;
 
     //CALCULATE POWER 1
     //Only calculate a nonzero power while the train has a nonzero authority and the brake is not being pulled
-    if(  ((trainModel -> sendTrackCircuit() & 0xffffffff) > 0) && (trainModel -> getServiceBrake() != 1) && (trainModel -> getEmergencyBrake() != 1) )
+    if(  (getCommandedSpeed() > 0) && (trainModel -> getServiceBrake() != 1) && (trainModel -> getEmergencyBrake() != 1) )
     {
         //Call the chooseVcmd() function to ensure there is no stale data for Vcmd
         chooseVcmd();
@@ -145,7 +156,9 @@ void SpeedRegulator::calcThreePowers()
         double power2 = (Kp * ek) + (Ki * uk);
 
         //Ensures the power command is not larger than the capacity of the train
-        if(powerCmd < 120000) powers[2] = power2;
+        //Ensures the power command is not larger than the capacity of the train
+        if(power2 <= 120000 && power2>= -120000) powers[2] = power2;
+        else if(power2 < -120000) powers[2] = -120000;
         else powers[2] = 120000;
     }
     else powers[2] = 0;
@@ -223,14 +236,15 @@ void SpeedRegulator::incSetpointSpeed(double inc)
 void SpeedRegulator::chooseVcmd()
 {
     //If the train is in automatic mode, speed is automatically set to the commanded speed
-    if(mode -> getMode() == 0) Vcmd = trainModel -> sendTrackCircuit() >> 32;
+    if(mode == 0 && getCommandedSpeed() < 43)  Vcmd = getCommandedSpeed();
+    else if(mode == 0 && getCommandedSpeed() >= 43) Vcmd = 43;
 
     //If the train is in manual mode, Vmd is chosen differently
     else
     {
         //If the setpoint speed is greater than or equal to the commanded speed, the lesser of the speeds is the commanded speed
         //The commmanded speed will be Vcmd and will generate the power command
-        if(setpointSpeed >= trainModel -> sendTrackCircuit() >> 32) Vcmd = trainModel -> sendTrackCircuit() >> 32;
+        if(setpointSpeed >= getCommandedSpeed()) Vcmd = getCommandedSpeed();
 
         //If the commanded speed is greater than the setpoint speed, then the velocity for the power command will be the setpoint speed
         else Vcmd = setpointSpeed;
@@ -265,4 +279,28 @@ void SpeedRegulator::pullEmergencyBrake()
 
     //Set the power in the train model to 0
     powerCmdZero();
+}
+void SpeedRegulator::decodeTrackCircuit()
+{
+    commandedSpeed = (trainModel -> sendTrackCircuit() & 0xffffffff) / 4096;
+    authority = (trainModel -> sendTrackCircuit() >> 32) / 4096;
+}
+
+int SpeedRegulator::getAuthority()
+{
+    decodeTrackCircuit();
+    return authority;
+}
+double SpeedRegulator::getCommandedSpeed()
+{
+    decodeTrackCircuit();
+    return commandedSpeed;
+}
+bool SpeedRegulator::getMode()
+{
+    return mode;
+}
+void SpeedRegulator::setMode(bool m)
+{
+    mode = m;
 }

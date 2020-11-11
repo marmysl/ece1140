@@ -1,6 +1,6 @@
-#include "BeaconDecoderMoc.h"
+#include "BeaconDecoder.h"
 
-BeaconDecoderMoc::BeaconDecoderMoc()
+BeaconDecoder::BeaconDecoder()
 {
     //Initialize the member variables to 0
     nextStation = "";
@@ -8,7 +8,7 @@ BeaconDecoderMoc::BeaconDecoderMoc()
 }
 
 //Method to decode the beacon data
-void BeaconDecoderMoc::decodeBeacon(uint8_t data[64])
+void BeaconDecoder::decodeBeacon(uint8_t data[64])
 {
     //Assuming:
     //data[1] and data[0] = next station
@@ -20,7 +20,7 @@ void BeaconDecoderMoc::decodeBeacon(uint8_t data[64])
 }
 
 //Method to generate an announcement from the beacon data
-std::string BeaconDecoderMoc::getAnnouncement()
+std::string BeaconDecoder::getAnnouncement()
 {
     return "The next station is " + nextStation + ". Thank you for choosing Port Authority.";
 }

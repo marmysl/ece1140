@@ -16,8 +16,8 @@ TEMPLATE = app
 
 SOURCES += \
     tst_testcabincontrols.cpp \
-    ../mocs/TrainMoc.cpp \
+    ../mocs/Train.cpp \
     ../mocs/TrainControllerMoc.cpp \
-    ../mocs/SpeedRegulatorMoc.cpp \
-    ../mocs/BeaconDecoderMoc.cpp
+    ../mocs/SpeedRegulator.cpp \
+    ../mocs/BeaconDecoder.cpp
 

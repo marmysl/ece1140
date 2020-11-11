@@ -6,14 +6,11 @@
 #include <QObject>
 #include <QTimer>
 #include <QDateTime>
-#include "../CTCOffice/ctcoffice/CTCMode.h"
-
 
 class SpeedRegulator
 {
 private:
         Train *trainModel;
-        CTCMode *mode;
         double setpointSpeed;
         double Vcmd;
         double powerCmd;
@@ -28,13 +25,14 @@ private:
         QDateTime prevTime;
         QDateTime currTime;
         double powers[3];
-
-        //In this class, power is given in Watts
+        int authority;
+        double commandedSpeed;
+        bool mode;
 
     public:
 
         //Constructor
-        SpeedRegulator(Train*, CTCMode*);
+        SpeedRegulator(Train*, bool);
 
         //Method to choose proper Vcmd
         void chooseVcmd();
@@ -58,12 +56,22 @@ private:
         double getVcmd();
         double getKp();
         double getKi();
+        double getTrackCircuitData();
+        double getCommandedSpeed();
+        int getAuthority();
+        bool getMode();
 
         //Method to pull the service brake
         void pullServiceBrake();
 
         //Method to pull the emergency brake
         void pullEmergencyBrake();
+
+        //Method to decode track circuit data
+        void decodeTrackCircuit();
+
+        //Method to set the mode of the operation
+        void setMode(bool m);
 
 };
 #endif

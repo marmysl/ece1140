@@ -9,11 +9,11 @@
 
 TrainController::TrainController(CTCMode *m)
 {
-    //Create objects and assign them to pointers
+  //Create objects and assign them to pointers
 
     trainModel = new Train(5);
     mode = m;
-    speedRegulator = new SpeedRegulator(trainModel, mode);
+    speedRegulator = new SpeedRegulator(trainModel, mode -> getMode());
     beacon = new BeaconDecoder();
 
     writeTimer = new QTimer();
@@ -72,46 +72,64 @@ void TrainController::recieveData( char *buf, qint64 len )
 
         if(data.length() == 26)
         {
-             std::cout << "Incoming: " << data << std::endl;
+             //Cabin Lights
              if(data.substr(0,1) == "1") trainModel -> setCabinLights(1);
              else trainModel -> setCabinLights(0);
 
+             //Cabin AC
              if(data.substr(1,1) == "1") trainModel -> setAC(1);
              else trainModel -> setAC(0);
 
+             //Cabin Heater
              if(data.substr(2,1) == "1") trainModel -> setHeater(1);
              else trainModel -> setHeater(0);
 
+             //Door Status - Left
              if(data.substr(3,1) == "1") trainModel -> setDoorStatus(1);
              else trainModel -> setDoorStatus(0);
 
+             //Door Status - Right
              if(data.substr(23,1) == "1") trainModel -> setDoorStatus(1);
              else trainModel -> setDoorStatus(0);
 
+             //Advertisement Status
              if(data.substr(4,1) == "1") trainModel -> setAdvertisements(1);
              else trainModel -> setAdvertisements(0);
 
+             //Announcement Status
              if(data.substr(5,1) == "1") trainModel -> setAnnouncements(1, beacon -> getAnnouncement());
              else trainModel -> setAnnouncements(0,beacon->getAnnouncement());
 
+             //Increase Setpoint Speed
              if(data.substr(16,1) == "1") speedRegulator -> incSetpointSpeed(5);
 
+             //Decrease Setpoint Speed
              if(data.substr(17,1) == "1") speedRegulator -> incSetpointSpeed(-5);
 
-             speedRegulator -> setKpAndKi(std::stod(data.substr(6,5)), std::stod(data.substr(11,5)));
+             //Adjust Kp and Ki
+             speedRegulator -> setKpAndKi(std::stof(data.substr(6,5)), std::stof(data.substr(11,5)));
 
+             //Pull Breaks
              if(data.substr(18,1) == "1") speedRegulator -> pullServiceBrake();
              if(data.substr(19,1) == "1") speedRegulator -> pullEmergencyBrake();
+
+             //Resolve failure
              if(data.substr(20,1) == "1") trainModel -> setSystemFailure(0);
+
+             //Headlights
              if(data.substr(21,1) == "1") trainModel -> setHeadlights(1);
              else trainModel -> setHeadlights(0);
 
+             //Release brakes
              if(data.substr(22,1) == "1")
              {
                  trainModel -> setServiceBrake(0);
                  trainModel -> setEmergencyBrake(0);
              }
            }
+
+        //Update the mode of operation
+        speedRegulator -> setMode(mode -> getMode());
 
     }
 }
@@ -138,8 +156,9 @@ void TrainController::writeData()
     //char 45 = headlights
     //char 46 = mode
     //char 47 = cabinDoorsClosedRight
-    //char 47 = newline
+    //char 48 = newline
 
+    //Create a string to add outgoing data to
     string outgoing_s = "";
     outgoing_s += to_string(trainModel -> getCabinLights());
     outgoing_s += to_string(trainModel -> getAC());
@@ -148,35 +167,49 @@ void TrainController::writeData()
     outgoing_s += to_string(trainModel -> getAdvertisements());
     outgoing_s += to_string(trainModel -> getAnnouncements());
 
+    //Retrieve authority over the track circuit
     string authority(to_string(trainModel -> sendTrackCircuit() & 0xffffffff), 0, 5);
     outgoing_s += authority;
 
+    //Fill in any missing characters with spaces
     while(outgoing_s.length() <= 10) outgoing_s += " ";
 
+    //Get Ki value
     string Kp(to_string(speedRegulator -> getKp()), 0, 5);
     outgoing_s += Kp;
 
+    //Fill in any missing characters with spaces
     while(outgoing_s.length() <= 15) outgoing_s += " ";
 
+    //Get Kp value
     string Ki(to_string(speedRegulator -> getKi()), 0, 5);
     outgoing_s += Ki;
 
+    //Fill in any missing characters with spaces
     while(outgoing_s.length() <= 20) outgoing_s += " ";
 
+    //Retrieve commanded speed
     string commandedSpeed(to_string(trainModel -> sendTrackCircuit() >> 32), 0, 5);
     outgoing_s += commandedSpeed;
+
+    //Fill in any missing characters with spaces
     while(outgoing_s.length() <= 25) outgoing_s += " ";
 
+    //Retrieve setpoint speed
     string setpointSpeed(to_string(speedRegulator -> getSetpointSpeed()), 0, 5);
     outgoing_s += setpointSpeed;
 
+    //Fill in any missing characters with spaces
     while(outgoing_s.length() <= 30) outgoing_s += " ";
 
+    //Retrieve current speed
     string currentSpeed(to_string(trainModel -> getCurrentVelocity()), 0, 5);
     outgoing_s += currentSpeed;
 
+    //Fill in any missing characters with spaces
     while(outgoing_s.length() <= 35) outgoing_s += " ";
 
+    //Retrieve trainMdel data
     outgoing_s+= to_string(trainModel -> getServiceBrake());
     std::cout << "Service Brake: " << trainModel -> getServiceBrake() << std::endl;
     outgoing_s+= to_string(trainModel -> getEmergencyBrake());
@@ -184,6 +217,8 @@ void TrainController::writeData()
 
     string power(to_string(speedRegulator -> getPowerCmd()), 0, 6);
     outgoing_s += power;
+
+    //Fill in any missing characters with spaces
     while(outgoing_s.length() <= 43) outgoing_s += " ";
 
     outgoing_s += to_string(trainModel -> getSystemFailure());

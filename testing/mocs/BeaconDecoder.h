@@ -1,10 +1,10 @@
-#ifndef BEACONDECODERMOC_H
-#define BEACONDECODERMOC_H
+#ifndef BEACONDECODER_H
+#define BEACONDECODER_H
 
 #include <string>
 #include <cstdint>
 
-class BeaconDecoderMoc
+class BeaconDecoder
 {
     private:
         std::string nextStation;
@@ -13,7 +13,7 @@ class BeaconDecoderMoc
     public:
 
         //Constructor
-        BeaconDecoderMoc();
+        BeaconDecoder();
 
         //Method to decode the beacon data
         void decodeBeacon(uint8_t data[64]);
@@ -27,4 +27,4 @@ class BeaconDecoderMoc
 
 };
 
-#endif // BEACONDECODERMOC_H
+#endif // BEACONDECODER_H

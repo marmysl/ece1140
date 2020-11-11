@@ -2,23 +2,27 @@
 #define TRAINCONTROLLERMOC_H
 
 #include <string>
-#include "TrainMoc.h"
-#include "SpeedRegulatorMoc.h"
-#include "BeaconDecoderMoc.h"
+#include <QObject>
+#include "Train.h"
+#include "../../HWTrainController/SpeedRegulator.h"
+#include "../../HWTrainController/BeaconDecoder.h"
 
-class TrainControllerMoc
+class TrainControllerMoc : public QObject
 {
     private:
-        TrainMoc *trainModel;
-        BeaconDecoderMoc *beacon;
-        SpeedRegulatorMoc *speedRegulator;
+        Train *trainModel;
+        BeaconDecoder *beacon;
+        SpeedRegulator *speedRegulator;
+        bool mode;
     public:
-        TrainControllerMoc();
+        TrainControllerMoc(bool m);
         void receiveData(string simData);
         std::string writeData();
-        BeaconDecoderMoc* getBeacon();
-        SpeedRegulatorMoc* getSpeedRegulator();
-        TrainMoc* getTrainModel();
+        BeaconDecoder* getBeacon();
+        SpeedRegulator* getSpeedRegulator();
+        Train* getTrainModel();
+        void setMode(bool);
+        bool getMode();
 };
 
 #endif // TRAINCONTROLLERMOC_H

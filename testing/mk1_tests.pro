@@ -1,22 +1,18 @@
-
 TEMPLATE = subdirs
 
-<<<<<<< HEAD
-SUBDIRS += \
-	testLayout \
-	testRouting
-=======
+QT += core
+
 SOURCES += \
-    mocs/TrainMoc.cpp \
+    mocs/Train.cpp \
     mocs/TrainControllerMoc.cpp \
-    mocs/SpeedRegulatorMoc.cpp \
-    mocs/BeaconDecoderMoc.cpp
+    mocs/SpeedRegulator.cpp \
+    mocs/BeaconDecoder.cpp
 
 HEADERS += \
-    mocs/TrainMoc.h \
+    mocs/Train.h \
     mocs/TrainControllerMoc.h \
-    mocs/SpeedRegulatorMoc.h \
-    mocs/BeaconDecoderMoc.h
+    mocs/SpeedRegulator.h \
+    mocs/BeaconDecoder.h
 
 SUBDIRS += \
 	testCabinControls \
@@ -24,7 +20,5 @@ SUBDIRS += \
 	testRouting \
 	testSpeedRegulator
 
-
->>>>>>> origin/master
 
 CONFIG += ordered

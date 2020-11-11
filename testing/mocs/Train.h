@@ -1,12 +1,12 @@
-#ifndef TRAINMOC_H
-#define TRAINMOC_H
+#ifndef TRAIN_H
+#define TRAIN_H
 
 #include <chrono>
 #include <cstdint>
 #include <string>
 using namespace std;
 
-class TrainMoc
+class Train
 {
 public:
     int systemFailure;
@@ -15,7 +15,8 @@ public:
     bool serviceBrake;
     int numCars;
     double power;
-    bool doors;
+    bool doorsLeft;
+    bool doorsRight;
     bool lights;
     bool headlights;
     int failureCode;
@@ -27,12 +28,14 @@ public:
     uint8_t beaconData[64];
     uint64_t trackCircuit;
 
-    TrainMoc(int newNumCars);
+    Train(int newNumCars);
     uint64_t sendTrackCircuit();
     double getCurrentVelocity();
     void setPower(double newPower);             //Called by train controller to set power
-    void setDoorStatus(bool);
-    bool getDoorStatus();
+    void setDoorStatusLeft(bool);
+    bool getDoorStatusLeft();
+    void setDoorStatusRight(bool);
+    bool getDoorStatusRight();
     void setCabinLights(bool);
     bool getCabinLights();
     void setHeadlights(bool);
@@ -56,4 +59,4 @@ public:
 
 };
 
-#endif // TRAINMOC_H
+#endif // TRAIN_H
