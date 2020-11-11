@@ -3,6 +3,7 @@
 #include "TrainModelUpdateBlock.h"
 #include <cstdint>
 #include <string>
+#include <iostream>
 
 TrainModelUpdateBlock::TrainModelUpdateBlock(std::string lineTypeNew) {
     lineType = lineTypeNew;
@@ -47,4 +48,5 @@ void TrainModelUpdateBlock::blockGradeUp(){
 void TrainModelUpdateBlock::updateTrackCircuit(){
     TrackModel::TrackCircuitData newData = TrackModel::getTrackCircuit(lineType, blockNum);
     trackCircuitData = newData.getEncodedData();
+    std::cout << "Track circuit speed " << newData.decodeSpeed() << " and the authority " << newData.decodeAuthority();
 }

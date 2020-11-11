@@ -327,12 +327,12 @@ void CTCDispatch::dispatch(CTCSignals(&c)){
     //Here is the hardcode for number of cars
     int numCars = 5;
 
-    createNewTrain(m, numCars, lineType);
-
     setAuthority(station, endblock);
     setSpeed(station, endblock, timeStart, timeArrival);
 
     sendTrackController(c);
+
+    createNewTrain(m, numCars, lineType);
 }
 
 void CTCDispatch::sendTrackController(CTCSignals &ctc){
