@@ -8,6 +8,7 @@
 #include "../../SWTrackController/CTCSignals.h"
 #include "../../TrackModel/tracklayout.hpp"
 #include "../../SWTrackController/trackcntrl_main.h"
+#include "../../HWTrackController/HWTrackController_main.h"
 #include "CTCMode.h"
 
 

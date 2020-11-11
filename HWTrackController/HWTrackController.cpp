@@ -6,11 +6,9 @@
 #include <string>
 #include <QTimer>
 
-//extern CTCSignals ctcsig;
-
 HWTrackController::HWTrackController()
 {
-    reg = new Region();
+    //regptr = &reg;
 
     writeTimer = new QTimer();
     writeTimer->setInterval(ARDUINO_WAIT_TIME);
@@ -24,10 +22,8 @@ HWTrackController::HWTrackController()
 
 HWTrackController::~HWTrackController()
 {
-    reg = nullptr;
-
     delete writeTimer;
-    delete reg;
+    //delete regptr;
 }
 
 void HWTrackController::recieveData( char *buf, qint64 len )
@@ -78,6 +74,14 @@ void HWTrackController::writeData()
     // test string
     //outgoing_s += "1A0412.011.030.001";
     //outgoing_s += "\n";
+
+//    outgoing_s += to_string(regptr->detectTrain(regptr->getCurrentBlock(10)));
+//    outgoing_s += regptr->getSection(10);
+//    outgoing_s += to_string(regptr->getCurrentBlock(10));
+//    outgoing_s +=
+
+
+
     //std::cout << "Outgoing Track Controller: " << outgoing_s << std::endl;
 
     strcpy(outgoingData, outgoing_s.c_str());

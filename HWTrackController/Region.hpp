@@ -41,12 +41,12 @@ public:
     Region();                               // Constructor
     Region(std::vector<std::string> sec,std::vector<int> blc, std::vector<bool> sw, std::vector<bool> rc); // SWTC sends layout
 
-    //void initialize(CTCSignals &ctc);       // CTC Signals: receive speed and authority from CTC
+    void initialize(int, float, float);     // SWTC CTC Signals: receive speed and authority from CTC using SWTC class
     void setCircuit();                      // Track Model: send speed and authority (track circuit information)
     bool detectTrain(int);                  // Track Model: pick up block occupancy
     float getSpeedLimit() const;            // Track Model: pick up speed limit
 
-    //void setSwitch();                       // based on exit block, is the switch activated
+    //void setSwitch();                     // based on exit block, is the switch activated
 
     std::string getRoute() const;
     std::string getSection(int) const;
