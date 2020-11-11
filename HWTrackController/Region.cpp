@@ -67,6 +67,8 @@ void Region :: initialize(int db, float ss, float ac) {
     blocks[0].commSpeed = 5;
     blocks[0].auth = 1;
 
+    std::cout << "the block 0 " << blocks[0].sugSpeed << " and auth " << blocks[0].auth << endl;
+
     int i = 1;
     while (i <= db){ 
         blocks[i].sugSpeed = ss;

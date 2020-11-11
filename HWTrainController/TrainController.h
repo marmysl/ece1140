@@ -33,7 +33,7 @@ class TrainController : public QObject, public ITrainController
 	public:
 
         //Constructor and Destructor
-        TrainController(CTCMode *m);
+        TrainController(CTCMode *m, int numCars, std::string lineType);
         ~TrainController();
 
         //Method that writes data to the Serial Port

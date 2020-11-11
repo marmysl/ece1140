@@ -19,12 +19,16 @@ public:
     TrainModelUpdateBlock *block;
     int systemFailure = 0;
 
-    Train(int newNumCars);
+    Train(int newNumCars, string lineType);
     uint64_t sendTrackCircuit();
     double getCurrentVelocity();
     void setPower(double newPower);             //Called by train controller to set power
     void setDoorStatus(bool);
     bool getDoorStatus();
+    void setLeftDoorStatus(bool);
+    bool getLeftDoorStatus();
+    void setRightDoorStatus(bool);
+    bool getRightDoorStatus();
     void setCabinLights(bool);
     bool getCabinLights();
     void setHeadlights(bool);

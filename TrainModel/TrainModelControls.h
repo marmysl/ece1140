@@ -8,6 +8,8 @@ class TrainModelControls
 {
 public:
     bool doorOpen = 0;
+    bool doorLeftOpen = 0;
+    bool doorRightOpen = 0;
     bool cabinLights = 1;
     bool headlightsOn = 0;
     bool advertisementsOn = 0;
@@ -19,6 +21,8 @@ public:
 
     TrainModelControls();
     void toggleDoor(bool);
+    void toggleLeftDoor(bool);
+    void toggleRightDoor(bool);
     void toggleCabinLights(bool);
     void toggleHeadlights(bool);
     void toggleAdvertisments(bool);

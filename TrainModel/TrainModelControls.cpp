@@ -9,6 +9,14 @@ void TrainModelControls::toggleDoor(bool doorStatus){
     doorOpen = doorStatus;
 }
 
+void TrainModelControls::toggleLeftDoor(bool doorStatus){
+    doorLeftOpen = doorStatus;
+}
+
+void TrainModelControls::toggleRightDoor(bool doorStatus){
+    doorRightOpen = doorStatus;
+}
+
 void TrainModelControls::toggleCabinLights(bool cabLightStatus){
     cabinLights = cabLightStatus;
 }

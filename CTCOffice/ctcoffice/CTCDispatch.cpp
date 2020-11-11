@@ -317,12 +317,22 @@ float CTCDispatch::getTimeArrival(){
 }
 
 void CTCDispatch::dispatch(CTCSignals(&c)){
-    createNewTrain(m);
+
+    /////////////////////////////// Chris you need to change these to things//////////////////////////
+    // Leave the variable type, so pass cars in as an int and line type as a string
+
+    //Here is the hardcode for making the train dispatch on the Blue Line
+    std::string lineType = "Blue Line";
+
+    //Here is the hardcode for number of cars
+    int numCars = 5;
 
     setAuthority(station, endblock);
     setSpeed(station, endblock, timeStart, timeArrival);
 
     sendTrackController(c);
+
+    createNewTrain(m, numCars, lineType);
 }
 
 void CTCDispatch::sendTrackController(CTCSignals &ctc){

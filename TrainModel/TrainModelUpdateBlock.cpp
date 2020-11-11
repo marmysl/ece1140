@@ -3,11 +3,17 @@
 #include "TrainModelUpdateBlock.h"
 #include <cstdint>
 #include <string>
+#include <iostream>
 
-TrainModelUpdateBlock::TrainModelUpdateBlock() {
+TrainModelUpdateBlock::TrainModelUpdateBlock(std::string lineTypeNew) {
+    lineType = lineTypeNew;
     blockDist = 0;
     blockGrade = 0;
     blockNum = 0;
+    route = TrackModel::getRoute(lineType);
+    block = route->getBlock(0);
+    blockDir = TrackModel::BLK_FORWARD;
+    updateTrackCircuit();
 }
 
 void TrainModelUpdateBlock::updateTrackInfo(bool inYard){
@@ -21,28 +27,26 @@ void TrainModelUpdateBlock::updateTrackInfo(bool inYard){
 }
 
 void TrainModelUpdateBlock::updateBlock(bool first){
-    std::string line = "Blue Line";
-    if (!first){TrackModel::removeOccupancy(line, blockNum);}
-    blockNum = blockNum + 1;
-    TrackModel::addOccupancy(line, blockNum);
+    if (!first){TrackModel::removeOccupancy(lineType, blockNum);}
+    blockData = block->getNextBlock(blockDir);
+    block = blockData.block;
+    blockDir = blockData.entryDir;
+    blockNum = block->id;
+    TrackModel::addOccupancy(lineType, blockNum);
 }
 
 void TrainModelUpdateBlock::blockLength(){
-    std::string line = "Blue Line";
-    TrackModel::Route *blueLine = TrackModel::getRoute(line);
-    TrackModel::Block* blockInfo = blueLine -> getBlock(blockNum);
+    TrackModel::Block* blockInfo = route -> getBlock(blockNum);
     blockDist = blockInfo -> length;
 }
 
 void TrainModelUpdateBlock::blockGradeUp(){
-    std::string line = "Blue Line";
-    TrackModel::Route *blueLine = TrackModel::getRoute(line);
-    TrackModel::Block* blockInfo = blueLine -> getBlock(blockNum);
+    TrackModel::Block* blockInfo = route -> getBlock(blockNum);
     blockGrade = blockInfo -> grade;
 }
 
 void TrainModelUpdateBlock::updateTrackCircuit(){
-    std::string line = "Blue Line";
-    TrackModel::TrackCircuitData newData = TrackModel::getTrackCircuit(line, blockNum);
+    TrackModel::TrackCircuitData newData = TrackModel::getTrackCircuit(lineType, blockNum);
     trackCircuitData = newData.getEncodedData();
+    std::cout << "Track circuit speed " << newData.decodeSpeed() << " and the authority " << newData.decodeAuthority();
 }

@@ -29,16 +29,16 @@ SystemSettingsDialog *systemDialog;
 std::unordered_map<int, ITrainController *> activeTrains;
 int nextTrainId = 1;
 
-void createNewTrain(CTCMode *mode) {
+void createNewTrain(CTCMode *mode, int numCars, std::string lineType) {
     ITrainController *newTrain;
 
     if( trainControllerPort.isConnected() && (nextTrainId == 1) )
     {
-        newTrain = new TrainController(mode);
+        newTrain = new TrainController(mode, numCars, lineType);
     }
     else
     {
-        newTrain = new SWTrainController();
+        newTrain = new SWTrainController(numCars, lineType);
     }
 
     newTrain->id = nextTrainId;

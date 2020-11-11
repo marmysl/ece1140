@@ -16,7 +16,7 @@ public: // TEMPORARILY making everything public for easier implementation
     int argc;
     char *argv[];
 public:
-   SWTrainController();
+   SWTrainController(int, std::string);
    //void calculatePower();
    //void decode(unsigned);
    //void dispatch() override;

@@ -49,7 +49,7 @@ void TrainModelMath::setPower(double newPower){
         double newPos = travelledDist();
 
         //compare new position to old to see if new block
-        if (newPos >= block->blockDist && block->blockNum<=9){
+        if (newPos >= block->blockDist){
             newPos = newPos - (block->blockDist);
             //update current block and information
             block->updateTrackInfo(inYard);
