@@ -27,8 +27,8 @@ void Train::setPower(double newPower){             //Called by train controller 
 }
 
 uint64_t Train::sendTrackCircuit(){
-    return block->trackCircuitData;
-    //return 0x0002800000032000;
+    //return block->trackCircuitData;
+    return 0x0002800000032000;
 }
 
 double Train::getCurrentVelocity(){

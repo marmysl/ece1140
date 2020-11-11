@@ -167,17 +167,17 @@ void TrainController::writeData()
     while(outgoing_s.length() <= 20) outgoing_s += " ";
 
     double speed = ((trainModel -> sendTrackCircuit() >> 32) / 4096);
-    string commandedSpeed( to_string(speed), 0, 5 );
+    string commandedSpeed( to_string(speed * 0.621371), 0, 5 ); //km/hr --> mi/hr
     std::cout << "TrackCircuit = " << trainModel -> sendTrackCircuit() << std::endl;
     outgoing_s += commandedSpeed;
     while(outgoing_s.length() <= 25) outgoing_s += " ";
 
-    string setpointSpeed(to_string(speedRegulator -> getSetpointSpeed()), 0, 5);
+    string setpointSpeed(to_string(speedRegulator -> getSetpointSpeed() * 0.621371), 0, 5); //km/hr --> mi/hr
     outgoing_s += setpointSpeed;
 
     while(outgoing_s.length() <= 30) outgoing_s += " ";
 
-    string currentSpeed(to_string(trainModel -> getCurrentVelocity()), 0, 5);
+    string currentSpeed(to_string( (trainModel -> getCurrentVelocity() ) * 2.23694), 0, 5); //m/s --> km/hr
     outgoing_s += currentSpeed;
 
     while(outgoing_s.length() <= 35) outgoing_s += " ";

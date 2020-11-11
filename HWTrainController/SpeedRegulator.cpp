@@ -41,24 +41,31 @@ void SpeedRegulator::calcPowerCmd()
         //Call the chooseVcmd() function to ensure there is no stale data for Vcmd
         chooseVcmd();
 
-        //Calculate the values for ek
-        ek = Vcmd - trainModel -> getCurrentVelocity();
+        //Calculate the values for ek (convert Vcmd to meters/second)
+        ek = (Vcmd*0.277778) - (trainModel -> getCurrentVelocity());
 
         //Calculate the value of T:
             //Calculate the current time
-            currTime = systemClock -> currentTime();
-            std::cout <<"Current Time: " << currTime.toSecsSinceEpoch() << std::endl;
-            std::cout <<"Previous Time: " << prevTime.toSecsSinceEpoch() << std::endl;
-
             //Find the elapsed time and convert to a double
             qint64 elapsedTime = prevTime.msecsTo(currTime);
-            std::cout << "Elapsed Time = " << double(elapsedTime/1000) << std::endl;
+
+            currTime = systemClock->currentTime();
+
+            //Find elapsed time and convert to a double
+            qint64 change;
+            change = prevTime.msecsTo(currTime);
+            elapsedTime = (double)change/1000;
+
+            //Set previous time to current time for next power command calculation
+            prevTime = currTime;
+
+            std::cout << "Elapsed Time = " << elapsedTime << std::endl;
 
             //Set T to the elapsed time
-            T = (double)elapsedTime/1000;
+            T = elapsedTime;
 
         //Choose the correct value of uk
-        if(powerCmd < maxPower) uk = uk_1 + (T/2)*(ek + ek_1);
+        if(powerCmd <= maxPower) uk = uk_1 + (T/2)*(ek + ek_1);
         else uk = uk_1;
 
         //Calculate the power command
@@ -66,10 +73,10 @@ void SpeedRegulator::calcPowerCmd()
         trainModel -> setPower(powerCmd);
 
         //Sends power command to the trainModel
-        if(powerCmd < 120000) trainModel -> setPower(powerCmd);
+        if(powerCmd < 120) trainModel -> setPower(powerCmd);
         else
         {
-            powerCmd = 120000;
+            powerCmd = 120;
             trainModel -> setPower(powerCmd);
         }
 
@@ -79,8 +86,6 @@ void SpeedRegulator::calcPowerCmd()
         //Set uk_1 = ek for next power command calculation
         uk_1 = uk;
 
-        //Set previous time to current time for next power command calculation
-        prevTime = currTime;
     }
     else
     {
@@ -116,9 +121,10 @@ void SpeedRegulator::incSetpointSpeed(double inc)
     //Increment/Decrement the speed of the train according to the joystick input
 
     //Changes the setpoint speed only if it is within the range of speed as given by the Flexity Tram data sheet and if the emergency or service brakes are being pulled
-    if((setpointSpeed + inc >= 0) && setpointSpeed <= 43 && (setpointSpeed + inc <= 43) && trainModel -> getEmergencyBrake() != 1 && trainModel -> getServiceBrake() !=1 )
+    if((setpointSpeed + inc >= 0) && setpointSpeed <= 43.496 && (setpointSpeed + inc <= 43.496) && trainModel -> getEmergencyBrake() != 1 && trainModel -> getServiceBrake() !=1 )
     {
-        setpointSpeed += inc;
+        //Add the incremenet as km/h   mi/hr --> km/hr = 1.60934
+        setpointSpeed += inc*1.60934;
     }
 
     //Calculate the power command
