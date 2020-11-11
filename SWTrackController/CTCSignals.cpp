@@ -8,7 +8,7 @@ void CTCSignals::setFlag(bool flag) {
 }
 
 void CTCSignals::setSignal(int r, float s, int a) {
-
+        exitBlock = r;
         speedCTC = s;
         authCTC = a;
 }
@@ -19,6 +19,10 @@ float CTCSignals::getSpeed() {
 
 float CTCSignals::getAuth() {
     return authCTC;
+}
+
+int  CTCSignals::getExit() {
+    return exitBlock;
 }
 
 
