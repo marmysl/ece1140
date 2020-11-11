@@ -23,6 +23,7 @@ SOURCES += \
     CTCOffice/ctcoffice/ctc_main.cpp \
     CTCOffice/ctcoffice/mainwindow.cpp \
     HWTrackController/HWTrackController.cpp \
+    HWTrackController/HardwarePLC.cpp \
     HWTrackController/initHWTrack.cpp \
     HWTrackController/FailureDetector.cpp \
     HWTrackController/Region.cpp \
@@ -74,6 +75,8 @@ HEADERS += \
     HWTrackController/HWTrackController.hpp \
     HWTrackController/FailureDetector.hpp \
     HWTrackController/HWTrackController_main.h \
+    HWTrackController/HardwarePLC.h \
+    HWTrackController/LoadHWPLCUI.h \
     HWTrackController/Region.hpp \
     HWTrainController/HWTrainController_main.h \
     HWTrainController/SpeedRegulator.h \

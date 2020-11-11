@@ -109,7 +109,7 @@ float Region::getAuthority(int b) const{
 float Region::getSpeedLimit() const{
     // check that current block is equal to the input block (that could be included in the arguments)?
     TrackModel::Block *currentBlock;
-    float speedLimit = currentBlock -> speedLimit;
+    float speedLimit = currentBlock->speedLimit;
     return speedLimit;
 }
 
