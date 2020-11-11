@@ -43,6 +43,24 @@ bool Train::getDoorStatus(){
     return controls->doorOpen;
 }
 
+void Train::setLeftDoorStatus(bool doorStatus){
+    controls->toggleLeftDoor(doorStatus);
+    //w->updateDoors(controls->doorOpen);
+}
+
+bool Train::getLeftDoorStatus(){
+    return controls->doorOpen;
+}
+
+void Train::setRightDoorStatus(bool doorStatus){
+    controls->toggleRightDoor(doorStatus);
+    //w->updateDoors(controls->doorOpen);
+}
+
+bool Train::getRightDoorStatus(){
+    return controls->doorOpen;
+}
+
 void Train::setCabinLights(bool lightStatus){
     controls->toggleCabinLights(lightStatus);
     w->updateCabinLights(controls->cabinLights);
