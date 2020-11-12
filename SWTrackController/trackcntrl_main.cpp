@@ -68,6 +68,7 @@ TrackController getWaysideInstance(int num) {
             for (auto i = red -> waysides.begin(); i != red -> waysides.end(); i++) {
                 if (count == num) {
                     temp = *i;
+                    count++;
                 }
                 else {
                     count++;

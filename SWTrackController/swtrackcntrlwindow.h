@@ -3,6 +3,7 @@
 
 #include <QMainWindow>
 #include <QStringBuilder>
+#include <QFileDialog>
 #include "TrackController.h"
 #include "trackcntrl_main.h"
 
@@ -24,6 +25,7 @@ public:
    // void toggleSwitch();
    // void updateInfo();
     bool PLCfile_present;
+    std::string filename;
 
 
 private slots:
@@ -38,6 +40,8 @@ private slots:
     void on_enterWaysideButton_clicked();
 
     void on_blockGetInfoButton_clicked();
+
+    void on_selectFileButton_clicked();
 
 private:
     Ui::SWTrackCntrlWindow *ui;

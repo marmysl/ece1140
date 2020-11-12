@@ -9,6 +9,7 @@ SWTrackCntrlWindow::SWTrackCntrlWindow(QWidget *parent) :
     ui->setupUi(this);
     ui->mainWindow->hide();
     PLCfile_present = false;
+    ui->CancelButton->hide();
 }
 
 SWTrackCntrlWindow::~SWTrackCntrlWindow()
@@ -17,11 +18,9 @@ SWTrackCntrlWindow::~SWTrackCntrlWindow()
 }
 
 bool SWTrackCntrlWindow::setPLC() {
-    QString temp_filename;
-    temp_filename = ui->dialogPLCFrame->toPlainText();
-    std::string temp = temp_filename.toStdString();
-    setPLCFile(temp);
-    return temp_filename.isEmpty();
+
+    setPLCFile(filename);
+    return PLCfile_present;
 }
 
 void SWTrackCntrlWindow::setBlock() {
@@ -78,17 +77,15 @@ void SWTrackCntrlWindow::setSwitch() {
 
 void SWTrackCntrlWindow::on_uploadButton_clicked()
 {
-    bool check = setPLC();
-    if (!check) {
-        ui->UploadPLCFrame->hide();
-        ui->mainWindow->show();
-        PLCfile_present = true;
-    }
+     ui->UploadPLCFrame->hide();
+     ui->mainWindow->show();
+
 }
 
 void SWTrackCntrlWindow::on_newPLCButton_clicked()
 {
     ui->UploadPLCFrame->show();
+    ui->CancelButton->show();
     ui->mainWindow->hide();
 }
 
@@ -184,8 +181,10 @@ void SWTrackCntrlWindow::on_blockGetInfoButton_clicked()
 }
 
 
-
-
-
-
-
+void SWTrackCntrlWindow::on_selectFileButton_clicked()
+{
+    QString file = QFileDialog::getOpenFileName(this, tr("Open PLC Program"), " ", tr("Structured Text Files (*.ts)"));
+    ui->PLCFileInput->setPlainText(file);
+    filename = file.toStdString();
+    PLCfile_present = true;
+}
