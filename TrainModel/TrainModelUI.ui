@@ -121,7 +121,7 @@
      <widget class="QLabel" name="velLabel">
       <property name="geometry">
        <rect>
-        <x>120</x>
+        <x>90</x>
         <y>60</y>
         <width>91</width>
         <height>71</height>
@@ -153,20 +153,20 @@
       <property name="geometry">
        <rect>
         <x>40</x>
-        <y>30</y>
+        <y>10</y>
         <width>101</width>
         <height>21</height>
        </rect>
       </property>
       <property name="text">
-       <string>Door Status:</string>
+       <string>Left Door Status:</string>
       </property>
      </widget>
-     <widget class="QLabel" name="doorLabel">
+     <widget class="QLabel" name="doorLabelLeft">
       <property name="geometry">
        <rect>
-        <x>150</x>
-        <y>20</y>
+        <x>170</x>
+        <y>0</y>
         <width>121</width>
         <height>41</height>
        </rect>
@@ -335,6 +335,32 @@ p, li { white-space: pre-wrap; }
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&amp;lt;Announcements go here&amp;gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
       </property>
      </widget>
+     <widget class="QLabel" name="label_10">
+      <property name="geometry">
+       <rect>
+        <x>40</x>
+        <y>30</y>
+        <width>111</width>
+        <height>21</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Right Door Status:</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="doorLabelRight">
+      <property name="geometry">
+       <rect>
+        <x>170</x>
+        <y>20</y>
+        <width>121</width>
+        <height>41</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Closed&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+      </property>
+     </widget>
     </widget>
     <widget class="QWidget" name="infoTab">
      <attribute name="title">
@@ -493,7 +519,7 @@ p, li { white-space: pre-wrap; }
        </rect>
       </property>
       <property name="text">
-       <string>ft</string>
+       <string>m</string>
       </property>
      </widget>
      <widget class="QLabel" name="blockNumLabel_5">

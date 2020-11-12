@@ -42,10 +42,16 @@ void TrainModelUI::updateNumCars(int cars){
     ui->numCarLabel->setText(QString::number(cars));
 }
 
-void TrainModelUI::updateDoors(bool door){
+void TrainModelUI::updateLeftDoors(bool door){
     QString doorStr = "Closed";
     if(door){doorStr = "Open";}
-    ui->doorLabel->setText(doorStr);
+    ui->doorLabelLeft->setText(doorStr);
+}
+
+void TrainModelUI::updateRightDoors(bool door){
+    QString doorStr = "Closed";
+    if(door){doorStr = "Open";}
+    ui->doorLabelRight->setText(doorStr);
 }
 
 void TrainModelUI::updateCabinLights(bool lights){

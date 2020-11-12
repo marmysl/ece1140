@@ -22,7 +22,8 @@ public:
     void updateBlockLength(double length);
     void updateBlockGrade(double grade);
     void updateNumCars(int cars);
-    void updateDoors(bool);
+    void updateLeftDoors(bool);
+    void updateRightDoors(bool);
     void updateCabinLights(bool);
     void updateTemp(int);
     void updateHeater(bool);
