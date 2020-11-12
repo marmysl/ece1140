@@ -5,9 +5,6 @@
 #include "tracklogic.h"
 #include "CTCSignals.h"
 #include "swtrackcntrlwindow.h"
-#include "../TrackModel/trackmodel_controller.hpp"
-#include "../TrackModel/trackmodel_main.hpp"
-#include "../TrackModel/tracklayout.hpp"
 
 #include <vector>
 #include <string>
@@ -16,9 +13,6 @@
 
 extern QMainWindow *programmerGUI;
 
-//extern WaysideContainer *blue;
-//extern WaysideContainer *green;
-//extern WaysideContainer *red;
 
 void alertWaysideSystem(std::string &, CTCSignals &);
 
@@ -30,6 +24,7 @@ void setSwitchUI(TrackController &, bool);
 
 void timerEvent(QTimerEvent *event);
 
+void updateWaysides();
 
 int init_SWTrackController();
 

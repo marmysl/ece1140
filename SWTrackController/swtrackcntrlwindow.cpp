@@ -43,29 +43,43 @@ void SWTrackCntrlWindow::setBlock() {
 }
 
 void SWTrackCntrlWindow::setSwitch() {
-    QString switch_head = QString::number(wayside.switch_head);
+    QString switch_head;
     QString switch_tail;
     QString switch_state;
 
-    if (wayside.switch_state == 0) {
-        switch_tail = QString::number(wayside.switch_tail0);
-        switch_state = "straight";
+    if (wayside.switch_head != -1) {
+
+        switch_head = QString::number(wayside.switch_head);
+
+        if (wayside.switch_state == 0) {
+            switch_tail = QString::number(wayside.switch_tail0);
+            switch_state = "straight";
+        }
+        else {
+            switch_tail = QString::number(wayside.switch_tail1);
+            switch_state = "diverging";
+        }
+
     }
     else {
-        switch_tail = QString::number(wayside.switch_tail1);
-        switch_state = "diverging";
+        switch_head = "null";
+        switch_tail = "null";
+        switch_state = "null";
     }
+
 
     ui->switchHeadText->setPlainText(switch_head);
     ui->switchTailText->setPlainText(switch_tail);
     ui->switchStateText->setPlainText(switch_state);
+
 }
 
 
 
 void SWTrackCntrlWindow::on_uploadButton_clicked()
 {
-    if (setPLC() == false) {
+    bool check = setPLC();
+    if (!check) {
         ui->UploadPLCFrame->hide();
         ui->mainWindow->show();
         PLCfile_present = true;
@@ -98,22 +112,34 @@ void SWTrackCntrlWindow::on_toggleSwitchButton_clicked()
     QString old_switch_state;
     QString new_switch_state;
     QString new_switch_tail;
+
+    if (wayside.switch_head != -1) {
+
     old_switch_state = ui->switchStateText->toPlainText();
 
 
     if (old_switch_state == "straight") {
+        setSwitchUI(wayside, 1);
         new_switch_state = "diverging";
         setSwitchUI(wayside, true);
         new_switch_tail = QString::number(wayside.switch_tail1);
     }
     if (old_switch_state == "diverging") {
+        setSwitchUI(wayside, 0);
         new_switch_state = "straight";
         setSwitchUI(wayside, false);
         new_switch_tail = QString::number(wayside.switch_tail0);
     }
+    }
+    else { //no switch
+        new_switch_tail = "null";
+        new_switch_state = "null";
+
+    }
 
     ui->switchTailText->setPlainText(new_switch_tail);
     ui->switchStateText->setPlainText(new_switch_state);
+
 }
 
 
@@ -136,12 +162,30 @@ void SWTrackCntrlWindow::on_blockGetInfoButton_clicked()
 
     int occ_int = int(occ);
     int fail_int = int(fail);
-
     QString occ_s = QString::number(occ_int);
-    QString fail_s = QString::number(fail_int);
+    QString fail_s;
+
+    if (fail_int == 1) {
+        fail_s = "Broken Rail";
+    }
+    else if (fail_int == 2) {
+        fail_s = "Circuit Fail";
+    }
+    else if (fail_int == 4) {
+        fail_s = "Power Fail";
+    }
+    else {
+        fail_s = "None";
+    }
 
     ui->occText->setPlainText(occ_s);
     ui->FailureText->setPlainText(fail_s);
 
-
 }
+
+
+
+
+
+
+

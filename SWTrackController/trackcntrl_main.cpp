@@ -5,7 +5,7 @@ QMainWindow *programmerGUI;
 WaysideContainer *blue = new WaysideContainer(1);
 WaysideContainer *green = new WaysideContainer(12);
 WaysideContainer *red = new WaysideContainer(10);
-
+TrackController temp; //= new WaysideContainer;
 
 int init_SWTrackController() {
 
@@ -45,19 +45,22 @@ void alertWaysideSystem(std::string &dis_line, CTCSignals &temp) {
 }
 
 TrackController getWaysideInstance(int num) {
-    TrackController temp;
+
     if (num == 1) {
         auto i = blue -> waysides.begin();
         temp = *i;
     }
-    else if (num > 1) {
+    else {
         if (num < 14) {
             int count = 2;
             for (auto i = green -> waysides.begin(); i != green -> waysides.end(); i++) {
                 if (count == num) {
                     temp = *i;
+                    count++;
                 }
-                count++;
+                else {
+                    count++;
+                }
             }
         }
         else {
@@ -66,7 +69,9 @@ TrackController getWaysideInstance(int num) {
                 if (count == num) {
                     temp = *i;
                 }
-                count++;
+                else {
+                    count++;
+                }
             }
         }
     }
@@ -75,5 +80,21 @@ TrackController getWaysideInstance(int num) {
 }
 
 void setSwitchUI(TrackController &temp, bool new_s) {
+    temp.setSwitch(new_s);
+}
 
+void setCrossingUI(TrackController &temp, bool new_s) {
+    temp.manSetCross(new_s);
+}
+
+void updateWaysides() {
+    blue -> waysides.begin() -> updateData();
+
+    for (auto i = green -> waysides.begin(); i != green -> waysides.end(); i++) {
+        i -> updateData();
+    }
+
+    for (auto i = red -> waysides.begin(); i != red -> waysides.end(); i++) {
+        i -> updateData();
+    }
 }

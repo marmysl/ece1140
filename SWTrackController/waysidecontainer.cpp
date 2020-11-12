@@ -166,7 +166,7 @@ WaysideContainer::WaysideContainer(int wayside_count)
             int sw4[4] = {28, 29, 150, 0};
             int sw5[4] = {13, 14, 1, 0};
             int sw6[4] = {57, 58, 0, 0};
-            int swX[4] = {0,0,0,0};
+            int swX[4] = {-1,-1,-1,-1};
 
             //int fin1[2] = {65, 0};
             //int fin2[2] = {74, -1};
@@ -335,7 +335,7 @@ WaysideContainer::WaysideContainer(int wayside_count)
         int sw5[4] = {38, 39, 71, 0};
         int sw6[4] = {44, 45, 67, 0};
         int sw7[4] = {52, 53, 66, 0};
-        int swX[4] = {0,0,0,0};
+        int swX[4] = {-1,-1,-1,-1};
 
         //int fin1[2] = {3, 13};
         //int fin2[2] = {10, 0};

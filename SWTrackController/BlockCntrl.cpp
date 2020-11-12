@@ -95,8 +95,6 @@ void BlockCntrl::setSpdAuth(float s, int a) {
         plc_auth = false;
     }
 
-
-    setCircuit();
 	
 }
 

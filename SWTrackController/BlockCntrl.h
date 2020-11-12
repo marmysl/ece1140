@@ -2,6 +2,7 @@
 #ifndef BlockCntrl_h
 #define BlockCntrl_h
 
+#include "tracklogic.h"
 #include <cstdint>
 #include <string>
 
@@ -27,7 +28,7 @@ class BlockCntrl
         int sug_block_authority;
         float com_block_speed;
         int com_block_authority;
-        bool block_fail;
+        int block_fail;
 
         BlockCntrl();
         void setUpBlock(std::string &, int, int[], int);
