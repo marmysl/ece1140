@@ -112,9 +112,21 @@ void SpeedRegulator::calcPowerVital()
     double p13 = abs(power3 - power1);
 
     if( (power1 == 0 && power2 == 0) || (power2 == 0 && power3 == 0) || (power1 == 0 && power3 == 0) ) powerCmdZero();
-    else if(p12 < .3) powerCmd = (power1 + power2)/2;
-    else if(p23 < .3) powerCmd = (power2 + power3)/2;
-    else if(p13 < .3) powerCmd = (power1 + power3)/2;
+    else if(p12 < .3)
+    {
+        powerCmd = (power1 + power2)/2;
+        trainModel -> setPower(powerCmd);
+    }
+    else if(p23 < .3)
+    {
+        powerCmd = (power2 + power3)/2;
+        trainModel -> setPower(powerCmd);
+    }
+    else if(p13 < .3)
+    {
+        powerCmd = (power1 + power3)/2;
+        trainModel -> setPower(powerCmd);
+    }
     else pullEmergencyBrake();
 }
 
