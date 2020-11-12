@@ -51,6 +51,27 @@ void MainWindow::on_comboLine_currentIndexChanged(const QString &arg1)
     line = qs.toStdString();
 
     ctc.setLine(line);
+
+    if(line.empty()){
+        return;
+    }
+    TrackModel::Route *rte;
+    rte = TrackModel::getRoute(line);
+
+    std::string destinationType = ui->comboDestinationType->currentText().toStdString();
+
+    if(destinationType == "Station"){
+        for(TrackModel::Station *stat : rte->stations){
+            ui->comboDestination->addItem(QString::fromStdString(stat->name));
+        }
+    }
+    else if(destinationType == "Block"){
+        for(auto &blk : rte->blocks){
+            if(blk.second->id != 0){
+                 ui->comboDestination->addItem(QString::number(blk.second->id));
+            }
+        }
+    }
 }
 
 void MainWindow::on_timeStart_userTimeChanged(const QTime &time)
@@ -83,12 +104,7 @@ void MainWindow::on_btnDispatch_clicked()
 
 void MainWindow::on_comboDestination_currentIndexChanged(const QString &arg1)
 {
-    std::string choice;
-    QString qs = arg1;
-
-    choice = qs.toStdString();
-
-    ctc.setDestinationType(choice);
+    ctc.setDestination(arg1, ui->comboDestinationType->currentText());
 }
 
 void MainWindow::on_comboDestinationType_currentIndexChanged(const QString &arg1)
@@ -99,32 +115,26 @@ void MainWindow::on_comboDestinationType_currentIndexChanged(const QString &arg1
     destinationType = qs.toStdString();
 
     ui->comboDestination->clear();
+
+    std::string l = ctc.getline();
+    if(l.empty()){
+        return;
+    }
+    TrackModel::Route *rte;
+    rte = TrackModel::getRoute(l);
+
     if(destinationType == "Station"){
-        for(auto& rte : TrackModel::routes){
-            ui->comboDestination->addItem(QString::fromStdString(rte->name));
+        for(TrackModel::Station *stat : rte->stations){
+            ui->comboDestination->addItem(QString::fromStdString(stat->name));
         }
-        ui->comboDestination->addItem("Station B");
-        ui->comboDestination->addItem("Station C");
     }
     else if(destinationType == "Block"){
-        ui->comboDestination->addItem("Block 1");
-        ui->comboDestination->addItem("Block 2");
-        ui->comboDestination->addItem("Block 3");
-        ui->comboDestination->addItem("Block 4");
-        ui->comboDestination->addItem("Block 5");
-        ui->comboDestination->addItem("Block 6");
-        ui->comboDestination->addItem("Block 7");
-        ui->comboDestination->addItem("Block 8");
-        ui->comboDestination->addItem("Block 9");
-        ui->comboDestination->addItem("Block 10");
-        ui->comboDestination->addItem("Block 11");
-        ui->comboDestination->addItem("Block 12");
-        ui->comboDestination->addItem("Block 13");
-        ui->comboDestination->addItem("Block 14");
-        ui->comboDestination->addItem("Block 15");
+        for(auto &blk : rte->blocks){
+            if(blk.second->id != 0){
+                 ui->comboDestination->addItem(QString::number(blk.second->id));
+            }
+        }
     }
-
-    ctc.setDestinationType(destinationType);
 }
 
 void MainWindow::on_AutomaticButton_clicked()
