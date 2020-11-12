@@ -163,7 +163,7 @@ float CTCDispatch::getPassNum(){
 
 void CTCDispatch::dispatch(CTCSignals(&c)){
     setPassNum();
-    carsNum = (passNum/44); // ceil is taken out
+    carsNum = ceil(passNum/44); // ceil is taken out
     //qDebug() << "Number of Passengers on Train: " << QString::number(passNum);
     //qDebug() << "Number of Cars on Train: " << QString::number(carsNum);
 
