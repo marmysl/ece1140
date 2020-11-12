@@ -82,6 +82,11 @@ void TrainModelUI::updateAds(bool ads){
     ui->adLabel->setText(adsStr);
 }
 
+void TrainModelUI::updateFailureStatus(){
+    QString goesIn = "Status will appear here";
+    if(train->emergencyBrake){goesIn = "Emergency Brake Pulled";}
+    ui->failStatus->setText(goesIn);
+}
 
 
 void TrainModelUI::on_pushButton_clicked()

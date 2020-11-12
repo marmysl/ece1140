@@ -29,6 +29,7 @@ public:
     void updateHeater(bool);
     void updateAC(bool);
     void updateAds(bool);
+    void updateFailureStatus();
     void updateAnnouncements(bool, std::string);
 
 private slots:

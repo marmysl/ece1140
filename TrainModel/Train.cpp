@@ -166,5 +166,6 @@ void Train::updateUI(){
     w->updateBlockNum(block->blockNum);
     w->updateBlockLength(block->blockDist);
     w->updateBlockGrade(block->blockGrade);
+    w->updateFailureStatus();
 }
 
