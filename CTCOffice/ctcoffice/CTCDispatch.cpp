@@ -347,9 +347,11 @@ void CTCDispatch::sendTrackController(CTCSignals &ctc){
         destblock = endblock;
     }
 
-    ctc.setSignal(destblock, 25, 400);
-    //alertWaysideSystem(ctc);
-    initializeHW(ctc);
+    std::string temp_string = "Green Line";
+    int destb[12] = {65, 73, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+    ctc.setSignal(temp_string, destb, 25, 10);
+    alertWaysideSystem(temp_string, ctc);
+    //initializeHW(ctc);
 }
 
 CTCMode* CTCDispatch::getCTCMode()

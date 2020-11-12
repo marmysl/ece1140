@@ -9,31 +9,54 @@ BlockCntrl::BlockCntrl() {
 	
 }
 
-void BlockCntrl::setUpBlock(std::string &l, int block) {
+void BlockCntrl::setUpBlock(std::string &l, int block, int switch_id[4], int crossing_id, int last_block0, int last_block1) {
 	block_num = block;
     line = l;
 
-    if (block_num <= 15)
-		section = 'A';
-	else if (block_num <= 10) 
-		section = 'B';
-	else
-		section = 'C';
+    if (last_block0 == block_num) {
+        default_last_block = true;
+        active_last_block = false;
+    }
+    else if (last_block1 == block_num) {
+        active_last_block = true;
+        default_last_block = false;
+    }
+    else {
+        active_last_block = false;
+        default_last_block = false;
+    }
+
+
+    switch_state = false; //default switch state
+
+    if (block_num == switch_id[0]) {
+        switch_head = true;
+        switch_tail = false;
+        active_tail = false;
+    }
+    else if (block_num == switch_id[1]) {
+        switch_head = false;
+        switch_tail = true;
+        active_tail = true;
+    }
+    else if (block_num == switch_id[2]) {
+        switch_head = false;
+        switch_tail = true;
+        active_tail = false;
+    }
+    else {
+        switch_head = false;
+        switch_tail = false;
+        active_tail = false;
+    }
 		
 	
-	switch_head = false;
-	switch_tail = false;
+    if (crossing_id == block_num) {
+        cross_block = true;
+        cross_state = false;
+    }
 	
-    /*for ( auto i = cntrl_switches.begin(); i != cntrl_switches.end(); ++i)
-        if (*i == block_num) {
-			
-			if (*i == cntrl_switches[0]) 
-				switch_head = true;
-				
-			else
-				switch_tail = true;
-				
-        }*/
+
 		
 }
 
@@ -46,32 +69,44 @@ int BlockCntrl::getRes() {
 
 void BlockCntrl::setCircuit() {
 
-   /* if (block_num == 15 || block_num == 10) {
-        block_speed = 0;
-        block_authority = 0;
+    if (block_speed > 0) {
+        plc_speed = true;
     }
     else {
-        block_speed = 40;
+        plc_speed = false;
     }
-    if (block_num < 10) {
-        block_authority = 10 - block_num;
+    if (block_authority > 0) {
+        plc_auth = true;
     }
-    if (block_num >10) {
-        block_authority = 15 - block_num;
+    else {
+        plc_auth = false;
     }
-*/
+
+
     TrackModel::TrackCircuitData data = TrackModel::TrackCircuitData::fromFloat(block_speed, block_authority);
 	
     TrackModel::setTrackCircuit(line, block_num, data);
-	std::cout << "Block: " << block_num << "        Speed: " << block_speed << "        Authority: " << block_authority << "\n";
 		
 	
 }
 
 void BlockCntrl::setOcc() {
-	std::string r = "Blue Line";
-	
-	block_occ = TrackModel::isBlockOccupied(r, block_num); 
+
+    block_occ = TrackModel::isBlockOccupied(line, block_num);
+    current_occ = block_occ;
+
+    if (current_occ == true) {
+        if (cross_block == true) {
+            cross_state = true;
+        }
+        else {
+            cross_state = false;
+        }
+    }
+    else {
+        cross_state = false;
+    }
+
 }
 
 void BlockCntrl::setSpdAuth(float s, int a) {
@@ -81,6 +116,7 @@ void BlockCntrl::setSpdAuth(float s, int a) {
     setCircuit();
 	
 }
+
 
 
 

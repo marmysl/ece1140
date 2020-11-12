@@ -1,34 +1,34 @@
 #include "trackcntrl_main.h"
 
-CTCSignals ctc_track_controller;
 
-WaysideContainer wayside_vector;
+
+WaysideContainer blue_wayside_vector;
+WaysideContainer green_wayside_vector;
+WaysideContainer red_wayside_vector;
 
 int init_SWTrackController() {
-    //int timerID = startTimer(1000); // timer event occurs every second
-    //int count = 0;
 
+    WaysideContainer b(1);
+    WaysideContainer g(12);
+    WaysideContainer r(10);
 
-    std::vector<char> s;
-    s.push_back('A');
-    s.push_back('B');
-    s.push_back('C');
-
-    std::vector<int> b;
-    for(int i = 1; i <= 15; i++) {
-        b.push_back(i);     }
-
-    std::string track_line = "Blue Line";
-
-    wayside_vector.addTrackObj(1, track_line, s, b);
-    //wayside_vector.addCTCObj(ctc_track_controller);
-
+    blue_wayside_vector = b;
+    green_wayside_vector = g;
+    red_wayside_vector = r;
 
 	return 0;
 }
 
-void alertWaysideSystem(CTCSignals &temp) {
+void alertWaysideSystem(std::string &dis_line, CTCSignals &temp) {
 
-    wayside_vector.addCTCObj(temp);
-    //std::cout << "\n\nspeed: " << temp.speedCTC << ", authority: " << temp.authCTC << "\n\n";
+    if (dis_line == "Blue Line") {
+        blue_wayside_vector.addCTCObj(temp);
+    }
+    if (dis_line == "Green Line") {
+        green_wayside_vector.addCTCObj(temp);
+    }
+    if (dis_line == "Red Line") {
+        red_wayside_vector.addCTCObj(temp);
+    }
+
 }

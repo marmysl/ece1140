@@ -15,7 +15,7 @@
 
 //extern CTCSignals ctc_track_controller;
 
-void alertWaysideSystem(CTCSignals &);
+void alertWaysideSystem(std::string &, CTCSignals &);
 
 void timerEvent(QTimerEvent *event);
 
