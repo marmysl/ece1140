@@ -60,11 +60,9 @@ std::string CTCDispatch::getline(){
 void CTCDispatch::setDestination(QString dest, QString destType){
     if(destType == "Station"){
         setStation(dest.toStdString());
-        setBlock(-1);
     }
     if(destType == "Block"){
         setBlock(dest.toInt());
-        setStation("-1");
     }
 }
 
@@ -83,11 +81,17 @@ int CTCDispatch::getBlock(){
 }
 
 void CTCDispatch::setStation(std::string state){
-    char blknum;
-    /*station = state;
-    if(station != "-1"){
-        qDebug() << "Set Station Destination to: " << QString::fromStdString(station);
-    }*/
+    int startnum, endnum;
+    std::string blknum;
+
+    startnum = state.find('(');
+    endnum = state.find(')');
+
+    blknum = state.substr(startnum + 1, (endnum - startnum) -1);
+
+    std::stringstream temp1(blknum);
+    temp1 >> endblock;
+    qDebug() << "Block: " << QString::number(endblock);
 }
 
 std::string CTCDispatch::getStation(){
