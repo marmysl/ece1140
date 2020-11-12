@@ -23,14 +23,14 @@ class BlockCntrl
         int lights[2];
         bool cross_block;
         bool cross_state;
-        float block_speed;
-        int block_authority;
+        float sug_block_speed;
+        int sug_block_authority;
+        float com_block_speed;
+        int com_block_authority;
         bool block_fail;
-        bool default_last_block;
-        bool active_last_block;
 
         BlockCntrl();
-        void setUpBlock(std::string &, int, int[4], int, int, int);
+        void setUpBlock(std::string &, int, int[], int);
         void setCircuit();
         void setSpdAuth(float, int);
         void setOcc();

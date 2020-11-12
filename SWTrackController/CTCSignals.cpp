@@ -3,27 +3,33 @@
 #include <vector>
 
 
-int CTCSignals::setSignal(std::string &l, std::vector<int> exits) {
+std::vector<bool> CTCSignals::calcRoute(std::string &l, std::vector<int>r) {
+
+    return std::vector<bool>;
+
+}
+
+int CTCSignals::setSignal(std::string &l, std::vector<bool> routes) {
 
 
         if (l == "Green Line") {
             int j = 0;
-            for(auto i = exits.begin(); i != exits.end(); i++) {
-                green_exit[j] = *i;
+            for(auto i = routes.begin(); i != routes.end(); i++) {
+                green_route[j] = *i;
                 j++;
             }
         }
         else if (l == "Red Line") {
             int j = 0;
-            for(auto i = exits.begin(); i != exits.end(); i++) {
-                red_exit[j] = *i;
+            for(auto i = routes.begin(); i != routes.end(); i++) {
+                red_route[j] = *i;
                 j++;
             }
         }
         else if (l == "Blue Line") {
             int j = 0;
-            for(auto i = exits.begin(); i != exits.end(); i++) {
-                blue_exit[j] = *i;
+            for(auto i = routes.begin(); i != routes.end(); i++) {
+                blue_route[j] = *i;
                 j++;
             }
         }
@@ -310,14 +316,15 @@ std::vector<int> CTCSignals::getAuth(int w_id, std::string &line) {
     return temp_auth;
 }
 
-int  CTCSignals::getExit(int w_id, std::string &line) {
-    int temp_exit;
+bool  CTCSignals::getRoute(int w_id, std::string &line) {
+    bool temp_route;
 
     if (line == "Green Line") {
         int j = 1;
-        for (auto i = green_exit.begin(); i != green_exit.end(); i++) {
+        for (auto i = green_route.begin(); i != green_route.end(); i++) {
             if (j == w_id) {
-                temp_exit = *i;
+                bool m = bool(*i);
+                temp_route = m;
             }
             j++;
         }
@@ -325,22 +332,24 @@ int  CTCSignals::getExit(int w_id, std::string &line) {
 
     else if (line == "Red Line") {
         int j = 1;
-        for (auto i = red_exit.begin(); i != red_exit.end(); i++) {
+        for (auto i = red_route.begin(); i != red_route.end(); i++) {
             if (j == w_id) {
-                temp_exit = *i;
+                bool m = bool(*i);
+                temp_route = m;
             }
             j++;
         }
     }
 
     else if (line  == "Blue Line") {
-        auto i = blue_exit.begin();
-        temp_exit = *i;
+        auto i = blue_route.begin();
+        bool m = bool(*i);
+        temp_route = m;
     }
 
     else {
         return -1;
     }
 
-    return temp_exit;
+    return temp_route;
 }

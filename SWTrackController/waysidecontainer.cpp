@@ -18,8 +18,8 @@ WaysideContainer::WaysideContainer(int wayside_count)
         }
 
         int sw[4] = {5, 6, 11, 0};
-        int fin[2] = {10, 15};
-        addTrackObj(1, line, s, b, sw, 0, fin);
+        //int fin[2] = {10, 15};
+        addTrackObj(1, line, s, b, sw, 0);
     }
 
     else if (wayside_count == 12) {
@@ -168,31 +168,31 @@ WaysideContainer::WaysideContainer(int wayside_count)
             int sw6[4] = {57, 58, 0, 0};
             int swX[4] = {0,0,0,0};
 
-            int fin1[2] = {65, 0};
-            int fin2[2] = {74, -1};
-            int fin3[2] = {80,102};
-            int fin4[2] = {88, 101};
-            int fin5[2] = {98, -1};
-            int fin6[2] = {140, -1};
-            int fin7[2] = {32, 150};
-            int fin8[2] = {27, -1};
-            int fin9[2] = {16, -1};
-            int fin10[2] = {52, -1};
-            int fin11[2] = {60, 0};
-            int fin12[2] = {120, -1};
+            //int fin1[2] = {65, 0};
+            //int fin2[2] = {74, -1};
+            //int fin3[2] = {80,102};
+            //int fin4[2] = {88, 101};
+            //int fin5[2] = {98, -1};
+            //int fin6[2] = {140, -1};
+            //int fin7[2] = {32, 150};
+            //int fin8[2] = {27, -1};
+            //int fin9[2] = {16, -1};
+            //int fin10[2] = {52, -1};
+            //int fin11[2] = {60, 0};
+            //int fin12[2] = {120, -1};
 
-    addTrackObj(1, line, s1, b1, sw1, 0, fin1);
-    addTrackObj(2, line, s2, b2, swX, 0, fin2);
-    addTrackObj(3, line, s3, b3, sw2, 0, fin3);
-    addTrackObj(4, line, s4, b4, sw3, 0, fin4);
-    addTrackObj(5, line, s5, b5, swX, 0, fin5);
-    addTrackObj(6, line, s6, b6, swX, 0, fin6);
-    addTrackObj(7, line, s7, b7, sw4, 0, fin7);
-    addTrackObj(8, line, s8, b8, swX, 19, fin8);
-    addTrackObj(9, line, s9, b9, sw5, 0, fin9);
-    addTrackObj(10, line, s10, b10, swX, 0, fin10);
-    addTrackObj(11, line, s11, b11, sw6, 0, fin11);
-    addTrackObj(12, line, s13, b13, swX, 0, fin12);
+    addTrackObj(1, line, s1, b1, sw1, 0);
+    addTrackObj(2, line, s2, b2, swX, 0);
+    addTrackObj(3, line, s3, b3, sw2, 0);
+    addTrackObj(4, line, s4, b4, sw3, 0);
+    addTrackObj(5, line, s5, b5, swX, 0);
+    addTrackObj(6, line, s6, b6, swX, 0);
+    addTrackObj(7, line, s7, b7, sw4, 0);
+    addTrackObj(8, line, s8, b8, swX, 19);
+    addTrackObj(9, line, s9, b9, sw5, 0);
+    addTrackObj(10, line, s10, b10, swX, 0);
+    addTrackObj(11, line, s11, b11, sw6, 0);
+    addTrackObj(12, line, s13, b13, swX, 0);
 
     }
 
@@ -337,35 +337,36 @@ WaysideContainer::WaysideContainer(int wayside_count)
         int sw7[4] = {52, 53, 66, 0};
         int swX[4] = {0,0,0,0};
 
-        int fin1[2] = {3, 13};
-        int fin2[2] = {10, 0};
-        int fin3[2] = {20, -1};
-        int fin4[2] = {30, 76};
-        int fin5[2] = {30, 72};
-        int fin6[2] = {40, 72};
-        int fin7[2] = {40, 67};
-        int fin8[2] = {50, -1};
-        int fin9[2] = {54, 64};
-        int fin10[2] = {64, -1};
-        addTrackObj(1, line, b1, s1, sw1, 0, fin1);
-        addTrackObj(2, line, b2, s2, sw2, 0, fin2);
-        addTrackObj(3, line, b3, s3, swX, 0, fin3);
-        addTrackObj(4, line, b4, s4, sw3, 0, fin4);
-        addTrackObj(5, line, b5, s5, sw4, 0, fin5);
-        addTrackObj(6, line, b6, s6, sw5, 0, fin6);
-        addTrackObj(7, line, b7, s7, sw6, 0, fin7);
-        addTrackObj(8, line, b8, s8, swX, 47, fin8);
-        addTrackObj(9, line, b9, s9, sw7, 0, fin9);
-        addTrackObj(10, line, b10, s10, swX, 0, fin10);
+        //int fin1[2] = {3, 13};
+        //int fin2[2] = {10, 0};
+        //int fin3[2] = {20, -1};
+        //int fin4[2] = {30, 76};
+        //int fin5[2] = {30, 72};
+        //int fin6[2] = {40, 72};
+        //int fin7[2] = {40, 67};
+        //int fin8[2] = {50, -1};
+        //int fin9[2] = {54, 64};
+        //int fin10[2] = {64, -1};
+
+        addTrackObj(1, line, b1, s1, sw1, 0);
+        addTrackObj(2, line, b2, s2, sw2, 0);
+        addTrackObj(3, line, b3, s3, swX, 0);
+        addTrackObj(4, line, b4, s4, sw3, 0);
+        addTrackObj(5, line, b5, s5, sw4, 0);
+        addTrackObj(6, line, b6, s6, sw5, 0);
+        addTrackObj(7, line, b7, s7, sw6, 0);
+        addTrackObj(8, line, b8, s8, swX, 47);
+        addTrackObj(9, line, b9, s9, sw7, 0);
+        addTrackObj(10, line, b10, s10, swX, 0);
 
     }
 }
 
 
-void WaysideContainer::addTrackObj(int id, std::string &line, std::vector<char> &s, std::vector<int> &b, int sw[4], int cr, int fin[2]) {
+void WaysideContainer::addTrackObj(int id, std::string &line, std::vector<char> &s, std::vector<int> &b, int sw[4], int cr) {
     using namespace std;
     TrackController t;
-    t.setUpController(id, line, s, b, sw, cr, fin);
+    t.setUpController(id, line, s, b, sw, cr);
     if (cr != -1) {
 
     }
@@ -379,9 +380,127 @@ void WaysideContainer::addTrackObj(int id, std::string &line, std::vector<char> 
 
 
 void WaysideContainer::addCTCObj(CTCSignals &ctc_track_controller) {
-
     CTCSignals wayside_signals = ctc_track_controller;
 
-        waysides.begin() -> setSignalsInstance(wayside_signals);
+    if (track_line == "Blue Line") {
+        auto i =waysides.begin();
+        i->setSignalsInstance(wayside_signals);
+        i->CTC_sugspeed = wayside_signals.gspeed1;
+        i->CTC_sugauth = wayside_signals.gauth1;
+    }
+    else if (track_line == "Green Line") {
+        int m = 1;
+
+        for (auto i = waysides.begin(); i != waysides.end(); i++) {
+            i -> setSignalsInstance(wayside_signals);
+
+            if (m == 1) {
+                i->CTC_sugspeed = wayside_signals.gspeed1;
+                i->CTC_sugauth = wayside_signals.gauth1;
+            }
+            else if (m == 2) {
+                i->CTC_sugspeed = wayside_signals.gspeed2;
+                i->CTC_sugauth = wayside_signals.gauth2;
+            }
+            else if (m == 3) {
+                i->CTC_sugspeed = wayside_signals.gspeed3;
+                i->CTC_sugauth = wayside_signals.gauth3;
+            }
+            else if (m == 4) {
+                i->CTC_sugspeed = wayside_signals.gspeed4;
+                i->CTC_sugauth = wayside_signals.gauth4;
+            }
+            else if (m == 5) {
+                i->CTC_sugspeed = wayside_signals.gspeed5;
+                i->CTC_sugauth = wayside_signals.gauth5;
+            }
+            else if (m == 6) {
+                i->CTC_sugspeed = wayside_signals.gspeed6;
+                i->CTC_sugauth = wayside_signals.gauth6;
+            }
+            else if (m == 7) {
+                i->CTC_sugspeed = wayside_signals.gspeed7;
+                i->CTC_sugauth = wayside_signals.gauth7;
+            }
+            else if (m == 8) {
+                i->CTC_sugspeed = wayside_signals.gspeed8;
+                i->CTC_sugauth = wayside_signals.gauth8;
+            }
+            else if (m == 9) {
+                i->CTC_sugspeed = wayside_signals.gspeed9;
+                i->CTC_sugauth = wayside_signals.gauth9;
+            }
+            else if (m == 10) {
+                i->CTC_sugspeed = wayside_signals.gspeed10;
+                i->CTC_sugauth = wayside_signals.gauth10;
+            }
+            else if (m == 11) {
+                i->CTC_sugspeed = wayside_signals.gspeed11;
+                i->CTC_sugauth = wayside_signals.gauth11;
+            }
+            else {
+                i->CTC_sugspeed = wayside_signals.gspeed12;
+                i->CTC_sugauth = wayside_signals.gauth12;
+            }
+
+            m++;
+        }
+    }
+
+    else if (track_line == "Red Line") {
+        int m = 1;
+
+        for (auto i = waysides.begin(); i != waysides.end(); i++) {
+            i -> setSignalsInstance(wayside_signals);
+
+            if (m == 1) {
+                i->CTC_sugspeed = wayside_signals.rspeed1;
+                i->CTC_sugauth = wayside_signals.rauth1;
+            }
+            else if (m == 2) {
+                i->CTC_sugspeed = wayside_signals.rspeed2;
+                i->CTC_sugauth = wayside_signals.rauth2;
+            }
+            else if (m == 3) {
+                i->CTC_sugspeed = wayside_signals.rspeed3;
+                i->CTC_sugauth = wayside_signals.rauth3;
+            }
+            else if (m == 4) {
+                i->CTC_sugspeed = wayside_signals.rspeed4;
+                i->CTC_sugauth = wayside_signals.rauth4;
+            }
+            else if (m == 5) {
+                i->CTC_sugspeed = wayside_signals.rspeed5;
+                i->CTC_sugauth = wayside_signals.rauth5;
+            }
+            else if (m == 6) {
+                i->CTC_sugspeed = wayside_signals.rspeed6;
+                i->CTC_sugauth = wayside_signals.rauth6;
+            }
+            else if (m == 7) {
+                i->CTC_sugspeed = wayside_signals.rspeed7;
+                i->CTC_sugauth = wayside_signals.rauth7;
+            }
+            else if (m == 8) {
+                i->CTC_sugspeed = wayside_signals.rspeed8;
+                i->CTC_sugauth = wayside_signals.rauth8;
+            }
+            else if (m == 9) {
+                i->CTC_sugspeed = wayside_signals.rspeed9;
+                i->CTC_sugauth = wayside_signals.rauth9;
+            }
+            else {
+                i->CTC_sugspeed = wayside_signals.rspeed10;
+                i->CTC_sugauth = wayside_signals.rauth10;
+            }
+
+            m++;
+        }
+    }
+    else {
+
+    }
+
+
 
 }

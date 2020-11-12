@@ -22,21 +22,20 @@ class TrackController
         std::string line;
         std::vector<char> cntrl_sections;
         std::vector<int> cntrl_blocks;
-        std::vector<int> cntrl_switches;
-        int dest_block;
-        int last_block[2];
+        int switch_head;
+        int switch_tail0;
+        int switch_tail1;
+        bool switch_state;
+        int crossing_id;
         bool route;
         int start_block;
         int block_count;
-		int section_length;
-		int section_count;
-        int switch_id[4];
-        int crossing_id;
+
         std::vector<float> CTC_sugspeed;
         std::vector<int> CTC_sugauth;
 
         TrackController();
-        void setUpController(int, std::string &, std::vector<char> &, std::vector<int> &, int[4], int, int[2]);
+        void setUpController(int, std::string &, std::vector<char> &, std::vector<int> &, int[], int);
         void setSignalsInstance(CTCSignals &);
         void addBlockObj(int);
         void setSpdAuth();

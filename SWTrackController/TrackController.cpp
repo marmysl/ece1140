@@ -7,48 +7,64 @@
 //using namespace std;
 
 TrackController::TrackController(){
-
+    block_count = 0;
 
 }
 
-void TrackController::setUpController(int id, std::string &l, std::vector<char> &s, std::vector<int> &b, int sw[4], int cr, int fin[2]) {
+void TrackController::setUpController(int id, std::string &l, std::vector<char> &s, std::vector<int> &b, int sw[], int cr) {
 
     region = id;
     line = l;
-    last_block[0] = fin[0];
-    last_block[1] = fin[1];
+
+    switch_head = sw[0];
+    switch_tail0 = sw[1];
+    switch_tail1 = sw[2];
+    switch_state = sw[3];
+
+    crossing_id = cr;
+
     auto m = b.begin();
     start_block = *m;
-
-    for (int i = 0; i < 4; i++) {
-        switch_id[i] = sw[i];
-    }
-    crossing_id = cr;
 
     for (auto i = s.begin(); i != s.end(); i++) {
         cntrl_sections.push_back(*i);
     }
+
+    block_count = 0;
     for (auto i = b.begin(); i != b.end(); i++) {
         cntrl_blocks.push_back(*i);
         addBlockObj(*i);
+        block_count++;
     }
 
 }
 
 void TrackController::addBlockObj(int num) {
-    using namespace std;
+    //using namespace std;
     BlockCntrl b;
-    b.setUpBlock(line, num, switch_id, crossing_id, last_block[0], last_block[1]);
+
+    int temp_sw[4] = {switch_head, switch_tail0, switch_tail1, switch_state};
+
+    b.setUpBlock(line, num, temp_sw, crossing_id);
     blocks.push_back(b);
 }
 
 void TrackController::setSignalsInstance(CTCSignals &s){
 
-    dest_block = s.getExit( (region - 1), line);
+    route = s.getRoute( (region - 1), line);
 
     setRoute();
+
+    std::vector<float> ctc_speed_temp;
+    ctc_speed_temp = s.getSpeed(region, line);
+
+    std::vector<int> ctc_auth_temp;
+    ctc_auth_temp = s.getAuth(region, line);
+
+    int c = 0;
     for ( auto i = blocks.begin(); i != blocks.end(); i++) {
-        i -> setSpdAuth(s.speedCTC, s.authCTC);
+        i -> setSpdAuth(ctc_auth_temp[c], ctc_auth_temp[c]);
+        c++;
     }
 
 

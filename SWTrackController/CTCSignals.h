@@ -17,12 +17,14 @@ public:
     std::vector<float> bspeed1;
     std::vector<int> bauth1;
 
-    std::vector<int> green_exit, red_exit, blue_exit;
+    std::vector<bool> green_route, red_route, blue_route; //vector<bool> - route per wayside, 0 -> straight & 1 -> diverging
 
-    int setSignal(std::string &, std::vector<int>); //string line - of which track line, vector<int> exits - vector of exit blocks
+    std::vector<bool> calcRoute(std::string &, std::vector<int>); //string line - of which track line, vector<int> - route in order of ascending order
+
+    int setSignal(std::string &, std::vector<bool>); //string line - of which track line, vector<int> exits - vector of routes
     std::vector<float> getSpeed(int, std::string &);
     std::vector<int> getAuth(int, std::string &);
-    int getExit(int, std::string &); //int wayside_id - specify which exit is requested, string line - of which track line
+    bool getRoute(int, std::string &); //int wayside_id - specify which route is requested, string line - of which track line
 
 
 };

@@ -9,25 +9,9 @@ BlockCntrl::BlockCntrl() {
 	
 }
 
-void BlockCntrl::setUpBlock(std::string &l, int block, int switch_id[4], int crossing_id, int last_block0, int last_block1) {
+void BlockCntrl::setUpBlock(std::string &l, int block, int switch_id[], int crossing_id) {
 	block_num = block;
     line = l;
-
-    if (last_block0 == block_num) {
-        default_last_block = true;
-        active_last_block = false;
-    }
-    else if (last_block1 == block_num) {
-        active_last_block = true;
-        default_last_block = false;
-    }
-    else {
-        active_last_block = false;
-        default_last_block = false;
-    }
-
-
-    switch_state = false; //default switch state
 
     if (block_num == switch_id[0]) {
         switch_head = true;
@@ -56,7 +40,6 @@ void BlockCntrl::setUpBlock(std::string &l, int block, int switch_id[4], int cro
         cross_state = false;
     }
 	
-
 		
 }
 
