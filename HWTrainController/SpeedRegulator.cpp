@@ -1,5 +1,6 @@
 #include "SpeedRegulator.h"
 #include <iostream>
+#include <math.h>
 
 SpeedRegulator::SpeedRegulator(Train *t, CTCMode *m)
 {
@@ -32,9 +33,17 @@ SpeedRegulator::SpeedRegulator(Train *t, CTCMode *m)
     //Initialize the maxPower to be 120,000 watts
     maxPower = 120000; //this value comes from Flexity 2 Tram datasheet
 
+    //Initialize the powers array to be 0
+    powers[0] = 0;
+    powers[1] = 0;
+    powers[2] = 0;
+
 }
-void SpeedRegulator::calcPowerCmd()
+double SpeedRegulator::calcPowerCmd()
 {
+    //Creates a variable to store the power calculation in
+    int power = 0;
+
     //Only calculate a nonzero power while the train has a nonzero authority and the brake is not being pulled
     if(  ((trainModel -> sendTrackCircuit() & 0xffffffff) / 4096 > 0) && (trainModel -> getServiceBrake() != 1) && (trainModel -> getEmergencyBrake() != 1) )
     {
@@ -69,16 +78,11 @@ void SpeedRegulator::calcPowerCmd()
         else uk = uk_1;
 
         //Calculate the power command
-        powerCmd = (Kp * ek) + (Ki * uk);
-        trainModel -> setPower(powerCmd);
+        power = (Kp * ek) + (Ki * uk);
 
         //Sends power command to the trainModel
-        if(powerCmd < 120) trainModel -> setPower(powerCmd);
-        else
-        {
-            powerCmd = 120;
-            trainModel -> setPower(powerCmd);
-        }
+        if(power >= 120) power = 120;
+        else if(power <= -120) power = -120;
 
         //Set ek_1 = ek for next power command calculation
         ek_1 = ek;
@@ -89,9 +93,31 @@ void SpeedRegulator::calcPowerCmd()
     }
     else
     {
-        powerCmdZero();
+        power = 0;
     }
+
+    return power;
 }
+
+void SpeedRegulator::calcPowerVital()
+{
+    //Calculate the power command 3 times
+    double power1 = calcPowerCmd();
+    double power2 = calcPowerCmd();
+    double power3 = calcPowerCmd();
+
+    //Ensure that at least 2 of them are very similar
+    double p12 = abs(power1 - power2);
+    double p23 = abs(power2 - power3);
+    double p13 = abs(power3 - power1);
+
+    if( (power1 == 0 && power2 == 0) || (power2 == 0 && power3 == 0) || (power1 == 0 && power3 == 0) ) powerCmdZero();
+    else if(p12 < .3) powerCmd = (power1 + power2)/2;
+    else if(p23 < .3) powerCmd = (power2 + power3)/2;
+    else if(p13 < .3) powerCmd = (power1 + power3)/2;
+    else pullEmergencyBrake();
+}
+
 void SpeedRegulator::powerCmdZero()
 {
     //Set the powerCmd var to 0
@@ -109,7 +135,7 @@ void SpeedRegulator::powerCmdZero()
 }
 double SpeedRegulator::getPowerCmd()
 {
-    calcPowerCmd();
+    calcPowerVital();
     return powerCmd;
 }
 double SpeedRegulator::getSetpointSpeed()
@@ -128,7 +154,7 @@ void SpeedRegulator::incSetpointSpeed(double inc)
     }
 
     //Calculate the power command
-    calcPowerCmd();
+    calcPowerVital();
 }
 void SpeedRegulator::chooseVcmd()
 {
