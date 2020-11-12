@@ -58,33 +58,17 @@ Region::Region(std::vector<std::string> sec,std::vector<int> blc, std::vector<bo
 }
 
 
-void Region :: initialize(int db, float ss, float ac) {
+void Region :: initialize(int db, std::vector<float> ss, std::vector<int> ac) {
     //setAuthority(ac, db);
     //setCommandedSpeed(ss, db);
 
-    // Yard Speed
-    blocks[0].sugSpeed = 5;
-    blocks[0].commSpeed = 5;
-    blocks[0].auth = 1;
-
-    std::cout << "the block 0 " << blocks[0].sugSpeed << " and auth " << blocks[0].auth << endl;
-
-    int i = 1;
-    while (i <= db){ 
-        blocks[i].sugSpeed = ss;
-        blocks[i].commSpeed = ss;
-        blocks[i].auth = ac;
+    unsigned int i = 0;
+    while (i < blocks.size()){
+        blocks[i].sugSpeed = ss[i];
+        blocks[i].commSpeed = ss[i];
+        blocks[i].auth = ac[i];
         std:: cout << "Block " << i << " Speed and Authority: " << blocks[i].commSpeed << ", " << blocks[i].auth << std::endl;
         i++;
-    }
-
-    // If past destination, speed and authority are 0
-    unsigned int j;
-    for (j = db + 1; j < blocks.size(); j++){
-        blocks[j].sugSpeed = 0;
-        blocks[j].commSpeed = 0;
-        blocks[j].auth = 0;
-        std:: cout << "Block " << j << " Speed and Authority: " << blocks[j].commSpeed << ", " << blocks[j].auth << std::endl;
     }
 
     setCircuit();

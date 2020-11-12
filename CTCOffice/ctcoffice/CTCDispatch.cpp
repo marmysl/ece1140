@@ -163,7 +163,7 @@ float CTCDispatch::getPassNum(){
 
 void CTCDispatch::dispatch(CTCSignals(&c)){
     setPassNum();
-    carsNum = ceil(passNum/44);
+    carsNum = (passNum/44); // ceil is taken out
     //qDebug() << "Number of Passengers on Train: " << QString::number(passNum);
     //qDebug() << "Number of Cars on Train: " << QString::number(carsNum);
 
@@ -191,8 +191,11 @@ void CTCDispatch::sendTrackController(CTCSignals &ctc){
 
     //ctc.calcRoute(line, tcStates);
     //ctc.setSignal(endblock, speed, authority);
+
+    //reg.initialize(destblock, speeds, authorities);
+
     //alertWaysideSystem(ctc);
-    initializeHW(ctc);
+    //initializeHW(ctc);
 }
 
 CTCMode* CTCDispatch::getCTCMode()

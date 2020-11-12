@@ -8,9 +8,10 @@
 
 HWTrackController::HWTrackController()
 {
-    //regptr = &reg;
+    std::cout << "here" << std::endl;
+    cout.flush();
 
-    writeTimer = new QTimer();
+    writeTimer = new QTimer(this);
     writeTimer->setInterval(ARDUINO_WAIT_TIME);
 
     // connect data receive method
@@ -23,7 +24,6 @@ HWTrackController::HWTrackController()
 HWTrackController::~HWTrackController()
 {
     delete writeTimer;
-    //delete regptr;
 }
 
 void HWTrackController::recieveData( char *buf, qint64 len )
@@ -71,18 +71,19 @@ void HWTrackController::writeData()
 
     string outgoing_s = "";
 
-    // test string
-    //outgoing_s += "1A0412.011.030.001";
-    //outgoing_s += "\n";
+    outgoing_s += to_string(reg.detectTrain(0));
 
-//    outgoing_s += to_string(regptr->detectTrain(regptr->getCurrentBlock(10)));
-//    outgoing_s += regptr->getSection(10);
-//    outgoing_s += to_string(regptr->getCurrentBlock(10));
-//    outgoing_s +=
+    outgoing_s += reg.getSection(0);
+
+    if (reg.getCurrentBlock(0) < 10) {
+        outgoing_s += "0";
+        outgoing_s += reg.getCurrentBlock(0);
+    }
 
 
 
-    //std::cout << "Outgoing Track Controller: " << outgoing_s << std::endl;
+    std::cout << "Outgoing Track Controller: " << outgoing_s << std::endl;
+    cout.flush();
 
     strcpy(outgoingData, outgoing_s.c_str());
 

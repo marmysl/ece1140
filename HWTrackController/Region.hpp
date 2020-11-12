@@ -21,7 +21,7 @@ struct BlockInfo
     bool lightColor[2];         // Color of the traffic lights
     float sugSpeed;             // Suggested Speed
     float commSpeed;            // Commanded Speed
-    float auth;                 // Authority
+    int auth;                 // Authority
     bool switchActivated;       // Is the switch activated
     bool crossingActivated;     // Is the crossing (if in the block) activated
     bool occupancy;             // Is the block occupied
@@ -34,14 +34,14 @@ private:
     std::string route;                      // Line
     int exitBlock;                          // exit block for the region, which will indicate the switch position
     float suggestedSpeed;                   // Suggested Speed value from CTC
-    float suggestedAuth;                    // Suggested authority value from CTC
+    int suggestedAuth;                    // Suggested authority value from CTC
     float speedLimit;                       // Block speed limit picked up from Track Model
     std::vector<BlockInfo> blocks;          // Vector or block structures containing block information
 public:
     Region();                               // Constructor
     Region(std::vector<std::string> sec,std::vector<int> blc, std::vector<bool> sw, std::vector<bool> rc); // SWTC sends layout
 
-    void initialize(int, float, float);     // SWTC CTC Signals: receive speed and authority from CTC using SWTC class
+    void initialize(int, std::vector<float>, std::vector<int>);     // SWTC CTC Signals: receive speed and authority from CTC using SWTC class
     void setCircuit();                      // Track Model: send speed and authority (track circuit information)
     bool detectTrain(int);                  // Track Model: pick up block occupancy
     float getSpeedLimit() const;            // Track Model: pick up speed limit

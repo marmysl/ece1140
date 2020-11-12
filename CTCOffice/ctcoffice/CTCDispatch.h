@@ -12,7 +12,6 @@
 #include "CTCMode.h"
 #include "../../TrackModel/trackrouter.h"
 
-
 class CTCDispatch
 {
     private:
