@@ -1,6 +1,6 @@
 #ifndef TRAINMODELUI_H
 #define TRAINMODELUI_H
-
+#include "TrainModelMath.h"
 #include <QMainWindow>
 
 QT_BEGIN_NAMESPACE
@@ -12,8 +12,10 @@ class TrainModelUI : public QMainWindow
     Q_OBJECT
 
 public:
+    TrainModelMath *train;
     TrainModelUI(QWidget *parent = nullptr);
     ~TrainModelUI();
+    void setTrain(TrainModelMath *trainNew);
     void updatePower(double power);
     void updateVelocity(double currVel);
     void updateBlockNum(int block);
@@ -27,6 +29,9 @@ public:
     void updateAC(bool);
     void updateAds(bool);
     void updateAnnouncements(bool, std::string);
+
+private slots:
+    void on_pushButton_clicked();
 
 private:
     Ui::TrainModelUI *ui;

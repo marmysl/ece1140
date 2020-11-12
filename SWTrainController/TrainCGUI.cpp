@@ -56,7 +56,7 @@ void TrainControlWindow :: updateCircuitInfo()
 void TrainControlWindow :: updatePower()
 {
     swtc.setTrainVelocity(train->getCurrentVelocity());
-    ui->currspeed_->setText(QString::number(swtc.getTrainVelocity()));
+    ui->currspeed_->setText(QString::number(swtc.getTrainVelocity()*2.237));
 
     train->setPower(swtc.getPowerCommand());
     ui->powerOutput_->setText(QString::number(swtc.getPowerCommand() / 1000));

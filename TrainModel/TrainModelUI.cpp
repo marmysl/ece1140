@@ -14,12 +14,16 @@ TrainModelUI::~TrainModelUI()
     delete ui;
 }
 
+void TrainModelUI::setTrain(TrainModelMath *trainNew){
+    train = trainNew;
+}
+
 void TrainModelUI::updatePower(double power){
     ui->powerLabel->setText(QString::number(power));
 }
 
 void TrainModelUI::updateVelocity(double currVel){
-    ui->velLabel->setText(QString::number(currVel));
+    ui->velLabel->setText(QString::number(currVel*2.237));
 }
 
 void TrainModelUI::updateBlockNum(int block){
@@ -70,4 +74,11 @@ void TrainModelUI::updateAds(bool ads){
     QString adsStr = "Off";
     if(ads){adsStr = "On";}
     ui->adLabel->setText(adsStr);
-    }
+}
+
+
+
+void TrainModelUI::on_pushButton_clicked()
+{
+    train->setEBrake(true);
+}

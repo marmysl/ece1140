@@ -125,6 +125,7 @@ int TrainModelMath::getFailureStatus(){
 
 void TrainModelMath::setEBrake(bool status){
     emergencyBrake = status;
+    std::cout << "in math the e brake is " << status << endl;
 }
 
 void TrainModelMath::setSBrake(bool status){

@@ -48,5 +48,4 @@ void TrainModelUpdateBlock::blockGradeUp(){
 void TrainModelUpdateBlock::updateTrackCircuit(){
     TrackModel::TrackCircuitData newData = TrackModel::getTrackCircuit(lineType, blockNum);
     trackCircuitData = newData.getEncodedData();
-    std::cout << "Track circuit speed " << newData.decodeSpeed() << " and the authority " << newData.decodeAuthority();
 }
