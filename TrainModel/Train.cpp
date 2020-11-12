@@ -49,7 +49,7 @@ void Train::setLeftDoorStatus(bool doorStatus){
 }
 
 bool Train::getLeftDoorStatus(){
-    return controls->doorOpen;
+    return controls->doorLeftOpen;
 }
 
 void Train::setRightDoorStatus(bool doorStatus){
@@ -58,7 +58,7 @@ void Train::setRightDoorStatus(bool doorStatus){
 }
 
 bool Train::getRightDoorStatus(){
-    return controls->doorOpen;
+    return controls->doorRightOpen;
 }
 
 void Train::setCabinLights(bool lightStatus){
