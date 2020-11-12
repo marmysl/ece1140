@@ -156,12 +156,12 @@ void TrainController::writeData()
 
     while(outgoing_s.length() <= 10) outgoing_s += " ";
 
-    string Kp(to_string(speedRegulator -> getKp()), 0, 5);
+    string Kp(to_string((speedRegulator -> getKp())/1000), 0, 5);
     outgoing_s += Kp;
 
     while(outgoing_s.length() <= 15) outgoing_s += " ";
 
-    string Ki(to_string(speedRegulator -> getKi()), 0, 5);
+    string Ki(to_string((speedRegulator -> getKi())/1000), 0, 5);
     outgoing_s += Ki;
 
     while(outgoing_s.length() <= 20) outgoing_s += " ";
