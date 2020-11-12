@@ -10,37 +10,36 @@
 #include "../../SWTrackController/trackcntrl_main.h"
 #include "../../HWTrackController/HWTrackController_main.h"
 #include "CTCMode.h"
-
+#include "../../TrackModel/trackrouter.h"
 
 class CTCDispatch
 {
     private:
         std::string line;
-        std::string destinationType;
         int endblock;
         std::string station;
-        float timeStart;
-        float timeArrival;
+        float timeStart = 0;
+        float timeArrival = 0;
         float passNum;
         int carsNum;
         CTCMode* m = nullptr;
     public:
 
 
-        std::vector<float> authority;
-        std::vector<float> speed;
-        void setAuthority(std::string, int);
-        void setSpeed(std::string, int, float, float);
+        std::vector<int> authority; // blocks so vector of ints
+        float speed;
+        std::vector<bool> tcStates;
+        void setAuthority();
+        void setSpeed(float, float);
         void sendTrackController(CTCSignals &);
         void dispatch(CTCSignals &);
 
         void setLine(std::string);
         std::string getline();
-        void setDestinationType(std::string);
-        std::string getDestinationType();
+        void setDestination(QString, QString);
         void setStation(std::string);
         std::string getStation();
-        void setBlock(std::string);
+        void setBlock(int);
         int getBlock();
         void setTimeStart(std::string);
         float getTimeStart();
@@ -50,6 +49,7 @@ class CTCDispatch
         float getPassNum();
         void setCTCMode(CTCMode*);
         CTCMode* getCTCMode();
+        TrackModel::TrainPathInfo  findRoute();
 };
 
 #endif // CTCDISPATCH_H

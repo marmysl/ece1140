@@ -143,6 +143,7 @@ namespace TrackModel {
     class Station {
         public:
             std::string name;
+            std::vector<Block *> attachedBlocks;
 
             Station( std::string name );
     };

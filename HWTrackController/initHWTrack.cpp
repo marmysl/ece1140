@@ -16,7 +16,7 @@ void initializeHW(CTCSignals &c){
 }
 
 int init_HWTrackController() {
-    HWTrackController obj;
+    HWTrackController* obj = new HWTrackController();
 	return 0;
 }
 

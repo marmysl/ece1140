@@ -14,12 +14,16 @@ TrainModelUI::~TrainModelUI()
     delete ui;
 }
 
+void TrainModelUI::setTrain(TrainModelMath *trainNew){
+    train = trainNew;
+}
+
 void TrainModelUI::updatePower(double power){
     ui->powerLabel->setText(QString::number(power));
 }
 
 void TrainModelUI::updateVelocity(double currVel){
-    ui->velLabel->setText(QString::number(currVel));
+    ui->velLabel->setText(QString::number(currVel*2.237));
 }
 
 void TrainModelUI::updateBlockNum(int block){
@@ -38,10 +42,16 @@ void TrainModelUI::updateNumCars(int cars){
     ui->numCarLabel->setText(QString::number(cars));
 }
 
-void TrainModelUI::updateDoors(bool door){
+void TrainModelUI::updateLeftDoors(bool door){
     QString doorStr = "Closed";
     if(door){doorStr = "Open";}
-    ui->doorLabel->setText(doorStr);
+    ui->doorLabelLeft->setText(doorStr);
+}
+
+void TrainModelUI::updateRightDoors(bool door){
+    QString doorStr = "Closed";
+    if(door){doorStr = "Open";}
+    ui->doorLabelRight->setText(doorStr);
 }
 
 void TrainModelUI::updateCabinLights(bool lights){
@@ -70,4 +80,16 @@ void TrainModelUI::updateAds(bool ads){
     QString adsStr = "Off";
     if(ads){adsStr = "On";}
     ui->adLabel->setText(adsStr);
-    }
+}
+
+void TrainModelUI::updateFailureStatus(){
+    QString goesIn = "Status will appear here";
+    if(train->emergencyBrake){goesIn = "Emergency Brake Pulled";}
+    ui->failStatus->setText(goesIn);
+}
+
+
+void TrainModelUI::on_pushButton_clicked()
+{
+    train->setEBrake(true);
+}
