@@ -329,6 +329,7 @@ void Route::loadLayout( std::string fileName ) {
                 {
                     newBlock->platform.station = s;
                     newBlock->platform.side = side;
+                    s->attachedBlocks.push_back(newBlock);
                 }
             }
 
@@ -338,6 +339,7 @@ void Route::loadLayout( std::string fileName ) {
                 Station *newStation = new Station(station);
                 newBlock->platform.station = newStation;
                 newBlock->platform.side = side;
+                newStation->attachedBlocks.push_back(newBlock);
                 stations.push_back(newStation);
             }
         }
