@@ -228,5 +228,8 @@ void TrackController::setTrackSA() {
 }
 
 void TrackController::updateData() {
-
+    getFaults();
+    setCross();
+    setTrackSA();
+    setRoute();
 }

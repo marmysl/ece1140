@@ -18,6 +18,7 @@ class SWTrackCntrlWindow : public QMainWindow
 public:
     explicit SWTrackCntrlWindow(QWidget *parent = nullptr);
     ~SWTrackCntrlWindow();
+    void timerEvent(QTimerEvent *event);
     TrackController wayside;
     bool setPLC();
     void setBlock();
@@ -26,6 +27,8 @@ public:
    // void updateInfo();
     bool PLCfile_present;
     std::string filename;
+    int timerID;
+    int count;
 
 
 private slots:

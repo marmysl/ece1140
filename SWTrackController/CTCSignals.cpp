@@ -3,10 +3,39 @@
 #include <vector>
 
 
-std::vector<bool> CTCSignals::calcRoute(std::string &l, std::vector<int>r) {
+void CTCSignals::calcRoute(std::string &l, std::vector<int>r) {
 
     std::vector<bool> temp;
-    return temp;
+    if (l == "Blue Line") {
+        auto i = r.begin();
+        blue_route.push_back(*i);
+    }
+    else if (l == "Green Line") {
+        int count = 1;
+        for (auto i = r.begin(); i != r.end(); i++) {
+            if (count == 1 || count == 3 || count == 4 || count == 7 || count == 9 || count == 11) {
+                green_route.push_back(*i);
+            }
+            else {
+                green_route.push_back(0);
+            }
+            count++;
+        }
+    }
+    else {
+        int count = 1;
+        for (auto i = r.begin(); i != r.end(); i++) {
+            if (count == 1 || count == 2 || count == 4 || count == 5 || count == 6 || count == 7 || count == 9) {
+                red_route.push_back(*i);
+            }
+            else {
+                red_route.push_back(0);
+            }
+            count++;
+        }
+
+    }
+
 
 }
 

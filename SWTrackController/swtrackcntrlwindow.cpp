@@ -10,10 +10,21 @@ SWTrackCntrlWindow::SWTrackCntrlWindow(QWidget *parent) :
     ui->mainWindow->hide();
     PLCfile_present = false;
     ui->CancelButton->hide();
+
+    timerID = startTimer(1000); // timer event occurs every second
+    count = 0;
+}
+void SWTrackCntrlWindow::timerEvent(QTimerEvent *event)
+{
+    count++;
+    //std::cout << "Timer has updated... " << count << std::endl; //debug
+
+    updateWaysides();
 }
 
 SWTrackCntrlWindow::~SWTrackCntrlWindow()
 {
+    killTimer(timerID);
     delete ui;
 }
 
