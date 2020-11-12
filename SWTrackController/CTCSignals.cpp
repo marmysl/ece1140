@@ -3,7 +3,7 @@
 #include <vector>
 
 
-void CTCSignals::calcRoute(std::string &l, std::vector<int>r) {
+void CTCSignals::calcRoute(std::string &l, std::vector<bool> r) {
 
     std::vector<bool> temp;
     if (l == "Blue Line") {

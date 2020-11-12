@@ -19,7 +19,7 @@ public:
 
     std::vector<bool> green_route, red_route, blue_route; //vector<bool> - route per wayside, 0 -> straight & 1 -> diverging
 
-    void calcRoute(std::string &, std::vector<int>); //string line - of which track line, vector<int> - route in order of ascending order
+    void calcRoute(std::string &, std::vector<bool>); //string line - of which track line, vector<int> - route in order of ascending order
 
     int setSignal(std::string &, std::vector<bool>); //string line - of which track line, vector<int> exits - vector of routes
     std::vector<float> getSpeed(int, std::string &);

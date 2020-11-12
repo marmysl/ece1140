@@ -189,8 +189,7 @@ void CTCDispatch::sendTrackController(CTCSignals &ctc){
           i++;
     }
 
-
-    //ctc.calcRoute(line, tcStates);
+    ctc.calcRoute(line, tcStates);
     //ctc.setSignal(endblock, speed, authority);
 
     speed = 7;
@@ -198,7 +197,6 @@ void CTCDispatch::sendTrackController(CTCSignals &ctc){
 
     //alertWaysideSystem(ctc);
     //initializeHW(ctc);
-
 }
 
 CTCMode* CTCDispatch::getCTCMode()
