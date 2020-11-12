@@ -31,7 +31,7 @@ void TrainControlWindow::timerEvent(QTimerEvent *event)
     count++;
     //std::cout << "Timer has updated... " << count << std::endl; //debug
 
-    swtc.calculatePower(train->getEmergencyBrake());
+    swtc.calculatePower();
     updatePower();
     updateCircuitInfo();
     updateBrakes();
@@ -65,13 +65,18 @@ void TrainControlWindow :: updatePower()
 void TrainControlWindow :: updateBrakes()
 {
     // Update brake flags in train model
-    train->setServiceBrake(swtc.getServiceBrakeFlag());
 
-    //kirah commenting this out to try and fix emergency brake
-    //train->setEmergencyBrake(swtc.getEmergencyBrakeFlag());
+    //these are the changes kirah made to fix the emergency brake
+    train->setServiceBrake(swtc.getServiceBrakeFlag());
+    //this if statement covers the case where the passenger presses the emergency brake
+    if(train->getEmergencyBrake() == true && swtc.getEmergencyBrakeFlag() == false){
+        swtc.setPowerCommand(0.0);
+        swtc.setEmergencyBrake(true);
+    }
+    train->setEmergencyBrake(swtc.getEmergencyBrakeFlag());
 
     // if the train is actively braking, display on GUI for driver
-    if (train->getEmergencyBrake() == true){
+    if (swtc.getEmergencyBrakeFlag() == true){
         ui->releasebrakebutton->show();
         ui->ebrake_->setText("The emergency brake is enabled!");
     } else {
@@ -140,7 +145,7 @@ void TrainControlWindow::on_submit_clicked() //Submits Kp and Ki
 
     //Calculate the initial power for the yard speed (5 m/s)
     swtc.setSetpointSpeed(yardSpeed);
-    swtc.calculatePower(train->getEmergencyBrake());
+    swtc.calculatePower();
 
     cout << "The initial power for 5m/s has been set by the train controller.\n";
 
@@ -159,6 +164,7 @@ void TrainControlWindow::on_emergencyBrake_clicked()
     std::cout << "Emergency brake has been applied.\n"; //debug
 
     swtc.setPowerCommand(0.0); // set power command to zero
+    swtc.setEmergencyBrake(true);
     train->setEmergencyBrake(true);
 }
 
@@ -192,6 +198,10 @@ void TrainControlWindow::on_headlights_button_clicked()
 void TrainControlWindow::on_releasebrakebutton_clicked()
 {
     swtc.setServiceBrake(false);
+    swtc.setEmergencyBrake(false);
+
+    //this line will need to move, figure out a passenger flag
     train->setEmergencyBrake(false);
+
     ui->releasebrakebutton->hide();
 }
