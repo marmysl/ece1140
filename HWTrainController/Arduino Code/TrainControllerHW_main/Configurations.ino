@@ -68,8 +68,8 @@ const int CabinHeatIn = 10;
 const int CabinDoorsLeftIn = 11;
 const int CabinAdvertisementsIn = 12;
 const int CabinAnnouncementsIn = 13;
-const int CabinDoorsRightIn = 40;
-const int CabinDoorsRightOut = 42;
+const int CabinDoorsRightIn = 42;
+const int CabinDoorsRightOut = 44;
 
 //Function to initalize each cabin control pin
 void cabinControlsSetup()
@@ -88,7 +88,7 @@ void cabinControlsSetup()
   pinMode(CabinAnnouncementsIn,INPUT);
   pinMode(CabinAnnouncementsOut,OUTPUT);
   pinMode(CabinDoorsRightIn, INPUT);
-  pinMode(CabinDoorsRightOut, INPUT);
+  pinMode(CabinDoorsRightOut, OUTPUT);
 
   //Set pins low initially
   digitalWrite(CabinLightsIn, LOW);

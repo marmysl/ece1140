@@ -1,6 +1,5 @@
 #include "Train.h"
 #include <QApplication>
-#include <chrono>
 #include <cstdint>
 #include <iostream>
 
@@ -12,12 +11,12 @@ using namespace std;
 
 Train::Train(int newNumCars, string lineType)
 {
-    cout << "Created new Train Model with " << newNumCars << " cars" << endl;
     w = new TrainModelUI();
     w->show();
     controls = new TrainModelControls();
     block = new TrainModelUpdateBlock(lineType);
     math = new TrainModelMath(newNumCars, block);
+    w->setTrain(math);
     updateUI();
 }
 
@@ -37,7 +36,7 @@ double Train::getCurrentVelocity(){
 
 void Train::setDoorStatus(bool doorStatus){
     controls->toggleDoor(doorStatus);
-    w->updateDoors(controls->doorOpen);
+    w->updateLeftDoors(controls->doorOpen);
 }
 
 bool Train::getDoorStatus(){
@@ -46,20 +45,20 @@ bool Train::getDoorStatus(){
 
 void Train::setLeftDoorStatus(bool doorStatus){
     controls->toggleLeftDoor(doorStatus);
-    //w->updateDoors(controls->doorOpen);
+    w->updateLeftDoors(controls->doorOpen);
 }
 
 bool Train::getLeftDoorStatus(){
-    return controls->doorOpen;
+    return controls->doorLeftOpen;
 }
 
 void Train::setRightDoorStatus(bool doorStatus){
     controls->toggleRightDoor(doorStatus);
-    //w->updateDoors(controls->doorOpen);
+    w->updateRightDoors(controls->doorOpen);
 }
 
 bool Train::getRightDoorStatus(){
-    return controls->doorOpen;
+    return controls->doorRightOpen;
 }
 
 void Train::setCabinLights(bool lightStatus){
@@ -167,5 +166,6 @@ void Train::updateUI(){
     w->updateBlockNum(block->blockNum);
     w->updateBlockLength(block->blockDist);
     w->updateBlockGrade(block->blockGrade);
+    w->updateFailureStatus();
 }
 

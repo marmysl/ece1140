@@ -54,7 +54,7 @@ void joystick()
     lcd.setCursor(0,0);
     lcd.print("Commanded Speed: ");
     lcd.setCursor(0,1);
-    lcd.print(commandedSpeed + " m/s");
+    lcd.print(commandedSpeed + " mi/hr");
     lcd.setCursor(0,2);
     lcd.print("Authority: ");
     lcd.setCursor(0,3);

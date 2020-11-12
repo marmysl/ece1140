@@ -27,8 +27,8 @@ public:
     int safeStoppingDist = 10;
     bool inYard = true;
     TrainModelUpdateBlock *block;
-    bool emergencyBrake = false;
-    bool serviceBrake = false;
+    bool emergencyBrake;
+    bool serviceBrake;
 
     //values that I might decide to make a different class for
     double mass = 0;

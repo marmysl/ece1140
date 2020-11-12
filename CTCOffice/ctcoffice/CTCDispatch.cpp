@@ -6,6 +6,7 @@
 #include <QApplication>
 #include "../../TrackModel/tracklayout.hpp"
 #include "system_main.h"
+#include <cmath>
 
 
 //useful cout replacement command while using QT Creator Application Output

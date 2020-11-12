@@ -2,7 +2,7 @@
 #include "TrainModelUpdateBlock.h"
 #include <iostream>
 
-TrainModelMath::TrainModelMath(int newNumCars, TrainModelUpdateBlock *newAssigBlock){    
+TrainModelMath::TrainModelMath(int newNumCars, TrainModelUpdateBlock *newAssigBlock){
     numCars = newNumCars;
     mass = numCars * 56700;
     block = newAssigBlock;
@@ -19,13 +19,15 @@ TrainModelMath::TrainModelMath(int newNumCars, TrainModelUpdateBlock *newAssigBl
     safeStoppingDist = 10;
     inYard = true;
     newBlock = false;
+    emergencyBrake = false;
+    serviceBrake = false;
 }
 
 void TrainModelMath::setPower(double newPower){
-    currPower = newPower;
+        currPower = newPower;
 
     //Calculate Force from Power input
-    currForce = newPower/lastVel;
+    currForce = currPower/lastVel;
     limitForce();
 
     //Find acceleration from calculated force
@@ -59,7 +61,6 @@ void TrainModelMath::setPower(double newPower){
         lastPos = newPos;
         lastAccel = currAccel;
         lastVel = currVel;
-        currPower = newPower;
     }
     if (inYard && newPower!=0){
         lastTime = systemClock->currentTime();
@@ -94,7 +95,7 @@ void TrainModelMath::limitForce(){
     if (currForce > (mass*0.5)){
         currForce = mass*0.5;
     }
-    else if (currPower == 0 && lastVel == 0){
+    else if ((currPower == 0 && lastVel == 0) || emergencyBrake == 1){
         currForce = 0;
     }
     else if (lastVel == 0){
@@ -124,6 +125,13 @@ int TrainModelMath::getFailureStatus(){
 }
 
 void TrainModelMath::setEBrake(bool status){
+    /*if(emergencyBrake == 1 && currVel!=0){
+        //skip to allow brake to stop
+    }
+    else{
+        emergencyBrake = status;
+    }
+    std::cout << "in math the e brake is " << emergencyBrake << endl;*/
     emergencyBrake = status;
 }
 
