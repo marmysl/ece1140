@@ -95,3 +95,7 @@ void TrackController::setSignalsInstance(CTCSignals &s){
 void TrackController::setRoute() {
 //ADD FUNCTION CALL TO TRACKLOGIC TO SET SWITCH STATE BASED ON bool route OF TrackController CLASS
 }
+
+void TrackController::setSwitch(bool state) {
+    switch_state = state;
+}

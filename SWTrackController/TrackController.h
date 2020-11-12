@@ -8,15 +8,14 @@
 #include <vector>
 #include <string>
 
-//int init_SWTrackController();
 
-//FlashLight class declaration
 class TrackController
 {
 	
 	public:
         CTCSignals ctc_wayside;
         TrackLogic PLC;
+        std::string filename;
         std::vector<BlockCntrl> blocks;
         int region;
         std::string line;
@@ -37,6 +36,7 @@ class TrackController
         TrackController();
         void setUpController(int, std::string &, std::vector<char> &, std::vector<int> &, int[], int);
         void setSignalsInstance(CTCSignals &);
+        void setSwitch(bool);
         void addBlockObj(int);
         void setSpdAuth();
         void setRoute();

@@ -5,7 +5,8 @@
 
 std::vector<bool> CTCSignals::calcRoute(std::string &l, std::vector<int>r) {
 
-    return std::vector<bool>;
+    std::vector<bool> temp;
+    return temp;
 
 }
 
