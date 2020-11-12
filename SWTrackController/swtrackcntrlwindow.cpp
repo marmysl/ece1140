@@ -1,19 +1,23 @@
 #include "swtrackcntrlwindow.h"
 #include "ui_swtrackcntrlwindow.h"
 
+#include <QtLocation/QGeoRoute>
 
 SWTrackCntrlWindow::SWTrackCntrlWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::SWTrackCntrlWindow)
 {
     ui->setupUi(this);
+    timerID = startTimer(1000);
+    count = 0;
+
     ui->mainWindow->hide();
     PLCfile_present = false;
     ui->CancelButton->hide();
 
-    timerID = startTimer(1000); // timer event occurs every second
-    count = 0;
+
 }
+
 void SWTrackCntrlWindow::timerEvent(QTimerEvent *event)
 {
     count++;

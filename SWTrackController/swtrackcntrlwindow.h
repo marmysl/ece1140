@@ -3,6 +3,7 @@
 
 #include <QMainWindow>
 #include <QStringBuilder>
+#include <QString>
 #include <QFileDialog>
 #include "TrackController.h"
 #include "trackcntrl_main.h"
@@ -18,8 +19,7 @@ class SWTrackCntrlWindow : public QMainWindow
 public:
     explicit SWTrackCntrlWindow(QWidget *parent = nullptr);
     ~SWTrackCntrlWindow();
-    void timerEvent(QTimerEvent *event);
-    TrackController wayside;
+   TrackController wayside;
     bool setPLC();
     void setBlock();
     void setSwitch();
@@ -27,8 +27,7 @@ public:
    // void updateInfo();
     bool PLCfile_present;
     std::string filename;
-    int timerID;
-    int count;
+
 
 
 private slots:
@@ -48,6 +47,11 @@ private slots:
 
 private:
     Ui::SWTrackCntrlWindow *ui;
+    int timerID;
+    int count;
+
+protected:
+    void timerEvent(QTimerEvent *event);
 };
 
 #endif // SWTRACKCNTRLWINDOW_H

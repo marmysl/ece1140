@@ -195,7 +195,7 @@ void CTCDispatch::sendTrackController(CTCSignals &ctc){
     speed = 7;
     reg.initialize(endblock, speed, authority);
 
-    //alertWaysideSystem(ctc);
+    alertWaysideSystem(line, ctc);
     //initializeHW(ctc);
 }
 
