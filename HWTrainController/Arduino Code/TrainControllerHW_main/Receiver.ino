@@ -1,16 +1,18 @@
 //String that will hold received data
 String receivedString;
 
-void reciever()
+void receiver()
 {
   //Check if new serial data has been written
   if (Serial.available() > 0) receivedString = Serial.readStringUntil('\n');
+  //lcd.clear();
+  //lcd.print(receivedString.length());
 
   //Create a system to encode all data to be returned to the interface in the string
     //char 0 = cabinLights
     //char 1 = cabinAc
     //char 2 = cabinHeat
-    //char 3 = cabinDoorsClosed
+    //char 3 = cabinDoorsLeftClosed
     //char 4 = cabinAdvertisements
     //char 5 = cabinAnnouncements
     //char6-10 = authority
@@ -24,7 +26,9 @@ void reciever()
     //char 38-43 = power command
     //char 44 = failure code
     //char 45 = cabinHeadlights
-    //char 46 = newline
+    //char 46 = mode
+    //char 47 = cabinDoorsRightClosed
+    //char 48 = newline
 
 //    lcd.clear();
 //    lcd.setCursor(0,0);
@@ -32,7 +36,7 @@ void reciever()
 //    lcd.setCursor(0,3);
 //    lcd.print(receivedString.length());
 
-  if (receivedString.length() == 46)
+  if (receivedString.length() == 48)
   {
     //Adjusts cabin control outputs based on input data
     if (receivedString.substring(0,1).equals("1")) digitalWrite(CabinLightsOut, HIGH);
@@ -41,8 +45,10 @@ void reciever()
     else if (receivedString.substring(1,2).equals("0")) digitalWrite(CabinAcOut, LOW);
     if (receivedString.substring(2,3).equals("1")) digitalWrite(CabinHeatOut, HIGH);
     else if (receivedString.substring(2,3).equals("0")) digitalWrite(CabinHeatOut, LOW);
-    if (receivedString.substring(3,4).equals("1")) digitalWrite(CabinDoorsOut, HIGH);
-    else if (receivedString.substring(3,4).equals("0")) digitalWrite(CabinDoorsOut, LOW);
+    if (receivedString.substring(3,4).equals("1")) digitalWrite(CabinDoorsLeftOut, HIGH);
+    else if (receivedString.substring(3,4).equals("0")) digitalWrite(CabinDoorsLeftOut, LOW);
+    if (receivedString.substring(47,48).equals("1")) digitalWrite(CabinDoorsRightOut, HIGH);
+    else if (receivedString.substring(47,48).equals("0")) digitalWrite(CabinDoorsRightOut, LOW);
     if (receivedString.substring(4,5).equals("1")) digitalWrite(CabinAdvertisementsOut, HIGH);
     else if (receivedString.substring(4,5).equals("0")) digitalWrite(CabinAdvertisementsOut, LOW);
     if (receivedString.substring(5,6).equals("1")) digitalWrite(CabinAnnouncementsOut, HIGH);
@@ -63,8 +69,12 @@ void reciever()
     else digitalWrite(emergencyBrakeOut, LOW);
     if(receivedString.substring(45,46).equals("1")) digitalWrite(headlightsOut, HIGH);
     else digitalWrite(headlightsOut, LOW);
+    if(receivedString.substring(46,47).equals("1")) digitalWrite(mode, HIGH);
+    else digitalWrite(mode, LOW);
+
+    if(authority == "0    ") digitalWrite(zeroAuth, HIGH);
+    else digitalWrite(zeroAuth, LOW);
     
     failureCode = receivedString.substring(44,45).toInt();
   }
-  
 }

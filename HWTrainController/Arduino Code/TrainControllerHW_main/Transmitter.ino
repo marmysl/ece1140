@@ -8,7 +8,7 @@ void transmitter()
   //char 0 = cabinLights
   //char 1 = cabinAc
   //char 2 = cabinHeat
-  //char 3 = cabinDoorsClosed
+  //char 3 = cabinDoorsLeft
   //char 4 = cabinAdvertisements
   //char 5 = cabinAnnouncements
   //char6-10 = Kp
@@ -20,6 +20,7 @@ void transmitter()
   //char20 = resolve failure button
   //char 21 = headlights
   //char 22 = release brake
+  //char 22 = cabinDoorsRight
   
   outgoingData = "";
   
@@ -34,7 +35,7 @@ void transmitter()
   else outgoingData += "0";
 
   //Cabin Doors
-  if(digitalRead(CabinDoorsIn) == HIGH) outgoingData += "1";
+  if(digitalRead(CabinDoorsLeftIn) == HIGH) outgoingData += "1";
   else outgoingData += "0";
   
   //Cabin Advertisements
@@ -49,10 +50,10 @@ void transmitter()
   outgoingData += Kp_in;
   outgoingData += Ki_in;
     
-  if(analogRead(Y_pin) < 100) outgoingData += "1";
+  if(analogRead(Y_pin) < 50) outgoingData += "1";
   else outgoingData += "0";
 
-  if(analogRead(Y_pin) > 900) outgoingData += "1";
+  if(analogRead(Y_pin) > 1000) outgoingData += "1";
   else outgoingData += "0";
 
   if(digitalRead(serviceBrakeIn) == HIGH) outgoingData += "1";
@@ -69,6 +70,9 @@ void transmitter()
 
   if(digitalRead(releaseBrake) == HIGH) outgoingData += "1";
   else outgoingData += "0";
+
+  if(digitalRead(CabinDoorsRightIn) == HIGH) outgoingData += "1";
+  else outgoingData+= "0";
 
   Serial.println(outgoingData);
   
