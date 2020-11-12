@@ -25,6 +25,9 @@ TrainController::TrainController(CTCMode *m, int numCars, std::string lineType)
     connect(writeTimer, &QTimer::timeout, this, &TrainController::writeData);
 
     writeTimer->start();
+
+    //Pull the service brake when the train is created
+    speedRegulator -> pullServiceBrake();
 }
 
 TrainController::~TrainController()
@@ -49,13 +52,13 @@ void TrainController::recieveData( char *buf, qint64 len )
     {
         string data(incomingData);
         //cout << "Incoming Length: " << data.length() << endl;
-        std::cout << "Incoming: " << data.length() << std::endl;
+        //std::cout << "Incoming: " << data.length() << std::endl;
 
           //Create a system to encode all data to be read from
           //char 0 = cabinLights
           //char 1 = cabinAc
           //char 2 = cabinHeat
-          //char 3 = cabinDoorsClosed
+          //char 3 = cabinDoorsLeftClosed
           //char 4 = cabinAdvertisements
           //char 5 = cabinAnnouncements
           //char6-10 = Kp
@@ -67,11 +70,11 @@ void TrainController::recieveData( char *buf, qint64 len )
           //char20 = resolve failure button
           //char21 = headlights
           //char22 = release brake
+          //char 23 = cabinDoorsRightCloded
 
 
-        if(data.length() == 25)
+        if(data.length() == 26)
         {
-             std::cout << "Incoming: " << data << std::endl;
              if(data.substr(0,1) == "1") trainModel -> setCabinLights(1);
              else trainModel -> setCabinLights(0);
 
@@ -81,8 +84,8 @@ void TrainController::recieveData( char *buf, qint64 len )
              if(data.substr(2,1) == "1") trainModel -> setHeater(1);
              else trainModel -> setHeater(0);
 
-             if(data.substr(3,1) == "1") trainModel -> setDoorStatus(1);
-             else trainModel -> setDoorStatus(0);
+             if(data.substr(3,1) == "1") trainModel -> setLeftDoorStatus(1);
+             else trainModel -> setLeftDoorStatus(0);
 
              if(data.substr(4,1) == "1") trainModel -> setAdvertisements(1);
              else trainModel -> setAdvertisements(0);
@@ -107,7 +110,11 @@ void TrainController::recieveData( char *buf, qint64 len )
                  trainModel -> setServiceBrake(0);
                  trainModel -> setEmergencyBrake(0);
              }
+
+             if(data.substr(23,1) == "1") trainModel -> setRightDoorStatus(1);
+             else trainModel -> setRightDoorStatus(0);
            }
+
 
     }
 }
@@ -133,49 +140,50 @@ void TrainController::writeData()
     //char 44 = failure code
     //char 45 = headlights
     //char 46 = mode
+    //char 47 = doors
     //char 47 = newline
 
     string outgoing_s = "";
     outgoing_s += to_string(trainModel -> getCabinLights());
     outgoing_s += to_string(trainModel -> getAC());
     outgoing_s += to_string(trainModel -> getHeater());
-    outgoing_s += to_string(trainModel -> getDoorStatus());
+    outgoing_s += to_string(trainModel -> getLeftDoorStatus());
     outgoing_s += to_string(trainModel -> getAdvertisements());
     outgoing_s += to_string(trainModel -> getAnnouncements());
 
-    string authority(to_string(trainModel -> sendTrackCircuit() & 0xffffffff), 0, 5);
+    string authority(to_string(  (( trainModel -> sendTrackCircuit() & 0xffffffff) / 4096) ), 0, 5);
     outgoing_s += authority;
 
     while(outgoing_s.length() <= 10) outgoing_s += " ";
 
-    string Kp(to_string(speedRegulator -> getKp()), 0, 5);
+    string Kp(to_string((speedRegulator -> getKp())/1000), 0, 5);
     outgoing_s += Kp;
 
     while(outgoing_s.length() <= 15) outgoing_s += " ";
 
-    string Ki(to_string(speedRegulator -> getKi()), 0, 5);
+    string Ki(to_string((speedRegulator -> getKi())/1000), 0, 5);
     outgoing_s += Ki;
 
     while(outgoing_s.length() <= 20) outgoing_s += " ";
 
-    string commandedSpeed(to_string(trainModel -> sendTrackCircuit() >> 32), 0, 5);
+    double speed = ((trainModel -> sendTrackCircuit() >> 32) / 4096);
+    string commandedSpeed( to_string(speed * 0.621371), 0, 5 ); //km/hr --> mi/hr
+    std::cout << "TrackCircuit = " << trainModel -> sendTrackCircuit() << std::endl;
     outgoing_s += commandedSpeed;
     while(outgoing_s.length() <= 25) outgoing_s += " ";
 
-    string setpointSpeed(to_string(speedRegulator -> getSetpointSpeed()), 0, 5);
+    string setpointSpeed(to_string(speedRegulator -> getSetpointSpeed() * 0.621371), 0, 5); //km/hr --> mi/hr
     outgoing_s += setpointSpeed;
 
     while(outgoing_s.length() <= 30) outgoing_s += " ";
 
-    string currentSpeed(to_string(trainModel -> getCurrentVelocity()), 0, 5);
+    string currentSpeed(to_string( (trainModel -> getCurrentVelocity() ) * 2.23694), 0, 5); //m/s --> km/hr
     outgoing_s += currentSpeed;
 
     while(outgoing_s.length() <= 35) outgoing_s += " ";
 
     outgoing_s+= to_string(trainModel -> getServiceBrake());
-    std::cout << "Service Brake: " << trainModel -> getServiceBrake() << std::endl;
     outgoing_s+= to_string(trainModel -> getEmergencyBrake());
-    std::cout << "Emergency Brake: " << trainModel -> getEmergencyBrake() << std::endl;
 
     string power(to_string(speedRegulator -> getPowerCmd()), 0, 6);
     outgoing_s += power;
@@ -186,6 +194,8 @@ void TrainController::writeData()
     outgoing_s += to_string(trainModel -> getHeadlights());
 
     outgoing_s += to_string(mode -> getMode());
+
+    outgoing_s += to_string(trainModel -> getRightDoorStatus());
 
     outgoing_s += "\n";
 
