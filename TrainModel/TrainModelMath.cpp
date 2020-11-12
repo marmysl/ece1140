@@ -2,7 +2,7 @@
 #include "TrainModelUpdateBlock.h"
 #include <iostream>
 
-TrainModelMath::TrainModelMath(int newNumCars, TrainModelUpdateBlock *newAssigBlock){    
+TrainModelMath::TrainModelMath(int newNumCars, TrainModelUpdateBlock *newAssigBlock){
     numCars = newNumCars;
     mass = numCars * 56700;
     block = newAssigBlock;
@@ -124,8 +124,13 @@ int TrainModelMath::getFailureStatus(){
 }
 
 void TrainModelMath::setEBrake(bool status){
-    emergencyBrake = status;
-    std::cout << "in math the e brake is " << status << endl;
+    if(emergencyBrake == 1 && currVel!=0){
+        //skip to allow brake to stop
+    }
+    else{
+        emergencyBrake = status;
+    }
+    std::cout << "in math the e brake is " << emergencyBrake << endl;
 }
 
 void TrainModelMath::setSBrake(bool status){
