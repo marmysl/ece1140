@@ -131,13 +131,14 @@ int TrainModelMath::getFailureStatus(){
 }
 
 void TrainModelMath::setEBrake(bool status){
-    if(emergencyBrake == 1 && currVel!=0){
+    /*if(emergencyBrake == 1 && currVel!=0){
         //skip to allow brake to stop
     }
     else{
         emergencyBrake = status;
     }
-    std::cout << "in math the e brake is " << emergencyBrake << endl;
+    std::cout << "in math the e brake is " << emergencyBrake << endl;*/
+    emergencyBrake = status;
 }
 
 void TrainModelMath::setSBrake(bool status){
