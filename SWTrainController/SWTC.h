@@ -20,12 +20,12 @@ class SWTC
         double trainVelocity;
         unsigned signal;
         bool serviceBrakeEnabled = true;
-        bool emergencyBrakeEnabled = false;
+        //bool emergencyBrakeEnabled = false;
         bool doorsOpen = true;
         bool cabinLightsOn = true;
         bool headlightsOn = false;
     public:
-        void calculatePower();
+        void calculatePower(bool);
         void decode(uint64_t);
 
         // Accessors & mutators

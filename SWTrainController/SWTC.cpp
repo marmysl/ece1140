@@ -1,7 +1,7 @@
 #include "SWTC.h"
 
 
-void SWTC :: calculatePower()
+void SWTC :: calculatePower(bool emergencyBrakeEnabled)
 {
     // Only set the power when the brake flags are off
 
@@ -112,6 +112,7 @@ bool SWTC :: getServiceBrakeFlag()
     return serviceBrakeEnabled;
 }
 
+/*
 void SWTC :: setEmergencyBrake(bool flag)
 {
     emergencyBrakeEnabled = flag;
@@ -121,6 +122,7 @@ bool SWTC :: getEmergencyBrakeFlag()
 {
     return emergencyBrakeEnabled;
 }
+*/
 
 void SWTC :: setCommandedSpeed(double speed)
 {

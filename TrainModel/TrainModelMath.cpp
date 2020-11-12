@@ -19,6 +19,8 @@ TrainModelMath::TrainModelMath(int newNumCars, TrainModelUpdateBlock *newAssigBl
     safeStoppingDist = 10;
     inYard = true;
     newBlock = false;
+    emergencyBrake = false;
+    serviceBrake = false;
 }
 
 void TrainModelMath::setPower(double newPower){
