@@ -100,6 +100,9 @@ void MainWindow::on_comboDestinationType_currentIndexChanged(const QString &arg1
 
     ui->comboDestination->clear();
     if(destinationType == "Station"){
+        for(auto& rte : TrackModel::routes){
+            ui->comboDestination->addItem(QString::fromStdString(rte->name));
+        }
         ui->comboDestination->addItem("Station B");
         ui->comboDestination->addItem("Station C");
     }

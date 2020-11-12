@@ -19,7 +19,8 @@ const int serviceBrakeOut = 33; //verified
 const int emergencyBrakeOut = 32; //verified
 const int serviceBrakeIn = 36; //verified
 const int emergencyBrakeIn = 28; //verified
-const int releaseBrake = 40; //verified
+const int releaseBrake = 30; //verified
+const int zeroAuth = 40; //verified
 
 //Headlights Pins
 const int headlightsIn = 38; //verified
@@ -28,8 +29,8 @@ const int headlightsOut = 31; //verified
 //Logout Pin
 const int LogoutIn = 29; //verified
 
-//Failure Resolve Pin
-const int resolveFailure  = 26; //verified
+//Mode pin
+const int mode = 34; //verified
 
 void brakeSetup()
 {
@@ -38,11 +39,13 @@ void brakeSetup()
   pinMode(serviceBrakeOut, OUTPUT);
   pinMode(emergencyBrakeOut, OUTPUT);
   pinMode(releaseBrake, INPUT);
+  pinMode(zeroAuth, OUTPUT);
   digitalWrite(serviceBrakeIn, LOW);
   digitalWrite(emergencyBrakeIn, LOW);
   digitalWrite(emergencyBrakeOut, LOW);
   digitalWrite(serviceBrakeOut, LOW);
   digitalWrite(releaseBrake, LOW);
+  digitalWrite(zeroAuth, LOW);
 }
 
 void securitySetup()
@@ -56,15 +59,17 @@ void securitySetup()
 const int CabinLightsOut = 2;
 const int CabinAcOut = 3;
 const int CabinHeatOut = 4;
-const int CabinDoorsOut = 5;
+const int CabinDoorsLeftOut = 5;
 const int CabinAdvertisementsOut = 6;
 const int CabinAnnouncementsOut = 7;
 const int CabinLightsIn = 8;
 const int CabinAcIn = 9;
 const int CabinHeatIn = 10;
-const int CabinDoorsIn = 11;
+const int CabinDoorsLeftIn = 11;
 const int CabinAdvertisementsIn = 12;
 const int CabinAnnouncementsIn = 13;
+const int CabinDoorsRightIn = 40;
+const int CabinDoorsRightOut = 42;
 
 //Function to initalize each cabin control pin
 void cabinControlsSetup()
@@ -76,12 +81,14 @@ void cabinControlsSetup()
   pinMode(CabinAcOut,OUTPUT);
   pinMode(CabinHeatIn,INPUT);
   pinMode(CabinHeatOut,OUTPUT);
-  pinMode(CabinDoorsIn,INPUT);
-  pinMode(CabinDoorsOut,OUTPUT);
+  pinMode(CabinDoorsLeftIn,INPUT);
+  pinMode(CabinDoorsLeftOut,OUTPUT);
   pinMode(CabinAdvertisementsIn,INPUT);
   pinMode(CabinAdvertisementsOut,OUTPUT);
   pinMode(CabinAnnouncementsIn,INPUT);
   pinMode(CabinAnnouncementsOut,OUTPUT);
+  pinMode(CabinDoorsRightIn, INPUT);
+  pinMode(CabinDoorsRightOut, INPUT);
 
   //Set pins low initially
   digitalWrite(CabinLightsIn, LOW);
@@ -90,16 +97,22 @@ void cabinControlsSetup()
   digitalWrite(CabinAcOut, LOW);
   digitalWrite(CabinHeatIn,LOW);
   digitalWrite(CabinHeatOut,LOW);
-  digitalWrite(CabinDoorsIn,LOW);
-  digitalWrite(CabinDoorsOut,LOW);
+  digitalWrite(CabinDoorsLeftIn,LOW);
+  digitalWrite(CabinDoorsLeftOut,LOW);
   digitalWrite(CabinAdvertisementsIn,LOW);
   digitalWrite(CabinAdvertisementsOut,LOW);
   digitalWrite(CabinAnnouncementsIn,LOW);
   digitalWrite(CabinAnnouncementsOut,LOW);
+  digitalWrite(CabinDoorsRightIn, LOW);
+  digitalWrite(CabinDoorsRightOut, LOW);
 
   //Headlights Pin Setup - will be in different category in future iterations
   pinMode(headlightsIn,INPUT);
   pinMode(headlightsOut,OUTPUT);
   digitalWrite(headlightsIn, LOW);
   digitalWrite(headlightsOut, LOW);
+
+ //Mode setup
+ pinMode(mode, OUTPUT);
+ digitalWrite(mode, LOW);
 }

@@ -4,7 +4,7 @@
 #include <sstream>
 #include <QTextStream>
 #include <QApplication>
-
+#include "../../TrackModel/tracklayout.hpp"
 #include "system_main.h"
 
 
@@ -22,6 +22,7 @@ Block* blk5 = blk6 -> prevBlock;*/
 
 void CTCDispatch::setAuthority(std::string station, int blocknum)
 {
+    /*
     float blockLength = 50;
     float trackLength;
 
@@ -100,10 +101,20 @@ void CTCDispatch::setAuthority(std::string station, int blocknum)
         qDebug() << "Incorrect Station Destination";
         return;
     }
+    */
+
+    TrackModel::Route *rt;
+    rt = TrackModel::getRoute("Blue Line");
+    TrackModel::Block* blk6 = rt -> getBlock(6);
+
+    //while(TrackModel::prevBlock != NULL){
+        //TrackModel::Block* blk5 = blk6 -> prevBlock;
+    //}
 }
 
 void CTCDispatch::setSpeed(std::string station, int blocknum, float timeStart, float timeArrival)
 {
+    /*
     float duration = timeArrival - timeStart;
     float blockLength = 50;
     float trackLength;
@@ -200,6 +211,7 @@ void CTCDispatch::setSpeed(std::string station, int blocknum, float timeStart, f
     else{
         qDebug() << "Incorrect Station Destination";
     }
+    */
 }
 
 void CTCDispatch::setLine(std::string l){
@@ -316,23 +328,26 @@ float CTCDispatch::getTimeArrival(){
     return timeArrival;
 }
 
+void CTCDispatch::setPassNum(){
+    passNum = rand() % 220;
+}
+
+float CTCDispatch::getPassNum(){
+    return passNum;
+}
+
 void CTCDispatch::dispatch(CTCSignals(&c)){
-
-    /////////////////////////////// Chris you need to change these to things//////////////////////////
-    // Leave the variable type, so pass cars in as an int and line type as a string
-
-    //Here is the hardcode for making the train dispatch on the Blue Line
-    std::string lineType = "Blue Line";
-
-    //Here is the hardcode for number of cars
-    int numCars = 5;
+    setPassNum();
+    carsNum = ceil(passNum/44);
+    //qDebug() << "Number of Passengers on Train: " << QString::number(passNum);
+    //qDebug() << "Number of Cars on Train: " << QString::number(carsNum);
 
     setAuthority(station, endblock);
     setSpeed(station, endblock, timeStart, timeArrival);
 
     sendTrackController(c);
 
-    createNewTrain(m, numCars, lineType);
+    createNewTrain(m, carsNum, line);
 }
 
 void CTCDispatch::sendTrackController(CTCSignals &ctc){
@@ -347,11 +362,13 @@ void CTCDispatch::sendTrackController(CTCSignals &ctc){
         destblock = endblock;
     }
 
-    std::string temp_string = "Green Line";
-    int destb[12] = {65, 73, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
-    ctc.setSignal(temp_string, destb, 25, 10);
-    alertWaysideSystem(temp_string, ctc);
-    //initializeHW(ctc);
+
+    // speed needs to be send in km/hr
+    // authority in blocks
+    ctc.setSignal(destblock, 25, 400);
+    //alertWaysideSystem(ctc);
+    initializeHW(ctc);
+
 }
 
 CTCMode* CTCDispatch::getCTCMode()

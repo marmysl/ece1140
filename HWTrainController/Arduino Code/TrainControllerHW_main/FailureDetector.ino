@@ -1,5 +1,5 @@
 //Failure Detector Constants
-const int FailureResolvedIn = 26;
+const int resolveFailure = 26;
 const int BCD_A = 22;
 const int BCD_B = 23;
 const int BCD_C = 24;
@@ -19,8 +19,8 @@ void failureDetectorSetup()
   digitalWrite(BCD_B, LOW);
   digitalWrite(BCD_C, LOW);
   digitalWrite(BCD_D, LOW);
-  pinMode(FailureResolvedIn, INPUT);
-  digitalWrite(FailureResolvedIn,LOW);
+  pinMode(resolveFailure, INPUT);
+  digitalWrite(resolveFailure,LOW);
 }
 
 void failureDetector()
@@ -53,7 +53,7 @@ void failureDetector()
     digitalWrite(BCD_C,3 >> 2);
     digitalWrite(BCD_D,3 >> 3);
   }
-  if(failureCode != 0 && digitalRead(FailureResolvedIn) == HIGH)
+  if(failureCode != 0 && digitalRead(resolveFailure) == HIGH)
   {
     digitalWrite(BCD_A,0 >> 0);
     digitalWrite(BCD_B,0 >> 1);

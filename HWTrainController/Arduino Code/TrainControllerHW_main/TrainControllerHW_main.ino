@@ -9,9 +9,6 @@ LiquidCrystal_I2C lcd(0x27, 2, 1, 0, 4, 5, 6, 7, 3, POSITIVE);
 //String variables to hold Kp and Ki
 String Kp_in, Ki_in;
 
-//Successful Login
-const int loginSuccess = 34; //verified
-
 ////Function prototypes
 //void cabinControlsSetup();
 //void speedRegulatorSetup();
@@ -20,7 +17,7 @@ const int loginSuccess = 34; //verified
 //void engineerLogin();
 //void enterKpKi();
 //void driverLogin();
-void reciever();
+void receiver();
 void transmitter();
 //void failureDetector();
 //void joystick();
@@ -42,23 +39,16 @@ void setup() {
   failureDetectorSetup();
   brakeSetup();
 
-  //Configure login success pin
-  pinMode(loginSuccess, OUTPUT);
-  digitalWrite(loginSuccess, LOW);
-
   //Initiate the login process
-  //Recommended values are  Kp = 300 and Ki = 400
-  //login();
-  Kp_in = "300.0";
-  Ki_in = "400.0";
-
+  //Recommended values are  Kp = 400 and Ki = 300
+  while(!enterKpKi());
  }
 
 void loop() 
 {
   joystick();
   transmitter();
-  reciever();
+  receiver();
   failureDetector();
   logout();
   delay(900);
