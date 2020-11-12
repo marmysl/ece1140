@@ -41,16 +41,22 @@ void receiver()
     //Adjusts cabin control outputs based on input data
     if (receivedString.substring(0,1).equals("1")) digitalWrite(CabinLightsOut, HIGH);
     else if (receivedString.substring(0,1).equals("0")) digitalWrite(CabinLightsOut, LOW);
+    
     if (receivedString.substring(1,2).equals("1")) digitalWrite(CabinAcOut, HIGH);
     else if (receivedString.substring(1,2).equals("0")) digitalWrite(CabinAcOut, LOW);
+    
     if (receivedString.substring(2,3).equals("1")) digitalWrite(CabinHeatOut, HIGH);
     else if (receivedString.substring(2,3).equals("0")) digitalWrite(CabinHeatOut, LOW);
+    
     if (receivedString.substring(3,4).equals("1")) digitalWrite(CabinDoorsLeftOut, HIGH);
     else if (receivedString.substring(3,4).equals("0")) digitalWrite(CabinDoorsLeftOut, LOW);
+    
     if (receivedString.substring(47,48).equals("1")) digitalWrite(CabinDoorsRightOut, HIGH);
     else if (receivedString.substring(47,48).equals("0")) digitalWrite(CabinDoorsRightOut, LOW);
+    
     if (receivedString.substring(4,5).equals("1")) digitalWrite(CabinAdvertisementsOut, HIGH);
     else if (receivedString.substring(4,5).equals("0")) digitalWrite(CabinAdvertisementsOut, LOW);
+    
     if (receivedString.substring(5,6).equals("1")) digitalWrite(CabinAnnouncementsOut, HIGH);
     else if (receivedString.substring(5,6).equals("0")) digitalWrite(CabinAnnouncementsOut, LOW);
 
