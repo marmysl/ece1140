@@ -24,12 +24,7 @@ TrainModelMath::TrainModelMath(int newNumCars, TrainModelUpdateBlock *newAssigBl
 }
 
 void TrainModelMath::setPower(double newPower){
-    if(emergencyBrake==1){
-        currPower = 0;
-    }
-    else{
         currPower = newPower;
-    }
 
     //Calculate Force from Power input
     currForce = currPower/lastVel;
