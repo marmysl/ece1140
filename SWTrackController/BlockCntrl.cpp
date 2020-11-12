@@ -5,7 +5,7 @@
 #include "TrackModel/trackmodel_controller.hpp"
 
 BlockCntrl::BlockCntrl() {
-	
+    block_fail = 0;
 	
 }
 
