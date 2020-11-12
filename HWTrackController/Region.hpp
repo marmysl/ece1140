@@ -37,12 +37,15 @@ private:
     int suggestedAuth;                    // Suggested authority value from CTC
     float speedLimit;                       // Block speed limit picked up from Track Model
     std::vector<BlockInfo> blocks;          // Vector or block structures containing block information
+    int iterator;                           // for the UI, displaying values on the lcd
 public:
     Region();                               // Constructor
-    Region(std::vector<std::string> sec,std::vector<int> blc, std::vector<bool> sw, std::vector<bool> rc); // SWTC sends layout
 
-    void initialize(int, std::vector<float>, std::vector<int>);     // SWTC CTC Signals: receive speed and authority from CTC using SWTC class
-    void setCircuit();                      // Track Model: send speed and authority (track circuit information)
+    Region(std::vector<std::string> sec,std::vector<int> blc, std::vector<bool> sw, std::vector<bool> rc); // constructor if the SWTC sends layout
+
+    void initialize(int, float, std::vector<int>);     //  receive speed and authority from CTC using SWTC class
+    void setCircuit();                      // Track Model: send speed and authority (track circuit information)t iteratorr;
+
     bool detectTrain(int);                  // Track Model: pick up block occupancy
     float getSpeedLimit() const;            // Track Model: pick up speed limit
 
@@ -50,8 +53,8 @@ public:
 
     std::string getRoute() const;
     std::string getSection(int) const;
-    int getCurrentBlock(int) const;
-    float getSuggestedSpeed() const;
+    int getCurrentBlock() const;
+    float getSuggestedSpeed(int) const;
     float getCommandedSpeed(int) const;
     float getAuthority(int) const;
 

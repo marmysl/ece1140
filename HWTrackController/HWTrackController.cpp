@@ -71,19 +71,33 @@ void HWTrackController::writeData()
 
     string outgoing_s = "";
 
-    outgoing_s += to_string(reg.detectTrain(0));
+    outgoing_s += to_string(reg.detectTrain(reg.getCurrentBlock()));
 
-    outgoing_s += reg.getSection(0);
+    outgoing_s += reg.getSection(reg.getCurrentBlock());
 
-    if (reg.getCurrentBlock(0) < 10) {
+    if (reg.getCurrentBlock() < 10) {
         outgoing_s += "0";
-        outgoing_s += reg.getCurrentBlock(0);
+        outgoing_s += to_string(reg.getCurrentBlock());
+    } else {
+         outgoing_s += reg.getCurrentBlock();
     }
 
+    string suggestedSpeed(to_string(reg.getSuggestedSpeed(reg.getCurrentBlock())), 0, 4);
+    outgoing_s += suggestedSpeed;
 
+    string commandedSpeed(to_string(reg.getCommandedSpeed(reg.getCurrentBlock())), 0, 4);
+    outgoing_s += commandedSpeed;
 
-    std::cout << "Outgoing Track Controller: " << outgoing_s << std::endl;
-    cout.flush();
+    string authority(to_string(reg.getAuthority(reg.getCurrentBlock())),0,4);
+    outgoing_s += authority;
+
+    string lights = "00";
+    outgoing_s += lights;
+
+    outgoing_s += "\n";
+
+    //std::cout << "Outgoing Track Controller: " << outgoing_s << std::endl;
+    //cout.flush();
 
     strcpy(outgoingData, outgoing_s.c_str());
 

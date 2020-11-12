@@ -8,6 +8,8 @@ using namespace std;
 //Constructor
 Region :: Region() {
 
+    iterator = 0;
+
     // Blue Line Track Layout Hardcoded for now, the SWTC will be sending the layout to this class
     region = 1;
     route = "Blue Line";
@@ -58,14 +60,14 @@ Region::Region(std::vector<std::string> sec,std::vector<int> blc, std::vector<bo
 }
 
 
-void Region :: initialize(int db, std::vector<float> ss, std::vector<int> ac) {
+void Region :: initialize(int db, float ss, std::vector<int> ac) {
     //setAuthority(ac, db);
     //setCommandedSpeed(ss, db);
 
     unsigned int i = 0;
     while (i < blocks.size()){
-        blocks[i].sugSpeed = ss[i];
-        blocks[i].commSpeed = ss[i];
+        blocks[i].sugSpeed = ss;
+        blocks[i].commSpeed = ss;
         blocks[i].auth = ac[i];
         std:: cout << "Block " << i << " Speed and Authority: " << blocks[i].commSpeed << ", " << blocks[i].auth << std::endl;
         i++;
@@ -82,12 +84,12 @@ std::string Region::getSection(int b) const {
     return blocks[b].section;
 }
 
-int Region::getCurrentBlock(int b) const { // lol just for now
-    return b;
+int Region::getCurrentBlock() const {
+    return iterator;
 }
 
-float Region::getSuggestedSpeed() const{
-    return suggestedSpeed;
+float Region::getSuggestedSpeed(int b) const{
+    return blocks[b].sugSpeed;
 }
 
 float Region::getCommandedSpeed(int b) const {
@@ -113,8 +115,8 @@ void Region :: setCircuit() {
     }
 }
 
+// CTC can access this whenever they wants
 bool Region :: detectTrain(int b) {
     blocks[b].occupancy = TrackModel::isBlockOccupied("Blue Line", b);
-    cout << " train detected is " << blocks[b].occupancy << endl;
     return blocks[b].occupancy;
 }
