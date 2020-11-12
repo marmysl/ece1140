@@ -66,10 +66,13 @@ void TrainControlWindow :: updateBrakes()
 {
     // Update brake flags in train model
 
-    //kirah commented this out to fix the emergency brake
+    //these are the changes kirah made to fix the emergency brake
     //train->setServiceBrake(swtc.getServiceBrakeFlag());
-
-    swtc.setEmergencyBrake(train->getEmergencyBrake());
+    //this if statement covers the case where the passenger presses the emergency brake
+    if(train->getEmergencyBrake() == true && swtc.getEmergencyBrakeFlag() == false){
+        swtc.setPowerCommand(0.0);
+        swtc.setEmergencyBrake(true);
+    }
 
     train->setEmergencyBrake(swtc.getEmergencyBrakeFlag());
 
