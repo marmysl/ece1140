@@ -32,7 +32,7 @@ void TrainModelMath::setPower(double newPower){
     }
 
     //Calculate Force from Power input
-    currForce = newPower/lastVel;
+    currForce = currPower/lastVel;
     limitForce();
 
     //Find acceleration from calculated force
@@ -66,7 +66,6 @@ void TrainModelMath::setPower(double newPower){
         lastPos = newPos;
         lastAccel = currAccel;
         lastVel = currVel;
-        currPower = newPower;
     }
     if (inYard && newPower!=0){
         lastTime = systemClock->currentTime();
