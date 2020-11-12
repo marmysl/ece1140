@@ -21,7 +21,12 @@ void TrackController::setUpController(int id, std::string &l, std::vector<char> 
     switch_tail1 = sw[2];
     switch_state = sw[3];
 
-    crossing_id = cr;
+    if (cr == 0) {
+        crossing_id = -1;
+    }
+    else {
+        crossing_id = cr;
+    }
 
     auto m = b.begin();
     start_block = *m;
@@ -36,6 +41,8 @@ void TrackController::setUpController(int id, std::string &l, std::vector<char> 
         addBlockObj(*i);
         block_count++;
     }
+
+    TrackLogic temp(sw, crossing_id);
 
 }
 

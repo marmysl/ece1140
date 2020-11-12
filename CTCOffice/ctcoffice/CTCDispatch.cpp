@@ -365,9 +365,9 @@ void CTCDispatch::sendTrackController(CTCSignals &ctc){
 
     // speed needs to be send in km/hr
     // authority in blocks
-    ctc.setSignal(destblock, 25, 400);
+    //ctc.setSignal(destblock, 25, 400);
     //alertWaysideSystem(ctc);
-    initializeHW(ctc);
+    //initializeHW(ctc);
 
 }
 

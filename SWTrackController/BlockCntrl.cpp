@@ -52,24 +52,9 @@ int BlockCntrl::getRes() {
 
 void BlockCntrl::setCircuit() {
 
-    if (block_speed > 0) {
-        plc_speed = true;
-    }
-    else {
-        plc_speed = false;
-    }
-    if (block_authority > 0) {
-        plc_auth = true;
-    }
-    else {
-        plc_auth = false;
-    }
-
-
-    TrackModel::TrackCircuitData data = TrackModel::TrackCircuitData::fromFloat(block_speed, block_authority);
+    TrackModel::TrackCircuitData data = TrackModel::TrackCircuitData::fromFloat(com_block_speed, com_block_authority);
 	
     TrackModel::setTrackCircuit(line, block_num, data);
-		
 	
 }
 
@@ -93,9 +78,24 @@ void BlockCntrl::setOcc() {
 }
 
 void BlockCntrl::setSpdAuth(float s, int a) {
-	block_speed = s;
-	block_authority = a;
-		
+    sug_block_speed = s;
+    sug_block_authority = a;
+
+
+    if (sug_block_speed > 0) {
+        plc_speed = true;
+    }
+    else {
+        plc_speed = false;
+    }
+    if (sug_block_authority > 0) {
+        plc_auth = true;
+    }
+    else {
+        plc_auth = false;
+    }
+
+
     setCircuit();
 	
 }
