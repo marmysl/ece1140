@@ -26,7 +26,7 @@ void CTCDispatch::setAuthority()
         TrackModel::TrainPathInfo route;
         route = findRoute();
 
-        int auth = route.blocks.size() + 1;
+        int auth = route.blocks.size();
         for(auto val : route.blocks){
             authority.push_back(auth);
             auth--;
