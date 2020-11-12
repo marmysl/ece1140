@@ -21,6 +21,8 @@ class CTCDispatch
         std::string station;
         float timeStart;
         float timeArrival;
+        float passNum;
+        int carsNum;
         CTCMode* m = nullptr;
     public:
 
@@ -44,6 +46,8 @@ class CTCDispatch
         float getTimeStart();
         void setTimeArrival(std::string);
         float getTimeArrival();
+        void setPassNum();
+        float getPassNum();
         void setCTCMode(CTCMode*);
         CTCMode* getCTCMode();
 };
