@@ -125,7 +125,10 @@ void MainWindow::on_comboDestinationType_currentIndexChanged(const QString &arg1
 
     if(destinationType == "Station"){
         for(TrackModel::Station *stat : rte->stations){
-            ui->comboDestination->addItem(QString::fromStdString(stat->name));
+            for(TrackModel::Block *blk : stat->attachedBlocks){
+                QString sName = QString("%0 (Block %1)").arg(QString::fromStdString(stat->name)).arg(blk->id);
+                ui->comboDestination->addItem(sName);
+            }
         }
     }
     else if(destinationType == "Block"){

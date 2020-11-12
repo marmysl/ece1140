@@ -83,10 +83,11 @@ int CTCDispatch::getBlock(){
 }
 
 void CTCDispatch::setStation(std::string state){
-    station = state;
+    char blknum;
+    /*station = state;
     if(station != "-1"){
         qDebug() << "Set Station Destination to: " << QString::fromStdString(station);
-    }
+    }*/
 }
 
 std::string CTCDispatch::getStation(){
