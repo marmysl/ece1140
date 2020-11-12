@@ -191,8 +191,7 @@ void CTCDispatch::sendTrackController(CTCSignals &ctc){
 
     //ctc.calcRoute(line, tcStates);
     //ctc.setSignal(endblock, speed, authority);
-
-    speed = 7;
+    speed = 30;
     reg.initialize(endblock, speed, authority);
 
     //alertWaysideSystem(ctc);
@@ -229,3 +228,4 @@ TrackModel::TrainPathInfo CTCDispatch::findRoute(){
 //Take the first 6 switch state values and put them in a vector
 //Make sure that they are 0 and 1
 //call calcRoute(line, switchVector) of CTCSignals class
+
