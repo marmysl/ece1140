@@ -199,6 +199,9 @@ void TrainControlWindow::on_releasebrakebutton_clicked()
 {
     swtc.setServiceBrake(false);
     swtc.setEmergencyBrake(false);
+
+    //this line will need to move, figure out a passenger flag
     train->setEmergencyBrake(false);
+
     ui->releasebrakebutton->hide();
 }
