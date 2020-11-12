@@ -43,7 +43,7 @@ void TrainControlWindow::timerEvent(QTimerEvent *event)
 void TrainControlWindow :: updateCircuitInfo()
 {
     swtc.decode(train->sendTrackCircuit());
-    ui->commspeed_->setText(QString::number(swtc.getCommandedSpeed()));
+    ui->commspeed_->setText(QString::number(swtc.getCommandedSpeed()*2.237));
     ui->authority_->setText(QString::number(swtc.getAuthority()));
 
     if (swtc.getAuthority() == 0) {
@@ -93,7 +93,7 @@ void TrainControlWindow :: updateBrakes()
 
 void TrainControlWindow :: updateSpeed()
 {
-    ui->setpointSpeed_->setText(QString::number(swtc.getSetpointSpeed()));
+    ui->setpointSpeed_->setText(QString::number(swtc.getSetpointSpeed()*2.237));
 }
 
 void TrainControlWindow :: updateCabin()

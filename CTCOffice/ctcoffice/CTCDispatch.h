@@ -12,7 +12,6 @@
 #include "CTCMode.h"
 #include "../../TrackModel/trackrouter.h"
 
-
 class CTCDispatch
 {
     private:
@@ -27,7 +26,7 @@ class CTCDispatch
     public:
 
 
-        std::vector<float> authority;
+        std::vector<int> authority; // blocks so vector of ints
         float speed;
         std::vector<bool> tcStates;
         void setAuthority();

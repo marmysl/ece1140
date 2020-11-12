@@ -518,7 +518,7 @@
      </rect>
     </property>
     <property name="text">
-     <string>km/h</string>
+     <string>mph</string>
     </property>
    </widget>
    <widget class="QLabel" name="kW_5">

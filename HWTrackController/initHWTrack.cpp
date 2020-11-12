@@ -12,11 +12,11 @@ using namespace std;
 Region reg;
 
 void initializeHW(CTCSignals &c){
-    reg.initialize(c.getExit(),c.getSpeed(),c.getAuth());
+    //reg.initialize(c.getExit(),c.getSpeed(),c.getAuth());
 }
 
 int init_HWTrackController() {
-    HWTrackController obj;
+    HWTrackController* obj = new HWTrackController();
 	return 0;
 }
 

@@ -8,6 +8,8 @@ using namespace std;
 //Constructor
 Region :: Region() {
 
+    iterator = 0;
+
     // Blue Line Track Layout Hardcoded for now, the SWTC will be sending the layout to this class
     region = 1;
     route = "Blue Line";
@@ -58,33 +60,17 @@ Region::Region(std::vector<std::string> sec,std::vector<int> blc, std::vector<bo
 }
 
 
-void Region :: initialize(int db, float ss, float ac) {
+void Region :: initialize(int db, float ss, std::vector<int> ac) {
     //setAuthority(ac, db);
     //setCommandedSpeed(ss, db);
 
-    // Yard Speed
-    blocks[0].sugSpeed = 5;
-    blocks[0].commSpeed = 5;
-    blocks[0].auth = 1;
-
-    std::cout << "the block 0 " << blocks[0].sugSpeed << " and auth " << blocks[0].auth << endl;
-
-    int i = 1;
-    while (i <= db){ 
+    unsigned int i = 0;
+    while (i < blocks.size()){
         blocks[i].sugSpeed = ss;
         blocks[i].commSpeed = ss;
-        blocks[i].auth = ac;
+        blocks[i].auth = ac[i];
         std:: cout << "Block " << i << " Speed and Authority: " << blocks[i].commSpeed << ", " << blocks[i].auth << std::endl;
         i++;
-    }
-
-    // If past destination, speed and authority are 0
-    unsigned int j;
-    for (j = db + 1; j < blocks.size(); j++){
-        blocks[j].sugSpeed = 0;
-        blocks[j].commSpeed = 0;
-        blocks[j].auth = 0;
-        std:: cout << "Block " << j << " Speed and Authority: " << blocks[j].commSpeed << ", " << blocks[j].auth << std::endl;
     }
 
     setCircuit();
@@ -98,12 +84,12 @@ std::string Region::getSection(int b) const {
     return blocks[b].section;
 }
 
-int Region::getCurrentBlock(int b) const { // lol just for now
-    return b;
+int Region::getCurrentBlock() const {
+    return iterator;
 }
 
-float Region::getSuggestedSpeed() const{
-    return suggestedSpeed;
+float Region::getSuggestedSpeed(int b) const{
+    return blocks[b].sugSpeed;
 }
 
 float Region::getCommandedSpeed(int b) const {
@@ -129,8 +115,8 @@ void Region :: setCircuit() {
     }
 }
 
+// CTC can access this whenever they wants
 bool Region :: detectTrain(int b) {
     blocks[b].occupancy = TrackModel::isBlockOccupied("Blue Line", b);
-    cout << " train detected is " << blocks[b].occupancy << endl;
     return blocks[b].occupancy;
 }

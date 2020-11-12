@@ -19,17 +19,15 @@ class HWTrackController : public QObject, public ITrackController
     private:
         char incomingData[ARDUINO_BUF_LENGTH];
         char outgoingData[ARDUINO_BUF_LENGTH];
-
         QTimer *writeTimer;
-        Region *regptr;
 
     public:
         HWTrackController();
         ~HWTrackController();
-        void writeData();
 
     public slots:
         void recieveData( char *buf, qint64 len );
+        void writeData();
 };
 
 #endif
