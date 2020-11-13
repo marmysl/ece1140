@@ -69,8 +69,8 @@ namespace TrackModel {
         uint32_t speed;
         uint32_t authority;
 
-        static uint64_t encodeFromFloat( float speedKph, float authKm ) {
-            return fromFloat(speedKph, authKm).getEncodedData();
+        static uint64_t encodeFromFloat( float speedKph, unsigned int authBlks ) {
+            return fromFloat(speedKph, authBlks).getEncodedData();
         }
 
         static uint64_t encodeFromFixed( uint32_t speed, uint32_t auth ) {
@@ -94,10 +94,10 @@ namespace TrackModel {
             return d;
         }
 
-        static TrackCircuitData fromFloat( float speedKph, float authKm ) {
+        static TrackCircuitData fromFloat( float speedKph, unsigned int authBlks ) {
             TrackCircuitData d;
             d.speed = floatToFixed(speedKph);
-            d.authority = floatToFixed(authKm);
+            d.authority = authBlks;
             return d;
         }
 
@@ -105,8 +105,8 @@ namespace TrackModel {
             return static_cast<float>(speed) / 4096;
         }
 
-        float decodeAuthority() {
-            return static_cast<float>(authority) / 4096;
+        unsigned int decodeAuthority() {
+            return authority;
         }
 
         uint64_t getEncodedData() {
