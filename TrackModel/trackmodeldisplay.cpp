@@ -45,6 +45,7 @@ void TrackModelDisplay::setRoute( TrackModel::RouteStatus *newRoute ) {
     selectedRoute = newRoute;
     ui->routeMap->setRoute(newRoute);
 
+    // blocks
     blockSelectList.clear();
     for( auto &kvp : newRoute->blockMap ) blockSelectList.push_back(kvp.first);
     std::sort(blockSelectList.begin(), blockSelectList.end());
@@ -61,6 +62,7 @@ void TrackModelDisplay::setRoute( TrackModel::RouteStatus *newRoute ) {
         }
     }
 
+    // stations
     ui->stationSelector->clear();
     QStringList stationList;
 
@@ -71,6 +73,18 @@ void TrackModelDisplay::setRoute( TrackModel::RouteStatus *newRoute ) {
 
     std::sort(stationList.begin(), stationList.end());
     ui->stationSelector->addItems(stationList);
+
+    // switches
+    ui->switchSelector->clear();
+    QStringList switchSelectList;
+
+    for( auto &sw : newRoute->layoutRoute->switches )
+    {
+        switchSelectList.push_back(QString::number(sw.first));
+    }
+
+    std::sort(switchSelectList.begin(), switchSelectList.end());
+    ui->switchSelector->addItems(switchSelectList);
 }
 
 void TrackModelDisplay::notifySwitchUpdated( TrackModel::Route *route, int switchId )
@@ -275,6 +289,45 @@ void TrackModelDisplay::on_showBlockGeoButton_clicked()
 {
     if( !selectedBlock ) return;
     layoutBlockDiag->show();
+}
+
+void TrackModelDisplay::on_switchSelector_currentTextChanged(const QString &arg1)
+{
+    bool ok;
+    int switchId = arg1.toInt(&ok);
+    if( selectedRoute && ok )
+    {
+        selectedSwitch = selectedRoute->layoutRoute->getSwitch(switchId);
+
+        if( selectedSwitch->direction == SW_DIVERGING )
+        {
+            ui->switchStateLabel->setText("Diverging");
+            ui->swDivergeCheckBox->setChecked(true);
+        }
+        else
+        {
+            ui->switchStateLabel->setText("Straight");
+            ui->swDivergeCheckBox->setChecked(false);
+        }
+
+        ui->applySwitchButton->setEnabled(true);
+    }
+    else
+    {
+        ui->switchStateLabel->setText("N/A");
+        ui->applySwitchButton->setEnabled(false);
+    }
+}
+
+void TrackModelDisplay::on_applySwitchButton_clicked()
+{
+    if( !selectedSwitch ) return;
+
+    SwitchState newState = (ui->swDivergeCheckBox->isChecked()) ? SW_DIVERGING : SW_STRAIGHT;
+    selectedSwitch->setDirection(newState);
+    ui->switchStateLabel->setText((newState == SW_DIVERGING) ? "Diverging" : "Straight");
+
+    notifySwitchUpdated(selectedRoute->layoutRoute, selectedSwitch->fromBlock->id);
 }
 
 

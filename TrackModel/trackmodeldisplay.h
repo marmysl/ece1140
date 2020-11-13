@@ -53,6 +53,8 @@ private slots:
     void on_applySignalButton_clicked();
     void on_displayTicketsButton_clicked();
     void on_showBlockGeoButton_clicked();
+    void on_switchSelector_currentTextChanged(const QString &arg1);
+    void on_applySwitchButton_clicked();
 
 public slots:
     // status updates
@@ -63,6 +65,7 @@ private:
     TrackModel::RouteStatus *selectedRoute;
     TrackModel::StationStatus *selectedStation;
     TrackModel::BlockStatus *selectedBlock;
+    TrackModel::Switch *selectedSwitch;
     BlockGeoDialog *layoutBlockDiag;
 
     std::vector<int> blockSelectList;

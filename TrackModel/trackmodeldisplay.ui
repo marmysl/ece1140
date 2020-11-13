@@ -142,7 +142,7 @@
      </layout>
     </item>
     <item>
-     <layout class="QHBoxLayout" name="murphyGrid" stretch="1,1">
+     <layout class="QHBoxLayout" name="murphyGrid" stretch="1,0,1">
       <item>
        <widget class="QGroupBox" name="faultGroupBox">
         <property name="title">
@@ -245,9 +245,59 @@
        </widget>
       </item>
       <item>
+       <widget class="QGroupBox" name="switchgroupBox">
+        <property name="title">
+         <string>Switches:</string>
+        </property>
+        <layout class="QGridLayout" name="gridLayout_3">
+         <item row="1" column="1">
+          <widget class="QLabel" name="switchStateLabel">
+           <property name="text">
+            <string>N/A</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="0">
+          <widget class="QLabel" name="label_2">
+           <property name="text">
+            <string>Switch Id:</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="1">
+          <widget class="QComboBox" name="switchSelector"/>
+         </item>
+         <item row="1" column="0">
+          <widget class="QLabel" name="label_10">
+           <property name="text">
+            <string>State:</string>
+           </property>
+          </widget>
+         </item>
+         <item row="2" column="0">
+          <widget class="QCheckBox" name="swDivergeCheckBox">
+           <property name="text">
+            <string>Diverging</string>
+           </property>
+          </widget>
+         </item>
+         <item row="2" column="1">
+          <widget class="QPushButton" name="applySwitchButton">
+           <property name="enabled">
+            <bool>false</bool>
+           </property>
+           <property name="text">
+            <string>Apply State</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+      </item>
+      <item>
        <widget class="QGroupBox" name="stationGroupBox">
         <property name="title">
-         <string>Station Info</string>
+         <string>Stations:</string>
         </property>
         <layout class="QGridLayout" name="gridLayout_2">
          <item row="1" column="1">
