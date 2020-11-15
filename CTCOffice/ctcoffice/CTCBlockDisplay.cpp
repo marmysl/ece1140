@@ -327,7 +327,7 @@ void CTCBlockDisplay::drawBlock( BlockRepr &repr, QPainter *painter )
     // Station
     painter->setPen(QPen(LINK_COLOR, LINK_THICK));
 
-    PlatformData& platform = repr.stat->layoutBlock->platform;
+    PlatformData platform = repr.stat->layoutBlock->getPlatformInDir(repr.stat->layoutBlock->oneWay);
     if( platform.exists() )
     {
         outline = QRect(repr.left + BLOCK_LENGTH / 5, repr.top - BLOCK_THICKNESS, (BLOCK_LENGTH * 3) / 5, BLOCK_THICKNESS);

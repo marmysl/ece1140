@@ -327,7 +327,7 @@ void RouteMapView::drawBlock( BlockRepr &repr, QPainter *painter )
     // Station
     painter->setPen(QPen(LINK_COLOR, LINK_THICK));
 
-    PlatformData& platform = repr.stat->layoutBlock->platform;
+    PlatformData platform = repr.stat->layoutBlock->getPlatformInDir(repr.stat->layoutBlock->oneWay);
     if( platform.exists() )
     {
         outline = QRect(repr.left + BLOCK_LENGTH / 5, repr.top - BLOCK_THICKNESS, (BLOCK_LENGTH * 3) / 5, BLOCK_THICKNESS);
@@ -347,7 +347,8 @@ void RouteMapView::drawBlock( BlockRepr &repr, QPainter *painter )
 
     // block num
     QRect textOutline(repr.left, repr.top + BLOCK_THICKNESS, BLOCK_LENGTH, TEXT_THICK);
-    painter->drawText(textOutline, Qt::AlignHCenter | Qt::AlignTop, QString::number(repr.stat->id()));
+    QString blockIdStr = QString("%0%1").arg(QString::fromStdString(repr.stat->layoutBlock->section)).arg(repr.stat->id());
+    painter->drawText(textOutline, Qt::AlignHCenter | Qt::AlignTop, blockIdStr);
 
     // faults
     BlockFault faults = repr.stat->getFaults();
