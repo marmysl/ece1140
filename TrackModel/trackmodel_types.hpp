@@ -20,6 +20,13 @@ namespace TrackModel {
         SW_DIVERGING
     };
 
+    enum SignalState
+    {
+        TSIG_RED = 0,
+        TSIG_YELLOW = 1,
+        TSIG_GREEN = 2
+    };
+
     // Begin BlockFault
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     enum BlockFault {
@@ -58,12 +65,6 @@ namespace TrackModel {
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // End BlockFault
 
-    enum SignalState
-    {
-        TSIG_RED = 0,
-        TSIG_YELLOW = 1,
-        TSIG_GREEN = 2
-    };
 
     struct TrackCircuitData {
         uint32_t speed;
@@ -123,10 +124,9 @@ namespace TrackModel {
             return !(operator==(other));
         }
     };
+    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    // End TrackCircuitData
 
-    struct Transponder {
-        uint8_t data[64];
-    };
 
     enum PlatformSide
     {
@@ -145,4 +145,54 @@ namespace TrackModel {
         if( side ) return (side == PS_LEFT) ? 'L' : 'R';
         else return 'B';
     }
+
+    inline const std::string& strForSide( const PlatformSide& side )
+    {
+        static const std::string BOTH("Both");
+        static const std::string LEFT("Left");
+        static const std::string RIGHT("Right");
+
+        if( side ) return (side == PS_LEFT) ? LEFT : RIGHT;
+        else return BOTH;
+    }
+    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    // End PlatformSide
+
+
+    struct BeaconData {
+        bool updateLights;
+        bool newLightState;
+
+        bool stationUpcoming;
+        std::string stationName;
+        PlatformSide platformSide;
+
+        BeaconData() :
+            updateLights(false), newLightState(false),
+            stationUpcoming(false), stationName(), platformSide(PS_BOTH) {}
+
+        BeaconData( bool setTunnel, bool tunnelUpcoming, bool setStation, std::string station = std::string(), PlatformSide side = PS_BOTH ) :
+            updateLights(setTunnel), newLightState(tunnelUpcoming),
+            stationUpcoming(setStation), stationName(station), platformSide(side) {}
+
+        inline bool hasData() const
+        {
+            return updateLights || stationUpcoming;
+        }
+
+        void applyTunnelData( bool tunnelInNext )
+        {
+            updateLights = true;
+            newLightState = tunnelInNext;
+        }
+
+        void applyStationData( std::string name, PlatformSide side )
+        {
+            stationUpcoming = true;
+            stationName = name;
+            platformSide = side;
+        }
+    };
+    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    // End BeaconData
 }

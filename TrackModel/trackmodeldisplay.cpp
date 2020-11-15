@@ -91,11 +91,7 @@ void TrackModelDisplay::notifySwitchUpdated( TrackModel::Route *route, int switc
 {
     if( route != selectedRoute->layoutRoute ) return;
     ui->routeMap->update();
-}
-
-void TrackModelDisplay::updateStationDisplay()
-{
-    ui->passCountLabel->setText(QString::number(selectedStation->numPassengers));
+    updateSwitchDisplay();
 }
 
 void TrackModelDisplay::notifyStationUpdated(TrackModel::Route *route, std::string stationName)
@@ -177,38 +173,7 @@ void TrackModelDisplay::on_blockSelector_currentIndexChanged(int index)
     using namespace TrackModel;
 
     selectedBlock = selectedRoute->getBlockStatus(blockNum);
-    if( selectedBlock )
-    {
-        BlockFault curFaults = selectedBlock->getFaults();
-        ui->pwrFailCheck->setChecked(isFaultSet(curFaults, FAULT_POWER_FAIL));
-        ui->circFailCheck->setChecked(isFaultSet(curFaults, FAULT_CIRCUIT_FAIL));
-        ui->brknRailCheck->setChecked(isFaultSet(curFaults, FAULT_BROKEN_RAIL));
-
-        TrackCircuitData data = selectedBlock->getCircuitData();
-        ui->speedCmdLabel->setText(QString("Speed Cmd: %0 kph").arg(data.decodeSpeed()));
-        ui->authCmdLabel->setText(QString("Auth Cmd: %0").arg(data.decodeAuthority()));
-
-        layoutBlockDiag->setBlock(selectedBlock->layoutBlock);
-
-        ui->applyFaultsButton->setEnabled(true);
-        ui->applySignalButton->setEnabled(true);
-        ui->showBlockGeoButton->setEnabled(true);
-    }
-    else
-    {
-        // selectedBlock == NULL
-
-        ui->pwrFailCheck->setChecked(false);
-        ui->circFailCheck->setChecked(false);
-        ui->brknRailCheck->setChecked(false);
-
-        ui->speedCmdLabel->setText(QString("Speed Cmd:"));
-        ui->authCmdLabel->setText(QString("Auth Cmd:"));
-
-        ui->applyFaultsButton->setEnabled(false);
-        ui->applySignalButton->setEnabled(false);
-        ui->showBlockGeoButton->setEnabled(false);
-    }
+    updateBlockDisplay();
 }
 
 void TrackModelDisplay::on_applyFaultsButton_clicked()
@@ -275,13 +240,7 @@ void TrackModelDisplay::on_blockUpdated( TrackModel::RouteStatus *sender, int bl
     if( sender == selectedRoute )
     {
         ui->routeMap->update();
-
-        if( selectedBlock && (selectedBlock->id() == blockId) )
-        {
-            TrackCircuitData data = selectedBlock->getCircuitData();
-            ui->speedCmdLabel->setText(QString("Speed Cmd: %0 kph").arg(data.decodeSpeed()));
-            ui->authCmdLabel->setText(QString("Auth Cmd: %0").arg(data.decodeAuthority()));
-        }
+        updateBlockDisplay();
     }
 }
 
@@ -298,7 +257,32 @@ void TrackModelDisplay::on_switchSelector_currentTextChanged(const QString &arg1
     if( selectedRoute && ok )
     {
         selectedSwitch = selectedRoute->layoutRoute->getSwitch(switchId);
+    }
 
+    updateSwitchDisplay();
+}
+
+void TrackModelDisplay::on_applySwitchButton_clicked()
+{
+    if( !selectedSwitch ) return;
+
+    SwitchState newState = (ui->swDivergeCheckBox->isChecked()) ? SW_DIVERGING : SW_STRAIGHT;
+    selectedSwitch->setDirection(newState);
+    ui->switchStateLabel->setText((newState == SW_DIVERGING) ? "Diverging" : "Straight");
+
+    notifySwitchUpdated(selectedRoute->layoutRoute, selectedSwitch->fromBlock->id);
+}
+
+
+void TrackModelDisplay::updateStationDisplay()
+{
+    ui->passCountLabel->setText(QString::number(selectedStation->numPassengers));
+}
+
+void TrackModelDisplay::updateSwitchDisplay()
+{
+    if( selectedSwitch )
+    {
         if( selectedSwitch->direction == SW_DIVERGING )
         {
             ui->switchStateLabel->setText("Diverging");
@@ -319,16 +303,76 @@ void TrackModelDisplay::on_switchSelector_currentTextChanged(const QString &arg1
     }
 }
 
-void TrackModelDisplay::on_applySwitchButton_clicked()
+static QString genBeaconString( const BeaconData& beacon )
 {
-    if( !selectedSwitch ) return;
+    if( !beacon.hasData() ) return QString("None");
 
-    SwitchState newState = (ui->swDivergeCheckBox->isChecked()) ? SW_DIVERGING : SW_STRAIGHT;
-    selectedSwitch->setDirection(newState);
-    ui->switchStateLabel->setText((newState == SW_DIVERGING) ? "Diverging" : "Straight");
+    std::stringstream sb;
+    bool first = true;
 
-    notifySwitchUpdated(selectedRoute->layoutRoute, selectedSwitch->fromBlock->id);
+    if( beacon.updateLights )
+    {
+        sb << "Lights ";
+        sb << ((beacon.newLightState) ? "On" : "Off");
+        first = false;
+    }
+
+    if( beacon.stationUpcoming )
+    {
+        if( !first ) sb << ", ";
+
+        sb << "Station upcoming: " << beacon.stationName << " on " << strForSide(beacon.platformSide);
+    }
+
+    return QString::fromStdString(sb.str());
 }
+
+void TrackModelDisplay::updateBlockDisplay()
+{
+    if( selectedBlock )
+    {
+        BlockFault curFaults = selectedBlock->getFaults();
+        ui->pwrFailCheck->setChecked(isFaultSet(curFaults, FAULT_POWER_FAIL));
+        ui->circFailCheck->setChecked(isFaultSet(curFaults, FAULT_CIRCUIT_FAIL));
+        ui->brknRailCheck->setChecked(isFaultSet(curFaults, FAULT_BROKEN_RAIL));
+
+        TrackCircuitData data = selectedBlock->getCircuitData();
+        ui->speedCmdLabel->setText(QString("Speed Cmd: %0 kph").arg(data.decodeSpeed()));
+        ui->authCmdLabel->setText(QString("Auth Cmd: %0").arg(data.decodeAuthority()));
+
+        Block *layBlk = selectedBlock->layoutBlock;
+        ui->fwdBeaconLabel->setText(genBeaconString(layBlk->forwardBeacon));
+        ui->revBeaconLabel->setText(genBeaconString(layBlk->reverseBeacon));
+
+        layoutBlockDiag->setBlock(selectedBlock->layoutBlock);
+
+        ui->applyFaultsButton->setEnabled(true);
+        ui->applySignalButton->setEnabled(true);
+        ui->showBlockGeoButton->setEnabled(true);
+    }
+    else
+    {
+        // selectedBlock == NULL
+
+        ui->pwrFailCheck->setChecked(false);
+        ui->circFailCheck->setChecked(false);
+        ui->brknRailCheck->setChecked(false);
+
+        ui->speedCmdLabel->setText("Speed Cmd:");
+        ui->authCmdLabel->setText("Auth Cmd:");
+
+        ui->fwdBeaconLabel->setText("N/A");
+        ui->revBeaconLabel->setText("N/A");
+
+        ui->applyFaultsButton->setEnabled(false);
+        ui->applySignalButton->setEnabled(false);
+        ui->showBlockGeoButton->setEnabled(false);
+    }
+}
+
+// End TrackModelDisplay
+//============================================================================================
+
 
 
 // BlockGeoDialog

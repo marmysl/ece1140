@@ -96,6 +96,9 @@ namespace TrackModel {
             Linkable *reverseLink;
             Linkable *forwardLink;
 
+            BeaconData forwardBeacon;
+            BeaconData reverseBeacon;
+
             Block( int id, std::string section, float length, float grade, float speedLimit, BlockDir oneWay = BLK_NODIR, bool tunnel = false, bool cross = false );
 
             /*! Connect this block to another block in the given direction */
@@ -113,6 +116,9 @@ namespace TrackModel {
 
             /*! Get info about the platform in the given travel direction */
             PlatformData getPlatformInDir( BlockDir dir );
+
+            /*! Get the beacon attached to this block when travelling in the given dir */
+            BeaconData getBeaconInDir( BlockDir dir );
 
             // Linkable interface
             Block *getTarget();

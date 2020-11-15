@@ -73,6 +73,8 @@ private:
     QLabel sysTimeLabel;
 
     void updateStationDisplay();
+    void updateSwitchDisplay();
+    void updateBlockDisplay();
 };
 
 #endif // TRACKMODELDISPLAY_H
