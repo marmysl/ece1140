@@ -9,18 +9,8 @@ LiquidCrystal_I2C lcd(0x27, 2, 1, 0, 4, 5, 6, 7, 3, POSITIVE);
 //String variables to hold Kp and Ki
 String Kp_in, Ki_in;
 
-////Function prototypes
-//void cabinControlsSetup();
-//void speedRegulatorSetup();
-//void securitySetup();
-//void failureDetectorSetup();
-//void engineerLogin();
-//void enterKpKi();
-//void driverLogin();
 void receiver();
 void transmitter();
-//void failureDetector();
-//void joystick();
 
 
 void setup() {

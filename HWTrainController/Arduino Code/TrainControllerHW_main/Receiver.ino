@@ -28,7 +28,11 @@ void receiver()
     //char 45 = cabinHeadlights
     //char 46 = mode
     //char 47 = cabinDoorsRightClosed
-    //char 48 = newline
+    //char 48 = platformSideChar
+    //char 49-54 = stationCode
+    //char 55 = stationUpcoming
+    //char 56 = turnHeadlightsOn
+    //char 57 = newline
 
 //    lcd.clear();
 //    lcd.setCursor(0,0);
@@ -36,7 +40,7 @@ void receiver()
 //    lcd.setCursor(0,3);
 //    lcd.print(receivedString.length());
 
-  if (receivedString.length() == 48)
+  if (receivedString.length() == 57)
   {
     //Adjusts cabin control outputs based on input data
     if (receivedString.substring(0,1).equals("1")) digitalWrite(CabinLightsOut, HIGH);
@@ -82,5 +86,51 @@ void receiver()
     else digitalWrite(zeroAuth, LOW);
     
     failureCode = receivedString.substring(44,45).toInt();
+
+    String platformSideChar = receivedString.substring(48,49);
+    if (platformSideChar == "B") platformSide = "BOTH";
+    else if(platformSide == "L") platformSide = "LEFT";
+    else platformSide = "RIGHT";
+
+    stationCode = receivedString.substring(49,55);
+    stationName = decodeStationName(stationCode);
+
+    announcement = "The next station is " + stationName + ". ";
+    if(platformSide == "LEFT") announcement += "Please exit on your left.";
+    else if(platformSide == "RIGHT") announcement += "Please exit on your right.";
+    else announcement += "Exit on either side.";
+
+    stationUpcoming = receivedString.substring(55,56).toInt();
+    if(stationUpcoming == 1) digitalWrite(stationSoon, HIGH);
+    else digitalWrite(stationSoon, LOW);
+    
+    turnHeadlightsOn = receivedString.substring(56,57).toInt();
+    if(turnHeadlightsOn == 1) digitalWrite(tunnel, HIGH);
+    else digitalWrite(tunnel, LOW);
   }
+}
+
+String decodeStationName(String code)
+{
+    if(stationCode == "00000") stationCode = "SHADYSIDE";
+    else if(stationCode == "00001") stationCode = "HERRON AVE";
+    else if(stationCode == "00010") stationCode = "SWISSVILLE";
+    else if(stationCode == "00011") stationCode = "PENN STATION";
+    else if(stationCode == "00100") stationCode = "STEEL PLAZA";
+    else if(stationCode == "00101") stationCode = "FIRST AVE";
+    else if(stationCode == "00110") stationCode = "STATION SQUARE";
+    else if(stationCode == "00111") stationCode = "SOUTH HILLS JUNCTION";
+    else if(stationCode == "01000") stationCode = "PIONEER";
+    else if(stationCode == "01001") stationCode = "EDGEBROOK";
+    else if(stationCode == "01010") stationCode = "WHITED";
+    else if(stationCode == "01011") stationCode = "SOUTH BANK";
+    else if(stationCode == "01100") stationCode = "CENTRAL";
+    else if(stationCode == "01101") stationCode = "INGLEWOOD";
+    else if(stationCode == "01110") stationCode = "OVERBROOK";
+    else if(stationCode == "01110") stationCode = "GLENBURY";
+    else if(stationCode == "10000") stationCode = "DORMONT";
+    else if(stationCode == "10001") stationCode = "MT. LEBANON";
+    else if(stationCode == "10010") stationCode = "POPLAR";
+    else if(stationCode == "10011") stationCode = "CASTLE SHANNON";
+    else stationCode = "YARD";
 }

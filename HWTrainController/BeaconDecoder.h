@@ -3,28 +3,44 @@
 
 #include <string>
 #include <cstdint>
+#include "../TrackModel/trackmodel_main.hpp"
+#include "../TrackModel/trackmodel_types.hpp"
 
+using namespace TrackModel;
 
 class BeaconDecoder
 {
     private:
+        //BeaconData* beacon;
         std::string nextStation;
-        double distanceToStation;
+        bool stationUpcoming;
+        bool turnHeadlightsOn;
+        char platformDoorsChar;
+        std::string platformDoors;
+        std::string stationCode;
 
     public:
 
         //Constructor
         BeaconDecoder();
 
+        //Set address of BeaconData struct
+        //void setBeaconDataAddress();
+
         //Method to decode the beacon data
-        void decodeBeacon(uint8_t data[64]);
+        void extractBeaconData();
 
         //Method to generate an announcement from the beacon data
         std::string getAnnouncement();
 
         //Accessor Functinons
         std::string getNextStation();
-        double getDistanceToStation();
+        char getPlatformDoorsChar();
+        bool getTurnHeadlightsOn();
+        bool getStationUpcoming();
+        std::string getPlatformDoors();
+        std::string getStationCode();
+
 
 };
 

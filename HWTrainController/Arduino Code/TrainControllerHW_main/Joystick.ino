@@ -9,7 +9,11 @@ String authority = "";
 String setpointSpeed = "";
 String Kp = "";
 String Ki = "";
-String  power  = "";
+String power  = "";
+String platformSide = "";
+String stationName = "";
+String stationCode = "";
+String announcement = "";
 
 //Integer to keep track of which menu the LCD is displaying
 int joystickCount;

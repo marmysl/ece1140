@@ -13,8 +13,8 @@ TrainController::TrainController(CTCMode *m, int numCars, std::string lineType)
 
     trainModel = new Train(numCars, lineType);
     mode = m;
-    speedRegulator = new SpeedRegulator(trainModel, mode);
     beacon = new BeaconDecoder();
+    speedRegulator = new SpeedRegulator(trainModel, beacon, mode);
 
     writeTimer = new QTimer();
     writeTimer->setInterval(ARDUINO_WAIT_TIME);
@@ -72,7 +72,6 @@ void TrainController::recieveData( char *buf, qint64 len )
           //char22 = release brake
           //char 23 = cabinDoorsRightCloded
 
-
         if(data.length() == 26)
         {
              if(data.substr(0,1) == "1") trainModel -> setCabinLights(1);
@@ -101,22 +100,34 @@ void TrainController::recieveData( char *buf, qint64 len )
 
              if(data.substr(18,1) == "1") speedRegulator -> pullServiceBrake();
              if(data.substr(19,1) == "1") speedRegulator -> pullEmergencyBrake();
-             if(data.substr(20,1) == "1") trainModel -> setSystemFailure(0);
-             if(data.substr(21,1) == "1") trainModel -> setHeadlights(1);
+
+             if(data.substr(20,1) == "1")
+             {
+                 trainModel -> setSystemFailure(0);
+                 speedRegulator -> setFailureCode(0);
+             }
+
+             if(data.substr(21,1) == "1" || beacon -> getTurnHeadlightsOn()) trainModel -> setHeadlights(1);
              else trainModel -> setHeadlights(0);
 
              if(data.substr(22,1) == "1")
              {
                  trainModel -> setServiceBrake(0);
                  trainModel -> setEmergencyBrake(0);
+
+                 //Detect brake failure
+                 if(trainModel -> getServiceBrake() == 1) speedRegulator -> setFailureCode(1);
+                 else if (trainModel -> getEmergencyBrake() == 1) speedRegulator -> setFailureCode(1);
              }
 
              if(data.substr(23,1) == "1") trainModel -> setRightDoorStatus(1);
              else trainModel -> setRightDoorStatus(0);
            }
-
-
     }
+
+    //Pick up beacon address from the train model
+    //beacon -> setBeaconDataAddress(trainModel -> getBeaconAddress());
+
 }
 
 void TrainController::writeData()
@@ -125,7 +136,7 @@ void TrainController::writeData()
     //char 0 = cabinLights
     //char 1 = cabinAc
     //char 2 = cabinHeat
-    //char 3 = cabinDoorsClosed
+    //char 3 = cabinDoorsLeftClosed
     //char 4 = cabinAdvertisements
     //char 5 = cabinAnnouncements
     //char6-10 = authority
@@ -138,10 +149,15 @@ void TrainController::writeData()
     //char37 = emergency brake
     //char 38-43 = power command
     //char 44 = failure code
-    //char 45 = headlights
+    //char 45 = cabinHeadlights
     //char 46 = mode
-    //char 47 = doors
-    //char 47 = newline
+    //char 47 = cabinDoorsRightClosed
+    //char 48 = platformSideChar
+    //char 49-54 = stationCode
+    //char 55 = stationUpcoming
+    //char 56 = turnHeadlightsOn
+    //char 57 = newline
+
 
     string outgoing_s = "";
     outgoing_s += to_string(trainModel -> getCabinLights());
@@ -151,7 +167,7 @@ void TrainController::writeData()
     outgoing_s += to_string(trainModel -> getAdvertisements());
     outgoing_s += to_string(trainModel -> getAnnouncements());
 
-    string authority(to_string(  (( trainModel -> sendTrackCircuit() & 0xffffffff) / 4096) ), 0, 5);
+    string authority(to_string(speedRegulator -> getAuthority()), 0, 5);
     outgoing_s += authority;
 
     while(outgoing_s.length() <= 10) outgoing_s += " ";
@@ -166,9 +182,7 @@ void TrainController::writeData()
 
     while(outgoing_s.length() <= 20) outgoing_s += " ";
 
-    double speed = ((trainModel -> sendTrackCircuit() >> 32) / 4096);
-    string commandedSpeed( to_string(speed * 0.621371), 0, 5 ); //km/hr --> mi/hr
-    std::cout << "TrackCircuit = " << trainModel -> sendTrackCircuit() << std::endl;
+    string commandedSpeed( to_string(speedRegulator -> getCommandedSpeed() * 0.621371), 0, 5 ); //km/hr --> mi/hr
     outgoing_s += commandedSpeed;
     while(outgoing_s.length() <= 25) outgoing_s += " ";
 
@@ -189,13 +203,22 @@ void TrainController::writeData()
     outgoing_s += power;
     while(outgoing_s.length() <= 43) outgoing_s += " ";
 
-    outgoing_s += to_string(trainModel -> getSystemFailure());
+    outgoing_s += to_string(speedRegulator -> getFailureCode());
 
     outgoing_s += to_string(trainModel -> getHeadlights());
 
     outgoing_s += to_string(mode -> getMode());
 
     outgoing_s += to_string(trainModel -> getRightDoorStatus());
+
+    outgoing_s += to_string(beacon -> getPlatformDoorsChar());
+
+    string stationCode(beacon -> getStationCode(), 0,5);
+    outgoing_s += stationCode;
+
+    outgoing_s += to_string(beacon -> getStationUpcoming());
+
+    outgoing_s += to_string(beacon -> getTurnHeadlightsOn());
 
     outgoing_s += "\n";
 

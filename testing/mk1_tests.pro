@@ -1,11 +1,10 @@
 
 TEMPLATE = subdirs
 
-<<<<<<< HEAD
 SUBDIRS += \
 	testLayout \
 	testRouting
-=======
+
 SOURCES += \
     mocs/TrainMoc.cpp \
     mocs/TrainControllerMoc.cpp \
@@ -24,7 +23,5 @@ SUBDIRS += \
 	testRouting \
 	testSpeedRegulator
 
-
->>>>>>> origin/master
 
 CONFIG += ordered

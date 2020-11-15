@@ -7,12 +7,14 @@
 #include <QTimer>
 #include <QDateTime>
 #include "../CTCOffice/ctcoffice/CTCMode.h"
+#include "BeaconDecoder.h"
 
 
 class SpeedRegulator
 {
 private:
         Train *trainModel;
+        BeaconDecoder *beacon;
         CTCMode *mode;
         double setpointSpeed;
         double Vcmd;
@@ -27,13 +29,16 @@ private:
         double maxPower;
         QDateTime prevTime;
         QDateTime currTime;
+        int failureCode;
+        double commandedSpeed;
+        int authority;
 
         //In this class, power is given in Watts
 
     public:
 
         //Constructor
-        SpeedRegulator(Train*, CTCMode*);
+        SpeedRegulator(Train*, BeaconDecoder*, CTCMode*);
 
         //Method to choose proper Vcmd
         void chooseVcmd();
@@ -50,18 +55,30 @@ private:
         //Sets Kp and Ki according to engineer input
         void setKpAndKi(double propGain, double intGain);
 
+        //Method to pull the service brake
+        void pullServiceBrake();
+
+        //Method to pull the emergency brake
+        void pullEmergencyBrake();
+
+        //Method to set the failure code in the system when a failure is detected
+        void setFailureCode(int fc);
+
+        //Function to decode track circuit
+        void decodeTrackCircuit();
+
+        //Function to stop at the station
+        void stopAtStation();
+
         //Accessor Methods
         double getSetpointSpeed();
         double getPowerCmd();
         double getVcmd();
         double getKp();
         double getKi();
-
-        //Method to pull the service brake
-        void pullServiceBrake();
-
-        //Method to pull the emergency brake
-        void pullEmergencyBrake();
+        int getFailureCode();
+        double getCommandedSpeed();
+        int getAuthority();
 
 };
 #endif

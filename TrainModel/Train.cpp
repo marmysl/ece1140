@@ -25,6 +25,10 @@ void Train::setPower(double newPower){             //Called by train controller 
     updateUI();
 }
 
+double Train::getPower() {
+    return math -> currPower;
+}
+
 uint64_t Train::sendTrackCircuit(){
     return block->trackCircuitData;
     ///return 0x0002800000032000;

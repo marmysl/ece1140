@@ -22,7 +22,8 @@ public:
     Train(int newNumCars, string lineType);
     uint64_t sendTrackCircuit();
     double getCurrentVelocity();
-    void setPower(double newPower);             //Called by train controller to set power
+    void setPower(double newPower); //Called by train controller to set power
+    double getPower(); //Called by train controller to get power
     void setDoorStatus(bool);
     bool getDoorStatus();
     void setLeftDoorStatus(bool);

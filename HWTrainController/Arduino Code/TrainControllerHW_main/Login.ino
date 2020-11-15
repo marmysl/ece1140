@@ -108,23 +108,8 @@ bool enterKpKi()
   //Flag that indicates if an incorrect digit is entered (a letter) for Kp and Ki
   bool errorKp = false;
   bool errorKi = false;
-
-  //Prompt user to enter in Ki
-  lcd.clear();
-  lcd.setCursor(0, 0); 
-  lcd.print("Enter Ki: (300)");
-  do
-  {
-    do
-      {
-        customKey = customKeypad.getKey();
-      } while(!customKey);
-      lcd.setCursor(i,1); 
-      lcd.print(customKey);
-      if(customKey != '#') Ki_in += customKey;
-      if(customKey == 'A' || customKey == 'B' || customKey == 'C' || customKey == 'D') errorKi = true;
-      i++;
-  } while(customKey != '#');
+  int decKp = 0;
+  int decKi = 0;
 
   //Prompt user to enter in Kp
   lcd.clear();
@@ -140,32 +125,64 @@ bool enterKpKi()
       lcd.setCursor(i,1); 
       lcd.print(customKey);
       if(customKey != '#') Kp_in += customKey;
+      if(customKey == '.') decKp++;
       if(customKey == 'A' || customKey == 'B' || customKey == 'C' || customKey == 'D') errorKp = true;
       i++;
   } while(customKey != '#');
-  
-  //Report the success of the login process
-  if(errorKp || errorKi || Kp_in.length() != 5 || Ki_in.length() != 5)
+
+  //Return false if there is an error
+  if(errorKp || Kp_in.length() != 5 || decKp > 1)
   {
     //Return false to inform that the login process was incomplete due to an incorrect 5 digit code
     lcd.clear();
     lcd.setCursor(0,0);
     lcd.print("Error - invalid Kp");
     lcd.setCursor(0,1);
-    lcd.print("and Ki values.");
+    lcd.print("value.");
     lcd.setCursor(0,2);
-    lcd.print("Re-enter values.");
+    lcd.print("Re-enter.");
     delay(2000);
     return false;
   }
-  else
+
+  //Prompt user to enter in Ki
+  lcd.clear();
+  lcd.setCursor(0, 0); 
+  lcd.print("Enter Ki: (300)");
+  i = 0;
+  do
   {
+    do
+      {
+        customKey = customKeypad.getKey();
+      } while(!customKey);
+      lcd.setCursor(i,1); 
+      lcd.print(customKey);
+      if(customKey != '#') Ki_in += customKey;
+      if(customKey == ".") decKi++;
+      if(customKey == 'A' || customKey == 'B' || customKey == 'C' || customKey == 'D') errorKp = true;
+      i++;
+  } while(customKey != '#');
+  
+  //Report the success of the login process
+  if(errorKi || Ki_in.length() != 5 || decKi > 1)
+  {
+    //Return false to inform that the login process was incomplete due to an incorrect 5 digit code
+    lcd.clear();
+    lcd.setCursor(0,0);
+    lcd.print("Error - invalid Ki");
+    lcd.setCursor(0,1);
+    lcd.print("value.");
+    lcd.setCursor(0,2);
+    lcd.print("Re-enter.");
+    delay(2000);
+    return false;
+  }
     //Return true to inform the user that the values were entered successfully
     lcd.clear();
     lcd.print("Success!");
     delay(2000);
     return true;
-  }
 }
 
 void login()
