@@ -18,12 +18,12 @@ Region :: Region() {
     std::vector<bool> sw{0,0,0,0,0,0,0,0,0,0,0,0};
     std::vector<bool> rc{0,0,0,0,0,0,0,0,0,0,0,0};
 
-   for (auto &it : blc){
+   for (size_t i = 0; i < blc.size(); i++ ){
         BlockInfo b;
-        b.section = sec[it];
-        b.blockID = blc[it];
-        b.isSwitch = sw[it];
-        b.isCrossing = rc[it];
+        b.section = sec[i];
+        b.blockID = blc[i];
+        b.isSwitch = sw[i];
+        b.isCrossing = rc[i];
         b.lightColor[0] = {0};        // Array initialized to [0,0] which is green
         b.lightColor[1] = {0};
         b.sugSpeed = 0.0;

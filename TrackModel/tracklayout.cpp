@@ -314,15 +314,24 @@ void Route::loadLayout( std::string fileName ) {
         // check for station
         if( !station.empty() ) {
             size_t colonIdx = station.find(':');
-            PlatformSide side = PS_RIGHT;
+            PlatformSide side = PS_BOTH;
             if( colonIdx != std::string::npos )
             {
                 // found colon
                 char sideC = station.at(colonIdx + 1);
                 if( sideC == 'L' ) side = PS_LEFT;
+                else if( sideC == 'R' ) side = PS_RIGHT;
+                else
+                {
+                    buf.str(std::string());
+                    buf.clear();
+                    buf << "Invalid platform side on line " << fileLine;
+                    throw LayoutParseError(buf.str());
+                }
                 station = station.substr(0, colonIdx);
             }
 
+            // check for existing station
             for( Station *s : stations )
             {
                 if( !station.compare(s->name) )
@@ -368,6 +377,17 @@ void Route::loadLayout( std::string fileName ) {
     // loop thru uninitialized switches and connect those suckers
     for( LinkInfo &links : voidLinks )
     {
+        // check for station on current block
+        if( links.srcBlock->platform.exists() )
+        {
+            PlatformData platform = links.srcBlock->getPlatformInDir(BLK_FORWARD);
+            Station *station = platform.station;
+            links.srcBlock->forwardBeacon.applyCurrentStationData(station->name, platform.side);
+
+            platform = links.srcBlock->getPlatformInDir(BLK_REVERSE);
+            links.srcBlock->reverseBeacon.applyCurrentStationData(station->name, platform.side);
+        }
+
         if( links.prevStraight >= 0 )
         {
             Block *prevBlock = getBlock(links.prevStraight);
@@ -376,6 +396,21 @@ void Route::loadLayout( std::string fileName ) {
                 std::stringstream msg = std::stringstream("Invalid previous block ");
                 msg << links.nextDiverge << " on block " << links.srcBlock->id;
                 throw std::invalid_argument(msg.str());
+            }
+
+            // check for tunnel transition (reverse)
+            if( prevBlock->underground && !links.srcBlock->underground )
+            {
+                links.srcBlock->forwardBeacon.applyTunnelData(false); // exiting forward
+                links.srcBlock->reverseBeacon.applyTunnelData(true); // entering reverse
+            }
+
+            // check for upcoming station (reverse)
+            if( prevBlock->platform.exists() )
+            {
+                BlockDir entryDir = links.srcBlock->getEntryDir(prevBlock);
+                PlatformData prevPlat = prevBlock->getPlatformInDir(entryDir);
+                links.srcBlock->reverseBeacon.applyUpcomingStationData(prevPlat.station->name, prevPlat.side);
             }
 
             // check for switch in reverse dir
@@ -409,6 +444,21 @@ void Route::loadLayout( std::string fileName ) {
                 std::stringstream msg = std::stringstream("Invalid next block ");
                 msg << links.nextDiverge << " on block " << links.srcBlock->id;
                 throw std::invalid_argument(msg.str());
+            }
+
+            // check for tunnel transition (forward)
+            if( nextBlock->underground && !links.srcBlock->underground )
+            {
+                links.srcBlock->forwardBeacon.applyTunnelData(true); // entering forward
+                links.srcBlock->reverseBeacon.applyTunnelData(false); // exiting in reverse
+            }
+
+            // check for upcoming station (forward)
+            if( nextBlock->platform.exists() )
+            {
+                BlockDir entryDir = links.srcBlock->getEntryDir(nextBlock);
+                PlatformData prevPlat = nextBlock->getPlatformInDir(entryDir);
+                links.srcBlock->forwardBeacon.applyUpcomingStationData(prevPlat.station->name, prevPlat.side);
             }
 
             // check for switch in forward dir
@@ -563,6 +613,12 @@ PlatformData Block::getPlatformInDir( BlockDir dir )
         return ret;
     }
     else return platform;
+}
+
+BeaconData Block::getBeaconInDir( BlockDir dir )
+{
+    if( dir == BLK_REVERSE ) return reverseBeacon;
+    else return forwardBeacon;
 }
 
 
