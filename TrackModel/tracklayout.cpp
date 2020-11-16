@@ -377,6 +377,17 @@ void Route::loadLayout( std::string fileName ) {
     // loop thru uninitialized switches and connect those suckers
     for( LinkInfo &links : voidLinks )
     {
+        // check for station on current block
+        if( links.srcBlock->platform.exists() )
+        {
+            PlatformData platform = links.srcBlock->getPlatformInDir(BLK_FORWARD);
+            Station *station = platform.station;
+            links.srcBlock->forwardBeacon.applyCurrentStationData(station->name, platform.side);
+
+            platform = links.srcBlock->getPlatformInDir(BLK_REVERSE);
+            links.srcBlock->reverseBeacon.applyCurrentStationData(station->name, platform.side);
+        }
+
         if( links.prevStraight >= 0 )
         {
             Block *prevBlock = getBlock(links.prevStraight);
@@ -399,7 +410,7 @@ void Route::loadLayout( std::string fileName ) {
             {
                 BlockDir entryDir = links.srcBlock->getEntryDir(prevBlock);
                 PlatformData prevPlat = prevBlock->getPlatformInDir(entryDir);
-                links.srcBlock->reverseBeacon.applyStationData(prevPlat.station->name, prevPlat.side);
+                links.srcBlock->reverseBeacon.applyUpcomingStationData(prevPlat.station->name, prevPlat.side);
             }
 
             // check for switch in reverse dir
@@ -447,7 +458,7 @@ void Route::loadLayout( std::string fileName ) {
             {
                 BlockDir entryDir = links.srcBlock->getEntryDir(nextBlock);
                 PlatformData prevPlat = nextBlock->getPlatformInDir(entryDir);
-                links.srcBlock->forwardBeacon.applyStationData(prevPlat.station->name, prevPlat.side);
+                links.srcBlock->forwardBeacon.applyUpcomingStationData(prevPlat.station->name, prevPlat.side);
             }
 
             // check for switch in forward dir

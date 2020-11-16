@@ -164,20 +164,17 @@ namespace TrackModel {
         bool newLightState;
 
         bool stationUpcoming;
+        bool stationHere;
         std::string stationName;
         PlatformSide platformSide;
 
         BeaconData() :
             updateLights(false), newLightState(false),
-            stationUpcoming(false), stationName(), platformSide(PS_BOTH) {}
-
-        BeaconData( bool setTunnel, bool tunnelUpcoming, bool setStation, std::string station = std::string(), PlatformSide side = PS_BOTH ) :
-            updateLights(setTunnel), newLightState(tunnelUpcoming),
-            stationUpcoming(setStation), stationName(station), platformSide(side) {}
+            stationUpcoming(false), stationHere(false), stationName(), platformSide(PS_BOTH) {}
 
         inline bool hasData() const
         {
-            return updateLights || stationUpcoming;
+            return updateLights || stationUpcoming || stationHere;
         }
 
         void applyTunnelData( bool tunnelInNext )
@@ -186,9 +183,16 @@ namespace TrackModel {
             newLightState = tunnelInNext;
         }
 
-        void applyStationData( std::string name, PlatformSide side )
+        void applyUpcomingStationData( std::string name, PlatformSide side )
         {
             stationUpcoming = true;
+            stationName = name;
+            platformSide = side;
+        }
+
+        void applyCurrentStationData( std::string name, PlatformSide side )
+        {
+            stationHere = true;
             stationName = name;
             platformSide = side;
         }

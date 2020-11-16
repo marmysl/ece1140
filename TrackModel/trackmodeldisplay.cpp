@@ -317,11 +317,18 @@ static QString genBeaconString( const BeaconData& beacon )
         first = false;
     }
 
+    if( beacon.stationHere )
+    {
+        if( !first ) sb << ", ";
+        sb << "Station: " << beacon.stationName << " (" << strForSide(beacon.platformSide) << ")";
+        first = false;
+    }
+
     if( beacon.stationUpcoming )
     {
         if( !first ) sb << ", ";
 
-        sb << "Station upcoming: " << beacon.stationName << " on " << strForSide(beacon.platformSide);
+        sb << "Upcoming: " << beacon.stationName << " (" << strForSide(beacon.platformSide) << ")";
     }
 
     return QString::fromStdString(sb.str());
