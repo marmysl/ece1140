@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Package>
+    <DisplayName>Train Control System</DisplayName>
+    <Description>Install the main system.</Description>
+    <Version>0.1.0-1</Version>
+    <ReleaseDate>2020-11-16</ReleaseDate>
+	
+    <Default>true</Default>
+	<Essential>true</Essential>
+	<Script>installscript.qs</Script>
+</Package>
