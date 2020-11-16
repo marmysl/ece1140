@@ -78,6 +78,14 @@ bool Train::getHeadlights(){
     return controls->headlightsOn;
 }
 
+void Train::setPassengerEBrake(bool passBrake){
+    math->setEBrake(passBrake);
+}
+
+bool Train::getPassengerEBrake(){
+    return math->emergencyBrake;
+}
+
 void Train::setEmergencyBrake(bool eBrakeStatus){
     math->setEBrake(eBrakeStatus);
 }

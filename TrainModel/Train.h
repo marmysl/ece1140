@@ -35,6 +35,8 @@ public:
     bool getHeadlights();
     void setEmergencyBrake(bool);
     bool getEmergencyBrake();
+    void setPassengerEBrake(bool);
+    bool getPassengerEBrake();
     void setSystemFailure(int);
     int getSystemFailure();
     void setServiceBrake(bool);
