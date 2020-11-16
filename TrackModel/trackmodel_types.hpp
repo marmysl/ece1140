@@ -20,6 +20,13 @@ namespace TrackModel {
         SW_DIVERGING
     };
 
+    enum SignalState
+    {
+        TSIG_RED = 0,
+        TSIG_YELLOW = 1,
+        TSIG_GREEN = 2
+    };
+
     // Begin BlockFault
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     enum BlockFault {
@@ -58,19 +65,13 @@ namespace TrackModel {
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // End BlockFault
 
-    enum SignalState
-    {
-        TSIG_RED = 0,
-        TSIG_YELLOW = 1,
-        TSIG_GREEN = 2
-    };
 
     struct TrackCircuitData {
         uint32_t speed;
         uint32_t authority;
 
-        static uint64_t encodeFromFloat( float speedKph, float authKm ) {
-            return fromFloat(speedKph, authKm).getEncodedData();
+        static uint64_t encodeFromFloat( float speedKph, unsigned int authBlks ) {
+            return fromFloat(speedKph, authBlks).getEncodedData();
         }
 
         static uint64_t encodeFromFixed( uint32_t speed, uint32_t auth ) {
@@ -94,10 +95,10 @@ namespace TrackModel {
             return d;
         }
 
-        static TrackCircuitData fromFloat( float speedKph, float authKm ) {
+        static TrackCircuitData fromFloat( float speedKph, unsigned int authBlks ) {
             TrackCircuitData d;
             d.speed = floatToFixed(speedKph);
-            d.authority = floatToFixed(authKm);
+            d.authority = authBlks;
             return d;
         }
 
@@ -105,8 +106,8 @@ namespace TrackModel {
             return static_cast<float>(speed) / 4096;
         }
 
-        float decodeAuthority() {
-            return static_cast<float>(authority) / 4096;
+        unsigned int decodeAuthority() {
+            return authority;
         }
 
         uint64_t getEncodedData() {
@@ -123,15 +124,14 @@ namespace TrackModel {
             return !(operator==(other));
         }
     };
+    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    // End TrackCircuitData
 
-    struct Transponder {
-        uint8_t data[64];
-    };
 
     enum PlatformSide
     {
         PS_LEFT = -1,
-        PS_NONE = 0,
+        PS_BOTH = 0,
         PS_RIGHT = 1
     };
 
@@ -143,6 +143,60 @@ namespace TrackModel {
     inline char charForSide( const PlatformSide& side )
     {
         if( side ) return (side == PS_LEFT) ? 'L' : 'R';
-        else return 'N';
+        else return 'B';
     }
+
+    inline const std::string& strForSide( const PlatformSide& side )
+    {
+        static const std::string BOTH("Both");
+        static const std::string LEFT("Left");
+        static const std::string RIGHT("Right");
+
+        if( side ) return (side == PS_LEFT) ? LEFT : RIGHT;
+        else return BOTH;
+    }
+    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    // End PlatformSide
+
+
+    struct BeaconData {
+        bool updateLights;
+        bool newLightState;
+
+        bool stationUpcoming;
+        bool stationHere;
+        std::string stationName;
+        PlatformSide platformSide;
+
+        BeaconData() :
+            updateLights(false), newLightState(false),
+            stationUpcoming(false), stationHere(false), stationName(), platformSide(PS_BOTH) {}
+
+        inline bool hasData() const
+        {
+            return updateLights || stationUpcoming || stationHere;
+        }
+
+        void applyTunnelData( bool tunnelInNext )
+        {
+            updateLights = true;
+            newLightState = tunnelInNext;
+        }
+
+        void applyUpcomingStationData( std::string name, PlatformSide side )
+        {
+            stationUpcoming = true;
+            stationName = name;
+            platformSide = side;
+        }
+
+        void applyCurrentStationData( std::string name, PlatformSide side )
+        {
+            stationHere = true;
+            stationName = name;
+            platformSide = side;
+        }
+    };
+    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    // End BeaconData
 }

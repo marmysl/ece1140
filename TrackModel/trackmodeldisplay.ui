@@ -127,7 +127,7 @@
            <x>0</x>
            <y>0</y>
            <width>1298</width>
-           <height>390</height>
+           <height>348</height>
           </rect>
          </property>
          <property name="sizePolicy">
@@ -142,51 +142,13 @@
      </layout>
     </item>
     <item>
-     <layout class="QHBoxLayout" name="murphyGrid" stretch="1,1">
+     <layout class="QHBoxLayout" name="murphyGrid" stretch="1,0,1">
       <item>
        <widget class="QGroupBox" name="faultGroupBox">
         <property name="title">
-         <string>Faults:</string>
+         <string>Block Data:</string>
         </property>
         <layout class="QGridLayout" name="gridLayout">
-         <item row="3" column="0">
-          <widget class="QCheckBox" name="pwrFailCheck">
-           <property name="text">
-            <string>Power Failure</string>
-           </property>
-          </widget>
-         </item>
-         <item row="0" column="0">
-          <layout class="QHBoxLayout" name="horizontalLayout_2">
-           <item>
-            <widget class="QLabel" name="label_7">
-             <property name="text">
-              <string>Block:</string>
-             </property>
-             <property name="alignment">
-              <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QComboBox" name="blockSelector"/>
-           </item>
-          </layout>
-         </item>
-         <item row="3" column="1">
-          <widget class="QCheckBox" name="brknRailCheck">
-           <property name="text">
-            <string>Broken Rail</string>
-           </property>
-          </widget>
-         </item>
-         <item row="3" column="2">
-          <widget class="QCheckBox" name="circFailCheck">
-           <property name="text">
-            <string>Circuit Failure</string>
-           </property>
-          </widget>
-         </item>
          <item row="0" column="1">
           <layout class="QHBoxLayout" name="horizontalLayout">
            <item>
@@ -207,7 +169,7 @@
            </item>
           </layout>
          </item>
-         <item row="0" column="2">
+         <item row="5" column="2">
           <widget class="QPushButton" name="applyFaultsButton">
            <property name="enabled">
             <bool>false</bool>
@@ -217,21 +179,45 @@
            </property>
           </widget>
          </item>
-         <item row="4" column="0">
-          <widget class="QLabel" name="speedCmdLabel">
+         <item row="9" column="1" colspan="2">
+          <widget class="QLabel" name="fwdBeaconLabel">
            <property name="text">
-            <string>SpeedCmd:</string>
+            <string>Empty</string>
            </property>
           </widget>
          </item>
-         <item row="4" column="1">
-          <widget class="QLabel" name="authCmdLabel">
+         <item row="9" column="0">
+          <widget class="QLabel" name="label_11">
            <property name="text">
-            <string>AuthCmd:</string>
+            <string>Fwd Beacon:</string>
            </property>
           </widget>
          </item>
-         <item row="4" column="2">
+         <item row="0" column="0">
+          <layout class="QHBoxLayout" name="horizontalLayout_2">
+           <item>
+            <widget class="QLabel" name="label_7">
+             <property name="text">
+              <string>Block:</string>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QComboBox" name="blockSelector"/>
+           </item>
+          </layout>
+         </item>
+         <item row="10" column="0">
+          <widget class="QLabel" name="label_12">
+           <property name="text">
+            <string>Rev Beacon:</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="2">
           <widget class="QPushButton" name="showBlockGeoButton">
            <property name="enabled">
             <bool>false</bool>
@@ -241,13 +227,113 @@
            </property>
           </widget>
          </item>
+         <item row="5" column="0" colspan="2">
+          <layout class="QHBoxLayout" name="horizontalLayout_3">
+           <item>
+            <widget class="QCheckBox" name="pwrFailCheck">
+             <property name="text">
+              <string>Power Failure</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QCheckBox" name="brknRailCheck">
+             <property name="text">
+              <string>Broken Rail</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QCheckBox" name="circFailCheck">
+             <property name="text">
+              <string>Circuit Failure</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+         <item row="6" column="0" colspan="3">
+          <layout class="QHBoxLayout" name="horizontalLayout_4">
+           <item>
+            <widget class="QLabel" name="speedCmdLabel">
+             <property name="text">
+              <string>SpeedCmd:</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLabel" name="authCmdLabel">
+             <property name="text">
+              <string>AuthCmd:</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+         <item row="10" column="1" colspan="2">
+          <widget class="QLabel" name="revBeaconLabel">
+           <property name="text">
+            <string>Empty</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+      </item>
+      <item>
+       <widget class="QGroupBox" name="switchgroupBox">
+        <property name="title">
+         <string>Switches:</string>
+        </property>
+        <layout class="QGridLayout" name="gridLayout_3">
+         <item row="1" column="1">
+          <widget class="QLabel" name="switchStateLabel">
+           <property name="text">
+            <string>N/A</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="0">
+          <widget class="QLabel" name="label_2">
+           <property name="text">
+            <string>Switch Id:</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="1">
+          <widget class="QComboBox" name="switchSelector"/>
+         </item>
+         <item row="1" column="0">
+          <widget class="QLabel" name="label_10">
+           <property name="text">
+            <string>State:</string>
+           </property>
+          </widget>
+         </item>
+         <item row="2" column="0">
+          <widget class="QCheckBox" name="swDivergeCheckBox">
+           <property name="text">
+            <string>Diverging</string>
+           </property>
+          </widget>
+         </item>
+         <item row="2" column="1">
+          <widget class="QPushButton" name="applySwitchButton">
+           <property name="enabled">
+            <bool>false</bool>
+           </property>
+           <property name="text">
+            <string>Apply State</string>
+           </property>
+          </widget>
+         </item>
         </layout>
        </widget>
       </item>
       <item>
        <widget class="QGroupBox" name="stationGroupBox">
         <property name="title">
-         <string>Station Info</string>
+         <string>Stations:</string>
         </property>
         <layout class="QGridLayout" name="gridLayout_2">
          <item row="1" column="1">

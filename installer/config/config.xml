@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Installer>
+    <Name>MK1 Train Control System</Name>
+    <Version>1.0.0</Version>
+    <Title>MK1 System</Title>
+    <Publisher>ECE 1140 Team MK1</Publisher>
+    <StartMenuDir>MK1 System</StartMenuDir>
+    <TargetDir>@HomeDir@/MK1_System</TargetDir>
+</Installer>
