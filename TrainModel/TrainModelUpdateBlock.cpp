@@ -14,6 +14,7 @@ TrainModelUpdateBlock::TrainModelUpdateBlock(std::string lineTypeNew) {
     block = route->getBlock(0);
     blockDir = TrackModel::BLK_FORWARD;
     updateTrackCircuit();
+    updateBeaconData();
 }
 
 void TrainModelUpdateBlock::updateTrackInfo(bool inYard){
@@ -24,6 +25,7 @@ void TrainModelUpdateBlock::updateTrackInfo(bool inYard){
     blockLength();
     blockGradeUp();
     updateTrackCircuit();
+    updateBeaconData();
 }
 
 void TrainModelUpdateBlock::updateBlock(bool first){
@@ -33,6 +35,10 @@ void TrainModelUpdateBlock::updateBlock(bool first){
     blockDir = blockData.entryDir;
     blockNum = block->id;
     TrackModel::addOccupancy(lineType, blockNum);
+}
+
+void TrainModelUpdateBlock::updateBeaconData(){
+    beaconData = block->getBeaconInDir(blockDir);
 }
 
 void TrainModelUpdateBlock::blockLength(){

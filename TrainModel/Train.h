@@ -5,6 +5,7 @@
 #include "TrainModelUpdateBlock.h"
 #include "TrainModelUI.h"
 #include "TrainModelControls.h"
+#include "../TrackModel/trackmodel_types.hpp"
 
 #include <chrono>
 #include <cstdint>
@@ -36,6 +37,7 @@ public:
     void setEmergencyBrake(bool);
     bool getEmergencyBrake();
     void setPassengerEBrake(bool);
+
     bool getPassengerEBrake();
     void setSystemFailure(int);
     int getSystemFailure();
@@ -51,7 +53,7 @@ public:
     bool getAdvertisements();
     void setAnnouncements(bool, string);
     bool getAnnouncements();
-    uint64_t getBeaconData();
+    TrackModel::BeaconData getBeaconData();
     string getAnnouncementMsg();
     double getSafeStoppingDistance();
     void updateUI();

@@ -22,7 +22,7 @@ public:
     TrackModel::NextBlockData blockData;
     std::string lineType;
     uint64_t trackCircuitData;
-    uint64_t beaconData;
+    TrackModel::BeaconData beaconData;
     int numPassengers = 0;
 
     TrainModelUpdateBlock(std::string);
@@ -31,6 +31,7 @@ public:
     void blockLength();
     void blockGradeUp();
     void updateTrackCircuit();
+    void updateBeaconData();
 };
 
 #endif //TRAINMODELUPDATEBLOCK_H

@@ -6,6 +6,7 @@
 #include "TrainModelMath.h"
 #include "TrainModelUpdateBlock.h"
 #include "TrainModelControls.h"
+#include "../TrackModel/trackmodel_types.hpp"
 
 using namespace std;
 
@@ -155,7 +156,7 @@ bool Train::getAnnouncements(){
     return controls->announcementsOn;
 }
 
-uint64_t Train::getBeaconData(){
+TrackModel::BeaconData Train::getBeaconData(){
     return block->beaconData;
 }
 
