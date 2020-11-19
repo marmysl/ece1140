@@ -27,6 +27,10 @@ void Train::setPower(double newPower){             //Called by train controller 
 }
 
 uint64_t Train::sendTrackCircuit(){
+    // Return track circuit data of current block. If signal pickup failure, return 0xFFFFFFFFFFFFFFFF
+    if(math->getFailureStatus()==1){
+        return 0xFFFFFFFFFFFFFFFF;
+    }
     return block->trackCircuitData;
     ///return 0x0002800000032000;
 }

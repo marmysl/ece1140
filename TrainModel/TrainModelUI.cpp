@@ -85,6 +85,9 @@ void TrainModelUI::updateAds(bool ads){
 void TrainModelUI::updateFailureStatus(){
     QString goesIn = "Status will appear here";
     if(train->emergencyBrake){goesIn = "Emergency Brake Pulled";}
+    else if(train->getFailureStatus()==1){goesIn = "Signal Pickup Failure";}
+    else if(train->getFailureStatus()==2){goesIn = "Engine Failure";}
+    else if(train->getFailureStatus()==3){goesIn = "Brake Failure";}
     ui->failStatus->setText(goesIn);
 }
 
@@ -92,4 +95,19 @@ void TrainModelUI::updateFailureStatus(){
 void TrainModelUI::on_pushButton_clicked()
 {
     train->setEBrake(true);
+}
+
+void TrainModelUI::on_pushButton_2_clicked()
+{
+    train->setFailureStatus(1);
+}
+
+void TrainModelUI::on_pushButton_3_clicked()
+{
+    train->setFailureStatus(2);
+}
+
+void TrainModelUI::on_pushButton_4_clicked()
+{
+    train->setFailureStatus(3);
 }
