@@ -46,8 +46,8 @@ void SWTC :: calculatePower()
 void SWTC :: decode(uint64_t decodeSignal)
 {
     // Decode
-    double decodeSpeed = (decodeSignal >> 32) / 4096;
-    double decodeAuth = (decodeSignal & 0xfffffff) / 4096;
+    double decodeSpeed = (decodeSignal >> 32);
+    double decodeAuth = (decodeSignal & 0xfffffff);
 
 
 
