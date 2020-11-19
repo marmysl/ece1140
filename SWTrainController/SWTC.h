@@ -21,6 +21,7 @@ class SWTC
         unsigned signal;
         bool serviceBrakeEnabled = true;
         bool emergencyBrakeEnabled = false;
+        bool passengerEBrakeEnabled = false;
         bool doorsOpen = true;
         bool cabinLightsOn = true;
         bool headlightsOn = false;
@@ -43,6 +44,8 @@ class SWTC
         bool getServiceBrakeFlag();
         void setEmergencyBrake(bool);
         bool getEmergencyBrakeFlag();
+        void setPassengerEBrake(bool);
+        bool getPassengerEBrake();
 
         void setCommandedSpeed(double);
         double getCommandedSpeed();

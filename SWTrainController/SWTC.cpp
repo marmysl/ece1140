@@ -122,6 +122,16 @@ bool SWTC :: getEmergencyBrakeFlag()
     return emergencyBrakeEnabled;
 }
 
+void SWTC :: setPassengerEBrake(bool flag)
+{
+    passengerEBrakeEnabled = flag;
+}
+
+bool SWTC :: getPassengerEBrake()
+{
+    return passengerEBrakeEnabled;
+}
+
 void SWTC :: setCommandedSpeed(double speed)
 {
     commandedSpeed = speed;

@@ -62,18 +62,29 @@ void TrainControlWindow :: updatePower()
     ui->powerOutput_->setText(QString::number(swtc.getPowerCommand() / 1000));
 }
 
-void TrainControlWindow :: updateBrakes()
+void TrainControlWindow :: updateBrakes()  // Update brake flags in train model
 {
-    // Update brake flags in train model
 
-    //these are the changes kirah made to fix the emergency brake
-    train->setServiceBrake(swtc.getServiceBrakeFlag());
-    //this if statement covers the case where the passenger presses the emergency brake
-    if(train->getPassengerEBrake()){
-        swtc.setPowerCommand(0.0);
-        swtc.setEmergencyBrake(true);
+
+
+    // Check for NEW passenger ebrake from train model
+    if (swtc.getPassengerEBrake() == false && train->getPassengerEBrake() == true){
+        swtc.setPassengerEBrake(train->getPassengerEBrake()); // sets the brake
     }
+
+    if(swtc.getPassengerEBrake() == true){
+        swtc.setPowerCommand(0.0);
+    }
+
+    // Set each brake
+    train->setServiceBrake(swtc.getServiceBrakeFlag());
     train->setEmergencyBrake(swtc.getEmergencyBrakeFlag());
+    train->setPassengerEBrake(swtc.getPassengerEBrake());
+
+
+
+
+
 
     // if the train is actively braking, display on GUI for driver
     if (swtc.getEmergencyBrakeFlag() == true){
@@ -86,6 +97,9 @@ void TrainControlWindow :: updateBrakes()
     if (swtc.getServiceBrakeFlag() == true){
         ui->releasebrakebutton->show();
         ui->sbrake_->setText("The service brake is enabled!");
+    } else if (swtc.getPassengerEBrake() == true){
+        ui->releasebrakebutton->show();
+        ui->sbrake_->setText("The passenger e-brake is enabled!");
     } else {
         ui->sbrake_->setText("");
     }
@@ -165,7 +179,7 @@ void TrainControlWindow::on_emergencyBrake_clicked()
 
     swtc.setPowerCommand(0.0); // set power command to zero
     swtc.setEmergencyBrake(true);
-    train->setEmergencyBrake(true);
+    // train->setEmergencyBrake(true);
 }
 
 void TrainControlWindow::on_inc_setspeed_clicked()
@@ -199,9 +213,10 @@ void TrainControlWindow::on_releasebrakebutton_clicked()
 {
     swtc.setServiceBrake(false);
     swtc.setEmergencyBrake(false);
+    swtc.setPassengerEBrake(false);
 
     // the train e-brake has to update simultaneously
-    train->setEmergencyBrake(false);
+    //train->setEmergencyBrake(false);
 
     ui->releasebrakebutton->hide();
 }
