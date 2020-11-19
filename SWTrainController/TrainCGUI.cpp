@@ -200,5 +200,8 @@ void TrainControlWindow::on_releasebrakebutton_clicked()
     swtc.setServiceBrake(false);
     swtc.setEmergencyBrake(false);
 
+    // the train e-brake has to update simultaneously
+    train->setEmergencyBrake(false);
+
     ui->releasebrakebutton->hide();
 }
