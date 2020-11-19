@@ -30,7 +30,7 @@ void joystick()
   else if(analogRead(X_pin) > 1000) joystickCount++;
   
   //Handles the joystick swiping (left/right joystick motions display different menus
-  if(abs(joystickCount) % 4 == 0)
+  if(abs(joystickCount) % 5 == 0)
   {
     lcd.clear();
     lcd.setCursor(0,0);
@@ -42,7 +42,7 @@ void joystick()
     lcd.setCursor(0,3);
     lcd.print(setpointSpeed + " mi/hr");
   }
-  else if(abs(joystickCount) % 4 == 1)
+  else if(abs(joystickCount) % 5 == 1)
   {
     lcd.clear();
     lcd.setCursor(0,0);
@@ -52,7 +52,7 @@ void joystick()
     lcd.setCursor(0,2);
     lcd.print("Power:" + power + " kW");
   }
-  else if(abs(joystickCount) % 4 == 2)
+  else if(abs(joystickCount) % 5 == 2)
   {
     lcd.clear();
     lcd.setCursor(0,0);
@@ -64,13 +64,42 @@ void joystick()
     lcd.setCursor(0,3);
     lcd.print(authority + " blocks");
   }
-  else if(abs(joystickCount) % 4 == 3)
+  else if(abs(joystickCount) % 5 == 3)
   {
     lcd.clear();
     lcd.setCursor(0,0);
     lcd.print("Next Station: ");
     lcd.setCursor(0,1);
-    lcd.print("Dormont");
+    lcd.print(stationName);
+    lcd.setCursor(0,2);
+    lcd.print("Platform Side:");
+    lcd.setCursor(0,3);
+    lcd.print(platformSide);
+  }
+  else if(abs(joystickCount) % 5 == 4)
+  {
+    if(cabinAnnouncementsOut == HIGH)
+    {
+      lcd.clear();
+      lcd.setCursor(0,0);
+      lcd.print("Announcement: ");
+      lcd.setCursor(0,1);
+      lcd.print("The next station is");
+      lcd.setCursor(0,2);
+      lcd.print(stationName);
+      lcd.setCursor(0,3); 
+
+      if(platformSide == "RIGHT") lcd.print("Exit right.");
+      else if(platformSide == "LEFT") lcd.print("Exit left.");
+      else lcd.print("Exit either side.");
+    }
+    else
+    {
+      lcd.clear();
+      lcd.setCursor(0,0);
+      lcd.print("Announcements Off");
+    }
+    }
   }
   delay(200);
 }

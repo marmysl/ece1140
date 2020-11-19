@@ -11,10 +11,11 @@ using namespace TrackModel;
 class BeaconDecoder
 {
     private:
-        //BeaconData* beacon;
+        BeaconData* beacon;
         std::string nextStation;
         bool stationUpcoming;
         bool turnHeadlightsOn;
+        bool stationHere;
         char platformDoorsChar;
         std::string platformDoors;
         std::string stationCode;
@@ -25,7 +26,7 @@ class BeaconDecoder
         BeaconDecoder();
 
         //Set address of BeaconData struct
-        //void setBeaconDataAddress();
+        void setBeaconDataAddress(BeaconData* b);
 
         //Method to decode the beacon data
         void extractBeaconData();
@@ -38,6 +39,7 @@ class BeaconDecoder
         char getPlatformDoorsChar();
         bool getTurnHeadlightsOn();
         bool getStationUpcoming();
+        bool getStationHere();
         std::string getPlatformDoors();
         std::string getStationCode();
 

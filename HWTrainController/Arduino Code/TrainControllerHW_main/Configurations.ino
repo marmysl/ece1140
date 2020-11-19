@@ -27,6 +27,7 @@ const int tunnel = 46; //verified
 //Booleans for stations
 bool stationUpcoming = 0;
 bool turnHeadlightsOn = 0;
+bool stationHere = 0;
 
 //Headlights Pins
 const int headlightsIn = 38; //verified

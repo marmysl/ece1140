@@ -6,6 +6,7 @@ BeaconDecoder::BeaconDecoder()
     nextStation = "";
     stationUpcoming = 0;
     turnHeadlightsOn = 0;
+    stationHere = 0;
     platformDoors = "";
     stationCode = "";
 }
@@ -14,16 +15,19 @@ BeaconDecoder::BeaconDecoder()
 void BeaconDecoder::extractBeaconData()
 {
     //Next station
-    //nextStation = beacon -> stationName;
+    nextStation = beacon -> stationName;
 
     //Whether or not there is a station in the next block
-    //stationUpcoming = beacon -> stationUpcoming;
+    stationUpcoming = beacon -> stationUpcoming;
 
     //Indicates whether the headlights should be on or off
-    //turnHeadlightsOn = beacon -> newLightState;
+    turnHeadlightsOn = beacon -> newLightState;
+
+    //Indicates if the station is here
+    stationHere = beacon -> stationHere;
 
     //Indicates whether the train should open the doors on the left or right side
-    //platformDoorsChar = beacon -> platformSide;
+    platformDoorsChar = beacon -> platformSide;
 }
 
 //Method to generate an announcement from the beacon data
@@ -37,13 +41,11 @@ std::string BeaconDecoder::getAnnouncement()
 }
 
 //Method to set address of the BeaconData
-/*
-void setBeaconDataAddress(BeaconData* b)
+void BeaconDecoder::setBeaconDataAddress(BeaconData* b)
 {
     beacon = b;
     extractBeaconData();
 }
-*/
 
 std::string BeaconDecoder::getStationCode()
 {

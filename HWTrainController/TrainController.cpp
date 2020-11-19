@@ -156,7 +156,8 @@ void TrainController::writeData()
     //char 49-54 = stationCode
     //char 55 = stationUpcoming
     //char 56 = turnHeadlightsOn
-    //char 57 = newline
+    //char 57 = stationHere
+    //char 58 = newline
 
 
     string outgoing_s = "";
@@ -219,6 +220,8 @@ void TrainController::writeData()
     outgoing_s += to_string(beacon -> getStationUpcoming());
 
     outgoing_s += to_string(beacon -> getTurnHeadlightsOn());
+
+    outgoing_s += to_string(beacon -> getStationHere());
 
     outgoing_s += "\n";
 

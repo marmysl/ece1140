@@ -32,6 +32,7 @@ void receiver()
     //char 49-54 = stationCode
     //char 55 = stationUpcoming
     //char 56 = turnHeadlightsOn
+    //char 57 = stationHere
     //char 57 = newline
 
 //    lcd.clear();
@@ -81,9 +82,6 @@ void receiver()
     else digitalWrite(headlightsOut, LOW);
     if(receivedString.substring(46,47).equals("1")) digitalWrite(mode, HIGH);
     else digitalWrite(mode, LOW);
-
-    if(authority == "0    ") digitalWrite(zeroAuth, HIGH);
-    else digitalWrite(zeroAuth, LOW);
     
     failureCode = receivedString.substring(44,45).toInt();
 
@@ -107,6 +105,10 @@ void receiver()
     turnHeadlightsOn = receivedString.substring(56,57).toInt();
     if(turnHeadlightsOn == 1) digitalWrite(tunnel, HIGH);
     else digitalWrite(tunnel, LOW);
+
+    stationHere = receivedString.substring(57,58).toInt();
+    if(stationHere == 1 || authority == "0    ") digitalWrite(zeroAuth, HIGH);
+    else digitalWrite(zeroAuth, LOW);
   }
 }
 

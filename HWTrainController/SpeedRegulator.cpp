@@ -40,7 +40,7 @@ SpeedRegulator::SpeedRegulator(Train *t, BeaconDecoder* b, CTCMode *m)
 void SpeedRegulator::calcPowerCmd()
 {
     //Only calculate a nonzero power while the train has a nonzero authority and the brake is not being pulled
-    if(  ((getAuthority()) > 0) && (trainModel -> getServiceBrake() != 1) && (trainModel -> getEmergencyBrake() != 1) && (beacon -> getStationUpcoming() == 0))
+    if(  ((getAuthority()) > 0) && (trainModel -> getServiceBrake() != 1) && (trainModel -> getEmergencyBrake() != 1) && (beacon -> getStationHere() == 0))
     {
         //Call the chooseVcmd() function to ensure there is no stale data for Vcmd
         chooseVcmd();
@@ -50,15 +50,12 @@ void SpeedRegulator::calcPowerCmd()
 
         //Calculate the value of T:
             //Calculate the current time
-            //Find the elapsed time and convert to a double
-            qint64 elapsedTime = prevTime.msecsTo(currTime);
-
-            currTime = systemClock->currentTime();
+             currTime = systemClock->currentTime();
 
             //Find elapsed time and convert to a double
             qint64 change;
             change = prevTime.msecsTo(currTime);
-            elapsedTime = (double)change/1000;
+            qint64 elapsedTime = (double)change/1000;
 
             //Set previous time to current time for next power command calculation
             prevTime = currTime;
@@ -96,12 +93,33 @@ void SpeedRegulator::calcPowerCmd()
     else
     {
         powerCmdZero();
+
+        if(beacon -> getStationHere() == 1 && trainModel -> getCurrentVelocity() == 0) stopAtStation();
     }
 }
 
 void SpeedRegulator::stopAtStation()
 {
+    //Open the doors on the proper side
+    if(beacon -> getPlatformDoors() == "LEFT") trainModel -> setLeftDoorStatus(1);
+    else if(beacon -> getPlatformDoors() == "RIGHT") trainModel -> setRightDoorStatus(1);
+    else
+    {
+        trainModel -> setRightDoorStatus(1);
+        trainModel -> setLeftDoorStatus(1);
+    }
 
+    //Dwell for 60 seconds
+    QDateTime currentTime = systemClock->currentTime();
+
+    while(currentTime.msecsTo(systemClock -> currentTime()) != 60000)
+    {
+        //Load/unload passengers
+    }
+
+    //Close the doors
+    trainModel -> setRightDoorStatus(0);
+    trainModel -> setLeftDoorStatus(0);
 }
 void SpeedRegulator::powerCmdZero()
 {
