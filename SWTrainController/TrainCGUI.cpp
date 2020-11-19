@@ -90,12 +90,8 @@ void TrainControlWindow :: updateBrakes()  // Update brake flags in train model
     // if the train is actively braking, display on GUI for driver
     if (swtc.getEmergencyBrakeFlag() == true){
         ui->releasebrakebutton->show();
-        ui->ebrake_->setText("The emergency brake is enabled!");
-    } else {
-        ui->ebrake_->setText("");
-    }
-
-    if (swtc.getServiceBrakeFlag() == true){
+        ui->sbrake_->setText("The emergency brake is enabled!");
+    } else if (swtc.getServiceBrakeFlag() == true){
         ui->releasebrakebutton->show();
         ui->sbrake_->setText("The service brake is enabled!");
     } else if (swtc.getPassengerEBrake() == true){
@@ -180,7 +176,6 @@ void TrainControlWindow::on_emergencyBrake_clicked()
 
     swtc.setPowerCommand(0.0); // set power command to zero
     swtc.setEmergencyBrake(true);
-    // train->setEmergencyBrake(true);
 }
 
 void TrainControlWindow::on_inc_setspeed_clicked()
@@ -218,9 +213,6 @@ void TrainControlWindow::on_releasebrakebutton_clicked()
 
     brakesReleased = true; // A flag to indicate the brakes have been released
     // fixes passenger e-brake latching
-
-    // the train e-brake has to update simultaneously
-    //train->setEmergencyBrake(false);
 
     ui->releasebrakebutton->hide();
 }
