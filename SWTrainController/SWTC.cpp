@@ -5,7 +5,7 @@ void SWTC :: calculatePower()
 {
     // Only set the power when the brake flags are off
 
-    if (serviceBrakeEnabled == false && emergencyBrakeEnabled == false)
+    if (serviceBrakeEnabled == false && emergencyBrakeEnabled == false && passengerEBrakeEnabled == false)
     {
         // Determine speed to set to: Setpoint or Commanded
         // (do not regulate to setpoint if past commanded)
