@@ -1,7 +1,7 @@
 #include "SpeedRegulator.h"
 #include <iostream>
 
-SpeedRegulator::SpeedRegulator(Train *t, CTCMode *m)
+SpeedRegulator::SpeedRegulator(Train *t, CTCMode *m, BeaconDecoder *b)
 {
     //CalculatePowerCmd();
     powerCmd = 0;
@@ -16,6 +16,7 @@ SpeedRegulator::SpeedRegulator(Train *t, CTCMode *m)
     //Set trainModel object to the pointer in the parameters
     trainModel = t;
     mode = m;
+    beacon = b;
 
     //Initialize the PID control variables to 0
     uk = 0;
@@ -30,13 +31,15 @@ SpeedRegulator::SpeedRegulator(Train *t, CTCMode *m)
     prevTime = systemClock -> currentTime();
 
     //Initialize the maxPower to be 120,000 watts
-    maxPower = 120000; //this value comes from Flexity 2 Tram datasheet
+    maxPower = 120000; //this value comes from Flexity2 Tram datasheet
 
+    //Set the failure code to 0 initially
+    failureCode = 0;
 }
 void SpeedRegulator::calcPowerCmd()
 {
     //Only calculate a nonzero power while the train has a nonzero authority and the brake is not being pulled
-    if(  ((trainModel -> sendTrackCircuit() & 0xffffffff) / 4096 > 0) && (trainModel -> getServiceBrake() != 1) && (trainModel -> getEmergencyBrake() != 1) )
+    if(  (getAuthority() > 0) && (trainModel -> getServiceBrake() != 1) && (trainModel -> getEmergencyBrake() != 1) )
     {
         //Call the chooseVcmd() function to ensure there is no stale data for Vcmd
         chooseVcmd();
@@ -47,14 +50,13 @@ void SpeedRegulator::calcPowerCmd()
         //Calculate the value of T:
             //Calculate the current time
             //Find the elapsed time and convert to a double
-            qint64 elapsedTime = prevTime.msecsTo(currTime);
 
             currTime = systemClock->currentTime();
 
             //Find elapsed time and convert to a double
             qint64 change;
             change = prevTime.msecsTo(currTime);
-            elapsedTime = (double)change/1000;
+            qint64 elapsedTime = (double)change/1000;
 
             //Set previous time to current time for next power command calculation
             prevTime = currTime;
@@ -65,12 +67,13 @@ void SpeedRegulator::calcPowerCmd()
             T = elapsedTime;
 
         //Choose the correct value of uk
-        if(powerCmd <= maxPower) uk = uk_1 + (T/2)*(ek + ek_1);
+        if(powerCmd < maxPower) uk = uk_1 + (T/2)*(ek + ek_1);
         else uk = uk_1;
 
         //Calculate the power command
         powerCmd = (Kp * ek) + (Ki * uk);
         trainModel -> setPower(powerCmd);
+        if(powerCmd != 0 && trainModel -> getPower() == 0) setFailureCode(2);
 
         //Sends power command to the trainModel
         if(powerCmd < 120) trainModel -> setPower(powerCmd);
@@ -78,6 +81,7 @@ void SpeedRegulator::calcPowerCmd()
         {
             powerCmd = 120;
             trainModel -> setPower(powerCmd);
+            if(trainModel -> getPower() == 0 && powerCmd != 0) setFailureCode(2);
         }
 
         //Set ek_1 = ek for next power command calculation
@@ -133,14 +137,14 @@ void SpeedRegulator::incSetpointSpeed(double inc)
 void SpeedRegulator::chooseVcmd()
 {
     //If the train is in automatic mode, speed is automatically set to the commanded speed
-    if(mode -> getMode() == 0) Vcmd = (trainModel -> sendTrackCircuit() >> 32) / 4096;
+    if(mode -> getMode() == 0) Vcmd = getCommandedSpeed();
 
     //If the train is in manual mode, Vmd is chosen differently
     else
     {
         //If the setpoint speed is greater than or equal to the commanded speed, the lesser of the speeds is the commanded speed
         //The commmanded speed will be Vcmd and will generate the power command
-        if(setpointSpeed >= (trainModel -> sendTrackCircuit() >> 32) / 4096) Vcmd = (trainModel -> sendTrackCircuit() >> 32) / 4096;
+        if(setpointSpeed >= getCommandedSpeed()) Vcmd = getCommandedSpeed();
 
         //If the commanded speed is greater than the setpoint speed, then the velocity for the power command will be the setpoint speed
         else Vcmd = setpointSpeed;
@@ -167,6 +171,9 @@ void SpeedRegulator::pullServiceBrake()
 
     //Set the power command to 0
     powerCmdZero();
+
+    //Check for brake failure
+    if(trainModel -> getServiceBrake() == 0) setFailureCode(1);
 }
 void SpeedRegulator::pullEmergencyBrake()
 {
@@ -175,4 +182,50 @@ void SpeedRegulator::pullEmergencyBrake()
 
     //Set the power in the train model to 0
     powerCmdZero();
+
+    //Check for brake failure
+    if(trainModel -> getEmergencyBrake() == 0) setFailureCode(1);
+}
+void SpeedRegulator::setFailureCode(int fc)
+{
+    //Integer coding system for failures:
+    //0 = no failure occurring
+    //1 = brake failure
+    //2 = engine failure
+    //3 = track signal pickup failure
+    failureCode = fc;
+
+    //If the failure code is not being set to 0 (no failure), pull emergency brake
+    if(failureCode != 0) pullEmergencyBrake();
+}
+int SpeedRegulator::getFailureCode()
+{
+    std::cout << "Failure Code: " << failureCode << std::endl;
+    return failureCode;
+}
+void SpeedRegulator::decodeTrackCircuit()
+{
+    //Check for a track circuit signal pickup failure
+    if(trainModel -> sendTrackCircuit() == 0xffffffffffffffff) setFailureCode(3);
+
+    //Decode the track circuit data
+    commandedSpeed = (trainModel -> sendTrackCircuit() >> 32) / 4096;
+    authority = (trainModel -> sendTrackCircuit() & 0xffffffff) / 4096;
+}
+
+double SpeedRegulator::getCommandedSpeed()
+{
+    //Decode the track circuit
+    decodeTrackCircuit();
+
+    //Returns the commanded speed
+    return commandedSpeed;
+}
+int SpeedRegulator::getAuthority()
+{
+    //Decode the track circuit
+    decodeTrackCircuit();
+
+    //Returns the authority
+    return authority;
 }

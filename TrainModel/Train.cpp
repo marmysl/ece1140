@@ -26,13 +26,17 @@ void Train::setPower(double newPower){             //Called by train controller 
     updateUI();
 }
 
+double Train::getPower() {
+    return math->currPower;
+}
+
 uint64_t Train::sendTrackCircuit(){
     // Return track circuit data of current block. If signal pickup failure, return 0xFFFFFFFFFFFFFFFF
     if(math->getFailureStatus()==1){
         return 0xFFFFFFFFFFFFFFFF;
     }
-    return block->trackCircuitData;
-    ///return 0x0002800000032000;
+    //return block->trackCircuitData;
+    return 0x0002800000032000;
 }
 
 double Train::getCurrentVelocity(){
@@ -161,6 +165,10 @@ bool Train::getAnnouncements(){
 }
 
 TrackModel::BeaconData Train::getBeaconData(){
+    std::cout << "Beacon Data from Train: " << std::endl;
+    std::cout << "Does the beacon have data: ";
+    block -> beaconData.hasData() ? std::cout << "yes" << std::endl : std::cout << "no" << std::endl;
+    if(block -> beaconData.hasData()) std::cout << "Station Name: " << block -> beaconData.stationName << std::endl;
     return block->beaconData;
 }
 

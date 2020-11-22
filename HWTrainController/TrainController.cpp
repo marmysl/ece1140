@@ -2,6 +2,7 @@
 #include "SerialPort.hpp"
 #include "system_main.h"
 #include "../CTCOffice/ctcoffice/CTCMode.h"
+#include "../TrackModel/trackmodel_types.hpp"
 
 #include <QThread>
 #include <string>
@@ -13,8 +14,8 @@ TrainController::TrainController(CTCMode *m, int numCars, std::string lineType)
 
     trainModel = new Train(numCars, lineType);
     mode = m;
-    speedRegulator = new SpeedRegulator(trainModel, mode);
     beacon = new BeaconDecoder();
+    speedRegulator = new SpeedRegulator(trainModel, mode, beacon);
 
     writeTimer = new QTimer();
     writeTimer->setInterval(ARDUINO_WAIT_TIME);
@@ -51,7 +52,7 @@ void TrainController::recieveData( char *buf, qint64 len )
     if( len >= 0 )
     {
         string data(incomingData);
-        //cout << "Incoming Length: " << data.length() << endl;
+        cout << "Incoming Length: " << data.length() << endl;
         //std::cout << "Incoming: " << data.length() << std::endl;
 
           //Create a system to encode all data to be read from
@@ -101,7 +102,12 @@ void TrainController::recieveData( char *buf, qint64 len )
 
              if(data.substr(18,1) == "1") speedRegulator -> pullServiceBrake();
              if(data.substr(19,1) == "1") speedRegulator -> pullEmergencyBrake();
-             if(data.substr(20,1) == "1") trainModel -> setSystemFailure(0);
+             if(data.substr(20,1) == "1")
+             {
+                 trainModel -> setSystemFailure(0);
+                 speedRegulator -> setFailureCode(0);
+                 std::cout << "gotem" << std::endl;
+             }
              if(data.substr(21,1) == "1") trainModel -> setHeadlights(1);
              else trainModel -> setHeadlights(0);
 
@@ -113,6 +119,9 @@ void TrainController::recieveData( char *buf, qint64 len )
 
              if(data.substr(23,1) == "1") trainModel -> setRightDoorStatus(1);
              else trainModel -> setRightDoorStatus(0);
+
+             //Get the current beacon that is at the current block
+             beacon -> setBeaconData(trainModel -> getBeaconData());
            }
 
 
@@ -121,27 +130,33 @@ void TrainController::recieveData( char *buf, qint64 len )
 
 void TrainController::writeData()
 {
+
     //Create a system to encode all data to be returned to the interface in the string
-    //char 0 = cabinLights
-    //char 1 = cabinAc
-    //char 2 = cabinHeat
-    //char 3 = cabinDoorsClosed
-    //char 4 = cabinAdvertisements
-    //char 5 = cabinAnnouncements
-    //char6-10 = authority
-    //char11-15 = Kp
-    //char16-20 = Ki
-    //char21-25 = commandedSpeed
-    //char26-30 = setpointSpeed
-    //char31-35 = currentSpeed
-    //char36 = service brake
-    //char37 = emergency brake
-    //char 38-43 = power command
-    //char 44 = failure code
-    //char 45 = headlights
-    //char 46 = mode
-    //char 47 = doors
-    //char 47 = newline
+      //char 0 = cabinLights
+      //char 1 = cabinAc
+      //char 2 = cabinHeat
+      //char 3 = cabinDoorsLeftClosed
+      //char 4 = cabinAdvertisements
+      //char 5 = cabinAnnouncements
+      //char6-10 = authority
+      //char11-15 = Kp
+      //char16-20 = Ki
+      //char21-25 = commandedSpeed
+      //char26-30 = setpointSpeed
+      //char31-35 = currentSpeed
+      //char36 = service brake
+      //char37 = emergency brake
+      //char 38-43 = power command
+      //char 44 = failure code
+      //char 45 = cabinHeadlights
+      //char 46 = mode
+      //char 47 = cabinDoorsRightClosed
+      //char 48-49 = platformSideChar
+      //char 50-54 = stationCode
+      //char 55 = stationUpcoming
+      //char 56 = turnHeadlightsOn
+      //char 57 = stationHere
+      //char 58 = newine
 
     string outgoing_s = "";
     outgoing_s += to_string(trainModel -> getCabinLights());
@@ -151,7 +166,7 @@ void TrainController::writeData()
     outgoing_s += to_string(trainModel -> getAdvertisements());
     outgoing_s += to_string(trainModel -> getAnnouncements());
 
-    string authority(to_string(  (( trainModel -> sendTrackCircuit() & 0xffffffff) / 4096) ), 0, 5);
+    string authority(to_string(  (speedRegulator -> getAuthority()) ), 0, 5);
     outgoing_s += authority;
 
     while(outgoing_s.length() <= 10) outgoing_s += " ";
@@ -166,10 +181,9 @@ void TrainController::writeData()
 
     while(outgoing_s.length() <= 20) outgoing_s += " ";
 
-    double speed = ((trainModel -> sendTrackCircuit() >> 32) / 4096);
-    string commandedSpeed( to_string(speed * 0.621371), 0, 5 ); //km/hr --> mi/hr
-    std::cout << "TrackCircuit = " << trainModel -> sendTrackCircuit() << std::endl;
+    string commandedSpeed( to_string(speedRegulator -> getCommandedSpeed() * 0.621371), 0, 5 ); //km/hr --> mi/hr
     outgoing_s += commandedSpeed;
+
     while(outgoing_s.length() <= 25) outgoing_s += " ";
 
     string setpointSpeed(to_string(speedRegulator -> getSetpointSpeed() * 0.621371), 0, 5); //km/hr --> mi/hr
@@ -189,7 +203,7 @@ void TrainController::writeData()
     outgoing_s += power;
     while(outgoing_s.length() <= 43) outgoing_s += " ";
 
-    outgoing_s += to_string(trainModel -> getSystemFailure());
+    outgoing_s += to_string(speedRegulator -> getFailureCode());
 
     outgoing_s += to_string(trainModel -> getHeadlights());
 
@@ -197,9 +211,23 @@ void TrainController::writeData()
 
     outgoing_s += to_string(trainModel -> getRightDoorStatus());
 
+
+    outgoing_s += to_string(beacon -> getPlatformDoorsChar());
+    while(outgoing_s.length() <= 49) outgoing_s += " ";
+
+    outgoing_s += beacon -> getStationCode();
+    while(outgoing_s.length() <= 54) outgoing_s += " ";
+
+    outgoing_s += to_string(beacon -> getStationUpcoming());
+
+    outgoing_s += to_string(beacon -> getTurnHeadlightsOn());
+
+    outgoing_s += to_string(beacon -> getStationHere());
+
     outgoing_s += "\n";
 
     std::cout << "Outgoing: " << outgoing_s << std::endl;
+    std::cout << "Outgoing Length: " << outgoing_s.length() << std::endl;
     strcpy(outgoingData, outgoing_s.c_str());
 
     trainControllerPort.writeString(outgoing_s);
