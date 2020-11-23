@@ -1,5 +1,6 @@
 #include "SpeedRegulator.h"
 #include <iostream>
+#include <cmath>
 
 SpeedRegulator::SpeedRegulator(Train *t, CTCMode *m, BeaconDecoder *b)
 {
@@ -85,7 +86,20 @@ void SpeedRegulator::calcPowerCmd()
     //Only calculate a nonzero power while the train has a nonzero authority and the brake is not being pulled
     if(  (getAuthority() > 0) && (trainModel -> getServiceBrake() != 1) && (trainModel -> getEmergencyBrake() != 1) )
     {
-        double powerCmd = powerFormula();
+        double power1 = powerFormula();
+        double power2 = powerFormula();
+        double power3 = powerFormula();
+
+        double avg12 = (power1 + power2) /2;
+        double avg13 = (power1 + power3) /2;
+        double avg23 = (power2 + power3) /2;
+
+        std::cout << "Difference: " << power1 - power2 << std::endl;
+
+        if(power1 > power2 - 3 && power1 < power2 + 3) powerCmd = avg12;
+        else if(power1 > power3 - 3 && power1 < power3 + 3) powerCmd = avg13;
+        else if(power3 > power2 - 3 && power3 < power2 + 3) powerCmd = avg23;
+        else pullEmergencyBrake();
 
         //Sends power command to the trainModel (needs conversion kW => W)
         if(powerCmd <= 120 && powerCmd >= -120)
