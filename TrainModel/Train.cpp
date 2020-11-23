@@ -50,7 +50,7 @@ bool Train::getDoorStatus(){
 
 void Train::setLeftDoorStatus(bool doorStatus){
     controls->toggleLeftDoor(doorStatus);
-    w->updateLeftDoors(controls->doorOpen);
+    w->updateLeftDoors(controls->doorLeftOpen);
 }
 
 bool Train::getLeftDoorStatus(){
@@ -59,7 +59,7 @@ bool Train::getLeftDoorStatus(){
 
 void Train::setRightDoorStatus(bool doorStatus){
     controls->toggleRightDoor(doorStatus);
-    w->updateRightDoors(controls->doorOpen);
+    w->updateRightDoors(controls->doorRightOpen);
 }
 
 bool Train::getRightDoorStatus(){
