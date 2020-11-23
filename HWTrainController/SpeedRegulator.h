@@ -47,6 +47,7 @@ private:
         void incSetpointSpeed(double);
 
         //Calculate powerCmd
+        double powerFormula();
         void calcPowerCmd();
 
         //Set the power command to 0
@@ -66,9 +67,6 @@ private:
 
         //Function to decode track circuit
         void decodeTrackCircuit();
-
-        //Function to stop at the station
-        void stopAtStation();
 
         //Accessor Methods
         double getSetpointSpeed();

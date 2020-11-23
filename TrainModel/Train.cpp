@@ -36,7 +36,7 @@ uint64_t Train::sendTrackCircuit(){
         return 0xFFFFFFFFFFFFFFFF;
     }
     //return block->trackCircuitData;
-    return 0x0002800000032000;
+    return 0x0002000000032000;
 }
 
 double Train::getCurrentVelocity(){
@@ -165,10 +165,6 @@ bool Train::getAnnouncements(){
 }
 
 TrackModel::BeaconData Train::getBeaconData(){
-    std::cout << "Beacon Data from Train: " << std::endl;
-    std::cout << "Does the beacon have data: ";
-    block -> beaconData.hasData() ? std::cout << "yes" << std::endl : std::cout << "no" << std::endl;
-    if(block -> beaconData.hasData()) std::cout << "Station Name: " << block -> beaconData.stationName << std::endl;
     return block->beaconData;
 }
 

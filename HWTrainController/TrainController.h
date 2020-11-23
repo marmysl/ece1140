@@ -28,6 +28,11 @@ class TrainController : public QObject, public ITrainController
         BeaconDecoder *beacon;
         CTCMode *mode;
 
+        bool stopTimerStarted;
+        bool stopAlreadyOccurred;
+        QDateTime start;
+        QDateTime now;
+
         QTimer *writeTimer;
 
 	public:
@@ -38,6 +43,9 @@ class TrainController : public QObject, public ITrainController
 
         //Method that writes data to the Serial Port
         void writeData();
+
+        //Method that updates the Beacon Data as the train traverses blocks
+        void updateBeaconData(std::string headlights);
 
     public slots:
 

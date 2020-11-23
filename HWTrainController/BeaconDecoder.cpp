@@ -11,6 +11,8 @@ BeaconDecoder::BeaconDecoder()
     platformDoors = "BOTH";
     stationCode = "11111";
     platformDoorsChar = 'B';
+
+    //Create a placeholder beaconData until the train model sends a new object
     BeaconData placeholder;
     placeholder.stationName = "IN YARD";
     beacon = placeholder;
@@ -49,16 +51,23 @@ void BeaconDecoder::extractBeaconData()
 
         //Keep station name the same so the announcements can tell the user the next announcement coming
     }
-    std::cout << nextStation << std::endl;
 }
 
-//Method to generate an announcement from the beacon data
 std::string BeaconDecoder::getAnnouncement()
 {
+    //Initialize a string for the annoucnement to be stored in
     std::string announcement = "";
+
+    //If the station is on the left, tell passengers to exit on the left
     if(getPlatformDoors() == "LEFT") announcement = "The next station is " + nextStation + ". Please exit on your left.";
+
+    //If the station is on the left, tell passengers to exit on the left
     else if(getPlatformDoors() == "RIGHT") announcement  = "The next station is " + nextStation + ". Please exit on your right";
+
+    //If the station is on the left, tell passengers to exit on the left
     else announcement = "The next station is " + nextStation + ". Please exit on either side.";
+
+    //Return the full announcement
     return announcement;
 }
 
@@ -66,10 +75,6 @@ std::string BeaconDecoder::getAnnouncement()
 void BeaconDecoder::setBeaconData(BeaconData b)
 {
     beacon = b;
-    std::cout << "Beacon Data from setBeaconData: " << std::endl;
-    std::cout << "Does the beacon have data: ";
-    beacon.hasData() ? std::cout << "yes" << std::endl : std::cout << "no" << std::endl;
-    if(beacon.hasData()) std::cout << "Station Name: " << beacon.stationName << std::endl;
     extractBeaconData();
 }
 

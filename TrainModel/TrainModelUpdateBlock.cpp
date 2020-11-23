@@ -40,11 +40,6 @@ void TrainModelUpdateBlock::updateBlock(bool first){
 
 void TrainModelUpdateBlock::updateBeaconData(){
     beaconData = block->getBeaconInDir(blockDir);
-    //Added by meara to trace beacon problems
-    std::cout << "Beacon Data from TrainModelUpdateBlock: " << std::endl;
-    std::cout << "Does the beacon have data: ";
-    beaconData.hasData() ? std::cout << "yes" << std::endl : std::cout << "no" << std::endl;
-    if(beaconData.hasData()) std::cout << "Station Name: " << beaconData.stationName << std::endl;
 }
 
 void TrainModelUpdateBlock::blockLength(){
