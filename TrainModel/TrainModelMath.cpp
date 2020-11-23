@@ -112,7 +112,10 @@ void TrainModelMath::limitForce(){
 void TrainModelMath::limitAccel(){
     if (currForce == 0 & currVel>0){
         if(emergencyBrake){currAccel = -2.73;}
-        else{currAccel = -1.2;}
+        else if(serviceBrake){currAccel = -1.2;}
+        else{currAccel = 0;}
+
+        if(failureStatus == 3){currAccel = 0;}
     }
     else if (currForce != 0){
         if (currAccel > 0.5){currAccel = 0.5;}
@@ -131,13 +134,6 @@ int TrainModelMath::getFailureStatus(){
 }
 
 void TrainModelMath::setEBrake(bool status){
-    /*if(emergencyBrake == 1 && currVel!=0){
-        //skip to allow brake to stop
-    }
-    else{
-        emergencyBrake = status;
-    }
-    std::cout << "in math the e brake is " << emergencyBrake << endl;*/
     emergencyBrake = status;
 }
 
