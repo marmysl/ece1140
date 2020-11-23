@@ -35,8 +35,8 @@ uint64_t Train::sendTrackCircuit(){
     if(math->getFailureStatus()==1){
         return 0xFFFFFFFFFFFFFFFF;
     }
-    //return block->trackCircuitData;
-    return 0x0002000000032000;
+    return block->trackCircuitData;
+    //return 0x0002000000032000;
 }
 
 double Train::getCurrentVelocity(){
