@@ -28,6 +28,12 @@ void CTCDispatch::setAuthority()
 
         int auth = route.blocks.size();
         for(auto val : route.blocks){
+            //set block number
+            //then the auth
+            //authority.push_back.first(val)
+            //authority.push_back.second(auth)
+            //ORRRRR
+            //authority.push_back(val, auth)
             authority.push_back(auth);
             auth--;
             qDebug() << "Set Authority at Block " << val->id << ": " << QString::number(auth);
@@ -191,25 +197,9 @@ void CTCDispatch::sendTrackController(CTCSignals &ctc){
 
     //ctc.calcRoute(line, tcStates);
     //ctc.setSignal(endblock, speed, authority);
+    speed = 30;
+    reg.initialize(endblock, speed, authority);
 
-    std::vector< std::pair <int, int> > au;
-    au.push_back((make_pair(1, 9)));
-    au.push_back((make_pair(2, 8)));
-    au.push_back((make_pair(3, 7)));
-    au.push_back((make_pair(4, 6)));
-    au.push_back((make_pair(5, 5)));
-    au.push_back((make_pair(6, 4)));
-    au.push_back((make_pair(7, 3)));
-    au.push_back((make_pair(8, 2)));
-    au.push_back((make_pair(9, 1)));
-    au.push_back((make_pair(10,0)));
-
-    speed = 7;
-    ctc.setSpeed(7);
-    std::string t = "Blue Line";
-    ctc.setAuthority(line, au);
-    //ctc.setExitBlocks()
-    //reg.initialize(endblock, speed, authority);
 
     alertWaysideSystem(line, ctc);
     //initializeHW(ctc);
@@ -245,3 +235,4 @@ TrackModel::TrainPathInfo CTCDispatch::findRoute(){
 //Take the first 6 switch state values and put them in a vector
 //Make sure that they are 0 and 1
 //call calcRoute(line, switchVector) of CTCSignals class
+

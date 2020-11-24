@@ -6,6 +6,7 @@
 #include "TrainModelMath.h"
 #include "TrainModelUpdateBlock.h"
 #include "TrainModelControls.h"
+#include "../TrackModel/trackmodel_types.hpp"
 
 using namespace std;
 
@@ -26,6 +27,10 @@ void Train::setPower(double newPower){             //Called by train controller 
 }
 
 uint64_t Train::sendTrackCircuit(){
+    // Return track circuit data of current block. If signal pickup failure, return 0xFFFFFFFFFFFFFFFF
+    if(math->getFailureStatus()==1){
+        return 0xFFFFFFFFFFFFFFFF;
+    }
     return block->trackCircuitData;
     ///return 0x0002800000032000;
 }
@@ -76,6 +81,14 @@ void Train::setHeadlights(bool headlightStatus){
 
 bool Train::getHeadlights(){
     return controls->headlightsOn;
+}
+
+void Train::setPassengerEBrake(bool passBrake){
+    math->setEBrake(passBrake);
+}
+
+bool Train::getPassengerEBrake(){
+    return math->emergencyBrake;
 }
 
 void Train::setEmergencyBrake(bool eBrakeStatus){
@@ -147,7 +160,7 @@ bool Train::getAnnouncements(){
     return controls->announcementsOn;
 }
 
-uint64_t Train::getBeaconData(){
+TrackModel::BeaconData Train::getBeaconData(){
     return block->beaconData;
 }
 

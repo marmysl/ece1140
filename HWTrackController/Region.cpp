@@ -13,17 +13,17 @@ Region :: Region() {
     // Blue Line Track Layout Hardcoded for now, the SWTC will be sending the layout to this class
     region = 1;
     route = "Blue Line";
-    std::vector<std::string> sec{"Y","A","A","A","A","A","A","A","A","A","A","A","A","A","A","A"};
-    std::vector<int> blc{0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15};
-    std::vector<bool> sw{0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0};
-    std::vector<bool> rc{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
+    std::vector<std::string> sec{"Y","K","K","K","K","K","K","L","L","L","L","L"};
+    std::vector<int> blc{0,63,64,65,66,67,68,69,70,71,72,73};
+    std::vector<bool> sw{0,0,0,0,0,0,0,0,0,0,0,0};
+    std::vector<bool> rc{0,0,0,0,0,0,0,0,0,0,0,0};
 
-   for (auto &it : blc){
+   for (size_t i = 0; i < blc.size(); i++ ){
         BlockInfo b;
-        b.section = sec[it];
-        b.blockID = blc[it];
-        b.isSwitch = sw[it];
-        b.isCrossing = rc[it];
+        b.section = sec[i];
+        b.blockID = blc[i];
+        b.isSwitch = sw[i];
+        b.isCrossing = rc[i];
         b.lightColor[0] = {0};        // Array initialized to [0,0] which is green
         b.lightColor[1] = {0};
         b.sugSpeed = 0.0;
@@ -65,11 +65,15 @@ void Region :: initialize(int db, float ss, std::vector<int> ac) {
     //setCommandedSpeed(ss, db);
 
     unsigned int i = 0;
+     std::vector<int> blc{0,63,64,65,66,67,68,69,70,71,72,73};
+
+    cout << blocks.size() << endl;
     while (i < blocks.size()){
         blocks[i].sugSpeed = ss;
         blocks[i].commSpeed = ss;
         blocks[i].auth = ac[i];
-        std:: cout << "Block " << i << " Speed and Authority: " << blocks[i].commSpeed << ", " << blocks[i].auth << std::endl;
+        blocks[i].blockID = blc[i];
+        std:: cout << "Block " << blocks[i].blockID << " Speed and Authority: " << blocks[i].commSpeed << ", " << blocks[i].auth << std::endl;
         i++;
     }
 
@@ -110,8 +114,9 @@ float Region::getSpeedLimit() const{
 void Region :: setCircuit() {
     for (unsigned int i = 0; i < blocks.size(); i++){
         TrackModel::TrackCircuitData tcdata = TrackModel::TrackCircuitData::fromFloat(blocks[i].commSpeed,blocks[i].auth);
+        std::cout << "Set Circuit: " << blocks[i].blockID << ", " <<  blocks[i].commSpeed << ", " << blocks[i].auth << std::endl;
         TrackModel::setTrackCircuit(route, blocks[i].blockID, tcdata);
-        //std::cout << "Set Circuit: " << blocks[i].commSpeed << ", " << blocks[i].auth << std::endl;
+
     }
 }
 
@@ -120,3 +125,4 @@ bool Region :: detectTrain(int b) {
     blocks[b].occupancy = TrackModel::isBlockOccupied("Blue Line", b);
     return blocks[b].occupancy;
 }
+

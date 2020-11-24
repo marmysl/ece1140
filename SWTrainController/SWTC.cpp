@@ -1,6 +1,5 @@
 #include "SWTC.h"
 
-
 void SWTC :: calculatePower()
 {
     // Only set the power when the brake flags are off
@@ -46,8 +45,8 @@ void SWTC :: calculatePower()
 void SWTC :: decode(uint64_t decodeSignal)
 {
     // Decode
-    double decodeSpeed = (decodeSignal >> 32) / 4096;
-    double decodeAuth = (decodeSignal & 0xfffffff) / 4096;
+    double decodeSpeed = static_cast<float>(decodeSignal >> 32) / 4096;
+    double decodeAuth = decodeSignal & 0xFFFFFFFF;
 
 
 

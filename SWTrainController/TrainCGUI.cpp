@@ -69,7 +69,7 @@ void TrainControlWindow :: updateBrakes()
     //these are the changes kirah made to fix the emergency brake
     train->setServiceBrake(swtc.getServiceBrakeFlag());
     //this if statement covers the case where the passenger presses the emergency brake
-    if(train->getEmergencyBrake() == true && swtc.getEmergencyBrakeFlag() == false){
+    if(train->getPassengerEBrake()){
         swtc.setPowerCommand(0.0);
         swtc.setEmergencyBrake(true);
     }
@@ -200,7 +200,7 @@ void TrainControlWindow::on_releasebrakebutton_clicked()
     swtc.setServiceBrake(false);
     swtc.setEmergencyBrake(false);
 
-    //this line will need to move, figure out a passenger flag
+    // the train e-brake has to update simultaneously
     train->setEmergencyBrake(false);
 
     ui->releasebrakebutton->hide();
