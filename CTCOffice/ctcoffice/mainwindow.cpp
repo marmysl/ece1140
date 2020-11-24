@@ -34,7 +34,6 @@ MainWindow::MainWindow(QWidget *parent)
 
     updateRoute();
 
-    //Added by Meara
     ctc.setCTCMode(&m);
 }
 

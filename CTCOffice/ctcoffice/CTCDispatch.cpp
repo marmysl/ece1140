@@ -28,6 +28,12 @@ void CTCDispatch::setAuthority()
 
         int auth = route.blocks.size();
         for(auto val : route.blocks){
+            //set block number
+            //then the auth
+            //authority.push_back.first(val)
+            //authority.push_back.second(auth)
+            //ORRRRR
+            //authority.push_back(val, auth)
             authority.push_back(auth);
             auth--;
             qDebug() << "Set Authority at Block " << val->id << ": " << QString::number(auth);
