@@ -21,10 +21,18 @@ const int serviceBrakeIn = 36; //verified
 const int emergencyBrakeIn = 28; //verified
 const int releaseBrake = 30; //verified
 const int zeroAuth = 40; //verified
+const int stationSoon = 48; //verified
+const int tunnel = 46; //verified
 
 //Headlights Pins
 const int headlightsIn = 38; //verified
 const int headlightsOut = 31; //verified
+
+
+//Booleans for stations
+bool stationUpcoming;
+bool turnHeadlightsOn;
+bool stationHere;
 
 //Logout Pin
 const int LogoutIn = 29; //verified
@@ -40,12 +48,19 @@ void brakeSetup()
   pinMode(emergencyBrakeOut, OUTPUT);
   pinMode(releaseBrake, INPUT);
   pinMode(zeroAuth, OUTPUT);
+  pinMode(stationSoon, OUTPUT);
+  pinMode(tunnel, OUTPUT);
   digitalWrite(serviceBrakeIn, LOW);
   digitalWrite(emergencyBrakeIn, LOW);
   digitalWrite(emergencyBrakeOut, LOW);
   digitalWrite(serviceBrakeOut, LOW);
   digitalWrite(releaseBrake, LOW);
   digitalWrite(zeroAuth, LOW);
+  digitalWrite(stationSoon, LOW);
+  digitalWrite(tunnel, LOW);
+  stationUpcoming = 0;
+  turnHeadlightsOn = 0;
+  stationHere = 0;
 }
 
 void securitySetup()

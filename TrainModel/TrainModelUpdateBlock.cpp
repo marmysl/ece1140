@@ -15,6 +15,7 @@ TrainModelUpdateBlock::TrainModelUpdateBlock(std::string lineTypeNew) {
     blockDir = TrackModel::BLK_FORWARD;
     updateTrackCircuit();
     updateBeaconData();
+
 }
 
 void TrainModelUpdateBlock::updateTrackInfo(bool inYard){
