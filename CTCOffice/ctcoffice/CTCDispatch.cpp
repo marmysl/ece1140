@@ -189,11 +189,27 @@ void CTCDispatch::sendTrackController(CTCSignals &ctc){
           i++;
     }
 
-    ctc.calcRoute(line, tcStates);
+    //ctc.calcRoute(line, tcStates);
     //ctc.setSignal(endblock, speed, authority);
 
+    std::vector< std::pair <int, int> > au;
+    au.push_back((make_pair(1, 9)));
+    au.push_back((make_pair(2, 8)));
+    au.push_back((make_pair(3, 7)));
+    au.push_back((make_pair(4, 6)));
+    au.push_back((make_pair(5, 5)));
+    au.push_back((make_pair(6, 4)));
+    au.push_back((make_pair(7, 3)));
+    au.push_back((make_pair(8, 2)));
+    au.push_back((make_pair(9, 1)));
+    au.push_back((make_pair(10,0)));
+
     speed = 7;
-    reg.initialize(endblock, speed, authority);
+    ctc.setSpeed(7);
+    std::string t = "Blue Line";
+    ctc.setAuthority(line, au);
+    //ctc.setExitBlocks()
+    //reg.initialize(endblock, speed, authority);
 
     alertWaysideSystem(line, ctc);
     //initializeHW(ctc);

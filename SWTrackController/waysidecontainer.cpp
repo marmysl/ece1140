@@ -2,8 +2,9 @@
 
 
 
-WaysideContainer::WaysideContainer(int wayside_count)
+WaysideContainer::WaysideContainer(int count)
 {
+    wayside_count = count;
     if (wayside_count == 1) {
         std::string line = "Blue Line";
 
@@ -364,12 +365,9 @@ WaysideContainer::WaysideContainer(int wayside_count)
 
 
 void WaysideContainer::addTrackObj(int id, std::string &line, std::vector<char> &s, std::vector<int> &b, int sw[4], int cr) {
-    using namespace std;
+
     TrackController t;
     t.setUpController(id, line, s, b, sw, cr);
-    if (cr != -1) {
-
-    }
     waysides.push_back(t);
 
     for(auto i = b.begin(); i != b.end(); i++){
@@ -382,125 +380,14 @@ void WaysideContainer::addTrackObj(int id, std::string &line, std::vector<char> 
 void WaysideContainer::addCTCObj(CTCSignals &ctc_track_controller) {
     CTCSignals wayside_signals = ctc_track_controller;
 
-    if (track_line == "Blue Line") {
-        auto i =waysides.begin();
-        i->setSignalsInstance(wayside_signals);
-        i->CTC_sugspeed = wayside_signals.gspeed1;
-        i->CTC_sugauth = wayside_signals.gauth1;
-    }
-    else if (track_line == "Green Line") {
-        int m = 1;
-
-        for (auto i = waysides.begin(); i != waysides.end(); i++) {
-            i -> setSignalsInstance(wayside_signals);
-
-            if (m == 1) {
-                i->CTC_sugspeed = wayside_signals.gspeed1;
-                i->CTC_sugauth = wayside_signals.gauth1;
-            }
-            else if (m == 2) {
-                i->CTC_sugspeed = wayside_signals.gspeed2;
-                i->CTC_sugauth = wayside_signals.gauth2;
-            }
-            else if (m == 3) {
-                i->CTC_sugspeed = wayside_signals.gspeed3;
-                i->CTC_sugauth = wayside_signals.gauth3;
-            }
-            else if (m == 4) {
-                i->CTC_sugspeed = wayside_signals.gspeed4;
-                i->CTC_sugauth = wayside_signals.gauth4;
-            }
-            else if (m == 5) {
-                i->CTC_sugspeed = wayside_signals.gspeed5;
-                i->CTC_sugauth = wayside_signals.gauth5;
-            }
-            else if (m == 6) {
-                i->CTC_sugspeed = wayside_signals.gspeed6;
-                i->CTC_sugauth = wayside_signals.gauth6;
-            }
-            else if (m == 7) {
-                i->CTC_sugspeed = wayside_signals.gspeed7;
-                i->CTC_sugauth = wayside_signals.gauth7;
-            }
-            else if (m == 8) {
-                i->CTC_sugspeed = wayside_signals.gspeed8;
-                i->CTC_sugauth = wayside_signals.gauth8;
-            }
-            else if (m == 9) {
-                i->CTC_sugspeed = wayside_signals.gspeed9;
-                i->CTC_sugauth = wayside_signals.gauth9;
-            }
-            else if (m == 10) {
-                i->CTC_sugspeed = wayside_signals.gspeed10;
-                i->CTC_sugauth = wayside_signals.gauth10;
-            }
-            else if (m == 11) {
-                i->CTC_sugspeed = wayside_signals.gspeed11;
-                i->CTC_sugauth = wayside_signals.gauth11;
-            }
-            else {
-                i->CTC_sugspeed = wayside_signals.gspeed12;
-                i->CTC_sugauth = wayside_signals.gauth12;
-            }
-
-            m++;
-        }
-    }
-
-    else if (track_line == "Red Line") {
-        int m = 1;
-
-        for (auto i = waysides.begin(); i != waysides.end(); i++) {
-            i -> setSignalsInstance(wayside_signals);
-
-            if (m == 1) {
-                i->CTC_sugspeed = wayside_signals.rspeed1;
-                i->CTC_sugauth = wayside_signals.rauth1;
-            }
-            else if (m == 2) {
-                i->CTC_sugspeed = wayside_signals.rspeed2;
-                i->CTC_sugauth = wayside_signals.rauth2;
-            }
-            else if (m == 3) {
-                i->CTC_sugspeed = wayside_signals.rspeed3;
-                i->CTC_sugauth = wayside_signals.rauth3;
-            }
-            else if (m == 4) {
-                i->CTC_sugspeed = wayside_signals.rspeed4;
-                i->CTC_sugauth = wayside_signals.rauth4;
-            }
-            else if (m == 5) {
-                i->CTC_sugspeed = wayside_signals.rspeed5;
-                i->CTC_sugauth = wayside_signals.rauth5;
-            }
-            else if (m == 6) {
-                i->CTC_sugspeed = wayside_signals.rspeed6;
-                i->CTC_sugauth = wayside_signals.rauth6;
-            }
-            else if (m == 7) {
-                i->CTC_sugspeed = wayside_signals.rspeed7;
-                i->CTC_sugauth = wayside_signals.rauth7;
-            }
-            else if (m == 8) {
-                i->CTC_sugspeed = wayside_signals.rspeed8;
-                i->CTC_sugauth = wayside_signals.rauth8;
-            }
-            else if (m == 9) {
-                i->CTC_sugspeed = wayside_signals.rspeed9;
-                i->CTC_sugauth = wayside_signals.rauth9;
-            }
-            else {
-                i->CTC_sugspeed = wayside_signals.rspeed10;
-                i->CTC_sugauth = wayside_signals.rauth10;
-            }
-
-            m++;
-        }
-    }
-    else {
-
-    }
-
-
+   if (wayside_count > 1) {
+       for (auto i = waysides.begin(); i != waysides.end(); i++) {
+           i -> setSignalsInstance(wayside_signals);
+       }
+   }
+   else {
+      auto i = waysides.begin();
+      i -> setSignalsInstance(wayside_signals);
+   }
 
 }

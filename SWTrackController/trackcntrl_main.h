@@ -22,6 +22,8 @@ void setPLCFile(std::string &);
 
 void setSwitchUI(TrackController &, bool);
 
+void setCrossingUI(TrackController &, bool);
+
 void timerEvent(QTimerEvent *event);
 
 void updateWaysides();

@@ -2,32 +2,84 @@
 #ifndef CTCSIGNALS_H
 #define CTCSIGNALS_H
 
+
+#include "../TrackModel/tracklayout.hpp"
+#include "../TrackModel/trackmodel_controller.hpp"
+#include "../TrackModel/trackmodel_main.hpp"
 #include <iostream>
 #include <vector>
 
+struct BlockInfoCTC {
+
+    int wayside_id;
+    int section;
+    int block_id;
+    int failure_code;
+    bool occupancy;
+
+};
 
 class CTCSignals {
 
+private:
+
+    //std::vector<int, std::vector<float>> sug_speed_ctc --
+    // int -- wayside ID
+    // std::vector<float> -- vector of suggested speed values set by CTC
+    std::vector< std::pair<int, float> > sug_speed_ctc;
+
+    //std::vector<int, std::vector<float>> sug_auth_ctc --
+    // int -- wayside ID
+    // std::vector<int> -- vector of suggested authority values set by CTC
+    std::vector< std::pair<int, int> > sug_auth_ctc_g;
+    std::vector< std::pair<int, int> > sug_auth_ctc_r;
+    std::vector< std::pair<int, int> > sug_auth_ctc_b;
+
+    //std::vector<int, int> exit id --
+    //int -- wayside ID
+    //int -- exit block ID
+    std::vector< std::pair<int, int> > exit_id;
+
+    //int -- wayside ID
+    //int -- switch block ID
+    std::vector< std::pair<int, int> > div_exit;
+    std::vector< std::pair<int, int> > str_exit;
+    std::vector< std::pair<int, int> > switch_id;
+    int size;
+    bool checkValidWayside(int);
+    bool checkValidLine(std::string&);
+
 public:
 
-    std::vector<float> gspeed1, gspeed2, gspeed3, gspeed4, gspeed5, gspeed6, gspeed7, gspeed8, gspeed9, gspeed10, gspeed11, gspeed12;
-    std::vector<int> gauth1, gauth2, gauth3, gauth4, gauth5, gauth6, gauth7, gauth8, gauth9, gauth10, gauth11, gauth12;
-    std::vector<float> rspeed1, rspeed2, rspeed3, rspeed4, rspeed5, rspeed6, rspeed7, rspeed8, rspeed9, rspeed10;
-    std::vector<int> rauth1, rauth2, rauth3, rauth4, rauth5, rauth6, rauth7, rauth8, rauth9, rauth10;
-    std::vector<float> bspeed1;
-    std::vector<int> bauth1;
+    struct BlockInfoCTC *blockptr = NULL;
 
-    std::vector<bool> green_route, red_route, blue_route; //vector<bool> - route per wayside, 0 -> straight & 1 -> diverging
+    std::vector< std::pair<int, TrackModel::SwitchState> > switchstates; //<block_id, switch state>
 
-    void calcRoute(std::string &, std::vector<bool>); //string line - of which track line, vector<int> - route in order of ascending order
+    ~CTCSignals();
+    void setUpArray(int);
+    int getWaysideID(int);
+    void setUpExits();
 
-    int setSignal(std::string &, std::vector<bool>); //string line - of which track line, vector<int> exits - vector of routes
-    std::vector<float> getSpeed(int, std::string &);
-    std::vector<int> getAuth(int, std::string &);
-    bool getRoute(int, std::string &); //int wayside_id - specify which route is requested, string line - of which track line
+    //FOR CTC USE
+    void setSpeed(float);
 
+    void setAuthority(std::string &, std::vector< std::pair<int, int> >);
+    //pair <block #, authority>
+
+    void setExitBlocks(std::vector< std::pair<int, TrackModel::SwitchState> >);
+    //returns exit blocks in a vector, call setLineExit with return vector as parameter
+
+    //bool setLineExit(std::string &, std::vector<int>);
+
+
+    //FOR WAYSIDE USE
+    float getWaysideSpeed(int);
+    std::vector<std::pair<int, int> > getWaysideAuth(int, std::vector<int>);
+    int getWaysideExit(int);
 
 };
+
+
 
 //END GUARD
 #endif

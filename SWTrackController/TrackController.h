@@ -18,26 +18,36 @@ class TrackController
 	public:
         CTCSignals ctc_wayside;
         TrackLogic PLC;
-        std::string filename;
         std::vector<BlockCntrl> blocks;
-        int region;
+
+
+        std::string filename, plcfile1, plcfile2;
+        int wayside_id;
         std::string line;
+
         std::vector<char> cntrl_sections;
         std::vector<int> cntrl_blocks;
+
         int switch_head;
         int switch_tail0;
         int switch_tail1;
         bool switch_state;
+
         int crossing_id;
         bool cross_state;
-        bool route;
+
+        int ctc_exit_id;
+        int exit_block0;
+        int exit_block1;
         int start_block;
         int block_count;
 
         std::vector<float> CTC_sugspeed;
         std::vector<int> CTC_sugauth;
+
         std::vector<float> CTC_tempspeed;
         std::vector<int> CTC_tempauth;
+
         std::vector<float> CTC_comspeed;
         std::vector<int> CTC_comauth;
 

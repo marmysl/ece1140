@@ -8,8 +8,8 @@ SWTrackCntrlWindow::SWTrackCntrlWindow(QWidget *parent) :
     ui(new Ui::SWTrackCntrlWindow)
 {
     ui->setupUi(this);
-    timerID = startTimer(1000);
-    count = 0;
+   // timerID = startTimer(1000);
+   // count = 0;
 
     ui->mainWindow->hide();
     PLCfile_present = false;
@@ -88,7 +88,28 @@ void SWTrackCntrlWindow::setSwitch() {
 
 }
 
+void SWTrackCntrlWindow::setCrossing() {
+    QString crossing_id;
+    QString state;
 
+    if (wayside.crossing_id != -1) {
+        crossing_id = QString::number(wayside.crossing_id);
+        if (wayside.cross_state == true) {
+            state = "active";
+        }
+        else {
+            state = "inactive";
+        }
+    }
+    else {
+        crossing_id = "null";
+        state = "null";
+    }
+
+    ui->crossingIDText->setPlainText(crossing_id);
+    ui->crossingStateText->setPlainText(state);
+
+}
 
 void SWTrackCntrlWindow::on_uploadButton_clicked()
 {
@@ -163,6 +184,7 @@ void SWTrackCntrlWindow::on_enterWaysideButton_clicked()
     wayside = getWaysideInstance(id);
     setBlock();
     setSwitch();
+    setCrossing();
 }
 
 void SWTrackCntrlWindow::on_blockGetInfoButton_clicked()
@@ -202,4 +224,39 @@ void SWTrackCntrlWindow::on_selectFileButton_clicked()
     ui->PLCFileInput->setPlainText(file);
     filename = file.toStdString();
     PLCfile_present = true;
+}
+
+void SWTrackCntrlWindow::on_selectFileButton_2_clicked()
+{
+    QString file = QFileDialog::getOpenFileName(this, tr("Open PLC Program"), " ", tr("Structured Text Files (*.ts)"));
+    ui->PLCFileInput_2->setPlainText(file);
+    filename2 = file.toStdString();
+    PLCfile_present = true;
+}
+
+void SWTrackCntrlWindow::on_toggleCrossingButton_clicked()
+{
+    QString old_state;
+    QString new_state;
+
+    if (wayside.crossing_id != -1) {
+
+    old_state = ui->crossingStateText->toPlainText();
+
+
+    if (old_state == "active") {
+        setCrossingUI(wayside, 0);
+        new_state = "inactive";
+    }
+    if (old_state == "inactive") {
+        setCrossingUI(wayside, 1);
+        new_state = "active";
+    }
+    }
+    else { //no crossing
+        new_state = "null";
+
+    }
+
+    ui->crossingStateText->setPlainText(new_state);
 }

@@ -23,10 +23,11 @@ public:
     bool setPLC();
     void setBlock();
     void setSwitch();
+    void setCrossing();
    // void toggleSwitch();
    // void updateInfo();
     bool PLCfile_present;
-    std::string filename;
+    std::string filename, filename2;
 
 
 
@@ -44,6 +45,10 @@ private slots:
     void on_blockGetInfoButton_clicked();
 
     void on_selectFileButton_clicked();
+
+    void on_selectFileButton_2_clicked();
+
+    void on_toggleCrossingButton_clicked();
 
 private:
     Ui::SWTrackCntrlWindow *ui;

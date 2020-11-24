@@ -2,384 +2,218 @@
 #include "CTCSignals.h"
 #include <vector>
 
+bool CTCSignals::checkValidWayside(int id) {
 
-void CTCSignals::calcRoute(std::string &l, std::vector<bool> r) {
-
-    std::vector<bool> temp;
-    if (l == "Blue Line") {
-        auto i = r.begin();
-        blue_route.push_back(*i);
-    }
-    else if (l == "Green Line") {
-        int count = 1;
-        for (auto i = r.begin(); i != r.end(); i++) {
-            if (count == 1 || count == 3 || count == 4 || count == 7 || count == 9 || count == 11) {
-                green_route.push_back(*i);
-            }
-            else {
-                green_route.push_back(0);
-            }
-            count++;
+    for (int i = 1; i < 24; i++) {
+        if (i == id) {
+            return true;
         }
     }
-    else {
-        int count = 1;
-        for (auto i = r.begin(); i != r.end(); i++) {
-            if (count == 1 || count == 2 || count == 4 || count == 5 || count == 6 || count == 7 || count == 9) {
-                red_route.push_back(*i);
-            }
-            else {
-                red_route.push_back(0);
-            }
-            count++;
-        }
 
-    }
-
-
+    return false;
 }
 
-int CTCSignals::setSignal(std::string &l, std::vector<bool> routes) {
-
-
-        if (l == "Green Line") {
-            int j = 0;
-            for(auto i = routes.begin(); i != routes.end(); i++) {
-                green_route[j] = *i;
-                j++;
-            }
-        }
-        else if (l == "Red Line") {
-            int j = 0;
-            for(auto i = routes.begin(); i != routes.end(); i++) {
-                red_route[j] = *i;
-                j++;
-            }
-        }
-        else if (l == "Blue Line") {
-            int j = 0;
-            for(auto i = routes.begin(); i != routes.end(); i++) {
-                blue_route[j] = *i;
-                j++;
-            }
-        }
-        else {
-            return -1;
-        }
-
-        return 0;
-}
-
-std::vector<float> CTCSignals::getSpeed(int w_id, std::string &line) {
-    std::vector<float> temp_speed;
+bool CTCSignals::checkValidLine(std::string &line) {
 
     if (line == "Green Line") {
-        if (w_id == 1) {
-            for (auto i = gspeed1.begin(); i != gspeed1.end(); i++) {
-                temp_speed.push_back(*i);
-            }
-        }
-        else if (w_id == 2) {
-            for (auto i = gspeed2.begin(); i != gspeed2.end(); i++) {
-                temp_speed.push_back(*i);
-            }
-        }
-        else if (w_id == 3) {
-            for (auto i = gspeed3.begin(); i != gspeed3.end(); i++) {
-                temp_speed.push_back(*i);
-            }
-        }
-        else if (w_id == 4) {
-            for (auto i = gspeed4.begin(); i != gspeed4.end(); i++) {
-                temp_speed.push_back(*i);
-            }
-        }
-        else if (w_id == 5) {
-            for (auto i = gspeed5.begin(); i != gspeed5.end(); i++) {
-                temp_speed.push_back(*i);
-            }
-        }
-        else if (w_id == 6) {
-            for (auto i = gspeed6.begin(); i != gspeed6.end(); i++) {
-                temp_speed.push_back(*i);
-            }
-        }
-        else if (w_id == 7) {
-            for (auto i = gspeed7.begin(); i != gspeed7.end(); i++) {
-                temp_speed.push_back(*i);
-            }
-        }
-        else if (w_id == 8) {
-            for (auto i = gspeed8.begin(); i != gspeed8.end(); i++) {
-                temp_speed.push_back(*i);
-            }
-        }
-        else if (w_id == 9) {
-            for (auto i = gspeed9.begin(); i != gspeed9.end(); i++) {
-                temp_speed.push_back(*i);
-            }
-        }
-        else if (w_id == 10) {
-            for (auto i = gspeed10.begin(); i != gspeed10.end(); i++) {
-                temp_speed.push_back(*i);
-            }
-        }
-        else if (w_id == 11) {
-            for (auto i = gspeed11.begin(); i != gspeed11.end(); i++) {
-                temp_speed.push_back(*i);
-            }
-        }
-        else if (w_id == 12) {
-            for (auto i = gspeed12.begin(); i != gspeed12.end(); i++) {
-                temp_speed.push_back(*i);
-            }
-        }
-        else {
-            temp_speed.push_back(-1);
-        }
+        return true;
     }
-
     else if (line == "Red Line") {
-        if (w_id == 1) {
-            for (auto i = rspeed1.begin(); i != rspeed1.end(); i++) {
-                temp_speed.push_back(*i);
-            }
-        }
-        else if (w_id == 2) {
-            for (auto i = rspeed2.begin(); i != rspeed2.end(); i++) {
-                temp_speed.push_back(*i);
-            }
-        }
-        else if (w_id == 3) {
-            for (auto i = rspeed3.begin(); i != rspeed3.end(); i++) {
-                temp_speed.push_back(*i);
-            }
-        }
-        else if (w_id == 4) {
-            for (auto i = rspeed4.begin(); i != rspeed4.end(); i++) {
-                temp_speed.push_back(*i);
-            }
-        }
-        else if (w_id == 5) {
-            for (auto i = rspeed5.begin(); i != rspeed5.end(); i++) {
-                temp_speed.push_back(*i);
-            }
-        }
-        else if (w_id == 6) {
-            for (auto i = rspeed6.begin(); i != rspeed6.end(); i++) {
-                temp_speed.push_back(*i);
-            }
-        }
-        else if (w_id == 7) {
-            for (auto i = rspeed7.begin(); i != rspeed7.end(); i++) {
-                temp_speed.push_back(*i);
-            }
-        }
-        else if (w_id == 8) {
-            for (auto i = rspeed8.begin(); i != rspeed8.end(); i++) {
-                temp_speed.push_back(*i);
-            }
-        }
-        else if (w_id == 9) {
-            for (auto i = rspeed9.begin(); i != rspeed9.end(); i++) {
-                temp_speed.push_back(*i);
-            }
-        }
-        else if (w_id == 10) {
-            for (auto i = rspeed10.begin(); i != rspeed10.end(); i++) {
-                temp_speed.push_back(*i);
-            }
-        }
-        else {
-            temp_speed.push_back(-1);
-        }
+        return true;
     }
-
-    else if (line  == "Blue Line") {
-        for (auto i = bspeed1.begin(); i != bspeed1.end(); i++) {
-            temp_speed.push_back(*i);
-        }
+    else if (line == "Blue Line") {
+        return true;
     }
-
     else {
-        temp_speed.push_back(-1);
+        return false;
     }
 
-    return temp_speed;
 }
 
-std::vector<int> CTCSignals::getAuth(int w_id, std::string &line) {
-    std::vector<int> temp_auth;
-
-    if (line == "Green Line") {
-        if (w_id == 1) {
-            for (auto i = gauth1.begin(); i != gauth1.end(); i++) {
-                temp_auth.push_back(*i);
-            }
-        }
-        else if (w_id == 2) {
-            for (auto i = gauth2.begin(); i != gauth2.end(); i++) {
-                temp_auth.push_back(*i);
-            }
-        }
-        else if (w_id == 3) {
-            for (auto i = gauth3.begin(); i != gauth3.end(); i++) {
-                temp_auth.push_back(*i);
-            }
-        }
-        else if (w_id == 4) {
-            for (auto i = gauth4.begin(); i != gauth4.end(); i++) {
-                temp_auth.push_back(*i);
-            }
-        }
-        else if (w_id == 5) {
-            for (auto i = gauth5.begin(); i != gauth5.end(); i++) {
-                temp_auth.push_back(*i);
-            }
-        }
-        else if (w_id == 6) {
-            for (auto i = gauth6.begin(); i != gauth6.end(); i++) {
-                temp_auth.push_back(*i);
-            }
-        }
-        else if (w_id == 7) {
-            for (auto i = gauth7.begin(); i != gauth7.end(); i++) {
-                temp_auth.push_back(*i);
-            }
-        }
-        else if (w_id == 8) {
-            for (auto i = gauth8.begin(); i != gauth8.end(); i++) {
-                temp_auth.push_back(*i);
-            }
-        }
-        else if (w_id == 9) {
-            for (auto i = gauth9.begin(); i != gauth9.end(); i++) {
-                temp_auth.push_back(*i);
-            }
-        }
-        else if (w_id == 10) {
-            for (auto i = gauth10.begin(); i != gauth10.end(); i++) {
-                temp_auth.push_back(*i);
-            }
-        }
-        else if (w_id == 11) {
-            for (auto i = gauth11.begin(); i != gauth11.end(); i++) {
-                temp_auth.push_back(*i);
-            }
-        }
-        else if (w_id == 12) {
-            for (auto i = gauth12.begin(); i != gauth12.end(); i++) {
-                temp_auth.push_back(*i);
-            }
-        }
-        else {
-            temp_auth.push_back(-1);
-        }
-    }
-
-    else if (line == "Red Line") {
-        if (w_id == 1) {
-            for (auto i = rauth1.begin(); i != rauth1.end(); i++) {
-                temp_auth.push_back(*i);
-            }
-        }
-        else if (w_id == 2) {
-            for (auto i = rauth2.begin(); i != rauth2.end(); i++) {
-                temp_auth.push_back(*i);
-            }
-        }
-        else if (w_id == 3) {
-            for (auto i = rauth3.begin(); i != rauth3.end(); i++) {
-                temp_auth.push_back(*i);
-            }
-        }
-        else if (w_id == 4) {
-            for (auto i = rauth4.begin(); i != rauth4.end(); i++) {
-                temp_auth.push_back(*i);
-            }
-        }
-        else if (w_id == 5) {
-            for (auto i = rauth5.begin(); i != rauth5.end(); i++) {
-                temp_auth.push_back(*i);
-            }
-        }
-        else if (w_id == 6) {
-            for (auto i = rauth6.begin(); i != rauth6.end(); i++) {
-                temp_auth.push_back(*i);
-            }
-        }
-        else if (w_id == 7) {
-            for (auto i = rauth7.begin(); i != rauth7.end(); i++) {
-                temp_auth.push_back(*i);
-            }
-        }
-        else if (w_id == 8) {
-            for (auto i = rauth8.begin(); i != rauth8.end(); i++) {
-                temp_auth.push_back(*i);
-            }
-        }
-        else if (w_id == 9) {
-            for (auto i = rauth9.begin(); i != rauth9.end(); i++) {
-                temp_auth.push_back(*i);
-            }
-        }
-        else if (w_id == 10) {
-            for (auto i = rauth10.begin(); i != rauth10.end(); i++) {
-                temp_auth.push_back(*i);
-            }
-        }
-        else {
-            temp_auth.push_back(-1);
-        }
-    }
-
-    else if (line  == "Blue Line") {
-        for (auto i = bauth1.begin(); i != bauth1.end(); i++) {
-            temp_auth.push_back(*i);
-        }
-    }
-
-    else {
-        temp_auth.push_back(-1);
-    }
-
-    return temp_auth;
+CTCSignals::~CTCSignals() {
+    delete [] blockptr;
+    blockptr = NULL;
 }
 
-bool  CTCSignals::getRoute(int w_id, std::string &line) {
-    bool temp_route;
+void CTCSignals::setUpArray(int block_count) {
 
-    if (line == "Green Line") {
-        int j = 1;
-        for (auto i = green_route.begin(); i != green_route.end(); i++) {
-            if (j == w_id) {
-                bool m = bool(*i);
-                temp_route = m;
+    size = block_count;
+    blockptr = new BlockInfoCTC[size];
+
+    setUpExits();
+}
+
+void CTCSignals::setUpExits() {
+
+    switch_id.push_back(std::make_pair(1, 5));
+
+    switch_id.push_back(std::make_pair(2, 63));
+    switch_id.push_back(std::make_pair(4, 77));
+    switch_id.push_back(std::make_pair(5, 85));
+    switch_id.push_back(std::make_pair(8, 28));
+    switch_id.push_back(std::make_pair(10, 13));
+    switch_id.push_back(std::make_pair(12, 57));
+
+    switch_id.push_back(std::make_pair(14, 16));
+    switch_id.push_back(std::make_pair(15, 9));
+    switch_id.push_back(std::make_pair(17, 27));
+    switch_id.push_back(std::make_pair(18, 33));
+    switch_id.push_back(std::make_pair(19, 38));
+    switch_id.push_back(std::make_pair(20, 44));
+    switch_id.push_back(std::make_pair(22, 52));
+
+    div_exit.push_back(std::make_pair(11, 5));
+
+    div_exit.push_back(std::make_pair(0, 63));
+    div_exit.push_back(std::make_pair(101, 77));
+    div_exit.push_back(std::make_pair(100, 85));
+    div_exit.push_back(std::make_pair(150, 28));
+    div_exit.push_back(std::make_pair(1, 13));
+    div_exit.push_back(std::make_pair(0, 57));
+
+    div_exit.push_back(std::make_pair(15, 16));
+    div_exit.push_back(std::make_pair(0, 9));
+    div_exit.push_back(std::make_pair(76, 27));
+    div_exit.push_back(std::make_pair(72, 33));
+    div_exit.push_back(std::make_pair(71, 38));
+    div_exit.push_back(std::make_pair(67, 44));
+    div_exit.push_back(std::make_pair(66, 52));
+
+    div_exit.push_back(std::make_pair(6, 5));
+
+    div_exit.push_back(std::make_pair(64, 63));
+    div_exit.push_back(std::make_pair(78, 77));
+    div_exit.push_back(std::make_pair(86, 85));
+    div_exit.push_back(std::make_pair(29, 28));
+    div_exit.push_back(std::make_pair(14, 13));
+    div_exit.push_back(std::make_pair(58, 57));
+
+    div_exit.push_back(std::make_pair(1, 16));
+    div_exit.push_back(std::make_pair(10, 9));
+    div_exit.push_back(std::make_pair(28, 27));
+    div_exit.push_back(std::make_pair(34, 33));
+    div_exit.push_back(std::make_pair(39, 38));
+    div_exit.push_back(std::make_pair(45, 44));
+    div_exit.push_back(std::make_pair(53, 52));
+}
+
+int CTCSignals::getWaysideID(int block_id) {
+
+    int temp_wayside_id = -1;
+    for (int n = 0; n < size; n++) {
+        if ( blockptr[n].block_id == block_id) {
+            temp_wayside_id = blockptr[n].wayside_id;
+        }
+    }
+    return temp_wayside_id;
+}
+
+
+
+void CTCSignals::setSpeed(float speed) {
+
+    for (int i = 0; i < size; i++) {
+        sug_speed_ctc.push_back(std::make_pair(i+1, speed));
+   }
+
+}
+
+void CTCSignals::setAuthority(std::string &l, std::vector< std::pair<int, int> > auth) {
+
+    while (checkValidLine(l)) {
+        if(l == "Blue Line") {
+            auto i = auth.begin();
+            sug_auth_ctc_b.push_back(*i);
+        }
+        else {
+            for (auto i= auth.begin(); i < auth.end(); i++) {
+                if (l == "Green Line") {
+                    sug_auth_ctc_g.push_back(*i);
+                }
+                else {
+                    sug_auth_ctc_r.push_back(*i);
+                }
             }
-            j++;
+        }
+    }
+}
+
+void CTCSignals::setExitBlocks(std::vector< std::pair<int, TrackModel::SwitchState> > states) {
+
+    int temp_blockid;
+
+    for (auto i = states.begin(); i < states.end(); i++){
+        temp_blockid = i -> first;
+        if ((i -> second) == TrackModel::SwitchState::SW_DIVERGING) {
+            for (int m = 0; m < 23; m++) {
+                if (temp_blockid == (div_exit[m].second)) {
+                    exit_id.push_back( std::make_pair(switch_id[m].first, div_exit[m].first));
+                }
+            }
+        }
+        else {
+            for (int m = 0; m < 23; m++) {
+                if (temp_blockid == (str_exit[m].second)) {
+                    exit_id.push_back( std::make_pair(switch_id[m].first, str_exit[m].first));
+                }
+            }
+        }
+
+    }
+}
+
+int CTCSignals::getWaysideExit(int w) {
+
+    int temp = -1;
+    for (auto i = exit_id.begin(); i < exit_id.end(); i++) {
+        if ( w == (i -> first)) {
+            temp = (i -> second);
         }
     }
 
-    else if (line == "Red Line") {
-        int j = 1;
-        for (auto i = red_route.begin(); i != red_route.end(); i++) {
-            if (j == w_id) {
-                bool m = bool(*i);
-                temp_route = m;
-            }
-            j++;
+
+    return temp;
+}
+
+float CTCSignals::getWaysideSpeed(int w) {
+    float temp = -1;
+    for (auto i = sug_speed_ctc.begin(); i < sug_speed_ctc.end(); i++) {
+        if ( w == (i -> first)) {
+            temp = (i -> second);
         }
     }
 
-    else if (line  == "Blue Line") {
-        auto i = blue_route.begin();
-        bool m = bool(*i);
-        temp_route = m;
-    }
+    return temp;
+}
 
+std::vector<std::pair<int,int> > CTCSignals::getWaysideAuth(int w, std::vector<int> a) {
+    std::vector<std::pair<int,int> > temp;
+    int blk_id;
+    if (w == 1) {
+        for (auto i = sug_auth_ctc_b.begin(); i < sug_auth_ctc_b.end(); i++) {
+            temp.push_back(*i);
+        }
+    }
+    else if (w < 14) {
+        for (auto i = sug_auth_ctc_g.begin(); i < sug_auth_ctc_g.end(); i++) {
+            for (auto m = a.begin(); m < a.end(); m++) {
+                blk_id = *m;
+                if ((i -> first) == blk_id) {
+                    temp.push_back(*i);
+                }
+            }
+        }
+    }
     else {
-        return -1;
+        for (auto i = sug_auth_ctc_r.begin(); i < sug_auth_ctc_r.end(); i++) {
+            for (auto m = a.begin(); m < a.end(); m++) {
+                blk_id = *m;
+                if ((i -> first) == blk_id) {
+                    temp.push_back(*i);
+                }
+            }
+        }
     }
 
-    return temp_route;
+    return temp;
 }

@@ -7,13 +7,25 @@
 //using namespace std;
 
 TrackController::TrackController(){
+    switch_head = -1;
+    switch_tail0 = -1;
+    switch_tail1 = -1;
+    switch_state = false;
+
+    crossing_id = -1;
+    cross_state = false;
+
+    exit_block0 = -1;
+    exit_block1 = -1;
+    start_block = -1;
+
     block_count = 0;
 
 }
 
 void TrackController::setUpController(int id, std::string &l, std::vector<char> &s, std::vector<int> &b, int sw[], int cr) {
 
-    region = id;
+    wayside_id = id;
     line = l;
 
     switch_head = sw[0];
@@ -21,11 +33,11 @@ void TrackController::setUpController(int id, std::string &l, std::vector<char> 
     switch_tail1 = sw[2];
     switch_state = sw[3];
 
-    if (cr == 0) {
-        crossing_id = -1;
+    if (cr != 0) {
+        crossing_id = cr;
     }
     else {
-        crossing_id = cr;
+        crossing_id = -1;
     }
 
     auto m = b.begin();
@@ -58,15 +70,20 @@ void TrackController::addBlockObj(int num) {
 
 void TrackController::setSignalsInstance(CTCSignals &s){
 
-    route = s.getRoute( (region - 1), line);
+   // route = s.getRoute( (region - 1), line);
+    //ctc_exit_id = s.getWaysideExit(wayside_id);
+    ctc_exit_id = 10;
+    std::vector<std::pair<int, int> > temp = s.getWaysideAuth(wayside_id, cntrl_blocks);
 
-    setRoute();
+    for (auto i = temp.begin(); i < temp.end(); i++) {
+        CTC_sugauth.push_back(i -> second);
+    }
 
-    //std::vector<float> ctc_speed_temp;
-    CTC_sugspeed = s.getSpeed(region, line);
+    float spd = s.getWaysideSpeed(wayside_id);
 
-    //std::vector<int> ctc_auth_temp;
-    CTC_sugauth = s.getAuth(region, line);
+    for (int m = 0; m < block_count; m++) {
+        CTC_sugspeed.push_back(spd);
+    }
 
     setTrackSA();
 
@@ -90,7 +107,7 @@ void TrackController::setSignalsInstance(CTCSignals &s){
 }*/
 
 void TrackController::setRoute() {
-    route = ctc_wayside.getRoute(region, line);
+ /*  route = ctc_wayside.getRoute(region, line);
     if (switch_head != -1) {
         if ( !PLC.checkRoute(route) ) {
             setSwitch(!route);
@@ -104,7 +121,7 @@ void TrackController::setRoute() {
             route = !route;
         }
     }
-
+*/
     //ADD FUNCTION CALL TO TRACKLOGIC TO SET SWITCH STATE BASED ON bool route OF TrackController CLASS
 }
 
