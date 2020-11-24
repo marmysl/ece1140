@@ -2,9 +2,9 @@
 
 #include "TrackModel/tracklayout.hpp"
 
-//Train signals check
-//Switch states check
-//block occupancy check
+//Train signals check = failure_code
+//Switch states check = vector of pairs(blockid, switchstate)
+//block occupancy check = occupancy
 //faults check
 //passenger count check
 //stations check
