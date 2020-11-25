@@ -19,6 +19,13 @@ TrainControlWindow::TrainControlWindow(QWidget *parent)
     swtc.mode = mode;
 
     ui->releasebrakebutton->hide();
+
+    if (swtc.mode->getMode() == 0){ // If the train is in automatic mode, set Kp and Ki to default and setpoint = commanded
+        swtc.setKi(150 * 1000);
+        swtc.setKp(150 * 1000);
+        startMoving();
+    }
+
 }
 
 TrainControlWindow::~TrainControlWindow()
@@ -135,27 +142,22 @@ void TrainControlWindow :: updateCabin()
 // ------------------------------------------------------------------------------------------- GUI buttons n' stuff
 void TrainControlWindow::on_submit_clicked() //Submits Kp and Ki
 {
+    //convert input string to text then assign to Kp  & Ki
+    QString temp1,temp2;
+    temp1 = ui->kp_textbox->toPlainText();
+    kp = temp1.toDouble();
+    temp2 =  ui->ki_textbox->toPlainText();
+    ki = temp2.toDouble();
 
-    if (swtc.mode->getMode() == 0) // If the train is dispatched in automatic mode
-    {
-        kp = 150; // default values
-        ki = 150;
-        swtc.setSetpointSpeed(swtc.getCommandedSpeed()); // setpoint = commanded
-    }
-    else {
-        //convert input string to text then assign to Kp  & Ki
-        QString temp1,temp2;
-        temp1 = ui->kp_textbox->toPlainText();
-        kp = temp1.toDouble();
-        temp2 =  ui->ki_textbox->toPlainText();
-        ki = temp2.toDouble();
-
-        swtc.setSetpointSpeed(yardSpeed);
-    }
     //set Kp and Ki in the SWTC class, multiply by 1000 for tuning
     swtc.setKp(kp * 1000);
     swtc.setKi(ki * 1000);
 
+    startMoving();
+}
+
+void TrainControlWindow::startMoving()
+{
     // Disable textboxes and submit button
     ui->ki_textbox->setReadOnly(true);
     ui->kp_textbox->setReadOnly(true);
@@ -166,7 +168,6 @@ void TrainControlWindow::on_submit_clicked() //Submits Kp and Ki
     //Disable service brake flag once Kp and Ki are set
     swtc.setServiceBrake(false);
 
-    //Calculate the initial power
     swtc.calculatePower();
 }
 

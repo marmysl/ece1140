@@ -31,6 +31,7 @@ public:
     void updateBrakes();
     void updateSpeed();
     void updateCabin();
+    void startMoving();
 
 private slots:
     void on_submit_clicked();
