@@ -2,8 +2,8 @@
 #define MAINWINDOW_H
 #include "CTCDispatch.h"
 #include "../../SWTrackController/CTCSignals.h"
-#include "CTCMode.h"
 #include "Files.h"
+#include "schedule.h"
 
 #include <QMainWindow>
 
@@ -43,6 +43,8 @@ private slots:
     void on_btnMap_clicked();
 
     void on_comboDisplayLine_currentIndexChanged(const QString &arg1);
+
+    void on_btnSchedule_clicked();
 
 private:
     Ui::MainWindow *ui;
