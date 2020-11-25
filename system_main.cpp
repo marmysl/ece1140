@@ -38,7 +38,7 @@ void createNewTrain(CTCMode *mode, int numCars, std::string lineType) {
     }
     else
     {
-        newTrain = new SWTrainController(numCars, lineType);
+        newTrain = new SWTrainController(mode, numCars, lineType);
     }
 
     newTrain->id = nextTrainId;

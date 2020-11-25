@@ -16,6 +16,8 @@ TrainControlWindow::TrainControlWindow(QWidget *parent)
     timerID = startTimer(1000); // timer event occurs every second
     count = 0;
 
+    swtc.mode = mode;
+
     ui->releasebrakebutton->hide();
 }
 
@@ -133,13 +135,23 @@ void TrainControlWindow :: updateCabin()
 // ------------------------------------------------------------------------------------------- GUI buttons n' stuff
 void TrainControlWindow::on_submit_clicked() //Submits Kp and Ki
 {
-    //convert input string to text then assign to Kp  & Ki
-    QString temp1,temp2;
-    temp1 = ui->kp_textbox->toPlainText();
-    kp = temp1.toDouble();
-    temp2 =  ui->ki_textbox->toPlainText();
-    ki = temp2.toDouble();
 
+    if (swtc.mode->getMode() == 0) // If the train is dispatched in automatic mode
+    {
+        kp = 150; // default values
+        ki = 150;
+        swtc.setSetpointSpeed(swtc.getCommandedSpeed()); // setpoint = commanded
+    }
+    else {
+        //convert input string to text then assign to Kp  & Ki
+        QString temp1,temp2;
+        temp1 = ui->kp_textbox->toPlainText();
+        kp = temp1.toDouble();
+        temp2 =  ui->ki_textbox->toPlainText();
+        ki = temp2.toDouble();
+
+        swtc.setSetpointSpeed(yardSpeed);
+    }
     //set Kp and Ki in the SWTC class, multiply by 1000 for tuning
     swtc.setKp(kp * 1000);
     swtc.setKi(ki * 1000);
@@ -154,12 +166,8 @@ void TrainControlWindow::on_submit_clicked() //Submits Kp and Ki
     //Disable service brake flag once Kp and Ki are set
     swtc.setServiceBrake(false);
 
-    //Calculate the initial power for the yard speed (5 m/s)
-    swtc.setSetpointSpeed(yardSpeed);
+    //Calculate the initial power
     swtc.calculatePower();
-
-    cout << "The initial power for 5m/s has been set by the train controller.\n";
-
 }
 
 void TrainControlWindow::on_serviceBrake_clicked()

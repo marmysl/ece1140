@@ -2,6 +2,7 @@
 #define SWTC_H
 
 #include <cstdint>
+#include "../CTCOffice/ctcoffice/CTCMode.h"
 
 class SWTC
 {
@@ -26,6 +27,8 @@ class SWTC
         bool cabinLightsOn = true;
         bool headlightsOn = false;
     public:
+        CTCMode *mode;
+
         void calculatePower();
         void decode(uint64_t);
 
