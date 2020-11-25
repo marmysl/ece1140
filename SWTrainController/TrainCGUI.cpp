@@ -34,6 +34,8 @@ void TrainControlWindow::timerEvent(QTimerEvent *event)
     count++;
     //std::cout << "Timer has updated... " << count << std::endl; //debug
 
+    swtc.mode = mode;
+
     if (dispatched == false){ // only runs once. checks if mode is automatic, and if it is, then starts a train
         dispatch();
     }
