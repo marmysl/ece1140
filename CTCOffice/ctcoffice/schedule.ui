@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>537</width>
-    <height>397</height>
+    <width>1255</width>
+    <height>687</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -16,7 +16,7 @@
   <widget class="QLabel" name="fileLabel">
    <property name="geometry">
     <rect>
-     <x>80</x>
+     <x>50</x>
      <y>60</y>
      <width>421</width>
      <height>31</height>
@@ -35,7 +35,7 @@
   <widget class="QLabel" name="label">
    <property name="geometry">
     <rect>
-     <x>30</x>
+     <x>10</x>
      <y>70</y>
      <width>41</width>
      <height>16</height>
@@ -48,10 +48,10 @@
   <widget class="QPushButton" name="loadSchedule">
    <property name="geometry">
     <rect>
-     <x>140</x>
-     <y>20</y>
-     <width>231</width>
-     <height>24</height>
+     <x>10</x>
+     <y>10</y>
+     <width>241</width>
+     <height>41</height>
     </rect>
    </property>
    <property name="text">
@@ -61,10 +61,10 @@
   <widget class="QTableWidget" name="scheduleTable">
    <property name="geometry">
     <rect>
-     <x>30</x>
+     <x>10</x>
      <y>100</y>
-     <width>471</width>
-     <height>281</height>
+     <width>1231</width>
+     <height>571</height>
     </rect>
    </property>
   </widget>
