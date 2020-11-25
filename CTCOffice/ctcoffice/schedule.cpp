@@ -2,6 +2,7 @@
 #include "ui_schedule.h"
 #include <QFileDialog>
 #include <QDebug>
+#include <QTableWidget>
 
 #include <fstream>
 #include <iostream>
@@ -243,4 +244,12 @@ void schedule::setSchedule(int linenum, int blocknum, std::string station, std::
     if(blocks.size() != linenum-1){
         qDebug() << "you done screwed up";
     }
+}
+
+void schedule::setScheduleTable(){
+    /*QTableWidget *scheduleView = new QTableWidget(18, 12, this);
+    for(int i = 0; i < blocks.size(); i++){
+        QTableWidgetItem *blk = new QTableWidgetItem(tr(t1.at(i)));
+        scheduleView->setItem(i, 1, blk);
+    }*/
 }
