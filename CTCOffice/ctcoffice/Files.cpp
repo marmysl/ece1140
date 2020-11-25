@@ -24,8 +24,3 @@ void Files::mapDisplay(){
     ui->lblMap->setPixmap(mapfile);
     ui->lblMap->setScaledContents(true);
 }
-
-void Files::scheduleParser(){
-    //std::ifstream sched;
-    //sched.open("excel_sheet");
-}
