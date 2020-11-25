@@ -16,7 +16,10 @@ TrainControlWindow::TrainControlWindow(QWidget *parent)
     timerID = startTimer(1000); // timer event occurs every second
     count = 0;
 
+    swtc.mode = mode;
+
     ui->releasebrakebutton->hide();
+
 }
 
 TrainControlWindow::~TrainControlWindow()
@@ -30,6 +33,12 @@ void TrainControlWindow::timerEvent(QTimerEvent *event)
 {
     count++;
     //std::cout << "Timer has updated... " << count << std::endl; //debug
+
+    swtc.mode = mode;
+
+    if (dispatched == false){ // only runs once. checks if mode is automatic, and if it is, then starts a train
+        dispatch();
+    }
 
     swtc.calculatePower();
     updatePower();
@@ -130,6 +139,17 @@ void TrainControlWindow :: updateCabin()
 
 }
 
+void TrainControlWindow :: dispatch() // only runs once, at dispatch.
+{
+    if (swtc.mode->getMode() == 0){ // If the train is in automatic mode, set Kp and Ki to default and setpoint = commanded
+        swtc.setKi(150 * 1000);
+        swtc.setKp(150 * 1000);
+        startMoving();
+    }
+
+    dispatched = true;
+}
+
 // ------------------------------------------------------------------------------------------- GUI buttons n' stuff
 void TrainControlWindow::on_submit_clicked() //Submits Kp and Ki
 {
@@ -144,6 +164,11 @@ void TrainControlWindow::on_submit_clicked() //Submits Kp and Ki
     swtc.setKp(kp * 1000);
     swtc.setKi(ki * 1000);
 
+    startMoving();
+}
+
+void TrainControlWindow::startMoving()
+{
     // Disable textboxes and submit button
     ui->ki_textbox->setReadOnly(true);
     ui->kp_textbox->setReadOnly(true);
@@ -154,12 +179,7 @@ void TrainControlWindow::on_submit_clicked() //Submits Kp and Ki
     //Disable service brake flag once Kp and Ki are set
     swtc.setServiceBrake(false);
 
-    //Calculate the initial power for the yard speed (5 m/s)
-    swtc.setSetpointSpeed(yardSpeed);
     swtc.calculatePower();
-
-    cout << "The initial power for 5m/s has been set by the train controller.\n";
-
 }
 
 void TrainControlWindow::on_serviceBrake_clicked()

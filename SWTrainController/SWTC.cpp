@@ -2,7 +2,10 @@
 
 void SWTC :: calculatePower()
 {
-    // Only set the power when the brake flags are off
+    // If the train is in automatic mode, set the setpoint = commanded
+    if (mode->getMode() == 0){
+        setpointSpeed = commandedSpeed;
+    }
 
     if (serviceBrakeEnabled == false && emergencyBrakeEnabled == false && passengerEBrakeEnabled == false)
     {

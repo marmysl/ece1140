@@ -2,6 +2,7 @@
 #define SWTC_H
 
 #include <cstdint>
+#include "../CTCOffice/ctcoffice/CTCMode.h"
 
 class SWTC
 {
@@ -16,7 +17,7 @@ class SWTC
         double T = 1.0; // Sample timing for u_k calculation, also used for timer rate
         double commandedSpeed = 0.0;
         double authority = 0.0;
-        double setpointSpeed = 0.0;
+        double setpointSpeed = 5.0;
         double trainVelocity;
         unsigned signal;
         bool serviceBrakeEnabled = true;
@@ -26,6 +27,8 @@ class SWTC
         bool cabinLightsOn = true;
         bool headlightsOn = false;
     public:
+        CTCMode *mode;
+
         void calculatePower();
         void decode(uint64_t);
 
