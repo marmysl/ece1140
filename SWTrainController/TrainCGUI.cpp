@@ -20,12 +20,6 @@ TrainControlWindow::TrainControlWindow(QWidget *parent)
 
     ui->releasebrakebutton->hide();
 
-    if (swtc.mode->getMode() == 0){ // If the train is in automatic mode, set Kp and Ki to default and setpoint = commanded
-        swtc.setKi(150 * 1000);
-        swtc.setKp(150 * 1000);
-        startMoving();
-    }
-
 }
 
 TrainControlWindow::~TrainControlWindow()
@@ -39,6 +33,10 @@ void TrainControlWindow::timerEvent(QTimerEvent *event)
 {
     count++;
     //std::cout << "Timer has updated... " << count << std::endl; //debug
+
+    if (dispatched == false){ // only runs once. checks if mode is automatic, and if it is, then starts a train
+        dispatch();
+    }
 
     swtc.calculatePower();
     updatePower();
@@ -137,6 +135,17 @@ void TrainControlWindow :: updateCabin()
     train->setCabinLights(swtc.getCabinLightsOn());
     train->setHeadlights(swtc.getHeadlightsOn());
 
+}
+
+void TrainControlWindow :: dispatch() // only runs once, at dispatch.
+{
+    if (swtc.mode->getMode() == 0){ // If the train is in automatic mode, set Kp and Ki to default and setpoint = commanded
+        swtc.setKi(150 * 1000);
+        swtc.setKp(150 * 1000);
+        startMoving();
+    }
+
+    dispatched = true;
 }
 
 // ------------------------------------------------------------------------------------------- GUI buttons n' stuff

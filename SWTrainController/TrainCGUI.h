@@ -32,6 +32,7 @@ public:
     void updateSpeed();
     void updateCabin();
     void startMoving();
+    void dispatch();
 
 private slots:
     void on_submit_clicked();
@@ -56,6 +57,7 @@ private:
     Ui::TrainControlWindow *ui;
     int timerID;
     int count; //debug
+    bool dispatched = false;
 
     double power; //remove someday
     double kp;
