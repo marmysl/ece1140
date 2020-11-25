@@ -58,6 +58,7 @@ private:
     double power; //remove someday
     double kp;
     double ki;
+    bool brakesReleased = false;
     int argc;
     char *argv[];
 
