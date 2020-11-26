@@ -15,12 +15,15 @@ String Kp_in, Ki_in;
 //void securitySetup();
 //void failureDetectorSetup();
 //void engineerLogin();
-//void enterKpKi();
+bool enterKpKi();
 //void driverLogin();
 void receiver();
 void transmitter();
+void logout();
 //void failureDetector();
 //void joystick();
+//String that will hold received data
+String receivedString;
 
 
 void setup() {
@@ -40,8 +43,10 @@ void setup() {
   brakeSetup();
 
   //Initiate the login process
-  //Recommended values are  Kp = 400 and Ki = 300
-  while(!enterKpKi());
+  //Recommended values are  Kp = 50.00 and Ki = 0.000
+  //while(!enterKpKi());
+  Kp_in = "50.00";
+  Ki_in = "0.000";
  }
 
 void loop() 

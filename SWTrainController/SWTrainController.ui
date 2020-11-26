@@ -466,7 +466,7 @@
      </rect>
     </property>
     <property name="text">
-     <string>Recommended Value: 250</string>
+     <string>Recommended Value: 125</string>
     </property>
    </widget>
    <widget class="QLabel" name="auth_exceeded_">
