@@ -336,8 +336,8 @@
    <widget class="QLabel" name="status">
     <property name="geometry">
      <rect>
-      <x>750</x>
-      <y>320</y>
+      <x>660</x>
+      <y>310</y>
       <width>131</width>
       <height>16</height>
      </rect>
@@ -466,7 +466,7 @@
      </rect>
     </property>
     <property name="text">
-     <string>Recommended Value: 125</string>
+     <string>Recommended Value: 225</string>
     </property>
    </widget>
    <widget class="QLabel" name="auth_exceeded_">
@@ -532,6 +532,19 @@
     </property>
     <property name="text">
      <string>blocks</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="mode_">
+    <property name="geometry">
+     <rect>
+      <x>410</x>
+      <y>20</y>
+      <width>131</width>
+      <height>16</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>MODE: AUTOMATIC</string>
     </property>
    </widget>
   </widget>
