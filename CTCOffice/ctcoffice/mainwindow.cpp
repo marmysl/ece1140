@@ -202,3 +202,10 @@ void MainWindow::updateRoute(){
         ui->comboLine->addItem(QString::fromStdString(rte->name));
     }
 }
+
+void MainWindow::on_btnSchedule_clicked()
+{
+    schedule *s;
+    s = new schedule();
+    s->show();
+}

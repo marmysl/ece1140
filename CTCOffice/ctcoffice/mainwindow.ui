@@ -67,9 +67,9 @@
       </widget>
      </item>
      <item row="1" column="0">
-      <widget class="QPushButton" name="pushButton_4">
+      <widget class="QPushButton" name="btnSchedule">
        <property name="text">
-        <string>PushButton</string>
+        <string>View/Load Schedule</string>
        </property>
       </widget>
      </item>
@@ -206,7 +206,7 @@
      <item>
       <layout class="QVBoxLayout" name="verticalLayout_6">
        <property name="spacing">
-        <number>-1</number>
+        <number>6</number>
        </property>
        <property name="rightMargin">
         <number>0</number>

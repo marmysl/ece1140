@@ -16,7 +16,6 @@ public:
     explicit Files(QWidget *parent = nullptr);
     ~Files();
     void mapDisplay();
-    void scheduleParser();
 
 private:
     Ui::Files *ui;

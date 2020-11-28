@@ -24,12 +24,15 @@ public:
     SWTC swtc;
     double temp = 5.0;
     double yardSpeed = 5.0; //speed of train in yard before block 1
+    CTCMode *mode;
 
     void updateCircuitInfo();
     void updatePower();
     void updateBrakes();
     void updateSpeed();
     void updateCabin();
+    void startMoving();
+    void dispatch();
 
 private slots:
     void on_submit_clicked();
@@ -54,10 +57,12 @@ private:
     Ui::TrainControlWindow *ui;
     int timerID;
     int count; //debug
+    bool dispatched = false;
 
     double power; //remove someday
     double kp;
     double ki;
+    bool brakesReleased = false;
     int argc;
     char *argv[];
 
