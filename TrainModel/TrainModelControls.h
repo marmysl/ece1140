@@ -10,7 +10,7 @@ public:
     bool doorOpen = 0;
     bool doorLeftOpen = 0;
     bool doorRightOpen = 0;
-    bool cabinLights = 1;
+    bool cabinLights = 0;
     bool headlightsOn = 0;
     bool advertisementsOn = 0;
     bool announcementsOn = 0;

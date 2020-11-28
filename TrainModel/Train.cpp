@@ -16,7 +16,7 @@ Train::Train(int newNumCars, string lineType)
     w->show();
     controls = new TrainModelControls();
     block = new TrainModelUpdateBlock(lineType);
-    math = new TrainModelMath(newNumCars, block);
+    math = new TrainModelMath(newNumCars, block, controls);
     w->setTrain(math);
     updateUI();
 }

@@ -1,11 +1,13 @@
 #include "TrainModelMath.h"
 #include "TrainModelUpdateBlock.h"
+#include "TrainModelControls.h"
 #include <iostream>
 
-TrainModelMath::TrainModelMath(int newNumCars, TrainModelUpdateBlock *newAssigBlock){
+TrainModelMath::TrainModelMath(int newNumCars, TrainModelUpdateBlock *newAssigBlock, TrainModelControls *newControl){
     numCars = newNumCars;
     mass = numCars * 56700;
     block = newAssigBlock;
+    controls = newControl;
 
     currVel = 0;
     currPower = 0;
@@ -62,6 +64,9 @@ void TrainModelMath::setPower(double newPower){
             //update current block and information
             block->updateTrackInfo(inYard);
         }
+
+        //Update passengers on the train
+        updatePassengers();
 
         //Set current calculations as last calculations for next call
         lastPos = newPos;
@@ -124,6 +129,11 @@ void TrainModelMath::limitAccel(){
         currAccel = 0;
     }
 }
+
+void TrainModelMath::updatePassengers(){
+
+}
+
 
 void TrainModelMath::setFailureStatus(int newFailureStatus){
     failureStatus = newFailureStatus;

@@ -5,6 +5,7 @@
 #include <QDateTime>
 #include "timetracker.h"
 #include "TrainModelUpdateBlock.h"
+#include "TrainModelControls.h"
 
 using namespace std;
 
@@ -19,6 +20,7 @@ public:
     double lastVel = 0;
     double lastAccel = 0;
     double lastPos = 0;
+    int passengers = 0;
     QDateTime lastTime;
     QDateTime newTime;
     double elapsedTime = 0;
@@ -27,6 +29,7 @@ public:
     int safeStoppingDist = 10;
     bool inYard = true;
     TrainModelUpdateBlock *block;
+    TrainModelControls *controls;
     bool emergencyBrake;
     bool serviceBrake;
 
@@ -36,13 +39,14 @@ public:
     double deccSB = 1.2;
     double deccEB = 2.73;
 
-    TrainModelMath(int newNumCars, TrainModelUpdateBlock *block);
+    TrainModelMath(int newNumCars, TrainModelUpdateBlock *block, TrainModelControls *controls);
     TrainModelMath();
     double travelledDist();
     double calcVelocity();
     void setPower(double);
     void limitForce();
     void limitAccel();
+    void updatePassengers();
     void setFailureStatus(int);
     int getFailureStatus();
     void setEBrake(bool);
