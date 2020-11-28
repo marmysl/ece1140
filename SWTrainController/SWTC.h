@@ -77,6 +77,7 @@ class SWTC
 
         bool getStationHere();
         bool getStationUpcoming();
+        bool getHasStopped();
 };
 
 #endif // SWTC_H

@@ -253,3 +253,8 @@ bool SWTC :: getStationUpcoming()
 {
     return stationUpcoming;
 }
+
+bool SWTC :: getHasStopped()
+{
+    return hasStoppedAtStation;
+}

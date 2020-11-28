@@ -13,7 +13,7 @@ TrainControlWindow::TrainControlWindow(QWidget *parent)
 {
     ui->setupUi(this);
 
-    timerID = startTimer(1000); // timer event occurs every second
+    timerID = startTimer(100);
     count = 0;
 
     swtc.mode = mode;
@@ -77,10 +77,12 @@ void TrainControlWindow :: updateCircuitInfo()
     // Displays for train stopping at station
     if (swtc.getStationUpcoming() == true){
         ui->station_->setText("The train is approaching a station.");
-    } else if (swtc.getStationHere() == true && swtc.getTrainVelocity() != 0.0) {
+    } else if (swtc.getStationHere() == true && swtc.getTrainVelocity() != 0.0 && swtc.getHasStopped() == false) {
         ui->station_->setText("The train is stopping at a station.");
     } else if (swtc.getStationHere() == true || swtc.getTrainVelocity() == 0.0){
         ui->station_->setText("The train is stopped at a station.");
+    } else if (swtc.getStationHere() == true && swtc.getTrainVelocity() != 0.0 && swtc.getHasStopped() == true){
+        ui->station_->setText("The train is leaving a station.");
     } else {
         ui->station_->setText("");
     }
