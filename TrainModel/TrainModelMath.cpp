@@ -8,6 +8,7 @@ TrainModelMath::TrainModelMath(int newNumCars, TrainModelUpdateBlock *newAssigBl
     mass = numCars * 56700;
     block = newAssigBlock;
     controls = newControl;
+    maxPassTotal = numCars * 222;
 
     currVel = 0;
     currPower = 0;
@@ -131,7 +132,24 @@ void TrainModelMath::limitAccel(){
 }
 
 void TrainModelMath::updatePassengers(){
-
+    //if the doors are open and the train was not at a station in previous loop
+    if((controls->doorLeftOpen || controls->doorRightOpen) && !atStation){
+        //Set variable so that the passengers are only updated once at a station
+        atStation = true;
+        //Randomly generate the number of passengers leaving the train
+        if (passengers>0){
+            int passLeaving = rand() % passengers;
+            passengers = passengers - passLeaving;
+        }
+        int transMax = maxPassTotal - passengers;
+        int randomPassEntry = rand() % transMax;
+        int passEntry = block->getPassengers(randomPassEntry);
+        passengers = passengers + passEntry;
+        mass = (numCars * 56700) + (passengers * 68);
+    }
+    else{
+        atStation = false;
+    }
 }
 
 

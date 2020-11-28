@@ -21,6 +21,8 @@ public:
     double lastAccel = 0;
     double lastPos = 0;
     int passengers = 0;
+    int maxPassTotal;
+    bool atStation = false;
     QDateTime lastTime;
     QDateTime newTime;
     double elapsedTime = 0;

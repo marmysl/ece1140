@@ -56,3 +56,10 @@ void TrainModelUpdateBlock::updateTrackCircuit(){
     TrackModel::TrackCircuitData newData = TrackModel::getTrackCircuit(lineType, blockNum);
     trackCircuitData = newData.getEncodedData();
 }
+
+int TrainModelUpdateBlock::getPassengers(int maxPassengers){
+    int numPassengers;
+    TrackModel::PlatformData platform = block->getPlatformInDir(blockDir);
+    numPassengers = TrackModel::takePassengers(lineType, platform.station->name, maxPassengers);
+    return numPassengers;
+}

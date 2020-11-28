@@ -91,6 +91,9 @@ void TrainModelUI::updateFailureStatus(){
     ui->failStatus->setText(goesIn);
 }
 
+void TrainModelUI::updatePassengers(int numPass){
+    ui->passengerLabel->setText(QString::number(numPass));
+}
 
 void TrainModelUI::on_pushButton_clicked()
 {

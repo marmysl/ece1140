@@ -184,5 +184,6 @@ void Train::updateUI(){
     w->updateBlockLength(block->blockDist);
     w->updateBlockGrade(block->blockGrade);
     w->updateFailureStatus();
+    w->updatePassengers(math->passengers);
 }
 

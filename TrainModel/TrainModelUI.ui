@@ -76,7 +76,7 @@
      </rect>
     </property>
     <property name="currentIndex">
-     <number>0</number>
+     <number>2</number>
     </property>
     <widget class="QWidget" name="errors">
      <attribute name="title">
@@ -539,6 +539,32 @@
       </property>
       <property name="text">
        <string>%</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_16">
+      <property name="geometry">
+       <rect>
+        <x>40</x>
+        <y>230</y>
+        <width>141</width>
+        <height>16</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Number of Passengers:</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="passengerLabel">
+      <property name="geometry">
+       <rect>
+        <x>200</x>
+        <y>230</y>
+        <width>58</width>
+        <height>16</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>0</string>
       </property>
      </widget>
     </widget>
