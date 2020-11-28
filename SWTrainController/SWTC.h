@@ -3,6 +3,7 @@
 
 #include <cstdint>
 #include "../CTCOffice/ctcoffice/CTCMode.h"
+#include "../TrackModel/trackmodel_types.hpp"
 
 class SWTC
 {
@@ -19,7 +20,10 @@ class SWTC
         double authority = 0.0;
         double setpointSpeed = 5.0;
         double trainVelocity;
-        unsigned signal;
+        std::string nextStation;
+        bool stationHere;
+        bool stationUpcoming;
+        // something? platformSide;
         bool serviceBrakeEnabled = true;
         bool emergencyBrakeEnabled = false;
         bool passengerEBrakeEnabled = false;
@@ -31,6 +35,7 @@ class SWTC
 
         void calculatePower();
         void decode(uint64_t);
+        void readBeacon(TrackModel::BeaconData);
 
         // Accessors & mutators
         void setPowerCommand(double);

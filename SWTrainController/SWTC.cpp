@@ -21,6 +21,10 @@ void SWTC :: calculatePower()
             speed = commandedSpeed;
         }
 
+        // Ensure speed does not exceed the max speed of the train (70km/h)
+        // 70km/h = 19.4444 m/s
+        if (speed > 19.44) {speed = 19.44;}
+
         // Safety measure in case garbage commanded speed or train velocity are sent
         if (speed < 0) {speed = 0;}
         if (trainVelocity < 0) {trainVelocity = 0;}
@@ -40,7 +44,7 @@ void SWTC :: calculatePower()
 
 
     // Limit power to 120kW as per specs
-    if (powerCommand > 120000) { powerCommand = 120000; }
+    // if (powerCommand > 120000) { powerCommand = 120000; }
 
 
     // If authority is 0, set the power command to zero and the service brake flag on.
@@ -57,15 +61,18 @@ void SWTC :: decode(uint64_t decodeSignal)
     double decodeAuth = decodeSignal & 0xFFFFFFFF;
 
 
-
-    // TEMP: Hard coding commanded speed and authority until we have track controllers
-    // decodeSpeed = 25.0;
-    // decodeAuth = 1.0;
-
-
     setCommandedSpeed(decodeSpeed);
-    setAuthority(decodeAuth);
+    setAuthority(decodeAuth - 1); // authority is currently 1 larger than it should be. idk
 }
+
+void SWTC :: readBeacon(TrackModel::BeaconData beaconData)
+{
+    // nextStation = beaconData.stationName
+
+    stationUpcoming = beaconData.stationUpcoming;
+    stationHere = beaconData.stationHere;
+}
+
 
 // ------------------------------------------------------------ Just accessors and mutators below here. Nothin fancy
 
