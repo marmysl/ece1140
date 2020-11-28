@@ -38,6 +38,11 @@ void SWTC :: calculatePower()
         powerCommand = kp * e_k + ki * u_k;
     }
 
+
+    // Limit power to 120kW as per specs
+    if (powerCommand > 120000) { powerCommand = 120000; }
+
+
     // If authority is 0, set the power command to zero and the service brake flag on.
     if (authority == 0) {
         powerCommand = 0.0;
