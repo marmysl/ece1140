@@ -23,7 +23,7 @@ class SWTC
         bool serviceBrakeEnabled = true;
         bool emergencyBrakeEnabled = false;
         bool passengerEBrakeEnabled = false;
-        bool doorsOpen = true;
+        bool doorsOpen = false;
         bool cabinLightsOn = true;
         bool headlightsOn = false;
     public:
