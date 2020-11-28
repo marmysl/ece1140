@@ -27,9 +27,8 @@ void SWTC :: calculatePower()
         // Reduce speed if the authority is 1
         if (authority <= 1) { speed = 10.0; }
 
-        // Stop at station, if needed
-        stationStop();
-
+        // reduce speed for upcoming station
+        if (stationUpcoming == true) { speed = 10.0; }
 
         // Safety measure in case garbage commanded speed or train velocity are sent
         if (speed < 0) {speed = 0;}
@@ -47,6 +46,9 @@ void SWTC :: calculatePower()
         // Calculate p_cmd
         powerCommand = kp * e_k + ki * u_k;
     }
+
+    // Stop at station, if needed
+    stationStop();
 
     // Limit power to 120kW as per specs
     if (powerCommand > 120000) { powerCommand = 120000; }
@@ -80,16 +82,15 @@ void SWTC :: readBeacon(TrackModel::BeaconData beaconData)
 
 void SWTC :: stationStop()
 {
-    // reduce speed for upcoming station
-    if (stationUpcoming == true) { speed = 10.0; }
+    double temp = powerCommand;
 
-    // set speed to zero if block has a station
-    if (stationHere == true) { speed = 0.0; }
+    // set power to zero if block has a station
+    if (stationHere == true) { powerCommand = 0.0; }
 
     // if the train has been stopped at a station, check timer & set speed if 60s passed
     if (stationHere == true && hasStoppedAtStation == true){
         if (systemClock->currentTime() >= stationTimerEnd){ // train has been stopped for 60sec
-            speed = commandedSpeed;
+            powerCommand = temp;
         }
     }
 
