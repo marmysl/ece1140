@@ -72,6 +72,18 @@ void TrainControlWindow :: updateCircuitInfo()
     } else {
         ui->auth_exceeded_->setText("");
     }
+
+
+    // Displays for train stopping at station
+    if (swtc.getStationUpcoming() == true){
+        ui->station_->setText("The train is approaching a station.");
+    } else if (swtc.getStationHere() == true && swtc.getTrainVelocity() != 0.0) {
+        ui->station_->setText("The train is stopping at a station.");
+    } else if (swtc.getStationHere() == true || swtc.getTrainVelocity() == 0.0){
+        ui->station_->setText("The train is stopped at a station.");
+    } else {
+        ui->station_->setText("");
+    }
 }
 
 void TrainControlWindow :: updatePower()
@@ -191,8 +203,8 @@ void TrainControlWindow::on_submit_clicked() //Submits Kp and Ki
 void TrainControlWindow::startMoving()
 {
     // Display values in textboxes
-    ui->ki_textbox->setPlainText(QString::number(swtc.getKi()));
-    ui->kp_textbox->setPlainText(QString::number(swtc.getKp()));
+    ui->ki_textbox->setPlainText(QString::number(swtc.getKi() / 1000));
+    ui->kp_textbox->setPlainText(QString::number(swtc.getKp() / 1000));
 
     // Disable textboxes and submit button
     ui->ki_textbox->setReadOnly(true);

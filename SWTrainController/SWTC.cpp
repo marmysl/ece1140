@@ -243,3 +243,13 @@ double SWTC :: getT()
 {
     return T;
 }
+
+bool SWTC :: getStationHere()
+{
+    return stationHere;
+}
+
+bool SWTC :: getStationUpcoming()
+{
+    return stationUpcoming;
+}

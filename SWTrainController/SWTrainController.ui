@@ -228,6 +228,11 @@
       <height>16</height>
      </rect>
     </property>
+    <property name="font">
+     <font>
+      <italic>true</italic>
+     </font>
+    </property>
     <property name="text">
      <string/>
     </property>
@@ -240,6 +245,11 @@
       <width>411</width>
       <height>16</height>
      </rect>
+    </property>
+    <property name="font">
+     <font>
+      <italic>true</italic>
+     </font>
     </property>
     <property name="text">
      <string/>
@@ -301,7 +311,7 @@
     <property name="geometry">
      <rect>
       <x>640</x>
-      <y>200</y>
+      <y>210</y>
       <width>131</width>
       <height>41</height>
      </rect>
@@ -314,7 +324,7 @@
     <property name="geometry">
      <rect>
       <x>640</x>
-      <y>240</y>
+      <y>250</y>
       <width>131</width>
       <height>41</height>
      </rect>
@@ -327,7 +337,7 @@
     <property name="geometry">
      <rect>
       <x>640</x>
-      <y>280</y>
+      <y>290</y>
       <width>131</width>
       <height>41</height>
      </rect>
@@ -340,7 +350,7 @@
     <property name="geometry">
      <rect>
       <x>700</x>
-      <y>170</y>
+      <y>180</y>
       <width>131</width>
       <height>16</height>
      </rect>
@@ -353,7 +363,7 @@
     <property name="geometry">
      <rect>
       <x>780</x>
-      <y>210</y>
+      <y>220</y>
       <width>58</width>
       <height>16</height>
      </rect>
@@ -366,7 +376,7 @@
     <property name="geometry">
      <rect>
       <x>780</x>
-      <y>250</y>
+      <y>260</y>
       <width>58</width>
       <height>16</height>
      </rect>
@@ -379,7 +389,7 @@
     <property name="geometry">
      <rect>
       <x>780</x>
-      <y>290</y>
+      <y>300</y>
       <width>71</width>
       <height>16</height>
      </rect>
@@ -392,7 +402,7 @@
     <property name="geometry">
      <rect>
       <x>850</x>
-      <y>210</y>
+      <y>220</y>
       <width>58</width>
       <height>16</height>
      </rect>
@@ -405,7 +415,7 @@
     <property name="geometry">
      <rect>
       <x>850</x>
-      <y>250</y>
+      <y>260</y>
       <width>58</width>
       <height>16</height>
      </rect>
@@ -418,7 +428,7 @@
     <property name="geometry">
      <rect>
       <x>860</x>
-      <y>290</y>
+      <y>300</y>
       <width>58</width>
       <height>16</height>
      </rect>
@@ -481,6 +491,11 @@
       <height>16</height>
      </rect>
     </property>
+    <property name="font">
+     <font>
+      <italic>true</italic>
+     </font>
+    </property>
     <property name="text">
      <string/>
     </property>
@@ -541,7 +556,7 @@
     <property name="geometry">
      <rect>
       <x>420</x>
-      <y>90</y>
+      <y>80</y>
       <width>131</width>
       <height>16</height>
      </rect>
@@ -576,6 +591,29 @@
       <width>231</width>
       <height>16</height>
      </rect>
+    </property>
+    <property name="font">
+     <font>
+      <italic>true</italic>
+     </font>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+   </widget>
+   <widget class="QLabel" name="station_">
+    <property name="geometry">
+     <rect>
+      <x>390</x>
+      <y>120</y>
+      <width>201</width>
+      <height>16</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <italic>true</italic>
+     </font>
     </property>
     <property name="text">
      <string/>
