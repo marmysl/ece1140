@@ -44,11 +44,11 @@ void SWTC :: calculatePower()
 
 
     // Limit power to 120kW as per specs
-    // if (powerCommand > 120000) { powerCommand = 120000; }
+    if (powerCommand > 120000) { powerCommand = 120000; }
 
 
-    // If authority is 0, set the power command to zero and the service brake flag on.
-    if (authority == 0) {
+    // If authority is 1 or 0, set the power command to zero and slow/stop the train.
+    if (authority <= 1) {
         powerCommand = 0.0;
     }
 }

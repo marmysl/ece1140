@@ -55,8 +55,19 @@ void TrainControlWindow :: updateCircuitInfo()
     ui->commspeed_->setText(QString::number(swtc.getCommandedSpeed()*2.237));
     ui->authority_->setText(QString::number(swtc.getAuthority()));
 
+    if (swtc.mode -> getMode() == true) {
+        ui->mode_->setText("MODE: MANUAL");
+    } else if (swtc.mode->getMode() == false) {
+        ui->mode_->setText("MODE: AUTOMATIC");
+    } else {
+        ui->mode_->setText("MODE: ?");
+    }
+
+    // Displays for train stopping due to authority
     if (swtc.getAuthority() == 0) {
         ui->auth_exceeded_->setText("STOPPING! The train has zero authority.");
+    } else if (swtc.getAuthority() == 1) {
+        ui->auth_exceeded_->setText("Train is slowing due to authority.");
     } else {
         ui->auth_exceeded_->setText("");
     }
@@ -142,8 +153,8 @@ void TrainControlWindow :: updateCabin()
 void TrainControlWindow :: dispatch() // only runs once, at dispatch.
 {
     if (swtc.mode->getMode() == 0){ // If the train is in automatic mode, set Kp and Ki to default and setpoint = commanded
-        swtc.setKi(150 * 1000);
-        swtc.setKp(150 * 1000);
+        swtc.setKi(225 * 1000);
+        swtc.setKp(225 * 1000);
         startMoving();
     }
 
