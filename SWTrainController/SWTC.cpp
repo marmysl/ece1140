@@ -74,7 +74,7 @@ void SWTC :: decode(uint64_t decodeSignal)
 
 void SWTC :: readBeacon(TrackModel::BeaconData beaconData)
 {
-    // nextStation = beaconData.stationName
+    nextStation = beaconData.stationName;
 
     stationUpcoming = beaconData.stationUpcoming;
     stationHere = beaconData.stationHere;

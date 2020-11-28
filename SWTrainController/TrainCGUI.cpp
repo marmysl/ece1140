@@ -74,18 +74,23 @@ void TrainControlWindow :: updateCircuitInfo()
     }
 
 
+    // Display next station
+
+
     // Displays for train stopping at station
     if (swtc.getStationUpcoming() == true){
         ui->station_->setText("The train is approaching a station.");
     } else if (swtc.getStationHere() == true && swtc.getTrainVelocity() != 0.0 && swtc.getHasStopped() == false) {
         ui->station_->setText("The train is stopping at a station.");
-    } else if (swtc.getStationHere() == true || swtc.getTrainVelocity() == 0.0){
+    } else if (swtc.getStationHere() == true && swtc.getTrainVelocity() == 0.0){
         ui->station_->setText("The train is stopped at a station.");
     } else if (swtc.getStationHere() == true && swtc.getTrainVelocity() != 0.0 && swtc.getHasStopped() == true){
         ui->station_->setText("The train is leaving a station.");
     } else {
         ui->station_->setText("");
     }
+
+
 }
 
 void TrainControlWindow :: updatePower()
