@@ -40,6 +40,7 @@ void TrainControlWindow::timerEvent(QTimerEvent *event)
         dispatch();
     }
 
+    swtc.readBeacon(train->getBeaconData());
     swtc.calculatePower();
     updatePower();
     updateCircuitInfo();

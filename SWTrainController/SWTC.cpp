@@ -1,4 +1,7 @@
 #include "SWTC.h"
+#include "system_main.h"
+
+#include <QTimer>
 
 void SWTC :: calculatePower()
 {
@@ -9,10 +12,6 @@ void SWTC :: calculatePower()
 
     if (serviceBrakeEnabled == false && emergencyBrakeEnabled == false && passengerEBrakeEnabled == false)
     {
-        // Determine speed to set to: Setpoint or Commanded
-        // (do not regulate to setpoint if past commanded)
-
-        double speed; // speed we are regulating to
 
         // Compare setpoint & commanded speed
         if (setpointSpeed <= commandedSpeed){
@@ -24,6 +23,13 @@ void SWTC :: calculatePower()
         // Ensure speed does not exceed the max speed of the train (70km/h)
         // 70km/h = 19.4444 m/s
         if (speed > 19.44) {speed = 19.44;}
+
+        // Reduce speed if the authority is 1
+        if (authority <= 1) { speed = 10.0; }
+
+        // Stop at station, if needed
+        stationStop();
+
 
         // Safety measure in case garbage commanded speed or train velocity are sent
         if (speed < 0) {speed = 0;}
@@ -42,14 +48,13 @@ void SWTC :: calculatePower()
         powerCommand = kp * e_k + ki * u_k;
     }
 
-
     // Limit power to 120kW as per specs
     if (powerCommand > 120000) { powerCommand = 120000; }
 
 
-    // If authority is 1 or 0, set the power command to zero and slow/stop the train.
-    if (authority <= 1) {
-        powerCommand = 0.0;
+    // If authority is 0, set the power command to zero
+    if (authority <= 0) {
+        powerCommand = 0.0;        
     }
 }
 
@@ -71,6 +76,32 @@ void SWTC :: readBeacon(TrackModel::BeaconData beaconData)
 
     stationUpcoming = beaconData.stationUpcoming;
     stationHere = beaconData.stationHere;
+}
+
+void SWTC :: stationStop()
+{
+    // reduce speed for upcoming station
+    if (stationUpcoming == true) { speed = 10.0; }
+
+    // set speed to zero if block has a station
+    if (stationHere == true) { speed = 0.0; }
+
+    // if the train has been stopped at a station, check timer & set speed if 60s passed
+    if (stationHere == true && hasStoppedAtStation == true){
+        if (systemClock->currentTime() >= stationTimerEnd){ // train has been stopped for 60sec
+            speed = commandedSpeed;
+        }
+    }
+
+    // if the train has just stopped at a station, set a flag and start a timer
+    if (stationHere == true && trainVelocity == 0.0 && hasStoppedAtStation == false){
+        hasStoppedAtStation = true;
+        stationTimerStart = systemClock->currentTime();
+        stationTimerEnd = stationTimerStart.addSecs(60);
+    }
+
+    // if the train has left the block with the station, reset station flag.
+    if (stationHere == false && hasStoppedAtStation == true) { hasStoppedAtStation = false; }
 }
 
 
