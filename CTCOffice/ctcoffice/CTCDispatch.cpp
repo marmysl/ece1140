@@ -34,7 +34,7 @@ void CTCDispatch::setAuthority()
             //authority.push_back.second(auth)
             //ORRRRR
             //authority.push_back(val, auth)
-            authority.push_back(auth);
+            authority.push_back(std::make_pair(val->id, auth));
             auth--;
             qDebug() << "Set Authority at Block " << val->id << ": " << QString::number(auth);
         }
@@ -195,46 +195,18 @@ void CTCDispatch::sendTrackController(CTCSignals &ctc){
           i++;
     }
 
-    ctc.setUpArray("Blue Line");
+    ctc.setUpArray(line);
 
-    //ctc.calcRoute(line, tcStates);
-    //ctc.setSignal(endblock, speed, authority);
-     std::vector< std::pair <int, int> > au;
-        au.push_back((make_pair(1, 9)));
-        au.push_back((make_pair(2, 8)));
-        au.push_back((make_pair(3, 7)));
-        au.push_back((make_pair(4, 6)));
-        au.push_back((make_pair(5, 5)));
-        au.push_back((make_pair(6, 4)));
-        au.push_back((make_pair(7, 3)));
-        au.push_back((make_pair(8, 2)));
-        au.push_back((make_pair(9, 1)));
-        au.push_back((make_pair(10,0)));
-        au.push_back((make_pair(11, 4)));
-        au.push_back((make_pair(12, 3)));
-        au.push_back((make_pair(13, 2)));
-        au.push_back((make_pair(14, 1)));
-        au.push_back((make_pair(15,0)));
-
-
-        //alertWaysideSystem(line, ctc);
-
-
-
-        std::string t = "Blue Line";
-        ctc.setSpeed(t, 30);
-        ctc.setAuthority(t, au);
+        ctc.setSpeed(line, speed);
+        ctc.setAuthority(line, authority);
 
         std::vector< std::pair<int, TrackModel::SwitchState> > temp_sw;
         temp_sw.push_back(make_pair(1, TrackModel::SwitchState::SW_DIVERGING));
-        ctc.setExitBlocks(temp_sw);
 
+        TrackModel::TrainPathInfo rte;
+        rte = findRoute();
 
-        //ctc.setExitBlocks()
-        //reg.initialize(endblock, speed, authority);
-
-    //speed = 30;
-    //reg.initialize(endblock, speed, authority);
+        ctc.setExitBlocks(rte.switchStates);
 
 
     alertWaysideSystem(line, ctc);

@@ -26,7 +26,7 @@ class CTCDispatch
     public:
 
 
-        std::vector<int> authority; // blocks so vector of ints
+        std::vector<std::pair<int, int>> authority; // blocks so vector of ints
         float speed;
         std::vector<bool> tcStates;
         void setAuthority();
