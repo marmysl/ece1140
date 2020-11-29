@@ -16,7 +16,7 @@ Train::Train(int newNumCars, string lineType)
     w->show();
     controls = new TrainModelControls();
     block = new TrainModelUpdateBlock(lineType);
-    math = new TrainModelMath(newNumCars, block);
+    math = new TrainModelMath(newNumCars, block, controls);
     w->setTrain(math);
     updateUI();
 }
@@ -44,17 +44,17 @@ double Train::getCurrentVelocity(){
 }
 
 void Train::setDoorStatus(bool doorStatus){
-    controls->toggleDoor(doorStatus);
-    w->updateLeftDoors(controls->doorOpen);
+    controls->toggleLeftDoor(doorStatus);
+    w->updateLeftDoors(controls->doorLeftOpen);
 }
 
 bool Train::getDoorStatus(){
-    return controls->doorOpen;
+    return controls->doorLeftOpen;
 }
 
 void Train::setLeftDoorStatus(bool doorStatus){
     controls->toggleLeftDoor(doorStatus);
-    w->updateLeftDoors(controls->doorOpen);
+    w->updateLeftDoors(controls->doorLeftOpen);
 }
 
 bool Train::getLeftDoorStatus(){
@@ -63,7 +63,7 @@ bool Train::getLeftDoorStatus(){
 
 void Train::setRightDoorStatus(bool doorStatus){
     controls->toggleRightDoor(doorStatus);
-    w->updateRightDoors(controls->doorOpen);
+    w->updateRightDoors(controls->doorRightOpen);
 }
 
 bool Train::getRightDoorStatus(){
@@ -184,5 +184,6 @@ void Train::updateUI(){
     w->updateBlockLength(block->blockDist);
     w->updateBlockGrade(block->blockGrade);
     w->updateFailureStatus();
+    w->updatePassengers(math->passengers);
 }
 

@@ -1,11 +1,14 @@
 #include "TrainModelMath.h"
 #include "TrainModelUpdateBlock.h"
+#include "TrainModelControls.h"
 #include <iostream>
 
-TrainModelMath::TrainModelMath(int newNumCars, TrainModelUpdateBlock *newAssigBlock){
+TrainModelMath::TrainModelMath(int newNumCars, TrainModelUpdateBlock *newAssigBlock, TrainModelControls *newControl){
     numCars = newNumCars;
     mass = numCars * 56700;
     block = newAssigBlock;
+    controls = newControl;
+    maxPassTotal = numCars * 222;
 
     currVel = 0;
     currPower = 0;
@@ -62,6 +65,9 @@ void TrainModelMath::setPower(double newPower){
             //update current block and information
             block->updateTrackInfo(inYard);
         }
+
+        //Update passengers on the train
+        updatePassengers();
 
         //Set current calculations as last calculations for next call
         lastPos = newPos;
@@ -122,6 +128,28 @@ void TrainModelMath::limitAccel(){
     }
 }
 
+void TrainModelMath::updatePassengers(){
+    //if the doors are open and the train was not at a station in previous loop
+    if((controls->doorLeftOpen || controls->doorRightOpen) && !atStation){
+        //Set variable so that the passengers are only updated once at a station
+        atStation = true;
+        //Randomly generate the number of passengers leaving the train
+        if (passengers>0){
+            int passLeaving = rand() % passengers;
+            passengers = passengers - passLeaving;
+        }
+        int transMax = maxPassTotal - passengers;
+        int randomPassEntry = rand() % transMax;
+        int passEntry = block->getPassengers(randomPassEntry);
+        passengers = passengers + passEntry;
+        mass = (numCars * 56700) + (passengers * 68);
+    }
+    else if (!(controls->doorLeftOpen) && !(controls->doorRightOpen)){
+        atStation = false;
+    }
+}
+
+
 void TrainModelMath::setFailureStatus(int newFailureStatus){
     failureStatus = newFailureStatus;
 }
@@ -131,13 +159,6 @@ int TrainModelMath::getFailureStatus(){
 }
 
 void TrainModelMath::setEBrake(bool status){
-    /*if(emergencyBrake == 1 && currVel!=0){
-        //skip to allow brake to stop
-    }
-    else{
-        emergencyBrake = status;
-    }
-    std::cout << "in math the e brake is " << emergencyBrake << endl;*/
     emergencyBrake = status;
 }
 

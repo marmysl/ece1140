@@ -31,6 +31,7 @@ public:
     void updateAds(bool);
     void updateFailureStatus();
     void updateAnnouncements(bool, std::string);
+    void updatePassengers(int);
 
 private slots:
     void on_pushButton_clicked();
