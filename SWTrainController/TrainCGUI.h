@@ -25,6 +25,7 @@ public:
     double temp = 5.0;
     double yardSpeed = 5.0; //speed of train in yard before block 1
     CTCMode *mode;
+    bool stationStop = false;
 
     void updateCircuitInfo();
     void updatePower();
