@@ -34,7 +34,6 @@ MainWindow::MainWindow(QWidget *parent)
 
     updateRoute();
 
-    //Added by Meara
     ctc.setCTCMode(&m);
 }
 
@@ -202,4 +201,11 @@ void MainWindow::updateRoute(){
         ui->comboDisplayLine->addItem(QString::fromStdString(rte->name));
         ui->comboLine->addItem(QString::fromStdString(rte->name));
     }
+}
+
+void MainWindow::on_btnSchedule_clicked()
+{
+    schedule *s;
+    s = new schedule();
+    s->show();
 }

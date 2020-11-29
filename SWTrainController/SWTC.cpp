@@ -1,15 +1,17 @@
 #include "SWTC.h"
+#include "system_main.h"
+
+#include <QTimer>
 
 void SWTC :: calculatePower()
 {
-    // Only set the power when the brake flags are off
+    // If the train is in automatic mode, set the setpoint = commanded
+    if (mode->getMode() == 0){
+        setpointSpeed = commandedSpeed;
+    }
 
-    if (serviceBrakeEnabled == false && emergencyBrakeEnabled == false)
+    if (serviceBrakeEnabled == false && emergencyBrakeEnabled == false && passengerEBrakeEnabled == false)
     {
-        // Determine speed to set to: Setpoint or Commanded
-        // (do not regulate to setpoint if past commanded)
-
-        double speed; // speed we are regulating to
 
         // Compare setpoint & commanded speed
         if (setpointSpeed <= commandedSpeed){
@@ -17,6 +19,16 @@ void SWTC :: calculatePower()
         } else {
             speed = commandedSpeed;
         }
+
+        // Ensure speed does not exceed the max speed of the train (70km/h)
+        // 70km/h = 19.4444 m/s
+        if (speed > 19.44) {speed = 19.44;}
+
+        // Reduce speed if the authority is 1
+        if (authority <= 1) { speed = 10.0; }
+
+        // reduce speed for upcoming station
+        if (stationUpcoming == true) { speed = 10.0; }
 
         // Safety measure in case garbage commanded speed or train velocity are sent
         if (speed < 0) {speed = 0;}
@@ -35,9 +47,16 @@ void SWTC :: calculatePower()
         powerCommand = kp * e_k + ki * u_k;
     }
 
-    // If authority is 0, set the power command to zero and the service brake flag on.
-    if (authority == 0) {
-        powerCommand = 0.0;
+    // Stop at station, if needed
+    stationStop();
+
+    // Limit power to 120kW as per specs
+    if (powerCommand > 120000) { powerCommand = 120000; }
+
+
+    // If authority is 0, set the power command to zero
+    if (authority <= 0) {
+        powerCommand = 0.0;        
     }
 }
 
@@ -49,15 +68,43 @@ void SWTC :: decode(uint64_t decodeSignal)
     double decodeAuth = decodeSignal & 0xFFFFFFFF;
 
 
-
-    // TEMP: Hard coding commanded speed and authority until we have track controllers
-    // decodeSpeed = 25.0;
-    // decodeAuth = 1.0;
-
-
     setCommandedSpeed(decodeSpeed);
-    setAuthority(decodeAuth);
+    setAuthority(decodeAuth - 1); // authority is currently 1 larger than it should be. idk
 }
+
+void SWTC :: readBeacon(TrackModel::BeaconData beaconData)
+{
+    // nextStation = beaconData.stationName
+
+    stationUpcoming = beaconData.stationUpcoming;
+    stationHere = beaconData.stationHere;
+}
+
+void SWTC :: stationStop()
+{
+    double temp = powerCommand;
+
+    // set power to zero if block has a station
+    if (stationHere == true) { powerCommand = 0.0; }
+
+    // if the train has been stopped at a station, check timer & set speed if 60s passed
+    if (stationHere == true && hasStoppedAtStation == true){
+        if (systemClock->currentTime() >= stationTimerEnd){ // train has been stopped for 60sec
+            powerCommand = temp;
+        }
+    }
+
+    // if the train has just stopped at a station, set a flag and start a timer
+    if (stationHere == true && trainVelocity == 0.0 && hasStoppedAtStation == false){
+        hasStoppedAtStation = true;
+        stationTimerStart = systemClock->currentTime();
+        stationTimerEnd = stationTimerStart.addSecs(60);
+    }
+
+    // if the train has left the block with the station, reset station flag.
+    if (stationHere == false && hasStoppedAtStation == true) { hasStoppedAtStation = false; }
+}
+
 
 // ------------------------------------------------------------ Just accessors and mutators below here. Nothin fancy
 
@@ -119,6 +166,16 @@ void SWTC :: setEmergencyBrake(bool flag)
 bool SWTC :: getEmergencyBrakeFlag()
 {
     return emergencyBrakeEnabled;
+}
+
+void SWTC :: setPassengerEBrake(bool flag)
+{
+    passengerEBrakeEnabled = flag;
+}
+
+bool SWTC :: getPassengerEBrake()
+{
+    return passengerEBrakeEnabled;
 }
 
 void SWTC :: setCommandedSpeed(double speed)

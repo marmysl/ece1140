@@ -44,6 +44,7 @@ public:
     void setServiceBrake(bool);
     bool getServiceBrake();
     void setTemp(int);
+    double getPower();
     double getTemp();
     void setAC(bool);
     bool getAC();

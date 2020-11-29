@@ -2,6 +2,9 @@
 #define SWTC_H
 
 #include <cstdint>
+#include "../CTCOffice/ctcoffice/CTCMode.h"
+#include "../TrackModel/trackmodel_types.hpp"
+#include "system_main.h"
 
 class SWTC
 {
@@ -16,17 +19,29 @@ class SWTC
         double T = 1.0; // Sample timing for u_k calculation, also used for timer rate
         double commandedSpeed = 0.0;
         double authority = 0.0;
-        double setpointSpeed = 0.0;
+        double setpointSpeed = 5.0;
         double trainVelocity;
-        unsigned signal;
+        double speed = 0.0; // speed variable used for calculations only
+        std::string nextStation;
+        bool stationHere;
+        bool stationUpcoming;
+        bool hasStoppedAtStation = false;
+        QDateTime stationTimerStart;
+        QDateTime stationTimerEnd;
+        // something? platformSide;
         bool serviceBrakeEnabled = true;
         bool emergencyBrakeEnabled = false;
-        bool doorsOpen = true;
+        bool passengerEBrakeEnabled = false;
+        bool doorsOpen = false;
         bool cabinLightsOn = true;
         bool headlightsOn = false;
     public:
+        CTCMode *mode;
+
         void calculatePower();
         void decode(uint64_t);
+        void readBeacon(TrackModel::BeaconData);
+        void stationStop();
 
         // Accessors & mutators
         void setPowerCommand(double);
@@ -43,6 +58,8 @@ class SWTC
         bool getServiceBrakeFlag();
         void setEmergencyBrake(bool);
         bool getEmergencyBrakeFlag();
+        void setPassengerEBrake(bool);
+        bool getPassengerEBrake();
 
         void setCommandedSpeed(double);
         double getCommandedSpeed();
