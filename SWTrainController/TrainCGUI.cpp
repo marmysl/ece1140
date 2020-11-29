@@ -97,7 +97,7 @@ void TrainControlWindow :: updateStation()
 
     // UI display for next station
     if (swtc.getStationUpcoming() == true){
-
+        ui->nextstation_->setText(QString::fromStdString("words"));
     }
 }
 

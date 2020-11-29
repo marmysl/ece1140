@@ -258,3 +258,8 @@ bool SWTC :: getHasStopped()
 {
     return hasStoppedAtStation;
 }
+
+std::string SWTC :: getNextStation()
+{
+    return nextStation;
+}

@@ -78,6 +78,7 @@ class SWTC
         bool getStationHere();
         bool getStationUpcoming();
         bool getHasStopped();
+        std::string getNextStation();
 };
 
 #endif // SWTC_H
