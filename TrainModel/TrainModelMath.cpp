@@ -144,7 +144,7 @@ void TrainModelMath::updatePassengers(){
         passengers = passengers + passEntry;
         mass = (numCars * 56700) + (passengers * 68);
     }
-    else{
+    else if (!(controls->doorLeftOpen) && !(controls->doorRightOpen)){
         atStation = false;
     }
 }

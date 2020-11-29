@@ -44,12 +44,12 @@ double Train::getCurrentVelocity(){
 }
 
 void Train::setDoorStatus(bool doorStatus){
-    controls->toggleDoor(doorStatus);
-    w->updateLeftDoors(controls->doorOpen);
+    controls->toggleLeftDoor(doorStatus);
+    w->updateLeftDoors(controls->doorLeftOpen);
 }
 
 bool Train::getDoorStatus(){
-    return controls->doorOpen;
+    return controls->doorLeftOpen;
 }
 
 void Train::setLeftDoorStatus(bool doorStatus){
