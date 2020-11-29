@@ -96,8 +96,10 @@ void TrainControlWindow :: updateStation()
 
 
     // UI display for next station
-    if (swtc.getStationUpcoming() == true){
-        ui->nextstation_->setText(QString::fromStdString("words"));
+    if (swtc.getStationUpcoming() == true || swtc.getStationHere() == true){
+        ui->nextstation_->setText(QString::fromStdString(swtc.getNextStation()));
+    } else {
+        ui->nextstation_->setText("-");
     }
 }
 
