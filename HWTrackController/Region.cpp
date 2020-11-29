@@ -10,9 +10,9 @@ Region :: Region() {
 
     iterator = 0;
 
-    // Blue Line Track Layout Hardcoded for now, the SWTC will be sending the layout to this class
+    // Green Line
     region = 1;
-    route = "Blue Line";
+    route = "Green Line";
     std::vector<std::string> sec{"Y","K","K","K","K","K","K","L","L","L","L","L"};
     std::vector<int> blc{0,63,64,65,66,67,68,69,70,71,72,73};
     std::vector<bool> sw{0,0,0,0,0,0,0,0,0,0,0,0};
@@ -121,8 +121,8 @@ void Region :: setCircuit() {
 }
 
 // CTC can access this whenever they wants
-bool Region :: detectTrain(int b) {
-    blocks[b].occupancy = TrackModel::isBlockOccupied("Blue Line", b);
+bool Region :: detectTrain(int b, string route) {
+    blocks[b].occupancy = TrackModel::isBlockOccupied(route, b);
     return blocks[b].occupancy;
 }
 
