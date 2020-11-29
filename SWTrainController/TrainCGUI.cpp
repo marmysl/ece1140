@@ -179,6 +179,13 @@ void TrainControlWindow :: updateCabin()
     ui->lights_->setText(lights);
     ui->headlights_->setText(headlights);
 
+    // Disable door button if the train is in motion
+    if (swtc.getTrainVelocity() != 0.0){
+        ui->door_button->setDisabled(true);
+    } else {
+        ui->door_button->setDisabled(false);
+    }
+
 
     // Send updates to the train, if needed
     train->setDoorStatus(swtc.getDoorsOpen());
