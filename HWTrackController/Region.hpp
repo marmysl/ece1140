@@ -46,8 +46,8 @@ public:
     void initialize(int, float, std::vector<int>);     //  receive speed and authority from CTC using SWTC class
     void setCircuit();                      // Track Model: send speed and authority (track circuit information)t iteratorr;
 
-    bool detectTrain(int, std::string);     // CTC: pick up block occupancy from Track Model
-    float getSpeedLimit() const;            // Track Model: pick up speed limit for comparison
+    bool detectTrain(int);                  // Track Model: pick up block occupancy
+    float getSpeedLimit() const;            // Track Model: pick up speed limit
 
     //void setSwitch();                     // based on exit block, is the switch activated
 

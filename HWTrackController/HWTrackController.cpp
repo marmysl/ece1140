@@ -71,7 +71,7 @@ void HWTrackController::writeData()
 
     string outgoing_s = "";
 
-    outgoing_s += to_string(reg.detectTrain(reg.getCurrentBlock(), reg.getRoute()));
+    outgoing_s += to_string(reg.detectTrain(reg.getCurrentBlock()));
 
     outgoing_s += reg.getSection(reg.getCurrentBlock());
 
