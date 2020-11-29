@@ -118,10 +118,7 @@ void TrainModelMath::limitForce(){
 void TrainModelMath::limitAccel(){
     if (currForce == 0 & currVel>0){
         if(emergencyBrake){currAccel = -2.73;}
-        else if(serviceBrake){currAccel = -1.2;}
-        else{currAccel = 0;}
-
-        if(failureStatus == 3){currAccel = 0;}
+        else{currAccel = -1.2;}
     }
     else if (currForce != 0){
         if (currAccel > 0.5){currAccel = 0.5;}
