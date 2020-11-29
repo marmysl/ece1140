@@ -74,7 +74,7 @@ void SWTC :: decode(uint64_t decodeSignal)
 
 void SWTC :: readBeacon(TrackModel::BeaconData beaconData)
 {
-    // nextStation = beaconData.stationName
+    nextStation = beaconData.stationName;
 
     stationUpcoming = beaconData.stationUpcoming;
     stationHere = beaconData.stationHere;
@@ -90,15 +90,17 @@ void SWTC :: stationStop()
     // if the train has been stopped at a station, check timer & set speed if 60s passed
     if (stationHere == true && hasStoppedAtStation == true){
         if (systemClock->currentTime() >= stationTimerEnd){ // train has been stopped for 60sec
-            powerCommand = temp;
+            powerCommand = temp; // keep power command as non-zero
+            doorsOpen = false; // close doors
         }
     }
 
-    // if the train has just stopped at a station, set a flag and start a timer
+    // if the train has just stopped at a station, set a flag and start a timer and open doors
     if (stationHere == true && trainVelocity == 0.0 && hasStoppedAtStation == false){
         hasStoppedAtStation = true;
         stationTimerStart = systemClock->currentTime();
         stationTimerEnd = stationTimerStart.addSecs(60);
+        doorsOpen = true;
     }
 
     // if the train has left the block with the station, reset station flag.
@@ -240,4 +242,19 @@ bool SWTC :: getHeadlightsOn()
 double SWTC :: getT()
 {
     return T;
+}
+
+bool SWTC :: getStationHere()
+{
+    return stationHere;
+}
+
+bool SWTC :: getStationUpcoming()
+{
+    return stationUpcoming;
+}
+
+bool SWTC :: getHasStopped()
+{
+    return hasStoppedAtStation;
 }

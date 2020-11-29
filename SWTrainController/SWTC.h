@@ -74,6 +74,10 @@ class SWTC
         bool getCabinLightsOn();
         void setHeadlightsOn(bool);
         bool getHeadlightsOn();
+
+        bool getStationHere();
+        bool getStationUpcoming();
+        bool getHasStopped();
 };
 
 #endif // SWTC_H
