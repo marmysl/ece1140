@@ -44,6 +44,7 @@ void TrainControlWindow::timerEvent(QTimerEvent *event)
     swtc.calculatePower();
     updatePower();
     updateCircuitInfo();
+    updateStation();
     updateBrakes();
     updateSpeed();
     updateCabin();
@@ -73,11 +74,14 @@ void TrainControlWindow :: updateCircuitInfo()
         ui->auth_exceeded_->setText("");
     }
 
+}
 
+void TrainControlWindow :: updateStation()
+{
     // Display next station
 
 
-    // Displays for train stopping at station
+    // UI Displays for train stopping at station
     if (swtc.getStationUpcoming() == true){
         ui->station_->setText("The train is approaching a station.");
     } else if (swtc.getStationHere() == true && swtc.getTrainVelocity() != 0.0 && swtc.getHasStopped() == false) {
@@ -91,6 +95,10 @@ void TrainControlWindow :: updateCircuitInfo()
     }
 
 
+    // UI display for next station
+    if (swtc.getStationUpcoming() == true){
+
+    }
 }
 
 void TrainControlWindow :: updatePower()
