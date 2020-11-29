@@ -31,14 +31,38 @@ bool CTCSignals::checkValidLine(std::string &line) {
 }
 
 CTCSignals::~CTCSignals() {
-    delete [] blockptr;
-    blockptr = NULL;
+    //delete [] blockptr;
+    //blockptr = NULL;
 }
 
-void CTCSignals::setUpArray(int block_count) {
+void CTCSignals::setUpArray(std::string l) {
 
-    size = block_count;
-    blockptr = new BlockInfoCTC[size];
+    if (l == "Blue Line") {
+        blueblockptr = new BlockInfoCTC[15];
+        for (int i = 1; i <= 15; i++) {
+            blueblockptr[i].block_id = i;
+            blueblockptr[i].wayside_id = 1;
+            blueblockptr[i].failure_code = TrackModel::BlockFault::FAULT_NONE;
+            blueblockptr[i].occupancy = false;
+        }
+    }
+    else if (l == "Green Line") {
+        greenblockptr = new BlockInfoCTC[150];
+        for (int i = 1; i <= 150; i++) {
+            greenblockptr[i].block_id = i;
+            greenblockptr[i].failure_code = TrackModel::BlockFault::FAULT_NONE;
+            greenblockptr[i].occupancy = false;
+        }
+    }
+    else {
+        redblockptr = new BlockInfoCTC[76];
+        for (int i = 1; i <= 76; i++) {
+            redblockptr[i].block_id = i;
+            redblockptr[i].failure_code = TrackModel::BlockFault::FAULT_NONE;
+            redblockptr[i].occupancy = false;
+        }
+    }
+
 
     setUpExits();
 }
@@ -97,7 +121,7 @@ void CTCSignals::setUpExits() {
     div_exit.push_back(std::make_pair(53, 52));
 }
 
-int CTCSignals::getWaysideID(int block_id) {
+/*int CTCSignals::getWaysideID(int block_id) {
 
     int temp_wayside_id = -1;
     for (int n = 0; n < size; n++) {
@@ -106,11 +130,21 @@ int CTCSignals::getWaysideID(int block_id) {
         }
     }
     return temp_wayside_id;
-}
+}*/
 
 
 
-void CTCSignals::setSpeed(float speed) {
+void CTCSignals::setSpeed(std::string line, float speed) {
+
+    if (line == "Blue Line") {
+        size = 1;
+    }
+    else if (line == "Green Line") {
+        size = 12;
+    }
+    else {
+        size = 10;
+    }
 
     for (int i = 0; i < size; i++) {
         sug_speed_ctc.push_back(std::make_pair(i+1, speed));
@@ -120,28 +154,47 @@ void CTCSignals::setSpeed(float speed) {
 
 void CTCSignals::setAuthority(std::string &l, std::vector< std::pair<int, int> > auth) {
 
-    while (checkValidLine(l)) {
-        if(l == "Blue Line") {
-            auto i = auth.begin();
+    if (l == "Blue Line") {
+        for (auto i= auth.begin(); i < auth.end(); i++) {
             sug_auth_ctc_b.push_back(*i);
         }
-        else {
-            for (auto i= auth.begin(); i < auth.end(); i++) {
-                if (l == "Green Line") {
-                    sug_auth_ctc_g.push_back(*i);
-                }
-                else {
-                    sug_auth_ctc_r.push_back(*i);
-                }
-            }
+    }
+    else if (l == "Green Line") {
+        for (auto i= auth.begin(); i < auth.end(); i++) {
+            sug_auth_ctc_g.push_back(*i);
         }
     }
+    else {
+        for (auto i= auth.begin(); i < auth.end(); i++) {
+            sug_auth_ctc_r.push_back(*i);
+        }
+    }
+
 }
+
 
 void CTCSignals::setExitBlocks(std::vector< std::pair<int, TrackModel::SwitchState> > states) {
 
     int temp_blockid;
-
+    auto i = states.begin();
+    temp_blockid = i->first;
+    if (temp_blockid == 1) {
+        if ((i ->second) == TrackModel::SwitchState::SW_DIVERGING) {
+            for (int m = 0; m < 23; m++) {
+                if (temp_blockid == (div_exit[m].second)) {
+                    exit_id.push_back( std::make_pair(switch_id[m].first, div_exit[m].first));
+                }
+        }
+        }
+        else {
+            for (int m = 0; m < 23; m++) {
+                if (temp_blockid == (str_exit[m].second)) {
+                    exit_id.push_back( std::make_pair(switch_id[m].first, str_exit[m].first));
+                }
+            }
+        }
+    }
+    else {
     for (auto i = states.begin(); i < states.end(); i++){
         temp_blockid = i -> first;
         if ((i -> second) == TrackModel::SwitchState::SW_DIVERGING) {
@@ -160,6 +213,9 @@ void CTCSignals::setExitBlocks(std::vector< std::pair<int, TrackModel::SwitchSta
         }
 
     }
+    }
+
+
 }
 
 int CTCSignals::getWaysideExit(int w) {

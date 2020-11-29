@@ -32,23 +32,18 @@ void setPLCFile(std::string &temp) {
 
 void alertWaysideSystem(std::string &dis_line, CTCSignals &temp) {
 
-  /*  if (dis_line == "Blue Line") {
+    if (dis_line == "Blue Line") {
 
       blue -> addCTCObj(temp);
 
     }
     if (dis_line == "Green Line") {
-        for (int i = 0; i <10; i++) {
-            temp.gspeed2.push_back(40);
-        }
-        for (int i = 0; i < 9; i++) {
-            temp.gauth2.push_back(i);
-        }
+
         green -> addCTCObj(temp);
     }
     if (dis_line == "Red Line") {
         red -> addCTCObj(temp);
-    }*/
+    }
 
 }
 
@@ -70,7 +65,7 @@ TrackController getWaysideInstance(int num) {
              }
             }
         }
-      if (num >= 14) {
+      else {
            int count = 14;
             for (auto i = red -> waysides.begin(); i != red -> waysides.end(); i++) {
                 if (count == num) {
@@ -82,7 +77,7 @@ TrackController getWaysideInstance(int num) {
                 }
             }
         }
-      else {}
+
     }
     return temp;
     }
@@ -98,13 +93,13 @@ void setCrossingUI(TrackController &temp, bool new_s) {
 }
 
 void updateWaysides() {
-    blue -> waysides.begin() -> updateData();
+   // blue -> waysides.begin() -> updateData();
 
-    for (auto i = green -> waysides.begin(); i != green -> waysides.end(); i++) {
-        i -> updateData();
-    }
+   // for (auto i = green -> waysides.begin(); i != green -> waysides.end(); i++) {
+   //     i -> updateData();
+  //  }
 
-    for (auto i = red -> waysides.begin(); i != red -> waysides.end(); i++) {
-        i -> updateData();
-    }
+  //  for (auto i = red -> waysides.begin(); i != red -> waysides.end(); i++) {
+   //     i -> updateData();
+   // }
 }

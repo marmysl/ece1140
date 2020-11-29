@@ -5,6 +5,7 @@
 #include <QStringBuilder>
 #include <QString>
 #include <QFileDialog>
+//#include <QTimer>
 #include "TrackController.h"
 #include "trackcntrl_main.h"
 
@@ -28,10 +29,15 @@ public:
    // void updateInfo();
     bool PLCfile_present;
     std::string filename, filename2;
+    //void myTimer();
+    int timerID;
+    //QTimer *my_timer;
 
 
 
 private slots:
+    //void receive_new_data();
+
     void on_uploadButton_clicked();
 
     void on_newPLCButton_clicked();
@@ -52,11 +58,12 @@ private slots:
 
 private:
     Ui::SWTrackCntrlWindow *ui;
-    int timerID;
-    int count;
 
 protected:
-    void timerEvent(QTimerEvent *event);
+    void timerEvent(QTimerEvent *event) override;
+
 };
+
+
 
 #endif // SWTRACKCNTRLWINDOW_H

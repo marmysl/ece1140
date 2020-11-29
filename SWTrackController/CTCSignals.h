@@ -12,7 +12,6 @@
 struct BlockInfoCTC {
 
     int wayside_id;
-    int section;
     int block_id;
     int failure_code;
     bool occupancy;
@@ -51,17 +50,20 @@ private:
 
 public:
 
-    struct BlockInfoCTC *blockptr = NULL;
+    struct BlockInfoCTC *greenblockptr = NULL;
+    struct BlockInfoCTC *redblockptr = NULL;
+    struct BlockInfoCTC *blueblockptr = NULL;
+
 
     std::vector< std::pair<int, TrackModel::SwitchState> > switchstates; //<block_id, switch state>
 
     ~CTCSignals();
-    void setUpArray(int);
-    int getWaysideID(int);
+    void setUpArray(std::string);
+    //int getWaysideID(int);
     void setUpExits();
 
     //FOR CTC USE
-    void setSpeed(float);
+    void setSpeed(std::string, float);
 
     void setAuthority(std::string &, std::vector< std::pair<int, int> >);
     //pair <block #, authority>

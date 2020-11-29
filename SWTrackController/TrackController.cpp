@@ -23,7 +23,7 @@ TrackController::TrackController(){
 
 }
 
-void TrackController::setUpController(int id, std::string &l, std::vector<char> &s, std::vector<int> &b, int sw[], int cr) {
+void TrackController::setUpController(int id, std::string &l, std::vector<char> &s, std::vector<int> &b, int sw[], int cr, int fin[]) {
 
     wayside_id = id;
     line = l;
@@ -32,6 +32,10 @@ void TrackController::setUpController(int id, std::string &l, std::vector<char> 
     switch_tail0 = sw[1];
     switch_tail1 = sw[2];
     switch_state = sw[3];
+
+    exit_block0 = fin[0];
+    exit_block1 = fin[1];
+
 
     if (cr != 0) {
         crossing_id = cr;
@@ -72,19 +76,44 @@ void TrackController::setSignalsInstance(CTCSignals &s){
 
    // route = s.getRoute( (region - 1), line);
     //ctc_exit_id = s.getWaysideExit(wayside_id);
-    ctc_exit_id = 10;
+    //ctc_exit_id = 10;
+    ctc_wayside = s;
+
+    if (line == "Green Line") {
+       for (auto k = blocks.begin(); k < blocks.end(); k++) {
+            for (int n = 0; n < 150; n++) {
+                if ( (ctc_wayside.greenblockptr[n].block_id) == (k -> block_num) ) {
+                    ctc_wayside.greenblockptr[n].wayside_id = wayside_id;
+                }
+            }
+       }
+    }
+
+    if (line == "Red Line") {
+        for (auto k = blocks.begin(); k < blocks.end(); k++) {
+             for (int n = 0; n < 76; n++) {
+                 if ( (ctc_wayside.redblockptr[n].block_id) == (k -> block_num) ) {
+                     ctc_wayside.redblockptr[n].wayside_id = wayside_id;
+                 }
+             }
+        }
+    }
+
+
     std::vector<std::pair<int, int> > temp = s.getWaysideAuth(wayside_id, cntrl_blocks);
 
     for (auto i = temp.begin(); i < temp.end(); i++) {
-        CTC_sugauth.push_back(i -> second);
+        CTC_sugauth.push_back(*i);
     }
 
     float spd = s.getWaysideSpeed(wayside_id);
 
     for (int m = 0; m < block_count; m++) {
         CTC_sugspeed.push_back(spd);
+        //std::cout <<
     }
 
+    ctc_exit_id = s.getWaysideExit(wayside_id);
     setTrackSA();
 
 
@@ -200,53 +229,89 @@ void TrackController::getFaults() {
 }
 
 void TrackController::setTrackSA() {
-    int c = block_count - 1;
-    int y = 1;
-    bool safe_s, safe_a;
-    TrackModel::TrackCircuitData circ_data;
-    CTC_tempauth = CTC_sugauth;
-    CTC_tempspeed = CTC_sugspeed;
 
-    for ( auto i = blocks.rbegin(); i != blocks.rend(); i++) {
-        if ( (y) != block_count ) {
-            i -> setSpdAuth(CTC_tempspeed[c], CTC_tempauth[c]);
-            safe_s = PLC.checkSpeed(i -> plc_speed, blocks[c].block_occ);
-            safe_a = PLC.checkAuth(i -> plc_auth, blocks[c].block_occ);
-            if (safe_s && safe_a) {
-                CTC_comauth[c] = CTC_tempauth[c];
-                CTC_comspeed[c] = CTC_tempspeed[c];
+    int c = 0;
+    int curr_block;
+
+    int tempID;
+    std::vector<std::pair< int, int> > temp_ctcA;
+
+    for ( auto i = blocks.begin(); i != blocks.end(); i++) {
+        c = 0;
+        curr_block = i -> block_num;
+
+        for (auto m = CTC_sugauth.begin(); m != CTC_sugauth.end(); m++) {
+            tempID = m -> first;
+
+            if ( curr_block == tempID ) {
+                i -> setSpdAuth(CTC_sugspeed[c], m -> second);
+                c++;
+                TrackModel::TrackCircuitData circ_data = TrackModel::TrackCircuitData::fromFloat(CTC_sugspeed[c], m -> second);
+                TrackModel::setTrackCircuit(line, tempID, circ_data);
             }
             else {
-                if ( (i -> plc_auth) && (i -> plc_speed) ) {
-                    CTC_comauth[c] = 0;
-                    CTC_comspeed[c] = 0;
-                    for (int m = c; m < 0; m--) {
-                        CTC_tempauth[m-1] = CTC_tempauth[m];
-                        CTC_tempspeed[m-1] = CTC_tempspeed[m];
-                    }
-                }
-                else { //plc_auth && plc_speed = 0
-                    CTC_comauth[c] = CTC_tempauth[c];
-                    CTC_comspeed[c] = CTC_tempspeed[c];
-                }
+                c++;
             }
-
         }
-        c--;
-        y++;
-    i -> com_block_authority = CTC_comauth[c];
-    i -> com_block_speed = CTC_comspeed[c];
+    }
 
-    circ_data.fromFloat(CTC_comspeed[c], CTC_comauth[c]);
-    TrackModel::setTrackCircuit(line, i -> block_num, circ_data);
-
+    if (ctc_exit_id == exit_block0) {
+        setSwitch(true);
+    }
+    else {
+        setSwitch(false);
     }
 
 }
 
 void TrackController::updateData() {
+
+    int c = 0;
+
+    for (auto b = blocks.begin(); b < blocks.end(); b++) {
+        b -> setOcc();
+    }
+
     getFaults();
+
+    for (auto b = blocks.begin(); b < blocks.end(); b++) {
+        if (line == "Green Line") {
+            while (c < 150) {
+                ctc_wayside.greenblockptr[c].occupancy = (b -> block_occ);
+                ctc_wayside.greenblockptr[c].failure_code = (b -> block_fail);
+                c++;
+            }
+        }
+        else if (line == "Red Line") {
+            c = 0;
+            while (c < 76) {
+                ctc_wayside.redblockptr[c].occupancy = (b -> block_occ);
+                ctc_wayside.redblockptr[c].failure_code = (b -> block_fail);
+            }
+        }
+        else {
+            c = 0;
+            while (c < 15) {
+                ctc_wayside.blueblockptr[c].occupancy = (b -> block_occ);
+                ctc_wayside.blueblockptr[c].failure_code = (b -> block_fail);
+            }
+        }
+    }
+
+    std::vector<std::pair<int, int> > temp = ctc_wayside.getWaysideAuth(wayside_id, cntrl_blocks);
+
+    for (auto i = temp.begin(); i < temp.end(); i++) {
+        CTC_sugauth.push_back(*i);
+    }
+
+    float spd = ctc_wayside.getWaysideSpeed(wayside_id);
+
+    for (int m = 0; m < block_count; m++) {
+        CTC_sugspeed.push_back(spd);
+    }
+
+    ctc_exit_id = ctc_wayside.getWaysideExit(wayside_id);
+
     setCross();
     setTrackSA();
-    setRoute();
 }

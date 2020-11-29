@@ -15,7 +15,7 @@ public:
     std::string track_line;
     std::vector<TrackController> waysides;
     int wayside_count;
-    void addTrackObj(int, std::string &, std::vector<char> &, std::vector<int> &, int[4], int);
+    void addTrackObj(int, std::string &, std::vector<char> &, std::vector<int> &, int[4], int, int [2]);
 
 
     //Block Container of Wayside, within Track Controller class

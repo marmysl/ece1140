@@ -43,7 +43,7 @@ class TrackController
         int block_count;
 
         std::vector<float> CTC_sugspeed;
-        std::vector<int> CTC_sugauth;
+        std::vector<std::pair< int, int> > CTC_sugauth;
 
         std::vector<float> CTC_tempspeed;
         std::vector<int> CTC_tempauth;
@@ -52,7 +52,7 @@ class TrackController
         std::vector<int> CTC_comauth;
 
         TrackController();
-        void setUpController(int, std::string &, std::vector<char> &, std::vector<int> &, int[], int);
+        void setUpController(int, std::string &, std::vector<char> &, std::vector<int> &, int[], int, int[]);
         void setSignalsInstance(CTCSignals &);
         void setSwitch(bool);
         void addBlockObj(int);

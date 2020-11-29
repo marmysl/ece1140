@@ -8,23 +8,36 @@ SWTrackCntrlWindow::SWTrackCntrlWindow(QWidget *parent) :
     ui(new Ui::SWTrackCntrlWindow)
 {
     ui->setupUi(this);
-   // timerID = startTimer(1000);
-   // count = 0;
+
+
 
     ui->mainWindow->hide();
     PLCfile_present = false;
     ui->CancelButton->hide();
 
-
+    timerID = startTimer(10, Qt::TimerType::CoarseTimer);
 }
 
-void SWTrackCntrlWindow::timerEvent(QTimerEvent *event)
-{
-    count++;
-    //std::cout << "Timer has updated... " << count << std::endl; //debug
+void SWTrackCntrlWindow::timerEvent(QTimerEvent *event) {
 
     updateWaysides();
+    on_enterWaysideButton_clicked();
+    on_blockGetInfoButton_clicked();
 }
+
+/*void SWTrackCntrlWindow::myTimer() {
+   my_timer = new QTimer(this);
+
+   connect(my_timer, SIGNAL(timeout()), this, SLOT(receive_new_data()));
+
+   my_timer -> start(1000);
+}*/
+
+/*void SWTrackCntrlWindow::receive_new_data() {
+
+    updateWaysides();
+}*/
+
 
 SWTrackCntrlWindow::~SWTrackCntrlWindow()
 {
@@ -180,41 +193,77 @@ void SWTrackCntrlWindow::on_toggleSwitchButton_clicked()
 void SWTrackCntrlWindow::on_enterWaysideButton_clicked()
 {
     QString temp_wayside_id = ui->waysideIDText->toPlainText();
-    int id = temp_wayside_id.toInt();
-    wayside = getWaysideInstance(id);
-    setBlock();
-    setSwitch();
-    setCrossing();
+    if (!temp_wayside_id.isEmpty()) {
+        int id = temp_wayside_id.toInt();
+        wayside = getWaysideInstance(id);
+        setBlock();
+        setSwitch();
+        setCrossing();
+    }
+
 }
 
 void SWTrackCntrlWindow::on_blockGetInfoButton_clicked()
 {
     QString temp_block_id = ui->blockIDText->toPlainText();
-    int id = temp_block_id.toInt();
-    bool occ = wayside.blocks[id-1].block_occ;
-    bool fail = wayside.blocks[id-1].block_fail;
+    if (!temp_block_id.isEmpty()) {
 
-    int occ_int = int(occ);
-    int fail_int = int(fail);
-    QString occ_s = QString::number(occ_int);
-    QString fail_s;
+        int id = temp_block_id.toInt();
+        float ctcspd = wayside.ctc_wayside.getWaysideSpeed(wayside.wayside_id);
 
-    if (fail_int == 1) {
-        fail_s = "Broken Rail";
-    }
-    else if (fail_int == 2) {
-        fail_s = "Circuit Fail";
-    }
-    else if (fail_int == 4) {
-        fail_s = "Power Fail";
-    }
-    else {
-        fail_s = "None";
-    }
 
-    ui->occText->setPlainText(occ_s);
-    ui->FailureText->setPlainText(fail_s);
+        std::vector<std::pair<int,int>> ctcaut = wayside.ctc_wayside.getWaysideAuth(wayside.wayside_id, wayside.cntrl_blocks);
+        int ctcblockaut;
+        for (auto i = ctcaut.begin(); i < ctcaut.end(); i++) {
+            if ( (i->first) == id) {
+                ctcblockaut = i -> second;
+            }
+        }
 
+        int auth;
+        int spd;
+        bool occ;
+        bool fail;
+
+        for (auto n = wayside.blocks.begin(); n < wayside.blocks.end(); n++) {
+            if (id == (n -> block_num)) {
+                auth = n -> sug_block_authority;
+                spd = n -> sug_block_speed;
+                occ = n -> block_occ;
+                fail = n -> block_fail;
+            }
+        }
+
+
+        int occ_int = int(occ);
+        int fail_int = int(fail);
+        QString occ_s = QString::number(occ_int);
+        QString fail_s;
+        QString auth_s = QString::number(auth);
+        QString spd_s = QString::number(spd);
+        QString authC_s = QString::number(ctcblockaut);
+        QString spdC_s = QString::number(ctcspd);
+
+        if (fail_int == 1) {
+            fail_s = "Broken Rail";
+        }
+        else if (fail_int == 2) {
+            fail_s = "Circuit Fail";
+        }
+        else if (fail_int == 4) {
+            fail_s = "Power Fail";
+        }
+        else {
+            fail_s = "None";
+        }
+
+        ui->occText->setPlainText(occ_s);
+        ui->FailureText->setPlainText(fail_s);
+        ui->blockAuthText->setPlainText(auth_s);
+        ui->blockSpdText->setPlainText(spd_s);
+        ui->blockAuthText_C->setPlainText(authC_s);
+        ui->blockSpdText_c->setPlainText(spdC_s);
+    }
 }
 
 
