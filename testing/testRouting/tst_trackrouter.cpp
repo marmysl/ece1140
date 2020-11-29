@@ -146,23 +146,25 @@ void TrackRouterTester::routeOnewayLoop()
 
 void TrackRouterTester::routeBacktrack()
 {
-    // [A>] -> [B>] -> [C>] -v
-    // [<E] <-      <- [<D] <-
+    // [A>] -> [B>] -> [C>] -> [D>] -v
+    // [<F] <-              <- [<E]
 
     Block a(1, "", 10, 0, 0);
     Block b(2, "", 10, 0, 0);
-    Block c(3, "", 10, 0, 0, BLK_FORWARD);
+    Block c(3, "", 10, 0, 0);
     Block d(4, "", 10, 0, 0, BLK_FORWARD);
-    Block e(5, "", 10, 0, 0);
+    Block e(5, "", 10, 0, 0, BLK_FORWARD);
+    Block f(6, "", 10, 0, 0);
 
-    Switch s1(&b, BLK_FORWARD, &c, &d);
-    Switch s2(&b, BLK_REVERSE, &e, &a);
+    Switch s2(&b, BLK_REVERSE, &f, &a);
+    Switch s3(&c, BLK_FORWARD, &d, &e);
 
     a.setLink(BLK_FORWARD, &b);
-    b.setLink(BLK_REVERSE, &s2); b.setLink(BLK_FORWARD, &s1);
-    c.setLink(BLK_REVERSE, &b); c.setLink(BLK_FORWARD, &d);
-    d.setLink(BLK_REVERSE, &c); d.setLink(BLK_FORWARD, &b);
-    e.setLink(BLK_REVERSE, &b);
+    b.setLink(BLK_REVERSE, &s2); b.setLink(BLK_FORWARD, &c);
+    c.setLink(BLK_REVERSE, &b); c.setLink(BLK_FORWARD, &s3);
+    d.setLink(BLK_REVERSE, &c); d.setLink(BLK_FORWARD, &e);
+    e.setLink(BLK_REVERSE, &d); e.setLink(BLK_FORWARD, &c);
+    f.setLink(BLK_REVERSE, &b);
 
     Route r("Backtracker");
     r.blocks.insert({1, &a});
@@ -170,22 +172,23 @@ void TrackRouterTester::routeBacktrack()
     r.blocks.insert({3, &c});
     r.blocks.insert({4, &d});
     r.blocks.insert({5, &e});
+    r.blocks.insert({6, &f});
 
     TrackRouter router(&r);
 
-    // test 1 to 5
-    TrainPathInfo path = router.findPath(1, BLK_NODIR, 5);
+    // test 1 to 6 (A to F), need to go out, around loop and back
+    TrainPathInfo path = router.findPath(1, BLK_NODIR, 6);
 
-    // expected: A > B > C > D > B > E, sw1 straight, sw2 straight
+    // expected: A > B > C > D > E > C > B > F, sw2 (B) straight, sw3 (C) straight
     // path needs to follow the long route to obey the oneway restriction
-    std::vector<Block *> expectedBlocks {&a, &b, &c, &d, &b, &e};
+    std::vector<Block *> expectedBlocks {&a, &b, &c, &d, &e, &c, &b, &f};
     QCOMPARE(path.blocks, expectedBlocks);
 
     auto &switchList = path.switchStates;
-    std::pair<int, SwitchState> expectedS1(1, SW_STRAIGHT);
-    std::pair<int, SwitchState> expectedS2(1, SW_STRAIGHT);
+    std::pair<int, SwitchState> expectedS2(2, SW_STRAIGHT);
+    std::pair<int, SwitchState> expectedS3(3, SW_STRAIGHT);
     QCOMPARE(switchList.size(), 2);
-    QCOMPARE(switchList[0], expectedS1);
+    QCOMPARE(switchList[0], expectedS3);
     QCOMPARE(switchList[1], expectedS2);
 }
 
