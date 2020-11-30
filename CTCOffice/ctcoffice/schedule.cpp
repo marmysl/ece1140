@@ -2,6 +2,7 @@
 #include "ui_schedule.h"
 #include <QFileDialog>
 #include <QDebug>
+#include <QTableWidget>
 
 #include <fstream>
 #include <iostream>
@@ -213,6 +214,8 @@ void schedule::scheduleParser(std::string fileName){
         qDebug() << "Train 9: " << QString::fromStdString(t9.at(i));
         qDebug() << "Train 10: " << QString::fromStdString(t10.at(i));
     }
+
+    setScheduleTable();
 }
 
 int schedule::parseIntStrict(std::string str) {
@@ -242,5 +245,32 @@ void schedule::setSchedule(int linenum, int blocknum, std::string station, std::
 
     if(blocks.size() != linenum-1){
         qDebug() << "you done screwed up";
+    }
+}
+
+void schedule::setScheduleTable(){
+    ui->scheduleTable->setColumnCount(12);
+    ui->scheduleTable->setRowCount(18);
+    QStringList htitle;
+    htitle << "Block" << "Station" << "Train 1 Arrival Time" << "Train 2 Arrival Time" << "Train 3 Arrival Time"
+           <<  "Train 4 Arrival Time" <<  "Train 5 Arrival Time" << "Train 6 Arrival Time" << "Train 7 Arrival Time" <<
+                "Train 8 Arrival Time" << "Train 9 Arrival Time" << "Train 10 Arrival Time";
+    ui->scheduleTable->setHorizontalHeaderLabels(htitle);
+
+    //inserting a row
+    //ui->scheduleTable->insertRow(ui->scheduleTable->rowCount());
+    for(int i = 0; i < blocks.size(); i++){
+        ui->scheduleTable->setItem(i, 0, new QTableWidgetItem(QString::number(blocks.at(i))));
+        ui->scheduleTable->setItem(i, 1, new QTableWidgetItem(QString::fromStdString(stat.at(i))));
+        ui->scheduleTable->setItem(i, 2, new QTableWidgetItem(QString::fromStdString(t1.at(i))));
+        ui->scheduleTable->setItem(i, 3, new QTableWidgetItem(QString::fromStdString(t2.at(i))));
+        ui->scheduleTable->setItem(i, 4, new QTableWidgetItem(QString::fromStdString(t3.at(i))));
+        ui->scheduleTable->setItem(i, 5, new QTableWidgetItem(QString::fromStdString(t4.at(i))));
+        ui->scheduleTable->setItem(i, 6, new QTableWidgetItem(QString::fromStdString(t5.at(i))));
+        ui->scheduleTable->setItem(i, 7, new QTableWidgetItem(QString::fromStdString(t6.at(i))));
+        ui->scheduleTable->setItem(i, 8, new QTableWidgetItem(QString::fromStdString(t7.at(i))));
+        ui->scheduleTable->setItem(i, 9, new QTableWidgetItem(QString::fromStdString(t8.at(i))));
+        ui->scheduleTable->setItem(i, 10, new QTableWidgetItem(QString::fromStdString(t9.at(i))));
+        ui->scheduleTable->setItem(i, 11, new QTableWidgetItem(QString::fromStdString(t10.at(i))));
     }
 }

@@ -19,6 +19,7 @@ public:
     void setSchedule(int, int, std::string, std::string, std::string,
                      std::string, std::string, std::string, std::string,
                      std::string, std::string, std::string, std::string);
+    void setScheduleTable();
 
     std::vector<int> blocks;
     std::vector<std::string> stat;

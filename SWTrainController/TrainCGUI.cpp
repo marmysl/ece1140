@@ -44,6 +44,7 @@ void TrainControlWindow::timerEvent(QTimerEvent *event)
     swtc.calculatePower();
     updatePower();
     updateCircuitInfo();
+    updateStation();
     updateBrakes();
     updateSpeed();
     updateCabin();
@@ -73,11 +74,14 @@ void TrainControlWindow :: updateCircuitInfo()
         ui->auth_exceeded_->setText("");
     }
 
+}
 
+void TrainControlWindow :: updateStation()
+{
     // Display next station
 
 
-    // Displays for train stopping at station
+    // UI Displays for train stopping at station
     if (swtc.getStationUpcoming() == true){
         ui->station_->setText("The train is approaching a station.");
     } else if (swtc.getStationHere() == true && swtc.getTrainVelocity() != 0.0 && swtc.getHasStopped() == false) {
@@ -91,6 +95,12 @@ void TrainControlWindow :: updateCircuitInfo()
     }
 
 
+    // UI display for next station
+    if (swtc.getStationUpcoming() == true || swtc.getStationHere() == true){
+        ui->nextstation_->setText(QString::fromStdString(swtc.getNextStation()));
+    } else {
+        ui->nextstation_->setText("-");
+    }
 }
 
 void TrainControlWindow :: updatePower()
@@ -168,6 +178,13 @@ void TrainControlWindow :: updateCabin()
     ui->doors_->setText(doors);
     ui->lights_->setText(lights);
     ui->headlights_->setText(headlights);
+
+    // Disable door button if the train is in motion
+    if (swtc.getTrainVelocity() != 0.0){
+        ui->door_button->setDisabled(true);
+    } else {
+        ui->door_button->setDisabled(false);
+    }
 
 
     // Send updates to the train, if needed
