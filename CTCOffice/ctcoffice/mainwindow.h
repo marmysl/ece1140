@@ -20,6 +20,7 @@ public:
     ~MainWindow();
     CTCDispatch ctc;
     CTCMode m;
+    schedule *s = NULL;
 
 public slots:
     void updateRoute();

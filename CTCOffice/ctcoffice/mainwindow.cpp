@@ -78,6 +78,7 @@ void MainWindow::on_comboLine_currentIndexChanged(const QString &arg1)
 
 void MainWindow::on_timeStart_userTimeChanged(const QTime &time)
 {
+    //QDateTime qdt =
     QString qs;
     qs = time.toString("hh:mm");
 
@@ -205,7 +206,8 @@ void MainWindow::updateRoute(){
 
 void MainWindow::on_btnSchedule_clicked()
 {
-    schedule *s;
-    s = new schedule();
+    if(!s){
+        s = new schedule();
+    }
     s->show();
 }
