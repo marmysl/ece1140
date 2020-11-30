@@ -24,6 +24,7 @@ SOURCES += \
     CTCOffice/ctcoffice/CTCMode.cpp \
     CTCOffice/ctcoffice/Files.cpp \
     CTCOffice/ctcoffice/ctc_main.cpp \
+    CTCOffice/ctcoffice/maintenance.cpp \
     CTCOffice/ctcoffice/mainwindow.cpp \
     CTCOffice/ctcoffice/schedule.cpp \
     HWTrackController/HWTrackController.cpp \
@@ -74,6 +75,7 @@ HEADERS += \
     CTCOffice/ctcoffice/CTCMode.h \
     CTCOffice/ctcoffice/Files.h \
     CTCOffice/ctcoffice/ctc_main.h \
+    CTCOffice/ctcoffice/maintenance.h \
     CTCOffice/ctcoffice/mainwindow.h \
     CTCOffice/ctcoffice/schedule.h \
     HWTrackController/HWTrackController.hpp \
@@ -124,6 +126,7 @@ HEADERS += \
 
 FORMS += \
     CTCOffice/ctcoffice/Files.ui \
+    CTCOffice/ctcoffice/maintenance.ui \
     CTCOffice/ctcoffice/mainwindow.ui \
     CTCOffice/ctcoffice/schedule.ui \
     SWTrainController/SWTrainController.ui \
