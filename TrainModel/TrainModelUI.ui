@@ -76,7 +76,7 @@
      </rect>
     </property>
     <property name="currentIndex">
-     <number>0</number>
+     <number>2</number>
     </property>
     <widget class="QWidget" name="errors">
      <attribute name="title">
@@ -862,7 +862,7 @@
       <property name="geometry">
        <rect>
         <x>40</x>
-        <y>60</y>
+        <y>50</y>
         <width>101</width>
         <height>16</height>
        </rect>
@@ -875,7 +875,7 @@
       <property name="geometry">
        <rect>
         <x>150</x>
-        <y>60</y>
+        <y>50</y>
         <width>41</width>
         <height>16</height>
        </rect>
@@ -994,6 +994,84 @@
        <string>Train Information</string>
       </property>
      </widget>
+     <widget class="QLabel" name="label_31">
+      <property name="geometry">
+       <rect>
+        <x>40</x>
+        <y>70</y>
+        <width>41</width>
+        <height>16</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Mass:</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_32">
+      <property name="geometry">
+       <rect>
+        <x>40</x>
+        <y>90</y>
+        <width>51</width>
+        <height>16</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Length:</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_33">
+      <property name="geometry">
+       <rect>
+        <x>40</x>
+        <y>110</y>
+        <width>111</width>
+        <height>16</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Height:  11.22 ft</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_34">
+      <property name="geometry">
+       <rect>
+        <x>40</x>
+        <y>130</y>
+        <width>111</width>
+        <height>16</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Width:  8.69 ft</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="massLabel">
+      <property name="geometry">
+       <rect>
+        <x>90</x>
+        <y>70</y>
+        <width>41</width>
+        <height>16</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>0</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="lengthLabel">
+      <property name="geometry">
+       <rect>
+        <x>100</x>
+        <y>90</y>
+        <width>41</width>
+        <height>16</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>0</string>
+      </property>
+     </widget>
      <widget class="QMdiArea" name="mdiArea_8">
       <property name="geometry">
        <rect>
@@ -1030,6 +1108,12 @@
      <zorder>blockNumLabel_5</zorder>
      <zorder>label_29</zorder>
      <zorder>label_30</zorder>
+     <zorder>label_31</zorder>
+     <zorder>label_32</zorder>
+     <zorder>label_33</zorder>
+     <zorder>label_34</zorder>
+     <zorder>massLabel</zorder>
+     <zorder>lengthLabel</zorder>
     </widget>
    </widget>
   </widget>
