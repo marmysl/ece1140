@@ -66,6 +66,7 @@ void TrackRouter::processLink( PathNode *curNode, BlockDir dir )
                     divNode->switchDir = SW_DIVERGING;
 
                     pathQueue.push(divNode);
+                    dynamicNodes.push_back(divNode);
                 }
             }
 
@@ -75,6 +76,7 @@ void TrackRouter::processLink( PathNode *curNode, BlockDir dir )
 
         // copy that node
         PathNode *straightNode = new PathNode(*nodeMap[straightBlock]);
+        dynamicNodes.push_back(straightNode);
 
         // only process if block is traversable in this dir
         BlockDir entryDir = curNode->block->getEntryDir(straightBlock);
@@ -95,6 +97,16 @@ void TrackRouter::processLink( PathNode *curNode, BlockDir dir )
             pathQueue.push(straightNode);
         }
     }
+}
+
+void TrackRouter::freeDynamicNodes()
+{
+    for( PathNode *n : dynamicNodes )
+    {
+        delete n;
+    }
+
+    dynamicNodes.clear();
 }
 
 // Dijkstra's algo
@@ -147,6 +159,8 @@ TrainPathInfo TrackRouter::findPath( int startBlock, BlockDir startDir, int endB
                 }
             }
 
+            freeDynamicNodes();
+
             std::reverse(path.blocks.begin(), path.blocks.end());
             std::reverse(path.switchStates.begin(), path.switchStates.end());
 
@@ -168,6 +182,7 @@ TrainPathInfo TrackRouter::findPath( int startBlock, BlockDir startDir, int endB
         }
     }
 
+    freeDynamicNodes();
     return TrainPathInfo();
 }
 
