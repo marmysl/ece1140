@@ -35,16 +35,24 @@ bool CTCMode::getMode(){
     return mode;
 }
 
+void CTCMode::sm(bool m){
+    mode = m;
+}
+
 void CTCMode::automaticDispatch()
 {
     mode = 0;
-    m->mode = 0;
 
+    m = &ctcMainWindow->m;
     schedule *s = ctcMainWindow->s;
-    //s.on_loadSchedule_clicked();
 
     if(!s){
         qDebug() << "No schedule loaded, no trains will be dispatched in Automatic Mode";
+        return;
+    }
+
+    if(!m){
+        qDebug() << "Problem with setting mode and sending to SW Train Controller";
         return;
     }
 

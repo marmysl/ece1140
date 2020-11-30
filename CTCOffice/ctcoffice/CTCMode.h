@@ -15,6 +15,7 @@ class CTCMode
         bool getMode();
         void automaticDispatch();
         void manualDispatch();
+        void sm(bool);
 
         CTCMode* m;
 };
