@@ -7,6 +7,8 @@
 #include <fstream>
 #include <iostream>
 
+#include "mainwindow.h"
+
 schedule::schedule(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::schedule)
