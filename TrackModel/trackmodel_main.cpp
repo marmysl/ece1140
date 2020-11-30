@@ -4,6 +4,7 @@
 #include "trackmodel_main.hpp"
 #include "layoutdialog.h"
 #include "trackmodeldisplay.h"
+#include "station_tracking.h"
 #include "CTCOffice/ctcoffice/CTCHashmap.h"
 #include "CTCOffice/ctcoffice/ctc_main.h"
 
@@ -155,6 +156,40 @@ namespace TrackModel {
         catch( const std::out_of_range &e )
         {
             throw std::invalid_argument("route or block not found");
+        }
+    }
+
+
+    // CTC / Ticketing Interface
+    //---------------------------------------------------------------------------------
+    int getPassengersWaiting(std::string route, std::string station)
+    {
+        try
+        {
+            RouteStatus *routeInfo = routeStatusMap.at(route);
+            StationStatus *stationInfo = routeInfo->getStationStatus(station);
+
+            return stationInfo->numPassengers;
+        }
+        catch( const std::out_of_range &e )
+        {
+            throw std::invalid_argument("route or station not found");
+        }
+    }
+
+    void addPassengersToStation(std::string route, std::string station, int count)
+    {
+        try
+        {
+            RouteStatus *routeInfo = routeStatusMap.at(route);
+            StationStatus *stationInfo = routeInfo->getStationStatus(station);
+
+            stationInfo->numPassengers += count;
+            trackModelUi->notifyStationUpdated(routeInfo->layoutRoute, station);
+        }
+        catch( const std::out_of_range &e )
+        {
+            throw std::invalid_argument("route or station not found");
         }
     }
 
