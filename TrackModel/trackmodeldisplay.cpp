@@ -148,7 +148,6 @@ void TrackModelDisplay::on_applyStationPropsButton_clicked()
     int nToAdd = ui->passCountInput->value();
 
     ticketSystem->sellTickets(selectedRoute->layoutRoute, selectedStation->layoutStation, systemClock->currentTime(), nToAdd);
-    selectedStation->numPassengers += nToAdd;
 
     updateStationDisplay();
 

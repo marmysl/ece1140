@@ -97,6 +97,7 @@ HEADERS += \
     TrackModel/layoutdialog.h \
     TrackModel/routemapview.h \
     TrackModel/routingtestdialog.h \
+    TrackModel/station_tracking.h \
     TrackModel/ticketsdialog.h \
     TrackModel/tracklayout.hpp \
     TrackModel/trackmodel_controller.hpp \

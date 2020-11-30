@@ -17,6 +17,7 @@ private slots:
     void routeSingle();
     void routeSwitch();
     void routeOnewayLoop();
+    void routeBacktrack();
 };
 
 TrackRouterTester::TrackRouterTester() {}
@@ -141,6 +142,54 @@ void TrackRouterTester::routeOnewayLoop()
     // path needs to follow the long route to obey oneway
     expectedBlocks = std::vector<Block *> {&b, &c, &d, &e, &a};
     QCOMPARE(path.blocks, expectedBlocks);
+}
+
+void TrackRouterTester::routeBacktrack()
+{
+    // [A>] -> [B>] -> [C>] -> [D>] -v
+    // [<F] <-              <- [<E]
+
+    Block a(1, "", 10, 0, 0);
+    Block b(2, "", 10, 0, 0);
+    Block c(3, "", 10, 0, 0);
+    Block d(4, "", 10, 0, 0, BLK_FORWARD);
+    Block e(5, "", 10, 0, 0, BLK_FORWARD);
+    Block f(6, "", 10, 0, 0);
+
+    Switch s2(&b, BLK_REVERSE, &f, &a);
+    Switch s3(&c, BLK_FORWARD, &d, &e);
+
+    a.setLink(BLK_FORWARD, &b);
+    b.setLink(BLK_REVERSE, &s2); b.setLink(BLK_FORWARD, &c);
+    c.setLink(BLK_REVERSE, &b); c.setLink(BLK_FORWARD, &s3);
+    d.setLink(BLK_REVERSE, &c); d.setLink(BLK_FORWARD, &e);
+    e.setLink(BLK_REVERSE, &d); e.setLink(BLK_FORWARD, &c);
+    f.setLink(BLK_REVERSE, &b);
+
+    Route r("Backtracker");
+    r.blocks.insert({1, &a});
+    r.blocks.insert({2, &b});
+    r.blocks.insert({3, &c});
+    r.blocks.insert({4, &d});
+    r.blocks.insert({5, &e});
+    r.blocks.insert({6, &f});
+
+    TrackRouter router(&r);
+
+    // test 1 to 6 (A to F), need to go out, around loop and back
+    TrainPathInfo path = router.findPath(1, BLK_NODIR, 6);
+
+    // expected: A > B > C > D > E > C > B > F, sw2 (B) straight, sw3 (C) straight
+    // path needs to follow the long route to obey the oneway restriction
+    std::vector<Block *> expectedBlocks {&a, &b, &c, &d, &e, &c, &b, &f};
+    QCOMPARE(path.blocks, expectedBlocks);
+
+    auto &switchList = path.switchStates;
+    std::pair<int, SwitchState> expectedS2(2, SW_STRAIGHT);
+    std::pair<int, SwitchState> expectedS3(3, SW_STRAIGHT);
+    QCOMPARE(switchList.size(), 2);
+    QCOMPARE(switchList[0], expectedS3);
+    QCOMPARE(switchList[1], expectedS2);
 }
 
 QTEST_APPLESS_MAIN(TrackRouterTester)
