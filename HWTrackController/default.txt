@@ -1,0 +1,3 @@
+IF block 1 AND switch THEN red;
+IF !block 1 AND block 2 AND !switch THEN yellow;
+IF !block 1 AND !block 2 AND !switch THEN green;

@@ -9,7 +9,6 @@
 
 extern Region reg;
 
-void initializeHW(CTCSignals &c);
 int init_HWTrackController();
 
 #endif // HWTRACKCONTROLLER_MAIN_H

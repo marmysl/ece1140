@@ -6,17 +6,16 @@
 
 #include "HWTrackController.hpp"
 #include "HWTrackController_main.h"
+#include "hwplcui.h"
 
 using namespace std;
 
 Region reg;
 
-void initializeHW(CTCSignals &c){
-    //reg.initialize(c.getExit(),c.getSpeed(),c.getAuth());
-}
-
 int init_HWTrackController() {
     HWTrackController* obj = new HWTrackController();
+    HWPLCUI *w = new HWPLCUI();
+    w->show();
 	return 0;
 }
 
