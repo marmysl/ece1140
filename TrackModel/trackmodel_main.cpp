@@ -159,6 +159,39 @@ namespace TrackModel {
     }
 
 
+    // CTC / Ticketing Interface
+    //---------------------------------------------------------------------------------
+    int getPassengersWaiting(std::string route, std::string station)
+    {
+        try
+        {
+            RouteStatus *routeInfo = routeStatusMap.at(route);
+            StationStatus *stationInfo = routeInfo->getStationStatus(station);
+
+            return stationInfo->numPassengers;
+        }
+        catch( const std::out_of_range &e )
+        {
+            throw std::invalid_argument("route or station not found");
+        }
+    }
+
+    void addPassengersToStation(std::string route, std::string station, int count)
+    {
+        try
+        {
+            RouteStatus *routeInfo = routeStatusMap.at(route);
+            StationStatus *stationInfo = routeInfo->getStationStatus(station);
+
+            stationInfo->numPassengers += count;
+        }
+        catch( const std::out_of_range &e )
+        {
+            throw std::invalid_argument("route or station not found");
+        }
+    }
+
+
     // Track Model Internal
     //---------------------------------------------------------------------------------
 

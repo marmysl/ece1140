@@ -4,6 +4,7 @@
 
 #include <QObject>
 #include <QDateTime>
+#include <random>
 
 using namespace TrackModel;
 
@@ -29,13 +30,24 @@ class TicketSystem : public QObject
 {
     Q_OBJECT
 
+private:
+    static const qint64 UPDATE_DELAY = 1200000;
+
+    qint64 msSinceUpdate = UPDATE_DELAY + 1;
+    std::default_random_engine randEngine;
+    std::normal_distribution<double> arrivalCurve = std::normal_distribution<double>(40.0, 5.0);
+
 public:
     std::vector<Passenger> soldTickets;
 
     explicit TicketSystem(QObject *parent = nullptr);
 
     void clearSales();
+    void sellOneTicket( Route *route, Station *station, QDateTime time );
     void sellTickets( Route *route, Station *station, QDateTime time, int count );
+
+public slots:
+    void on_systemTimeAdvanced(const QDateTime &newTime, qint64 deltaMs);
 
 signals:
     void ticketsChanged();
