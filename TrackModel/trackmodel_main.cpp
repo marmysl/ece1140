@@ -4,6 +4,7 @@
 #include "trackmodel_main.hpp"
 #include "layoutdialog.h"
 #include "trackmodeldisplay.h"
+#include "station_tracking.h"
 #include "CTCOffice/ctcoffice/CTCHashmap.h"
 #include "CTCOffice/ctcoffice/ctc_main.h"
 
@@ -184,6 +185,7 @@ namespace TrackModel {
             StationStatus *stationInfo = routeInfo->getStationStatus(station);
 
             stationInfo->numPassengers += count;
+            trackModelUi->notifyStationUpdated(routeInfo->layoutRoute, station);
         }
         catch( const std::out_of_range &e )
         {

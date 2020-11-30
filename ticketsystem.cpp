@@ -71,7 +71,7 @@ void TicketSystem::sellTickets( Route *route, Station *station, QDateTime time, 
         soldTickets.push_back(Passenger(name, time, route, station));
     }
 
-    addPassengersToStation(route->name, station->name, count);
+    TrackModel::addPassengersToStation(route->name, station->name, count);
 
     emit ticketsChanged();
 }
@@ -86,10 +86,18 @@ void TicketSystem::onTimeUpdate(const QDateTime &newTime, qint64 deltaMs)
         {
             for( Station *s : r->stations )
             {
-                int arrivalCount = std::round(arrivalCurve(randEngine));
-                qint64 timeFudge = (rand() % UPDATE_DELAY) - UPDATE_DELAY; // pick a random time between last update & now
-                sellTickets(r, s, newTime.addMSecs(timeFudge), arrivalCount);
+                int currentWaiting = getPassengersWaiting(r->name, s->name);
+
+                if( currentWaiting >= SOFT_PASSENGER_CAP ) continue;
+                else
+                {
+                    int arrivalCount = std::round(arrivalCurve(randEngine));
+                    qint64 timeFudge = (rand() % UPDATE_DELAY) - UPDATE_DELAY; // pick a random time between last update & now
+                    sellTickets(r, s, newTime.addMSecs(timeFudge), arrivalCount);
+                }
             }
         }
+
+        msSinceUpdate = 0;
     }
 }

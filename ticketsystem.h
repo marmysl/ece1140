@@ -31,7 +31,8 @@ class TicketSystem : public QObject
     Q_OBJECT
 
 private:
-    static const qint64 UPDATE_DELAY = 1200000;
+    const qint64 UPDATE_DELAY = 1200000;
+    const int SOFT_PASSENGER_CAP = 220;
 
     qint64 msSinceUpdate = UPDATE_DELAY + 1;
     std::default_random_engine randEngine;
