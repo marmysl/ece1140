@@ -6,6 +6,7 @@
 #include "timetracker.h"
 #include "TrainModelUpdateBlock.h"
 #include "TrainModelControls.h"
+#include "weatherstation.h"
 
 using namespace std;
 
@@ -20,7 +21,12 @@ public:
     double lastVel = 0;
     double lastAccel = 0;
     double lastPos = 0;
+    double setTemp = 72;
+    double currTemp;
+    int tempCounter = 0;
     int passengers = 0;
+    int passengersDepart = 0;
+    int passengersBoard = 0;
     int maxPassTotal;
     bool atStation = false;
     QDateTime lastTime;
@@ -49,6 +55,8 @@ public:
     void limitForce();
     void limitAccel();
     void updatePassengers();
+    void regulateTemperature();
+    void setTemperature(double);
     void setFailureStatus(int);
     int getFailureStatus();
     void setEBrake(bool);

@@ -24,6 +24,8 @@ TrainModelMath::TrainModelMath(int newNumCars, TrainModelUpdateBlock *newAssigBl
     newBlock = false;
     emergencyBrake = false;
     serviceBrake = false;
+
+    currTemp = weather->getTempFheit();
 }
 
 void TrainModelMath::setPower(double newPower){
@@ -68,6 +70,9 @@ void TrainModelMath::setPower(double newPower){
 
         //Update passengers on the train
         updatePassengers();
+
+        //Regulate the train temperature
+        regulateTemperature();
 
         //Set current calculations as last calculations for next call
         lastPos = newPos;
@@ -135,13 +140,13 @@ void TrainModelMath::updatePassengers(){
         atStation = true;
         //Randomly generate the number of passengers leaving the train
         if (passengers>0){
-            int passLeaving = rand() % passengers;
-            passengers = passengers - passLeaving;
+            passengersDepart = rand() % passengers;
+            passengers = passengers - passengersDepart;
         }
         int transMax = maxPassTotal - passengers;
         int randomPassEntry = rand() % transMax;
-        int passEntry = block->getPassengers(randomPassEntry);
-        passengers = passengers + passEntry;
+        int passengerBoard = block->getPassengers(randomPassEntry);
+        passengers = passengers + passengerBoard;
         mass = (numCars * 56700) + (passengers * 68);
     }
     else if (!(controls->doorLeftOpen) && !(controls->doorRightOpen)){
@@ -149,6 +154,37 @@ void TrainModelMath::updatePassengers(){
     }
 }
 
+void TrainModelMath::regulateTemperature(){
+    if(currTemp<setTemp){
+        controls->toggleHeater(true);
+        controls->toggleAC(false);
+        if(tempCounter<30){
+            tempCounter = tempCounter + 1;
+        }
+        else{
+            tempCounter = 0;
+            currTemp = currTemp + 1;
+        }
+    }
+    else if(currTemp>setTemp){
+        controls->toggleHeater(false);
+        controls->toggleAC(true);
+        if(tempCounter<30){
+            tempCounter = tempCounter + 1;
+        }
+        else{
+            tempCounter = 0;
+            currTemp = currTemp - 1;
+        }
+    }
+    else{
+        tempCounter = 0;
+    }
+}
+
+void TrainModelMath::setTemperature(double newTemp){
+    setTemp = newTemp;
+}
 
 void TrainModelMath::setFailureStatus(int newFailureStatus){
     failureStatus = newFailureStatus;
