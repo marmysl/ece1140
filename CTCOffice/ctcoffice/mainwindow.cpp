@@ -13,6 +13,7 @@
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
+    , autoSchedule(nullptr)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
@@ -206,8 +207,8 @@ void MainWindow::updateRoute(){
 
 void MainWindow::on_btnSchedule_clicked()
 {
-    if(!s){
-        s = new schedule();
+    if(!autoSchedule){
+        autoSchedule = new schedule(this);
     }
-    s->show();
+    autoSchedule->show();
 }

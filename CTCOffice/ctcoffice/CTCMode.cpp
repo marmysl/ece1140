@@ -44,11 +44,15 @@ void CTCMode::automaticDispatch()
     mode = 0;
 
     m = &ctcMainWindow->m;
-    schedule *s = ctcMainWindow->s;
+    schedule *s = ctcMainWindow->autoSchedule;
 
     if(!s){
-        qDebug() << "No schedule loaded, no trains will be dispatched in Automatic Mode";
-        return;
+        // prompt for schedule if not already initialized
+        ctcMainWindow->autoSchedule = new schedule(ctcMainWindow);
+        s = ctcMainWindow->autoSchedule;
+
+        // modal dialog, must have schedule before continuing
+        s->exec();
     }
 
     if(!m){
