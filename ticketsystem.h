@@ -47,7 +47,7 @@ public:
     void sellTickets( Route *route, Station *station, QDateTime time, int count );
 
 public slots:
-    void on_systemTimeAdvanced(const QDateTime &newTime, qint64 deltaMs);
+    void onTimeUpdate(const QDateTime &newTime, qint64 deltaMs);
 
 signals:
     void ticketsChanged();

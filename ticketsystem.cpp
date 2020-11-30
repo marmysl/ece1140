@@ -76,7 +76,7 @@ void TicketSystem::sellTickets( Route *route, Station *station, QDateTime time, 
     emit ticketsChanged();
 }
 
-void TicketSystem::on_systemTimeAdvanced(const QDateTime &newTime, qint64 deltaMs)
+void TicketSystem::onTimeUpdate(const QDateTime &newTime, qint64 deltaMs)
 {
     msSinceUpdate += deltaMs;
     if( msSinceUpdate >= UPDATE_DELAY )
