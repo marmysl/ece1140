@@ -38,6 +38,7 @@ bool CTCMode::getMode(){
 void CTCMode::automaticDispatch()
 {
     mode = 0;
+    m->mode = 0;
 
     schedule *s = ctcMainWindow->s;
     //s.on_loadSchedule_clicked();
@@ -50,6 +51,7 @@ void CTCMode::automaticDispatch()
     CTCDispatch train1;
 
     //Fix these hard coded once the blue line issue is fixed
+    train1.setCTCMode(m);
     train1.setLine("Green Line");
     train1.setTimeStart(s->t1.front());
     train1.setTimeArrival(s->t1.back());
@@ -59,6 +61,7 @@ void CTCMode::automaticDispatch()
 
     CTCDispatch train2;
 
+    train2.setCTCMode(m);
     train2.setLine("Green Line");
     train2.setTimeStart(s->t2.front());
     train2.setTimeArrival(s->t2.back());
@@ -68,6 +71,7 @@ void CTCMode::automaticDispatch()
 
     CTCDispatch train3;
 
+    train3.setCTCMode(m);
     train3.setLine("Green Line");
     train3.setTimeStart(s->t3.front());
     train3.setTimeArrival(s->t3.back());
@@ -77,6 +81,7 @@ void CTCMode::automaticDispatch()
 
     CTCDispatch train4;
 
+    train4.setCTCMode(m);
     train4.setLine("Green Line");
     train4.setTimeStart(s->t4.front());
     train4.setTimeArrival(s->t4.back());
@@ -86,6 +91,7 @@ void CTCMode::automaticDispatch()
 
     CTCDispatch train5;
 
+    train5.setCTCMode(m);
     train5.setLine("Green Line");
     train5.setTimeStart(s->t5.front());
     train5.setTimeArrival(s->t5.back());
@@ -95,6 +101,7 @@ void CTCMode::automaticDispatch()
 
     CTCDispatch train6;
 
+    train6.setCTCMode(m);
     train6.setLine("Green Line");
     train6.setTimeStart(s->t6.front());
     train6.setTimeArrival(s->t6.back());
@@ -104,6 +111,7 @@ void CTCMode::automaticDispatch()
 
     CTCDispatch train7;
 
+    train7.setCTCMode(m);
     train7.setLine("Green Line");
     train7.setTimeStart(s->t7.front());
     train7.setTimeArrival(s->t7.back());
@@ -113,6 +121,7 @@ void CTCMode::automaticDispatch()
 
     CTCDispatch train8;
 
+    train8.setCTCMode(m);
     train8.setLine("Green Line");
     train8.setTimeStart(s->t8.front());
     train8.setTimeArrival(s->t8.back());
@@ -122,6 +131,7 @@ void CTCMode::automaticDispatch()
 
     CTCDispatch train9;
 
+    train9.setCTCMode(m);
     train9.setLine("Green Line");
     train9.setTimeStart(s->t9.front());
     train9.setTimeArrival(s->t9.back());
@@ -131,6 +141,7 @@ void CTCMode::automaticDispatch()
 
     CTCDispatch train10;
 
+    train10.setCTCMode(m);
     train10.setLine("Green Line");
     train10.setTimeStart(s->t10.front());
     train10.setTimeArrival(s->t10.back());
