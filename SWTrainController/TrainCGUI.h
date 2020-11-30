@@ -34,6 +34,7 @@ public:
     void updateCabin();
     void startMoving();
     void dispatch();
+    void updateStation();
 
 private slots:
     void on_submit_clicked();
