@@ -18,6 +18,14 @@ void TrainModelUI::setTrain(TrainModelMath *trainNew){
     train = trainNew;
 }
 
+void TrainModelUI::setLength(double length){
+    ui->lengthLabel->setText(QString::number(length));
+}
+
+void TrainModelUI::setMass(double weight){
+    ui->massLabel->setText(QString::number(weight/1016));
+}
+
 void TrainModelUI::updatePower(double power){
     ui->powerLabel->setText(QString::number(power));
 }
@@ -60,8 +68,15 @@ void TrainModelUI::updateCabinLights(bool lights){
     ui->cabinLightLabel->setText(lightStr);
 }
 
+void TrainModelUI::updateHeadLights(bool lights){
+    QString lightStr = "Off";
+    if(lights){lightStr = "On";}
+    ui->headlightLabel->setText(lightStr);
+}
+
 void TrainModelUI::updateTemp(int temp){
     ui->tempLabel->setText(QString::number(temp));
+    ui->setTempLabel->setText(QString::number(train->setTemp));
 }
 
 void TrainModelUI::updateHeater(bool heat){
@@ -91,8 +106,15 @@ void TrainModelUI::updateFailureStatus(){
     ui->failStatus->setText(goesIn);
 }
 
-void TrainModelUI::updatePassengers(int numPass){
+void TrainModelUI::updateAnnouncements(std::string str){
+    QString announce = QString::fromStdString(str);
+    ui->announceL->setText(announce);
+}
+
+void TrainModelUI::updatePassengers(int numPass, int depart, int board){
     ui->passengerLabel->setText(QString::number(numPass));
+    ui->departedLabel->setText(QString::number(depart));
+    ui->boardedLabel->setText(QString::number(board));
 }
 
 void TrainModelUI::on_pushButton_clicked()
@@ -113,4 +135,18 @@ void TrainModelUI::on_pushButton_3_clicked()
 void TrainModelUI::on_pushButton_4_clicked()
 {
     train->setFailureStatus(3);
+}
+
+void TrainModelUI::on_pushButton_5_clicked()
+{
+    if((train->setTemp)<85){
+        train->setTemperature((train->setTemp)+1);
+    }
+}
+
+void TrainModelUI::on_pushButton_6_clicked()
+{
+    if((train->setTemp)>60){
+        train->setTemperature((train->setTemp)-1);
+    }
 }

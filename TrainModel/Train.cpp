@@ -120,12 +120,12 @@ bool Train::getServiceBrake(){
 }
 
 void Train::setTemp(int newTemp){
-    controls->setTemp(newTemp);
-    w->updateTemp(controls->getTemp());
+    math->setTemperature(newTemp);
+    w->updateTemp(math->currTemp);
 }
 
 double Train::getTemp(){
-    return controls->temp;
+    return math->currTemp;
 }
 
 void Train::setAC(bool acStatus){
@@ -157,7 +157,11 @@ bool Train::getAdvertisements(){
 
 void Train::setAnnouncements(bool annStatus, string annString){
     controls->toggleAnnouncements(annStatus);
+    if(!(controls->announcementsOn)){
+        controls->setAnn(" ");
+    }
     controls->setAnn(annString);
+    w->updateAnnouncements(annString);
 }
 
 bool Train::getAnnouncements(){
@@ -178,12 +182,17 @@ double Train::getSafeStoppingDistance(){
 
 void Train::updateUI(){
     w->updateNumCars(math->numCars);
+    w->setLength(math->length);
+    w->setMass(math->mass);
     w->updatePower(math->currPower);
     w->updateVelocity(math->currVel);
     w->updateBlockNum(block->blockNum);
     w->updateBlockLength(block->blockDist);
     w->updateBlockGrade(block->blockGrade);
     w->updateFailureStatus();
-    w->updatePassengers(math->passengers);
+    w->updatePassengers(math->passengers, math->passengersDepart, math->passengersBoard);
+    w->updateAC(controls->acOn);
+    w->updateHeater(controls->heaterOn);
+    w->updateTemp(math->currTemp);
 }
 

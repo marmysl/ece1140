@@ -17,7 +17,6 @@ public:
     string announcements = "";
     bool acOn = 0;
     bool heaterOn = 0;
-    int temp = 72;
 
     TrainModelControls();
     void toggleDoor(bool);
@@ -31,8 +30,6 @@ public:
     string getAnn();
     void toggleAC(bool);
     void toggleHeater(bool);
-    void setTemp(int);
-    int getTemp();
 };
 
 #endif // TRAINMODELCONTROLS_H
