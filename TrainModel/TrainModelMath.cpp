@@ -145,8 +145,8 @@ void TrainModelMath::updatePassengers(){
         }
         int transMax = maxPassTotal - passengers;
         int randomPassEntry = rand() % transMax;
-        int passengerBoard = block->getPassengers(randomPassEntry);
-        passengers = passengers + passengerBoard;
+        passengersBoard = block->getPassengers(randomPassEntry);
+        passengers = passengers + passengersBoard;
         mass = (numCars * 56700) + (passengers * 68);
     }
     else if (!(controls->doorLeftOpen) && !(controls->doorRightOpen)){
