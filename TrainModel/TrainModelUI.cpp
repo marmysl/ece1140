@@ -18,6 +18,14 @@ void TrainModelUI::setTrain(TrainModelMath *trainNew){
     train = trainNew;
 }
 
+void TrainModelUI::setLength(double length){
+    ui->lengthLabel->setText(QString::number(length));
+}
+
+void TrainModelUI::setMass(double weight){
+    ui->massLabel->setText(QString::number(weight/1016));
+}
+
 void TrainModelUI::updatePower(double power){
     ui->powerLabel->setText(QString::number(power));
 }

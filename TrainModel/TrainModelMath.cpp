@@ -6,6 +6,7 @@
 TrainModelMath::TrainModelMath(int newNumCars, TrainModelUpdateBlock *newAssigBlock, TrainModelControls *newControl){
     numCars = newNumCars;
     mass = numCars * 56700;
+    length = numCars * 105.6;
     block = newAssigBlock;
     controls = newControl;
     maxPassTotal = numCars * 222;

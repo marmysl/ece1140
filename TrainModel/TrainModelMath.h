@@ -14,6 +14,7 @@ class TrainModelMath
 {
 public:
     int numCars = 3;
+    double length = 0;
     double currVel = 0;
     double currPower = 0;
     double currForce = 0;

@@ -16,6 +16,8 @@ public:
     TrainModelUI(QWidget *parent = nullptr);
     ~TrainModelUI();
     void setTrain(TrainModelMath *trainNew);
+    void setLength(double length);
+    void setMass(double);
     void updatePower(double power);
     void updateVelocity(double currVel);
     void updateBlockNum(int block);

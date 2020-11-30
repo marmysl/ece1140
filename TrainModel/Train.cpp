@@ -182,6 +182,8 @@ double Train::getSafeStoppingDistance(){
 
 void Train::updateUI(){
     w->updateNumCars(math->numCars);
+    w->setLength(math->length);
+    w->setMass(math->mass);
     w->updatePower(math->currPower);
     w->updateVelocity(math->currVel);
     w->updateBlockNum(block->blockNum);
