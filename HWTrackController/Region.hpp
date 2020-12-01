@@ -1,13 +1,13 @@
 #ifndef REGION_H
 #define REGION_H
 
-// The Region class stores all the information about the block that you are currently in ( all blocks can be switched through )
+// The Region class stores all the information about the block that you are currently in ( blocks can be switched through )
 // That information is written and displayed on the Arduino LCD -> Section, Block, Commanded Speed, Authority
 // This class also sends the track circuit information to the Track Signal
 
 #include <string>
 #include <vector>
-
+#include "HardwarePLC.h"
 #include "../TrackModel/tracklayout.hpp"
 #include "../TrackModel/trackmodel_controller.hpp"
 #include "../TrackModel/trackmodel_main.hpp"
@@ -21,7 +21,7 @@ struct BlockInfo
     bool lightColor[2];         // Color of the traffic lights
     float sugSpeed;             // Suggested Speed
     float commSpeed;            // Commanded Speed
-    int auth;                 // Authority
+    int auth;                   // Authority
     bool switchActivated;       // Is the switch activated
     bool crossingActivated;     // Is the crossing (if in the block) activated
     bool occupancy;             // Is the block occupied
@@ -30,28 +30,26 @@ struct BlockInfo
 class Region
 {
 private:
-    int region;                             // Region # : 1
+    HardwarePLC *plc;                       // PLC Object
+    int region;                             // Region # (always 1)
     std::string route;                      // Line
-    int exitBlock;                          // exit block for the region, which will indicate the switch position
-    float suggestedSpeed;                   // Suggested Speed value from CTC
-    int suggestedAuth;                    // Suggested authority value from CTC
-    float speedLimit;                       // Block speed limit picked up from Track Model
-    std::vector<BlockInfo> blocks;          // Vector or block structures containing block information
-    int iterator;                           // for the UI, displaying values on the lcd
+    int exitBlock;                          // Exit block for the region
+    float suggestedSpeed;                   // Suggested Speed
+    int suggestedAuth;                      // Suggested authority
+    float speedLimit;                       // Block speed limit
+    std::vector<BlockInfo> blocks;          // Vector of block structures containing block information
+    int iterator;                           // Current Block for the UI, allows for displaying values on the lcd
 public:
-    Region();                               // Constructor
+    Region(std::string);                                                // Constructor initialized with line
+    void loadPLC(QString);                                              // Load PLC file
 
-    Region(std::vector<std::string> sec,std::vector<int> blc, std::vector<bool> sw, std::vector<bool> rc); // constructor if the SWTC sends layout
+    void initialize(int, float, std::vector<std::pair<int, int>>);     // CTC: sends speed and authority values for region
+    bool detectTrain(int, std::string);                                 // CTC: pick up block occupancy
 
-    void initialize(int, float, std::vector<int>);     //  receive speed and authority from CTC using SWTC class
-    void setCircuit();                      // Track Model: send speed and authority (track circuit information)t iteratorr;
+    void setCircuit();                                              // Track Model: send speed and authority (track circuit information)t iteratorr;
+    float getSpeedLimit() const;                                 // Track Model: pick up speed limit for comparison
 
-    bool detectTrain(int, std::string);     // CTC: pick up block occupancy from Track Model
-    float getSpeedLimit() const;            // Track Model: pick up speed limit for comparison
-
-    //void setSwitch();                     // based on exit block, is the switch activated
-
-    std::string getRoute() const;
+    std::string getRoute() const;                               // Getters
     std::string getSection(int) const;
     int getCurrentBlock() const;
     float getSuggestedSpeed(int) const;
@@ -60,9 +58,7 @@ public:
 
     // get lights
     // update lights
-
-    void setCommandedSpeed(float, int);
-    void setAuthority(float, int);
+    // void setSwitch();
 
 };
 

@@ -1,9 +1,10 @@
 #ifndef HWPLCUI_H
 #define HWPLCUI_H
 
-#include "HardwarePLC.h"
 #include <QDialog>
 #include <QFileDialog>
+
+#include "HWTrackController_main.h"
 
 namespace Ui {
 class HWPLCUI;
@@ -18,12 +19,18 @@ public:
     ~HWPLCUI();
 
 private slots:
-    void on_pushButton_clicked();
 
-    void on_comboBox_currentIndexChanged(int index);
+
+    void on_greenButton_clicked();
+
+    void on_redButton_clicked();
+
+    void on_buttonBox_accepted();
 
 private:
     Ui::HWPLCUI *ui;
+    QString glfilename;
+    QString rlfilename;
 };
 
 #endif // HWPLCUI_H

@@ -13,17 +13,24 @@ HWPLCUI::~HWPLCUI()
     delete ui;
 }
 
-// Select File
-void HWPLCUI::on_pushButton_clicked()
+// Select File for Green Line
+void HWPLCUI::on_greenButton_clicked()
 {
-    QString filename = QFileDialog::getOpenFileName(this, tr("Choose PLC"), QFileInfo().absolutePath(), tr("PLC Files (*.txt)"));
-    ui->fileName->setText(filename);
-
-    //TrackModel::routesToLoad[selectedIndex].layoutFile = fileName;
-    //fileTable.signalChange(selectedIndex);
+    glfilename = QFileDialog::getOpenFileName(this, tr("Choose PLC"), QFileInfo().absolutePath(), tr("PLC Files (*.txt)"));
+    ui->greenFile->setText(glfilename);
 }
 
-void HWPLCUI::on_comboBox_currentIndexChanged(int index)
+// Select File for Red Line
+void HWPLCUI::on_redButton_clicked()
 {
-    // index corresponds to a line, or do QString
+    rlfilename = QFileDialog::getOpenFileName(this, tr("Choose PLC"), QFileInfo().absolutePath(), tr("PLC Files (*.txt)"));
+    ui->redFile->setText(rlfilename);
+}
+
+// Accepting will load + parse PLC file for respective lines
+void HWPLCUI::on_buttonBox_accepted()
+{
+   if (!glfilename.isEmpty()) { greenreg.loadPLC(glfilename);  }
+   else if (!rlfilename.isEmpty()) { redreg.loadPLC(rlfilename); }
+   close();
 }

@@ -29,7 +29,56 @@
     <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
    </property>
   </widget>
-  <widget class="QPushButton" name="pushButton">
+  <widget class="QPushButton" name="greenButton">
+   <property name="geometry">
+    <rect>
+     <x>30</x>
+     <y>70</y>
+     <width>91</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Select File...</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="greenLabel">
+   <property name="geometry">
+    <rect>
+     <x>30</x>
+     <y>40</y>
+     <width>261</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Select PLC File for Green Line HW Track Controller:</string>
+   </property>
+  </widget>
+  <widget class="QLineEdit" name="greenFile">
+   <property name="geometry">
+    <rect>
+     <x>130</x>
+     <y>70</y>
+     <width>241</width>
+     <height>21</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QLabel" name="redLabel">
+   <property name="geometry">
+    <rect>
+     <x>30</x>
+     <y>130</y>
+     <width>261</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Select PLC File for Red Line HW Track Controller:</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="redButton">
    <property name="geometry">
     <rect>
      <x>30</x>
@@ -42,50 +91,7 @@
     <string>Select File...</string>
    </property>
   </widget>
-  <widget class="QComboBox" name="comboBox">
-   <property name="geometry">
-    <rect>
-     <x>180</x>
-     <y>100</y>
-     <width>191</width>
-     <height>22</height>
-    </rect>
-   </property>
-   <item>
-    <property name="text">
-     <string>Green TC1</string>
-    </property>
-   </item>
-   <item>
-    <property name="text">
-     <string>Red TC1</string>
-    </property>
-   </item>
-   <item>
-    <property name="text">
-     <string>Blue TC1</string>
-    </property>
-   </item>
-   <item>
-    <property name="text">
-     <string>Purple TC1</string>
-    </property>
-   </item>
-  </widget>
-  <widget class="QLabel" name="label">
-   <property name="geometry">
-    <rect>
-     <x>30</x>
-     <y>100</y>
-     <width>171</width>
-     <height>21</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>Choose HW Track Controller:</string>
-   </property>
-  </widget>
-  <widget class="QLineEdit" name="fileName">
+  <widget class="QLineEdit" name="redFile">
    <property name="geometry">
     <rect>
      <x>130</x>

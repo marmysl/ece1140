@@ -23,6 +23,7 @@ Block* blk5 = blk6 -> prevBlock;*/
 
 void CTCDispatch::setAuthority()
 {
+<<<<<<< HEAD
         TrackModel::TrainPathInfo route;
         route = findRoute();
 
@@ -32,6 +33,23 @@ void CTCDispatch::setAuthority()
             auth--;
             qDebug() << "Set Authority at Block " << val->id << ": " << QString::number(auth);
         }
+=======
+    TrackModel::TrainPathInfo route;
+    route = findRoute();
+
+    int auth = route.blocks.size();
+    for(auto val : route.blocks){
+                //set block number
+                //then the auth
+                //authority.push_back.first(val)
+                //authority.push_back.second(auth)
+                //ORRRRR
+                //authority.push_back(val, auth)
+          authority.push_back(std::make_pair(val->id, auth));
+          auth--;
+          qDebug() << "Set Authority at Block " << val->id << ": " << QString::number(auth);
+     }
+>>>>>>> 9333979... bigger region and PLC parser
 }
 
 void CTCDispatch::setSpeed(float timeStart, float timeArrival)
@@ -189,6 +207,14 @@ void CTCDispatch::sendTrackController(){
 
       alertWaysideSystem(line, wayside_sig);
     //initializeHW(ctc);
+
+    // Choose the correct HW Track Controller to instantiate
+    if (line == "Green Line") {
+        greenreg.initialize(endblock, speed, authority);
+    } else if (line == "Red Line") {
+        redreg.initialize(endblock, speed, authority);
+    }
+
 }
 
 CTCMode* CTCDispatch::getCTCMode()

@@ -4,13 +4,15 @@
 #include <vector>
 #include <cstdint>
 
-#include "HWTrackController.hpp"
 #include "HWTrackController_main.h"
+#include "HWTrackController.hpp"
 #include "hwplcui.h"
+#include "CTCOffice/ctcoffice/CTCDispatch.h"
 
 using namespace std;
 
-Region reg;
+Region greenreg = Region("Green Line");
+Region redreg = Region("Red Line");
 
 int init_HWTrackController() {
     HWTrackController* obj = new HWTrackController();

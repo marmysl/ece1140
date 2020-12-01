@@ -3,6 +3,10 @@
 
 #include <string>
 #include <vector>
+#include <fstream>
+#include <iostream>
+#include <sstream>
+#include <QFileInfo>
 
 class HardwarePLC {
     private:
@@ -10,7 +14,7 @@ class HardwarePLC {
        std::vector<std::string> outputs;
     public:
        HardwarePLC();
-       bool interpretHWPLC(std::string);
+       void interpretHWPLC(QString);
        void setCondition(std::vector<std::string>);
        void setResult(std::vector<std::string>);
        std::vector<std::string> getConditions();

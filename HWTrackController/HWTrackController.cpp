@@ -71,24 +71,24 @@ void HWTrackController::writeData()
 
     string outgoing_s = "";
 
-    outgoing_s += to_string(reg.detectTrain(reg.getCurrentBlock(), reg.getRoute()));
+    outgoing_s += to_string(greenreg.detectTrain(greenreg.getCurrentBlock(), greenreg.getRoute()));
 
-    outgoing_s += reg.getSection(reg.getCurrentBlock());
+    outgoing_s += greenreg.getSection(greenreg.getCurrentBlock());
 
-    if (reg.getCurrentBlock() < 10) {
+    if (greenreg.getCurrentBlock() < 10) {
         outgoing_s += "0";
-        outgoing_s += to_string(reg.getCurrentBlock());
+        outgoing_s += to_string(greenreg.getCurrentBlock());
     } else {
-         outgoing_s += reg.getCurrentBlock();
+         outgoing_s += greenreg.getCurrentBlock();
     }
 
-    string suggestedSpeed(to_string(reg.getSuggestedSpeed(reg.getCurrentBlock())), 0, 4);
+    string suggestedSpeed(to_string(greenreg.getSuggestedSpeed(greenreg.getCurrentBlock())), 0, 4);
     outgoing_s += suggestedSpeed;
 
-    string commandedSpeed(to_string(reg.getCommandedSpeed(reg.getCurrentBlock())), 0, 4);
+    string commandedSpeed(to_string(greenreg.getCommandedSpeed(greenreg.getCurrentBlock())), 0, 4);
     outgoing_s += commandedSpeed;
 
-    string authority(to_string(reg.getAuthority(reg.getCurrentBlock())),0,4);
+    string authority(to_string(greenreg.getAuthority(greenreg.getCurrentBlock())),0,4);
     outgoing_s += authority;
 
     string lights = "00";

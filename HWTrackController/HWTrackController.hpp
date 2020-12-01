@@ -1,12 +1,12 @@
 #ifndef HWTRACKCONTROLLER_H
 #define HWTRACKCONTROLLER_H
 
-#include "hw_sw_interfaces.h"
-
 #include <iostream>
 #include <stdio.h>
 #include <string>
 #include <QObject>
+
+#include "hw_sw_interfaces.h"
 #include "HWTrackController_main.h"
 #include "SerialPort.hpp"
 

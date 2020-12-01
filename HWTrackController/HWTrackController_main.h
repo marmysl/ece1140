@@ -4,10 +4,11 @@
 #include <vector>
 #include <iostream>
 #include <string>
-#include "../SWTrackController/CTCSignals.h"
+
 #include "Region.hpp"
 
-extern Region reg;
+extern Region greenreg;
+extern Region redreg;
 
 int init_HWTrackController();
 
