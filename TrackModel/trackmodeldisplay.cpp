@@ -194,6 +194,7 @@ void TrackModelDisplay::on_applyFaultsButton_clicked()
 
 void TrackModelDisplay::on_reloadLayoutButton_clicked()
 {
+    TrackModel::changeLayouts();
     TrackModel::initializeTrackModel();
 }
 
