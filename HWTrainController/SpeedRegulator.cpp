@@ -70,7 +70,7 @@ double SpeedRegulator::powerFormula()
     if(powerCmd <= maxPower) uk = uk_1 + (T/2)*(ek + ek_1);
     else uk = uk_1;
 
-    //Calculate the power command
+    //Calculate the power command in watts
     power = (Kp * ek) + (Ki * uk);
 
     //Set ek_1 = ek for next power command calculation
@@ -102,18 +102,20 @@ void SpeedRegulator::calcPowerCmd()
         else pullEmergencyBrake();
 
         //Sends power command to the trainModel (needs conversion kW => W)
-        if(powerCmd <= 120 && powerCmd >= -120)
+        if(powerCmd <= 120000 && powerCmd >= -120000)
         {
-            trainModel -> setPower(powerCmd*1000);
+            trainModel -> setPower(powerCmd);
+            if(trainModel -> getPower() == 0 && powerCmd != 0) setFailureCode(2);
         }
-        else if(powerCmd < -120)
+        else if(powerCmd < -120000)
         {
-            trainModel -> setPower(-120*1000);
-
+            trainModel -> setPower(-120000);
+            if(trainModel -> getPower() == 0 && powerCmd != 0) setFailureCode(2);
         }
         else
         {
-            trainModel -> setPower(120*1000);
+            trainModel -> setPower(120000);
+            if(trainModel -> getPower() == 0 && powerCmd != 0) setFailureCode(2);
         }
 
         std::cout << powerCmd << std::endl;
@@ -248,7 +250,9 @@ void SpeedRegulator::decodeTrackCircuit()
 
     //Decode the track circuit data
     commandedSpeed = (trainModel -> sendTrackCircuit() >> 32) / 4096;
-    authority = (trainModel -> sendTrackCircuit() & 0xffffffff) / 4096;
+    authority = (trainModel -> sendTrackCircuit() & 0xffffffff);
+
+    std::cout << trainModel -> sendTrackCircuit() << std::endl;
 }
 
 double SpeedRegulator::getCommandedSpeed()

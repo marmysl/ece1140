@@ -27,7 +27,6 @@ class TrainController : public QObject, public ITrainController
         SpeedRegulator *speedRegulator;
         BeaconDecoder *beacon;
         CTCMode *mode;
-
         bool stopTimerStarted;
         bool stopAlreadyOccurred;
         QDateTime start;
@@ -46,6 +45,16 @@ class TrainController : public QObject, public ITrainController
 
         //Method that updates the Beacon Data as the train traverses blocks
         void updateBeaconData(std::string headlights);
+
+        //Accessor methods
+        Train* getTrainModel();
+        SpeedRegulator* getSpeedRegulator();
+        BeaconDecoder* getBeaconDecoder();
+        CTCMode* getCTCMode();
+
+        //Methods used for testing
+        std::string writeDataSim();
+        void receiveDataSim(std::string simData);
 
     public slots:
 
