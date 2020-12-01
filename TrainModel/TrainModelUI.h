@@ -20,6 +20,8 @@ public:
     void setMass(double);
     void updatePower(double power);
     void updateVelocity(double currVel);
+    void updateForce(double);
+    void updateAccel(double);
     void updateBlockNum(int block);
     void updateBlockLength(double length);
     void updateBlockGrade(double grade);

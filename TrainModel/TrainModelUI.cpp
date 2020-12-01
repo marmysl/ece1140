@@ -34,6 +34,14 @@ void TrainModelUI::updateVelocity(double currVel){
     ui->velLabel->setText(QString::number(currVel*2.237));
 }
 
+void TrainModelUI::updateAccel(double currAccel){
+    ui->accelLabel->setText(QString::number(currAccel*3.281));
+}
+
+void TrainModelUI::updateForce(double currForce){
+    ui->forceLabel->setText(QString::number(currForce));
+}
+
 void TrainModelUI::updateBlockNum(int block){
     ui->blockNumLabel->setText(QString::number(block));
 }
