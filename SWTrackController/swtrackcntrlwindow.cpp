@@ -15,7 +15,7 @@ SWTrackCntrlWindow::SWTrackCntrlWindow(QWidget *parent) :
     PLCfile_present = false;
     ui->CancelButton->hide();
 
-    counter = 0;
+    timerActive = false;
 
 }
 
@@ -130,9 +130,9 @@ void SWTrackCntrlWindow::on_uploadButton_clicked()
      ui->UploadPLCFrame->hide();
      ui->mainWindow->show();
 
-     if (counter == 0) {
-         timerID = startTimer(10, Qt::TimerType::CoarseTimer);
-         counter = 1;
+     if (!timerActive) {
+         timerID = startTimer(100, Qt::TimerType::CoarseTimer);
+         timerActive = true;
      }
 
 }

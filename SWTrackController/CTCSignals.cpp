@@ -88,7 +88,7 @@ void CTCSignals::setUpExits() {
 
     div_exit.push_back(std::make_pair(11, 5));
 
-    div_exit.push_back(std::make_pair(0, 63));
+    div_exit.push_back(std::make_pair(64, 63));
     div_exit.push_back(std::make_pair(101, 77));
     div_exit.push_back(std::make_pair(100, 85));
     div_exit.push_back(std::make_pair(150, 28));
@@ -103,22 +103,22 @@ void CTCSignals::setUpExits() {
     div_exit.push_back(std::make_pair(67, 44));
     div_exit.push_back(std::make_pair(66, 52));
 
-    div_exit.push_back(std::make_pair(6, 5));
+    str_exit.push_back(std::make_pair(6, 5));
 
-    div_exit.push_back(std::make_pair(64, 63));
-    div_exit.push_back(std::make_pair(78, 77));
-    div_exit.push_back(std::make_pair(86, 85));
-    div_exit.push_back(std::make_pair(29, 28));
-    div_exit.push_back(std::make_pair(14, 13));
-    div_exit.push_back(std::make_pair(58, 57));
+    str_exit.push_back(std::make_pair(0, 63));
+    str_exit.push_back(std::make_pair(78, 77));
+    str_exit.push_back(std::make_pair(86, 85));
+    str_exit.push_back(std::make_pair(29, 28));
+    str_exit.push_back(std::make_pair(14, 13));
+    str_exit.push_back(std::make_pair(58, 57));
 
-    div_exit.push_back(std::make_pair(1, 16));
-    div_exit.push_back(std::make_pair(10, 9));
-    div_exit.push_back(std::make_pair(28, 27));
-    div_exit.push_back(std::make_pair(34, 33));
-    div_exit.push_back(std::make_pair(39, 38));
-    div_exit.push_back(std::make_pair(45, 44));
-    div_exit.push_back(std::make_pair(53, 52));
+    str_exit.push_back(std::make_pair(1, 16));
+    str_exit.push_back(std::make_pair(10, 9));
+    str_exit.push_back(std::make_pair(28, 27));
+    str_exit.push_back(std::make_pair(34, 33));
+    str_exit.push_back(std::make_pair(39, 38));
+    str_exit.push_back(std::make_pair(45, 44));
+    str_exit.push_back(std::make_pair(53, 52));
 }
 
 /*int CTCSignals::getWaysideID(int block_id) {
@@ -177,6 +177,12 @@ void CTCSignals::setExitBlocks(std::vector< std::pair<int, TrackModel::SwitchSta
 
     int temp_blockid;
     auto i = states.begin();
+    if (states.empty()) {
+        for (int m = 0; m < 23; m++) {
+            exit_id.push_back( std::make_pair(switch_id[m].first, str_exit[m].first));
+        }
+    }
+    else {
     temp_blockid = i->first;
     if (temp_blockid == 1) {
         if ((i ->second) == TrackModel::SwitchState::SW_DIVERGING) {
@@ -213,6 +219,8 @@ void CTCSignals::setExitBlocks(std::vector< std::pair<int, TrackModel::SwitchSta
         }
 
     }
+    }
+
     }
 
 

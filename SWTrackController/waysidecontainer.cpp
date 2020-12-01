@@ -161,7 +161,7 @@ WaysideContainer::WaysideContainer(int count)
                 b13.push_back(i);
             }
 
-            int sw1[4] = {63, 64, 0, 0};
+            int sw1[4] = {63, 0, 64, 0};
             int sw2[4] = {77, 78, 101, 0};
             int sw3[4] = {85, 86, 100, 0};
             int sw4[4] = {28, 29, 150, 0};

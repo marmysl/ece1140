@@ -31,7 +31,7 @@ public:
     std::string filename, filename2;
     //void myTimer();
     int timerID;
-    int counter;
+    bool timerActive;
     //QTimer *my_timer;
 
 

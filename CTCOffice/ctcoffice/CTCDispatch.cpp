@@ -207,12 +207,12 @@ void CTCDispatch::sendTrackController(CTCSignals &ctc){
         ctc.setAuthority(line, authority);
 
         std::vector< std::pair<int, TrackModel::SwitchState> > temp_sw;
-        temp_sw.push_back(make_pair(1, TrackModel::SwitchState::SW_DIVERGING));
+        temp_sw.push_back(make_pair(63, TrackModel::SwitchState::SW_STRAIGHT));
 
         TrackModel::TrainPathInfo rte;
         rte = findRoute();
 
-        ctc.setExitBlocks(rte.switchStates);
+        ctc.setExitBlocks(temp_sw);
 
 
     alertWaysideSystem(line, ctc);
