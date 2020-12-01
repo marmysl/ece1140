@@ -163,7 +163,7 @@ void TrainControlWindow :: updateSpeed()
     ui->setpointSpeed_->setText(QString::number(swtc.getSetpointSpeed() / 1.609));
 
     // if the setpoint speed exceeds the max speed of the train, add UI message
-    if (swtc.getSetpointSpeed() > 19.4444){
+    if (swtc.getSetpointSpeed() > 70.0){
         ui->setpointexceeds_->setText("Setpoint exceeds max train speed!");
     } else {
         ui->setpointexceeds_->setText("");
