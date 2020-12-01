@@ -1,8 +1,8 @@
+#include <vector>
+#include <string>
 #include "HardwarePLC.h"
 
 HardwarePLC::HardwarePLC(){
-    // take file and store it in string
-
 }
 
 void HardwarePLC::interpretHWPLC(QString path){
@@ -10,15 +10,17 @@ void HardwarePLC::interpretHWPLC(QString path){
     // variables to store conditions and outputs without overwriting current program
     std::vector<std::string> tempcond;
     std::vector<std::string> tempops;
+    std::vector<int> tempblcs;
 
+    // open and read from file
     std::ifstream plcprogram;
     QFileInfo lfInfo(path);
     plcprogram.open(lfInfo.absoluteFilePath().toStdString(), std::ios::in);
 
     if( !plcprogram.is_open() ) throw std::invalid_argument ("Unable to open PLC file");
 
+    // read line by line
     std::string line;
-
     while( getline(plcprogram, line) ) {
 
         std::stringstream linestream(line);
@@ -29,7 +31,7 @@ void HardwarePLC::interpretHWPLC(QString path){
         std::string then;
         std::string result;
 
-        std::cout << "PLC: " << line << std::endl;
+        std::cout << line << std::endl;
 
         std::getline(linestream, conditional, ' ');
         if (conditional != "IF") throw std::invalid_argument ("PLC File is not formatted correctly");
@@ -40,7 +42,16 @@ void HardwarePLC::interpretHWPLC(QString path){
         }
 
         linestream >> blockNum;
-        // does blockNum exist in this program
+
+        // check if this block exists
+        bool validID;
+        std::vector<int> greenb{0,60,61,62,63,64,65,66,67,68,69,70,71,72,73,74};
+        for (unsigned int i = 0; i < greenb.size(); i++) {
+            if (blockNum == greenb[i]) validID = 1;
+        }
+        if (validID != 1) throw std::invalid_argument ("Undefined block in PLC file");
+
+        tempblcs.push_back(blockNum);
 
         std::getline(linestream, space, ' ');
 
@@ -52,14 +63,27 @@ void HardwarePLC::interpretHWPLC(QString path){
             tempcond.push_back(condition);
         }
     }
+
+    // If valid, then temporary conditions and outputs are stored in the conditions and outputs vectors
+    setCondition(tempcond);
+    setResult(tempops);
+    setBlocks(tempblcs);
 }
 
 void HardwarePLC::setCondition(std::vector<std::string> newcond){
-    conditions = newcond;
+    for (unsigned int i = 0; i < newcond.size(); i++) {
+          conditions.push_back(newcond[i]);
+    }
 }
 
 void HardwarePLC::setResult(std::vector<std::string> newops){
-    outputs = newops;
+    for (unsigned int i = 0; i < newops.size(); i++)
+        outputs.push_back(newops[i]);
+}
+
+void HardwarePLC::setBlocks(std::vector<int> newblcs){
+    for (unsigned int i = 0; i < newblcs.size(); i++)
+        blockIDs.push_back(newblcs[i]);
 }
 
 std::vector<std::string> HardwarePLC::getConditions(){
@@ -68,6 +92,10 @@ std::vector<std::string> HardwarePLC::getConditions(){
 
 std::vector<std::string> HardwarePLC::getOutputs(){
     return outputs;
+}
+
+std::vector<int> HardwarePLC::getBlocks(){
+    return blockIDs;
 }
 
 

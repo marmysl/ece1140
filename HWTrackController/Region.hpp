@@ -5,6 +5,10 @@
 // That information is written and displayed on the Arduino LCD -> Section, Block, Commanded Speed, Authority
 // This class also sends the track circuit information to the Track Signal
 
+#include <QTimer>
+#include <QObject>
+
+
 #include <string>
 #include <vector>
 #include "HardwarePLC.h"
@@ -25,12 +29,16 @@ struct BlockInfo
     bool switchActivated;       // Is the switch activated
     bool crossingActivated;     // Is the crossing (if in the block) activated
     bool occupancy;             // Is the block occupied
+    bool failure;               // Is there a failure (broken rail)
 };
 
 class Region
 {
+protected:
+    void timerEvent(QTimerEvent *event);
 private:
-    HardwarePLC *plc;                       // PLC Object
+    int timerID;
+    HardwarePLC *plc = new HardwarePLC();   // PLC Object
     int region;                             // Region # (always 1)
     std::string route;                      // Line
     int exitBlock;                          // Exit block for the region
@@ -42,12 +50,14 @@ private:
 public:
     Region(std::string);                                                // Constructor initialized with line
     void loadPLC(QString);                                              // Load PLC file
+    void runPLC();
 
     void initialize(int, float, std::vector<std::pair<int, int>>);     // CTC: sends speed and authority values for region
     bool detectTrain(int, std::string);                                 // CTC: pick up block occupancy
 
     void setCircuit();                                              // Track Model: send speed and authority (track circuit information)t iteratorr;
     float getSpeedLimit() const;                                 // Track Model: pick up speed limit for comparison
+    bool detectFailure(int, std::string);                            // Track Model: pick up broken rail failure
 
     std::string getRoute() const;                               // Getters
     std::string getSection(int) const;

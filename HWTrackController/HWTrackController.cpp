@@ -8,7 +8,6 @@
 
 HWTrackController::HWTrackController()
 {
-    std::cout << "here" << std::endl;
     cout.flush();
 
     writeTimer = new QTimer(this);
@@ -38,20 +37,17 @@ void HWTrackController::recieveData( char *buf, qint64 len )
         std::cout << "Incoming Track Controller: " << data << std::endl;
 
         /*
-         * Char 0-1 = Block Number (int)
-         * Char 2 = Manual Switch : 0 or 1
-         * Char 3 = Railway Switches Switch : 0 or 1
-         * Char 4 = Railway Crossing Switch : 0 or 1
-         * Char 5-6 = Color of the Lights : 00, 01, 10 (green, yellow, red)
-         * Char 7 = State of the PLC Button: 0 or 1
-         * Char 8 = State of the View Track Button: 0 or 1
-         * Char 9-10 = Joystick: 00 (left), 01 (right), 10 (up), 11 (down)
-         * Char 11 = newline char
+         * Char 0 = Joystick left
+         * Char 1 = Joystick right
+         * Char 2 = Manually change Switch Position: 0 or 1
+         * Char 3 = Manually activate railway crossing: 0 or 1
+         * Char 4 = Update PLC Button: 0 or 1
          */
 
-        if(data.length() == 12)
+        if(data.length() == 5)
         {
             std::cout << "Incoming Track Controller: " << data << std::endl;
+
         }
     }
 }
@@ -66,40 +62,75 @@ void HWTrackController::writeData()
      * Char 8-11 = Commanded Speed
      * Char 12-15 = Authority
      * Char 16-17 = Lights
+     * Char 18 = Failure Alert
      * Last character is a newline
      */
 
     string outgoing_s = "";
 
-    outgoing_s += to_string(greenreg.detectTrain(greenreg.getCurrentBlock(), greenreg.getRoute()));
+    // if (route = "Green Line") {
+            int b = greenreg.getCurrentBlock();
 
-    outgoing_s += greenreg.getSection(greenreg.getCurrentBlock());
+            outgoing_s += to_string(greenreg.detectTrain(b, greenreg.getRoute()));
 
-    if (greenreg.getCurrentBlock() < 10) {
-        outgoing_s += "0";
-        outgoing_s += to_string(greenreg.getCurrentBlock());
-    } else {
-         outgoing_s += greenreg.getCurrentBlock();
-    }
+            outgoing_s += greenreg.getSection(b);
 
-    string suggestedSpeed(to_string(greenreg.getSuggestedSpeed(greenreg.getCurrentBlock())), 0, 4);
-    outgoing_s += suggestedSpeed;
+            if (b < 10) {
+                outgoing_s += "0";
+                outgoing_s += to_string(b);
+            } else {
+                 outgoing_s += b;
+            }
 
-    string commandedSpeed(to_string(greenreg.getCommandedSpeed(greenreg.getCurrentBlock())), 0, 4);
-    outgoing_s += commandedSpeed;
+            string suggestedSpeed(to_string(greenreg.getSuggestedSpeed(b)),0,4);
+            outgoing_s += suggestedSpeed;
 
-    string authority(to_string(greenreg.getAuthority(greenreg.getCurrentBlock())),0,4);
-    outgoing_s += authority;
+            string commandedSpeed(to_string(greenreg.getCommandedSpeed(b)),0,4);
+            outgoing_s += commandedSpeed;
 
-    string lights = "00";
-    outgoing_s += lights;
+            string authority(to_string(greenreg.getAuthority(b)),0,4);
+            outgoing_s += authority;
 
-    outgoing_s += "\n";
+            string lights = "00"; // from the PLC
+            outgoing_s += lights;
 
-    //std::cout << "Outgoing Track Controller: " << outgoing_s << std::endl;
-    //cout.flush();
+            outgoing_s += to_string(greenreg.detectFailure(b, greenreg.getRoute()));
+
+            outgoing_s += "\n";
+    //}
+
+        /*
+         if (route = "Red Line") {
+            outgoing_s += to_string(redreg.detectTrain(redreg.getCurrentBlock(), redreg.getRoute()));
+
+            outgoing_s += redreg.getSection(redreg.getCurrentBlock());
+
+            if (redreg.getCurrentBlock() < 10) {
+                outgoing_s += "0";
+                outgoing_s += to_string(redreg.getCurrentBlock());
+            } else {
+                 outgoing_s += redreg.getCurrentBlock();
+            }
+
+            string suggestedSpeed(to_string(redreg.getSuggestedSpeed(redreg.getCurrentBlock())), 0, 4);
+            outgoing_s += suggestedSpeed;
+
+            string commandedSpeed(to_string(redreg.getCommandedSpeed(redreg.getCurrentBlock())), 0, 4);
+            outgoing_s += commandedSpeed;
+
+            string authority(to_string(redreg.getAuthority(redreg.getCurrentBlock())),0,4);
+            outgoing_s += authority;
+
+            string lights = "00";
+            outgoing_s += lights;
+
+            outgoing_s += "\n";
+        } */
+
+    outgoing_s = "1A690.140.1411.0101";
+    // std::cout << "Outgoing Track Controller: " << outgoing_s << std::endl;
+    cout.flush();
 
     strcpy(outgoingData, outgoing_s.c_str());
-
     trackControllerPort.writeString(outgoing_s);
 }

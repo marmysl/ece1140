@@ -1,6 +1,7 @@
 #include <iostream>
 #include <iomanip>
 #include <cstdint>
+#include <QTimer>
 #include "Region.hpp"
 
 using namespace std;
@@ -59,6 +60,7 @@ Region :: Region(std::string line) {
         b.switchActivated = 0;        // if there is no switch at the block, this value is ignored
         b.crossingActivated = 0;      // if there is no crossing at the block, this value is ignored
         b.occupancy = 0;
+        b.failure = 0;
 
         blocks.push_back(b);          // block structures sent to vector of all blocks
    }
@@ -69,6 +71,30 @@ Region :: Region(std::string line) {
 // Load the PLC file and parse it
 void Region::loadPLC(QString filename) {
     plc->interpretHWPLC(filename);
+}
+
+void Region::runPLC() {
+    std::vector<std::string> conds = plc->getConditions();
+    std::vector<std::string> ops = plc->getOutputs();
+    std::vector<int> blcs = plc->getBlocks();
+
+    // Auto switches
+    for (unsigned int i = 0; i < blcs.size(); i++) {
+        // Condition if block should be occupied
+        if (conds[i].at(0) != '!') {
+            // Check that block is occupied
+            if (detectTrain(blcs[i],route) == 1) {
+                // If occupied, check output condition
+                if (ops[i].at(0) != '!') {
+                    // switch should be activated (diverging)
+                    TrackModel::setSwitchState(route,63,static_cast<TrackModel::SwitchState>(1));
+                } else {
+                    // switch should be at default (normal)
+                    TrackModel::setSwitchState(route,63,static_cast<TrackModel::SwitchState>(0));
+                }
+            }
+        }
+    }
 }
 
 /* CTC METHODS */
@@ -97,8 +123,19 @@ void Region :: initialize(int db, float ss, std::vector<std::pair<int,int>> ac) 
 
 // Pick up track occupancy of block on desired line
 bool Region :: detectTrain(int b, string line) {
-    blocks[b].occupancy = TrackModel::isBlockOccupied(line, b);
-    return blocks[b].occupancy;
+    int loc;
+
+    if (line == "Green Line") {
+        if (b == 0) { loc = 0; }
+        else { loc = b - 59; } // Track Controller specific solution
+    }
+
+    if (line == "Red Line") {
+        loc = 0;
+    }
+
+    blocks[loc].occupancy = TrackModel::isBlockOccupied(line, b);
+    return blocks[loc].occupancy;
 }
 
 /* TRACK MODEL METHODS */
@@ -119,6 +156,15 @@ void Region :: setCircuit() {
         TrackModel::setTrackCircuit(route, blocks[i].blockID, tcdata);
 
     }
+}
+
+// Get Failures
+bool Region :: detectFailure(int b, string line) {
+    int val = TrackModel::getFaults(line, b);
+    if (val != 0) {
+        blocks[b].failure = 1;
+    }
+    return blocks[b].failure;
 }
 
 /* GETTERS: INTERNAL METHODS */
@@ -146,4 +192,3 @@ float Region::getCommandedSpeed(int b) const { // Commanded Speed
 float Region::getAuthority(int b) const{ // Authority
     return blocks[b].auth;
 }
-
