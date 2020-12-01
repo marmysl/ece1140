@@ -6,6 +6,7 @@
 #include <string>
 
 #include "Region.hpp"
+#include "HWTrackController.hpp"
 
 extern Region greenreg;
 extern Region redreg;

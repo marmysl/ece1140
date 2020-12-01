@@ -1,14 +1,14 @@
 #include <iostream>
 #include <iomanip>
 #include <cstdint>
-#include <QTimer>
+#include <QString>
 #include "Region.hpp"
 
 using namespace std;
 
-// Constructor
-Region :: Region(std::string line) {
-
+/* CONSTRUCTOR */
+//---------------------------------------------------------------------------------
+Region::Region(std::string line) {
     // Block Struct set up
     iterator = 0;
     region = 1;
@@ -69,28 +69,39 @@ Region :: Region(std::string line) {
 /* PLC METHODS */
 //---------------------------------------------------------------------------------
 // Load the PLC file and parse it
-void Region::loadPLC(QString filename) {
-    plc->interpretHWPLC(filename);
+bool Region::loadPLC(QString filename) {
+    success = plc->interpretHWPLC(filename);
+    return success;
 }
 
 void Region::runPLC() {
     std::vector<std::string> conds = plc->getConditions();
-    std::vector<std::string> ops = plc->getOutputs();
+    std::vector<std::string> opts = plc->getOutputs();
     std::vector<int> blcs = plc->getBlocks();
+    std::vector<int> opbcs = plc->getOutputBlocks();
 
     // Auto switches
     for (unsigned int i = 0; i < blcs.size(); i++) {
         // Condition if block should be occupied
-        if (conds[i].at(0) != '!') {
-            // Check that block is occupied
-            if (detectTrain(blcs[i],route) == 1) {
-                // If occupied, check output condition
-                if (ops[i].at(0) != '!') {
+        if (conds[i].at(0) == '!') {
+            // Check that block is not occupied, default is that yard is always connected (don't care condition)
+            if (detectTrain(blcs[i], getRoute()) == 0) {
+                if (opts[i].at(0) == 's') {
                     // switch should be activated (diverging)
-                    TrackModel::setSwitchState(route,63,static_cast<TrackModel::SwitchState>(1));
+                    TrackModel::setSwitchState(route,opbcs[i],static_cast<TrackModel::SwitchState>(1));
                 } else {
                     // switch should be at default (normal)
-                    TrackModel::setSwitchState(route,63,static_cast<TrackModel::SwitchState>(0));
+                    TrackModel::setSwitchState(route,opbcs[i],static_cast<TrackModel::SwitchState>(0));
+                }
+            }
+        } else {
+            if (detectTrain(blcs[i], getRoute()) == 1) {
+                if (opts[i].at(0) != '!') {
+                    // switch should be activated (diverging)
+                    TrackModel::setSwitchState(route,opbcs[i],static_cast<TrackModel::SwitchState>(1));
+                } else {
+                    // switch should be at default (normal)
+                    TrackModel::setSwitchState(route,opbcs[i],static_cast<TrackModel::SwitchState>(0));
                 }
             }
         }
@@ -104,7 +115,6 @@ void Region :: initialize(int db, float ss, std::vector<std::pair<int,int>> ac) 
 
     // assign speed, authority, and exit block
     exitBlock = db;
-    std::cout << "exit block number is " << exitBlock << std::endl;
 
    for (unsigned int j = 0; j < blocks.size(); j++) {
         for (unsigned int i = 0; i < ac.size(); i++) {
@@ -118,7 +128,6 @@ void Region :: initialize(int db, float ss, std::vector<std::pair<int,int>> ac) 
 
     // relay information to Track Model
     setCircuit();
-
 }
 
 // Pick up track occupancy of block on desired line
@@ -154,21 +163,31 @@ void Region :: setCircuit() {
         TrackModel::TrackCircuitData tcdata = TrackModel::TrackCircuitData::fromFloat(blocks[i].commSpeed,blocks[i].auth);
         std::cout << "Setting Track Circuit: Block " << blocks[i].blockID << ", Speed set to " <<  blocks[i].commSpeed << ", Authority set to " << blocks[i].auth << std::endl;
         TrackModel::setTrackCircuit(route, blocks[i].blockID, tcdata);
-
-    }
-}
+}}
 
 // Get Failures
 bool Region :: detectFailure(int b, string line) {
     int val = TrackModel::getFaults(line, b);
-    if (val != 0) {
-        blocks[b].failure = 1;
+    int loc;
+
+    if (line == "Green Line") {
+        if (b == 0) { loc = 0; }
+        else { loc = b - 59; } // Track Controller specific solution
     }
-    return blocks[b].failure;
+    if (line == "Red Line") { loc = 0; }
+
+    if (val != 0) { blocks[loc].failure = 1; }
+    return blocks[loc].failure;
 }
 
-/* GETTERS: INTERNAL METHODS */
+/* GETTERS AND MISCELLANEOUS INTERNAL METHODS */
 //---------------------------------------------------------------------------------
+//void Region::timerEvent(QTimerEvent *event) {
+//    if (success == 1) {
+//        runPLC();
+//    }
+//}
+
 std::string Region::getRoute() const {  // Line
     return route;
 }
@@ -192,3 +211,5 @@ float Region::getCommandedSpeed(int b) const { // Commanded Speed
 float Region::getAuthority(int b) const{ // Authority
     return blocks[b].auth;
 }
+
+

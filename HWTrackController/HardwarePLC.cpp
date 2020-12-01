@@ -5,12 +5,15 @@
 HardwarePLC::HardwarePLC(){
 }
 
-void HardwarePLC::interpretHWPLC(QString path){
+bool HardwarePLC::interpretHWPLC(QString path){
+    // is upload successful
+    bool success = 0;
 
     // variables to store conditions and outputs without overwriting current program
     std::vector<std::string> tempcond;
     std::vector<std::string> tempops;
     std::vector<int> tempblcs;
+    std::vector<int> tempopblcs;
 
     // open and read from file
     std::ifstream plcprogram;
@@ -30,6 +33,7 @@ void HardwarePLC::interpretHWPLC(QString path){
         std::string space;
         std::string then;
         std::string result;
+        int outputBlock;
 
         std::cout << line << std::endl;
 
@@ -59,15 +63,29 @@ void HardwarePLC::interpretHWPLC(QString path){
         if (then != "THEN") throw std::invalid_argument ("PLC File is not formatted correctly");
 
         std::getline(linestream, result, ' ');
-        if ((condition == "!switch") || (condition == "switch")) {
-            tempcond.push_back(condition);
+        if ((result == "!switch") || (result == "switch")) {
+            tempops.push_back(result);
         }
+
+        linestream >> outputBlock;
+        // check if this block exists
+        validID = 0;
+        for (unsigned int i = 0; i < greenb.size(); i++) {
+            if (outputBlock == greenb[i]) validID = 1;
+        }
+        if (validID != 1) throw std::invalid_argument ("Undefined block in PLC file");
+
+        tempopblcs.push_back(outputBlock);
     }
 
     // If valid, then temporary conditions and outputs are stored in the conditions and outputs vectors
     setCondition(tempcond);
     setResult(tempops);
     setBlocks(tempblcs);
+    setOutputBlocks(tempopblcs);
+    success = 1;
+
+    return success;
 }
 
 void HardwarePLC::setCondition(std::vector<std::string> newcond){
@@ -86,6 +104,11 @@ void HardwarePLC::setBlocks(std::vector<int> newblcs){
         blockIDs.push_back(newblcs[i]);
 }
 
+void HardwarePLC::setOutputBlocks(std::vector<int> newblcs){
+    for (unsigned int i = 0; i < newblcs.size(); i++)
+        opBlocks.push_back(newblcs[i]);
+}
+
 std::vector<std::string> HardwarePLC::getConditions(){
     return conditions;
 }
@@ -97,5 +120,10 @@ std::vector<std::string> HardwarePLC::getOutputs(){
 std::vector<int> HardwarePLC::getBlocks(){
     return blockIDs;
 }
+
+std::vector<int> HardwarePLC::getOutputBlocks(){
+    return opBlocks;
+}
+
 
 

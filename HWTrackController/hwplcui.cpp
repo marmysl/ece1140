@@ -30,7 +30,11 @@ void HWPLCUI::on_redButton_clicked()
 // Accepting will load + parse PLC file for respective lines
 void HWPLCUI::on_buttonBox_accepted()
 {
-   if (!glfilename.isEmpty()) { greenreg.loadPLC(glfilename);  }
+   // upload file
+    if (!glfilename.isEmpty()) { greenreg.loadPLC(glfilename);  }
    else if (!rlfilename.isEmpty()) { redreg.loadPLC(rlfilename); }
+
+   // make a track controller object with first file
+   HWTrackController* obj = new HWTrackController();
    close();
 }

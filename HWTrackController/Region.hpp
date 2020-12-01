@@ -8,7 +8,6 @@
 #include <QTimer>
 #include <QObject>
 
-
 #include <string>
 #include <vector>
 #include "HardwarePLC.h"
@@ -32,12 +31,11 @@ struct BlockInfo
     bool failure;               // Is there a failure (broken rail)
 };
 
-class Region
+class Region : public QObject
 {
-protected:
-    void timerEvent(QTimerEvent *event);
+    Q_OBJECT
+
 private:
-    int timerID;
     HardwarePLC *plc = new HardwarePLC();   // PLC Object
     int region;                             // Region # (always 1)
     std::string route;                      // Line
@@ -47,29 +45,32 @@ private:
     float speedLimit;                       // Block speed limit
     std::vector<BlockInfo> blocks;          // Vector of block structures containing block information
     int iterator;                           // Current Block for the UI, allows for displaying values on the lcd
+
 public:
-    Region(std::string);                                                // Constructor initialized with line
-    void loadPLC(QString);                                              // Load PLC file
-    void runPLC();
+   // Wayside
+    Region(std::string);
+    bool success;
+    bool loadPLC(QString);
 
-    void initialize(int, float, std::vector<std::pair<int, int>>);     // CTC: sends speed and authority values for region
-    bool detectTrain(int, std::string);                                 // CTC: pick up block occupancy
+    // CTC
+    void initialize(int, float, std::vector<std::pair<int, int>>);
+    bool detectTrain(int, std::string);
 
-    void setCircuit();                                              // Track Model: send speed and authority (track circuit information)t iteratorr;
-    float getSpeedLimit() const;                                 // Track Model: pick up speed limit for comparison
-    bool detectFailure(int, std::string);                            // Track Model: pick up broken rail failure
+    // Track Model
+    void setCircuit();
+    float getSpeedLimit() const;
+    bool detectFailure(int, std::string);
 
-    std::string getRoute() const;                               // Getters
+    // Getters
+    std::string getRoute() const;
     std::string getSection(int) const;
     int getCurrentBlock() const;
     float getSuggestedSpeed(int) const;
     float getCommandedSpeed(int) const;
     float getAuthority(int) const;
 
-    // get lights
-    // update lights
-    // void setSwitch();
-
+public slots:
+    void runPLC();
 };
 
 #endif

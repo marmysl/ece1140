@@ -1,2 +1,2 @@
-IF block 0 THEN switch
-IF block 62 THEN !switch
+IF !block 0 THEN switch 63
+IF block 62 THEN !switch 63

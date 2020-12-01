@@ -20,6 +20,7 @@ class HWTrackController : public QObject, public ITrackController
         char incomingData[ARDUINO_BUF_LENGTH];
         char outgoingData[ARDUINO_BUF_LENGTH];
         QTimer *writeTimer;
+        QTimer *plcTimer;
 
     public:
         HWTrackController();

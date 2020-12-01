@@ -17,7 +17,13 @@ HWTrackController::HWTrackController()
     connect(&trackControllerPort, &SerialConn::dataReceived, this, &HWTrackController::recieveData);
     connect(writeTimer, &QTimer::timeout, this, &HWTrackController::writeData);
 
+    // set up PLC timer
+    plcTimer = new QTimer(this);
+    plcTimer->setInterval(100);
+    connect(plcTimer, &QTimer::timeout, &greenreg, &Region::runPLC);
+
     writeTimer->start();
+    plcTimer->start();
 }
 
 HWTrackController::~HWTrackController()
@@ -127,7 +133,6 @@ void HWTrackController::writeData()
             outgoing_s += "\n";
         } */
 
-    outgoing_s = "1A690.140.1411.0101";
     // std::cout << "Outgoing Track Controller: " << outgoing_s << std::endl;
     cout.flush();
 
