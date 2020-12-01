@@ -25,10 +25,10 @@ void SWTC :: calculatePower()
         if (speed > 19.44) {speed = 19.44;}
 
         // Reduce speed if the authority is 1
-        if (authority <= 1) { speed = 10.0; }
+        if (authority <= 1) { speed = (commandedSpeed / 2) }
 
         // reduce speed for upcoming station
-        if (stationUpcoming == true) { speed = 10.0; }
+        if (stationUpcoming == true) { speed = (commandedSpeed / 2); }
 
         // Safety measure in case garbage commanded speed or train velocity are sent
         if (speed < 0) {speed = 0;}
