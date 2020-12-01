@@ -28,12 +28,6 @@ void CTCDispatch::setAuthority()
 
         int auth = route.blocks.size();
         for(auto val : route.blocks){
-            //set block number
-            //then the auth
-            //authority.push_back.first(val)
-            //authority.push_back.second(auth)
-            //ORRRRR
-            //authority.push_back(val, auth)
             authority.push_back(auth);
             auth--;
             qDebug() << "Set Authority at Block " << val->id << ": " << QString::number(auth);
@@ -106,33 +100,11 @@ std::string CTCDispatch::getStation(){
 }
 
 void CTCDispatch::setTimeStart(QTime st){
-    //qDebug() << "Set Start Time to: " << QString::fromStdString(st);
 
     qt = st;
 
     QDateTime t = systemClock->currentTime();
     QTime rt = t.time();
-
-    /*while(1){
-        if(rt.hour() == st.hour() && rt.minute() == st.minute()){
-            break;
-        }
-        qDebug() << "The current time is: " << rt.hour() << ":" << rt.minute();
-    }*/
-
-    /*float hours;
-    float minutes;
-    std::string shours;
-    std::string sminutes;
-
-    shours = st.substr(0,2);
-    sminutes = st.substr(3,4);
-
-    std::stringstream temp1(shours);
-    std::stringstream temp2(sminutes);
-
-    temp1 >> hours;
-    temp2 >> minutes;*/
 
     float time = st.hour() + (((float)st.minute())/60);
     qDebug() << "Start Time Math: " << QString::number(time);
@@ -145,22 +117,6 @@ float CTCDispatch::getTimeStart(){
 }
 
 void CTCDispatch::setTimeArrival(QTime at){
-    /*qDebug() << "Set Arrival Time to: " << QString::fromStdString(at);
-
-    float hours;
-    float minutes;
-    std::string shours;
-    std::string sminutes;
-
-    shours = at.substr(0,2);
-    sminutes = at.substr(3,4);
-
-    std::stringstream temp1(shours);
-    std::stringstream temp2(sminutes);
-
-    temp1 >> hours;
-    temp2 >> minutes;
-    */
 
     float time = at.hour() + (((float)at.minute())/60);
     qDebug() << "Arrival Time Math: " << QString::number(time);

@@ -79,24 +79,11 @@ void MainWindow::on_comboLine_currentIndexChanged(const QString &arg1)
 
 void MainWindow::on_timeStart_userTimeChanged(const QTime &time)
 {
-    //QDateTime qdt =
-    /*QString qs;
-    qs = time.toString("hh:mm");
-
-    std::string startTime;
-    startTime = qs.toStdString();*/
-
     ctc.setTimeStart(time);
 }
 
 void MainWindow::on_timeArrival_userTimeChanged(const QTime &time)
 {
-    /*QString qs;
-    qs = time.toString("hh:mm");
-
-    std::string arrivalTime;
-    arrivalTime = qs.toStdString();
-    */
     ctc.setTimeArrival(time);
 }
 
@@ -105,11 +92,7 @@ void MainWindow::on_btnDispatch_clicked()
     int time;
     time  = ctc.setTimeDelay();
 
-
     timerID = startTimer(time);
-
-    //CTCSignals c;
-    //ctc.dispatch(c);
 }
 
 void MainWindow::on_comboDestination_currentIndexChanged(const QString &arg1)
