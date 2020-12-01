@@ -54,7 +54,7 @@ void TrainControlWindow::timerEvent(QTimerEvent *event)
 void TrainControlWindow :: updateCircuitInfo()
 {
     swtc.decode(train->sendTrackCircuit());
-    ui->commspeed_->setText(QString::number(swtc.getCommandedSpeed()*2.237));
+    ui->commspeed_->setText(QString::number(swtc.getCommandedSpeed() / 1.609));
     ui->authority_->setText(QString::number(swtc.getAuthority()));
 
     if (swtc.mode -> getMode() == true) {
@@ -115,7 +115,7 @@ void TrainControlWindow :: updateStation()
 void TrainControlWindow :: updatePower()
 {
     swtc.setTrainVelocity(train->getCurrentVelocity());
-    ui->currspeed_->setText(QString::number(swtc.getTrainVelocity()*2.237));
+    ui->currspeed_->setText(QString::number(swtc.getTrainVelocity() / 1.609));
 
     train->setPower(swtc.getPowerCommand());
     ui->powerOutput_->setText(QString::number(swtc.getPowerCommand() / 1000));
@@ -163,7 +163,7 @@ void TrainControlWindow :: updateBrakes()  // Update brake flags in train model
 
 void TrainControlWindow :: updateSpeed()
 {
-    ui->setpointSpeed_->setText(QString::number(swtc.getSetpointSpeed()*2.237));
+    ui->setpointSpeed_->setText(QString::number(swtc.getSetpointSpeed() / 1.609));
 
     // if the setpoint speed exceeds the max speed of the train, add UI message
     if (swtc.getSetpointSpeed() > 19.4444){
