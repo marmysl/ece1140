@@ -78,19 +78,28 @@ void TrainControlWindow :: updateCircuitInfo()
 
 void TrainControlWindow :: updateStation()
 {
-    // Display next station
+    string announcements;
 
-
-    // UI Displays for train stopping at station
+    // Announcements & UI Displays for train stopping at station
     if (swtc.getStationUpcoming() == true){
+        announcements = "The train is approaching Station " + swtc.getNextStation();
+        train->setAnnouncements(true, announcements);
         ui->station_->setText("The train is approaching a station.");
     } else if (swtc.getStationHere() == true && swtc.getTrainVelocity() != 0.0 && swtc.getHasStopped() == false) {
-        ui->station_->setText("The train is stopping at a station.");
+        announcements = "The train is arriving at the station: " + swtc.getNextStation();
+        train->setAnnouncements(true, announcements);
+        ui->station_->setText("The train is stopping at Station ");
     } else if (swtc.getStationHere() == true && swtc.getTrainVelocity() == 0.0){
+        announcements = "The train has arrived at Station " + swtc.getNextStation();
+        train->setAnnouncements(true, announcements);
         ui->station_->setText("The train is stopped at a station.");
     } else if (swtc.getStationHere() == true && swtc.getTrainVelocity() != 0.0 && swtc.getHasStopped() == true){
+        announcements = "The train is leaving Station " + swtc.getNextStation();
+        train->setAnnouncements(true, announcements);
         ui->station_->setText("The train is leaving a station.");
     } else {
+        announcements = "";
+        train->setAnnouncements(false, announcements);
         ui->station_->setText("");
     }
 
