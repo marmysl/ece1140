@@ -12,6 +12,8 @@ namespace TrackModel {
     class Switch;
     class Linkable;
 
+    const int BLK_UNSPECIFIED = INT32_MIN;
+
     extern std::vector<Route *> routes;
 
     // Get the route with the given name

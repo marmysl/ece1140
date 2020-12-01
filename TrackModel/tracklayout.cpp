@@ -210,22 +210,22 @@ void Route::loadLayout( std::string fileName ) {
                             break;
 
                         case LL_PREV_BLK:
-                            if( bufStr.length() == 0 ) blkRev = -1;
+                            if( bufStr.length() == 0 ) blkRev = BLK_UNSPECIFIED;
                             else blkRev = parseIntStrict(bufStr);
                             break;
 
                         case LL_NEXT_BLK:
-                            if( bufStr.length() == 0 ) blkFwd = -1;
+                            if( bufStr.length() == 0 ) blkFwd = BLK_UNSPECIFIED;
                             else blkFwd = parseIntStrict(bufStr);
                             break;
 
                         case LL_BRANCH_A:
-                            if( bufStr.length() == 0 ) branchRev = -1;
+                            if( bufStr.length() == 0 ) branchRev = BLK_UNSPECIFIED;
                             else branchRev = parseIntStrict(bufStr);
                             break;
 
                         case LL_BRANCH_B:
-                            if( bufStr.length() == 0 ) branchFwd = -1;
+                            if( bufStr.length() == 0 ) branchFwd = BLK_UNSPECIFIED;
                             else branchFwd = parseIntStrict(bufStr);
                             break;
 
@@ -355,15 +355,18 @@ void Route::loadLayout( std::string fileName ) {
     if( !spawnBlock ) throw LayoutParseError("No valid initial block specified");
 
     Block *yard = new Block(0, "Yard", 50, 0, 100);
-    blocks.insert(std::pair<int, Block*>(0, yard));
+    blocks.insert({0, yard});
 
-    LinkInfo yardExit(yard, -1, parsedStartBlockId, -1, -1);
+    Block *exitYard = new Block(-1, "Yard", 50, 0, 100);
+    blocks.insert({-1, exitYard});
+
+    LinkInfo yardExit(yard, BLK_UNSPECIFIED, parsedStartBlockId, BLK_UNSPECIFIED, BLK_UNSPECIFIED);
     voidLinks.push_back(yardExit);
 
     // loop thru uninitialized switches and connect those suckers
     for( LinkInfo &links : voidLinks )
     {
-        if( links.prevStraight >= 0 )
+        if( links.prevStraight != BLK_UNSPECIFIED )
         {
             Block *prevBlock = getBlock(links.prevStraight);
             if( !prevBlock )
@@ -381,7 +384,7 @@ void Route::loadLayout( std::string fileName ) {
             }
 
             // check for switch in reverse dir
-            if( links.prevDiverge >= 0 )
+            if( links.prevDiverge != BLK_UNSPECIFIED )
             {
                 Block *divergeBlock = getBlock(links.prevDiverge);
                 if( !divergeBlock )
@@ -403,7 +406,7 @@ void Route::loadLayout( std::string fileName ) {
             }
         }
 
-        if( links.nextStraight >= 0 )
+        if( links.nextStraight != BLK_UNSPECIFIED )
         {
             Block *nextBlock = getBlock(links.nextStraight);
             if( !nextBlock )
@@ -421,7 +424,7 @@ void Route::loadLayout( std::string fileName ) {
             }
 
             // check for switch in forward dir
-            if( links.nextDiverge >= 0 )
+            if( links.nextDiverge != BLK_UNSPECIFIED )
             {
                 Block *divergeBlock = getBlock(links.nextDiverge);
                 if( !divergeBlock )

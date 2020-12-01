@@ -55,7 +55,9 @@ void RouteMapView::setRoute( RouteStatus *route )
         int lnY = top + BLOCK_THICKNESS / 2;
         links.push_back(LinkRepr(left + BLOCK_LENGTH, lnY, left + BLOCK_LENGTH + LINK_WIDTH, lnY));
 
+        // yard blocks
         searchedNodes.insert({0, ExistBlock(QPoint(left, top), BLK_FORWARD)});
+        searchedNodes.insert({-1, ExistBlock(QPoint(left, top), BLK_FORWARD)});
 
         startId = route->layoutRoute->spawnBlock->id;
         startDir = route->layoutRoute->spawnDir;
@@ -91,11 +93,12 @@ void RouteMapView::setRoute( RouteStatus *route )
             {
                 top = ROW_OFFSET * (row + 1);
 
-                BlockRepr newRep(left, top, curBlocks[row].second, curBlk);
-                blocks.insert({curBlocks[row].first->id(), newRep});
-
-                if( curBlk->id() )
+                if( curBlk->id() > 0 )
                 {
+                    // Normal block
+                    BlockRepr newRep(left, top, curBlocks[row].second, curBlk);
+                    blocks.insert({curBlocks[row].first->id(), newRep});
+
                     Linkable *l = curBlk->layoutBlock->getLink(curBlocks[row].second);
                     if( Switch *s = dynamic_cast<Switch *>(l) )
                     {
@@ -112,6 +115,9 @@ void RouteMapView::setRoute( RouteStatus *route )
                             // record as searched
                             QPoint nextPt(left + BLOCK_LENGTH + LINK_WIDTH, top);
                             searchedNodes[straight->id] = ExistBlock(nextPt, entryDir);
+
+                            if( straight->id == 0 ) searchedNodes[-1] = searchedNodes[0];
+                            else if( straight->id == -1 ) searchedNodes[0] = searchedNodes[-1];
                         }
 
                         Block *diverge = s->divergeBlock;
@@ -127,6 +133,9 @@ void RouteMapView::setRoute( RouteStatus *route )
                             // record as searched
                             QPoint nextPt(left + BLOCK_LENGTH + LINK_WIDTH, top + rowSpan);
                             searchedNodes[diverge->id] = ExistBlock(nextPt, entryDir);
+
+                            if( diverge->id == 0 ) searchedNodes[-1] = searchedNodes[0];
+                            else if( diverge->id == -1 ) searchedNodes[0] = searchedNodes[-1];
 
                             branchRow -= 1;
                             if( branchRow == 0 ) branchRow = n_rows - 1;
@@ -144,6 +153,24 @@ void RouteMapView::setRoute( RouteStatus *route )
                             if( Switch *s = dynamic_cast<Switch *>(next->getLink(oppositeDir(entryDir))) )
                             {
                                 // backwards switch
+                                // only want to process it if it's the yard
+                                if( (s->divergeBlock->id == 0) || (s->divergeBlock->id == -1) )
+                                {
+                                    auto yardNode = searchedNodes.find(0);
+                                    if( yardNode == searchedNodes.end() )
+                                    {
+                                        // yard wasn't initialized yet
+                                        int rowSpan = (branchRow - row) * ROW_OFFSET;
+
+                                        // record as searched
+                                        QPoint yardTopLeft(left + BLOCK_LENGTH + LINK_WIDTH, top + rowSpan);
+                                        searchedNodes[0] = ExistBlock(yardTopLeft, BLK_FORWARD);
+                                        searchedNodes[-1] = ExistBlock(yardTopLeft, BLK_FORWARD);
+
+                                        branchRow -= 1;
+                                        if( branchRow == 0 ) branchRow = n_rows - 1;
+                                    }
+                                }
                             }
                             else
                             {
@@ -166,6 +193,9 @@ void RouteMapView::setRoute( RouteStatus *route )
                             QPoint nextPt(left + BLOCK_LENGTH + LINK_WIDTH, top);
                             searchedNodes[next->id] = ExistBlock(nextPt, entryDir);
 
+                            if( next->id == 0 ) searchedNodes[-1] = searchedNodes[0];
+                            else if( next->id == -1 ) searchedNodes[0] = searchedNodes[-1];
+
                             int y = top + BLOCK_THICKNESS / 2;
                             LinkRepr ln(left + BLOCK_LENGTH, y, left + BLOCK_LENGTH + LINK_WIDTH, y);
                             links.push_back(ln);
@@ -173,6 +203,14 @@ void RouteMapView::setRoute( RouteStatus *route )
                             hasNext = true;
                         }
                     }
+                }
+                else
+                {
+                    // Yard Block
+                    BlockStatus *yardStat = route->getBlockStatus(0);
+                    BlockRepr newRep(left, top, curBlocks[row].second, yardStat);
+                    blocks[0] = newRep;
+                    blocks[-1] = newRep;
                 }
             }
 
@@ -415,6 +453,10 @@ void RouteMapView::paintEvent( QPaintEvent *event )
     for( auto &blk : blocks )
     {
         BlockRepr &repr = blk.second;
-        drawBlock(repr, &painter);
+        // only draw non-virtual blocks
+        if( repr.stat->id() >= 0 )
+        {
+            drawBlock(repr, &painter);
+        }
     }
 }
