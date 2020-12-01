@@ -15,6 +15,11 @@ public:
     explicit maintenance(QWidget *parent = nullptr);
     ~maintenance();
 
+    bool mm = false;
+
+private slots:
+    void on_btnMM_toggled(bool checked);
+
 private:
     Ui::maintenance *ui;
 };
