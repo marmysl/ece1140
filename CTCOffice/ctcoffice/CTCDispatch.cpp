@@ -28,12 +28,6 @@ void CTCDispatch::setAuthority()
 
         int auth = route.blocks.size();
         for(auto val : route.blocks){
-            //set block number
-            //then the auth
-            //authority.push_back.first(val)
-            //authority.push_back.second(auth)
-            //ORRRRR
-            //authority.push_back(val, auth)
             authority.push_back(std::make_pair(val->id, auth));
             auth--;
             qDebug() << "Set Authority at Block " << val->id << ": " << QString::number(auth);
@@ -105,24 +99,14 @@ std::string CTCDispatch::getStation(){
     return station;
 }
 
-void CTCDispatch::setTimeStart(std::string st){
-    qDebug() << "Set Start Time to: " << QString::fromStdString(st);
+void CTCDispatch::setTimeStart(QTime st){
 
-    float hours;
-    float minutes;
-    std::string shours;
-    std::string sminutes;
+    qt = st;
 
-    shours = st.substr(0,2);
-    sminutes = st.substr(3,4);
+    QDateTime t = systemClock->currentTime();
+    QTime rt = t.time();
 
-    std::stringstream temp1(shours);
-    std::stringstream temp2(sminutes);
-
-    temp1 >> hours;
-    temp2 >> minutes;
-
-    float time = hours + (minutes/60);
+    float time = st.hour() + (((float)st.minute())/60);
     qDebug() << "Start Time Math: " << QString::number(time);
 
     timeStart = time;
@@ -132,24 +116,9 @@ float CTCDispatch::getTimeStart(){
     return timeStart;
 }
 
-void CTCDispatch::setTimeArrival(std::string at){
-    qDebug() << "Set Arrival Time to: " << QString::fromStdString(at);
+void CTCDispatch::setTimeArrival(QTime at){
 
-    float hours;
-    float minutes;
-    std::string shours;
-    std::string sminutes;
-
-    shours = at.substr(0,2);
-    sminutes = at.substr(3,4);
-
-    std::stringstream temp1(shours);
-    std::stringstream temp2(sminutes);
-
-    temp1 >> hours;
-    temp2 >> minutes;
-
-    float time = hours + (minutes/60);
+    float time = at.hour() + (((float)at.minute())/60);
     qDebug() << "Arrival Time Math: " << QString::number(time);
 
     timeArrival = time;
@@ -180,10 +149,10 @@ void CTCDispatch::dispatch(CTCSignals& c){
         qDebug() << "Route not found.";
         return;
     }
+        sendTrackController();
 
-    sendTrackController();
+        createNewTrain(m, carsNum, line);
 
-    createNewTrain(m, carsNum, line);
 }
 
 void CTCDispatch::sendTrackController(){
@@ -191,30 +160,22 @@ void CTCDispatch::sendTrackController(){
     TrackModel::TrainPathInfo route;
     route = findRoute();
 
-    //int i = 0;
-/*    for(std::pair<int, TrackModel::SwitchState> val : route.switchStates){
+    int i = 0;
+    for(std::pair<int, TrackModel::SwitchState> val : route.switchStates){
           if(i == 6){
               break;
           }
           tcStates.push_back(val.second);
           i++;
-    }*/
+    }
 
         wayside_sig.setSpeed(line, speed);
         wayside_sig.setAuthority(line, authority);
 
-        std::vector< std::pair<int, TrackModel::SwitchState> > temp_sw;
-        temp_sw.push_back(make_pair(63, TrackModel::SwitchState::SW_STRAIGHT));
-
-        //TrackModel::TrainPathInfo rte;
-        //rte = findRoute();
-
-        wayside_sig.setExitBlocks(temp_sw);
+        wayside_sig.setExitBlocks(route.switchStates);
 
 
-    alertWaysideSystem(line, wayside_sig);
-
-
+      alertWaysideSystem(line, wayside_sig);
     //initializeHW(ctc);
 }
 
@@ -237,6 +198,19 @@ TrackModel::TrainPathInfo CTCDispatch::findRoute(){
     path = temp.findPath(0, TrackModel::BLK_NODIR , endblock);
 
     return path;
+}
+
+int CTCDispatch::setTimeDelay(){
+    int test = systemClock->currentTime().time().QTime::msecsTo(qt);
+    qDebug() << "The time satrt: " << qt.hour()<<":"<<qt.minute();
+
+    if(test < 0){
+        test = 86400000 + test;
+    }
+
+    qDebug() << "The time needed is: " << test;
+
+    return test;
 }
 
 

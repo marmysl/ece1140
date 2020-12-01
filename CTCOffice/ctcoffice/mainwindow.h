@@ -6,6 +6,9 @@
 #include "schedule.h"
 
 #include <QMainWindow>
+#include <QObject>
+#include <QTimer>
+#include <QTimerEvent>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -21,6 +24,9 @@ public:
     CTCDispatch ctc;
     CTCMode m;
     schedule *autoSchedule;
+
+    int timerID;
+    int count = 0;
 
 public slots:
     void updateRoute();
@@ -49,5 +55,8 @@ private slots:
 
 private:
     Ui::MainWindow *ui;
+
+protected:
+    void timerEvent(QTimerEvent *event);
 };
 #endif // MAINWINDOW_H

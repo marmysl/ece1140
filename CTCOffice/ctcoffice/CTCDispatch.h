@@ -11,6 +11,8 @@
 #include "../../HWTrackController/HWTrackController_main.h"
 #include "CTCMode.h"
 #include "../../TrackModel/trackrouter.h"
+#include <QDateTime>
+#include <QTimerEvent>
 
 class CTCDispatch
 {
@@ -25,6 +27,7 @@ class CTCDispatch
         CTCMode* m = nullptr;
     public:
 
+        int timerID;
 
         std::vector<std::pair<int, int>> authority; // blocks so vector of ints
         float speed;
@@ -42,9 +45,9 @@ class CTCDispatch
         std::string getStation();
         void setBlock(int);
         int getBlock();
-        void setTimeStart(std::string);
+        void setTimeStart(QTime);
         float getTimeStart();
-        void setTimeArrival(std::string);
+        void setTimeArrival(QTime);
         float getTimeArrival();
         void setPassNum();
         float getPassNum();
@@ -52,6 +55,12 @@ class CTCDispatch
         CTCMode* getCTCMode();
         TrackModel::TrainPathInfo  findRoute();
         CTCSignals wayside_sig;
+        int setTimeDelay();
+
+        QTime qt;
+
+    protected:
+        void timerEvent(QTimerEvent *event);
 };
 
 #endif // CTCDISPATCH_H

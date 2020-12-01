@@ -18,6 +18,8 @@ class CTCMode
         void sm(bool);
 
         CTCMode* m;
+
+        int time;
 };
 
 #endif // CTCMODE_H

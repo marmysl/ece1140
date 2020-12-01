@@ -31,9 +31,6 @@ TrainControlWindow::~TrainControlWindow()
 // --------------------------------------------------------------------------------- Transmitter
 void TrainControlWindow::timerEvent(QTimerEvent *event)
 {
-    count++;
-    //std::cout << "Timer has updated... " << count << std::endl; //debug
-
     swtc.mode = mode;
 
     if (dispatched == false){ // only runs once. checks if mode is automatic, and if it is, then starts a train
@@ -54,7 +51,7 @@ void TrainControlWindow::timerEvent(QTimerEvent *event)
 void TrainControlWindow :: updateCircuitInfo()
 {
     swtc.decode(train->sendTrackCircuit());
-    ui->commspeed_->setText(QString::number(swtc.getCommandedSpeed()*2.237));
+    ui->commspeed_->setText(QString::number(swtc.getCommandedSpeed() / 1.609));
     ui->authority_->setText(QString::number(swtc.getAuthority()));
 
     if (swtc.mode -> getMode() == true) {
@@ -78,19 +75,28 @@ void TrainControlWindow :: updateCircuitInfo()
 
 void TrainControlWindow :: updateStation()
 {
-    // Display next station
+    string announcements;
 
-
-    // UI Displays for train stopping at station
+    // Announcements & UI Displays for train stopping at station
     if (swtc.getStationUpcoming() == true){
+        announcements = "The train is approaching Station " + swtc.getNextStation();
+        train->setAnnouncements(true, announcements);
         ui->station_->setText("The train is approaching a station.");
     } else if (swtc.getStationHere() == true && swtc.getTrainVelocity() != 0.0 && swtc.getHasStopped() == false) {
-        ui->station_->setText("The train is stopping at a station.");
+        announcements = "The train is arriving at the station: " + swtc.getNextStation();
+        train->setAnnouncements(true, announcements);
+        ui->station_->setText("The train is stopping at Station ");
     } else if (swtc.getStationHere() == true && swtc.getTrainVelocity() == 0.0){
+        announcements = "The train has arrived at Station " + swtc.getNextStation();
+        train->setAnnouncements(true, announcements);
         ui->station_->setText("The train is stopped at a station.");
     } else if (swtc.getStationHere() == true && swtc.getTrainVelocity() != 0.0 && swtc.getHasStopped() == true){
+        announcements = "The train is leaving Station " + swtc.getNextStation();
+        train->setAnnouncements(true, announcements);
         ui->station_->setText("The train is leaving a station.");
     } else {
+        announcements = "";
+        train->setAnnouncements(false, announcements);
         ui->station_->setText("");
     }
 
@@ -106,7 +112,7 @@ void TrainControlWindow :: updateStation()
 void TrainControlWindow :: updatePower()
 {
     swtc.setTrainVelocity(train->getCurrentVelocity());
-    ui->currspeed_->setText(QString::number(swtc.getTrainVelocity()*2.237));
+    ui->currspeed_->setText(QString::number(swtc.getTrainVelocity() / 1.609));
 
     train->setPower(swtc.getPowerCommand());
     ui->powerOutput_->setText(QString::number(swtc.getPowerCommand() / 1000));
@@ -154,10 +160,10 @@ void TrainControlWindow :: updateBrakes()  // Update brake flags in train model
 
 void TrainControlWindow :: updateSpeed()
 {
-    ui->setpointSpeed_->setText(QString::number(swtc.getSetpointSpeed()*2.237));
+    ui->setpointSpeed_->setText(QString::number(swtc.getSetpointSpeed() / 1.609));
 
     // if the setpoint speed exceeds the max speed of the train, add UI message
-    if (swtc.getSetpointSpeed() > 19.4444){
+    if (swtc.getSetpointSpeed() > 70.0){
         ui->setpointexceeds_->setText("Setpoint exceeds max train speed!");
     } else {
         ui->setpointexceeds_->setText("");

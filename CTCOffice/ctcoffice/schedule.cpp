@@ -3,6 +3,7 @@
 #include <QFileDialog>
 #include <QDebug>
 #include <QTableWidget>
+#include <QTime>
 
 #include <fstream>
 #include <iostream>
@@ -201,7 +202,7 @@ void schedule::scheduleParser(std::string fileName){
     scheduleFile.close();
     loadComplete = true;
 
-    for(int i = 0; i < blocks.size(); i++){
+    /*for(int i = 0; i < blocks.size(); i++){
         qDebug() << "Block: " << QString::number(blocks.at(i));
         qDebug() << "Station: " << QString::fromStdString(stat.at(i));
 
@@ -215,7 +216,7 @@ void schedule::scheduleParser(std::string fileName){
         qDebug() << "Train 8: " << QString::fromStdString(t8.at(i));
         qDebug() << "Train 9: " << QString::fromStdString(t9.at(i));
         qDebug() << "Train 10: " << QString::fromStdString(t10.at(i));
-    }
+    }*/
 
     setScheduleTable();
 }
@@ -232,18 +233,40 @@ void schedule::setSchedule(int linenum, int blocknum, std::string station, std::
                  std::string train3, std::string train4, std::string train5, std::string train6, std::string train7,
                  std::string train8, std::string train9, std::string train10){
 
+    QTime tr1 = QTime::fromString(QString::fromStdString(train1), "h:mm");
+    QTime tr2 = QTime::fromString(QString::fromStdString(train2), "h:mm");
+    QTime tr3 = QTime::fromString(QString::fromStdString(train3), "h:mm");
+    QTime tr4 = QTime::fromString(QString::fromStdString(train4), "h:mm");
+    QTime tr5 = QTime::fromString(QString::fromStdString(train5), "h:mm");
+    QTime tr6 = QTime::fromString(QString::fromStdString(train6), "h:mm");
+    QTime tr7 = QTime::fromString(QString::fromStdString(train7), "h:mm");
+    QTime tr8 = QTime::fromString(QString::fromStdString(train8), "h:mm");
+    QTime tr9 = QTime::fromString(QString::fromStdString(train9), "h:mm");
+    QTime tr10 = QTime::fromString(QString::fromStdString(train10), "h:mm");
+
     blocks.push_back(blocknum);
     stat.push_back(station);
-    t1.push_back(train1);
-    t2.push_back(train2);
-    t3.push_back(train3);
-    t4.push_back(train4);
-    t5.push_back(train5);
-    t6.push_back(train6);
-    t7.push_back(train7);
-    t8.push_back(train8);
-    t9.push_back(train9);
-    t10.push_back(train10);
+    t1.push_back(tr1);
+    t2.push_back(tr2);
+    t3.push_back(tr3);
+    t4.push_back(tr4);
+    t5.push_back(tr5);
+    t6.push_back(tr6);
+    t7.push_back(tr7);
+    t8.push_back(tr8);
+    t9.push_back(tr9);
+    t10.push_back(tr10);
+
+    tv1.push_back(train1);
+    tv2.push_back(train2);
+    tv3.push_back(train3);
+    tv4.push_back(train4);
+    tv5.push_back(train5);
+    tv6.push_back(train6);
+    tv7.push_back(train7);
+    tv8.push_back(train8);
+    tv9.push_back(train9);
+    tv10.push_back(train10);
 
     if(blocks.size() != linenum-1){
         qDebug() << "you done screwed up";
@@ -264,15 +287,15 @@ void schedule::setScheduleTable(){
     for(int i = 0; i < blocks.size(); i++){
         ui->scheduleTable->setItem(i, 0, new QTableWidgetItem(QString::number(blocks.at(i))));
         ui->scheduleTable->setItem(i, 1, new QTableWidgetItem(QString::fromStdString(stat.at(i))));
-        ui->scheduleTable->setItem(i, 2, new QTableWidgetItem(QString::fromStdString(t1.at(i))));
-        ui->scheduleTable->setItem(i, 3, new QTableWidgetItem(QString::fromStdString(t2.at(i))));
-        ui->scheduleTable->setItem(i, 4, new QTableWidgetItem(QString::fromStdString(t3.at(i))));
-        ui->scheduleTable->setItem(i, 5, new QTableWidgetItem(QString::fromStdString(t4.at(i))));
-        ui->scheduleTable->setItem(i, 6, new QTableWidgetItem(QString::fromStdString(t5.at(i))));
-        ui->scheduleTable->setItem(i, 7, new QTableWidgetItem(QString::fromStdString(t6.at(i))));
-        ui->scheduleTable->setItem(i, 8, new QTableWidgetItem(QString::fromStdString(t7.at(i))));
-        ui->scheduleTable->setItem(i, 9, new QTableWidgetItem(QString::fromStdString(t8.at(i))));
-        ui->scheduleTable->setItem(i, 10, new QTableWidgetItem(QString::fromStdString(t9.at(i))));
-        ui->scheduleTable->setItem(i, 11, new QTableWidgetItem(QString::fromStdString(t10.at(i))));
+        ui->scheduleTable->setItem(i, 2, new QTableWidgetItem(QString::fromStdString(tv1.at(i))));
+        ui->scheduleTable->setItem(i, 3, new QTableWidgetItem(QString::fromStdString(tv2.at(i))));
+        ui->scheduleTable->setItem(i, 4, new QTableWidgetItem(QString::fromStdString(tv3.at(i))));
+        ui->scheduleTable->setItem(i, 5, new QTableWidgetItem(QString::fromStdString(tv4.at(i))));
+        ui->scheduleTable->setItem(i, 6, new QTableWidgetItem(QString::fromStdString(tv5.at(i))));
+        ui->scheduleTable->setItem(i, 7, new QTableWidgetItem(QString::fromStdString(tv6.at(i))));
+        ui->scheduleTable->setItem(i, 8, new QTableWidgetItem(QString::fromStdString(tv7.at(i))));
+        ui->scheduleTable->setItem(i, 9, new QTableWidgetItem(QString::fromStdString(tv8.at(i))));
+        ui->scheduleTable->setItem(i, 10, new QTableWidgetItem(QString::fromStdString(tv9.at(i))));
+        ui->scheduleTable->setItem(i, 11, new QTableWidgetItem(QString::fromStdString(tv10.at(i))));
     }
 }
