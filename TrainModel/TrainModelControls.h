@@ -10,14 +10,13 @@ public:
     bool doorOpen = 0;
     bool doorLeftOpen = 0;
     bool doorRightOpen = 0;
-    bool cabinLights = 1;
+    bool cabinLights = 0;
     bool headlightsOn = 0;
     bool advertisementsOn = 0;
     bool announcementsOn = 0;
     string announcements = "";
     bool acOn = 0;
     bool heaterOn = 0;
-    int temp = 72;
 
     TrainModelControls();
     void toggleDoor(bool);
@@ -31,8 +30,6 @@ public:
     string getAnn();
     void toggleAC(bool);
     void toggleHeater(bool);
-    void setTemp(int);
-    int getTemp();
 };
 
 #endif // TRAINMODELCONTROLS_H

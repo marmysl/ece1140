@@ -176,6 +176,11 @@ void CTCDispatch::dispatch(CTCSignals(&c)){
     setAuthority();
     setSpeed(timeStart, timeArrival);
 
+    if(authority.size() == 0){
+        qDebug() << "Route not found.";
+        return;
+    }
+
     sendTrackController(c);
 
     createNewTrain(m, carsNum, line);
@@ -196,6 +201,7 @@ void CTCDispatch::sendTrackController(CTCSignals &ctc){
     }
 
     ctc.setUpArray(line);
+
 
         ctc.setSpeed(line, speed);
         ctc.setAuthority(line, authority);

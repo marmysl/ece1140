@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>717</width>
-    <height>505</height>
+    <width>712</width>
+    <height>482</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -17,8 +17,8 @@
    <widget class="QPushButton" name="pushButton">
     <property name="geometry">
      <rect>
-      <x>50</x>
-      <y>50</y>
+      <x>30</x>
+      <y>40</y>
       <width>171</width>
       <height>61</height>
      </rect>
@@ -30,8 +30,8 @@
    <widget class="QPushButton" name="pushButton_2">
     <property name="geometry">
      <rect>
-      <x>50</x>
-      <y>150</y>
+      <x>30</x>
+      <y>140</y>
       <width>171</width>
       <height>61</height>
      </rect>
@@ -43,8 +43,8 @@
    <widget class="QPushButton" name="pushButton_3">
     <property name="geometry">
      <rect>
-      <x>50</x>
-      <y>260</y>
+      <x>30</x>
+      <y>240</y>
       <width>171</width>
       <height>61</height>
      </rect>
@@ -56,8 +56,8 @@
    <widget class="QPushButton" name="pushButton_4">
     <property name="geometry">
      <rect>
-      <x>50</x>
-      <y>360</y>
+      <x>30</x>
+      <y>340</y>
       <width>171</width>
       <height>61</height>
      </rect>
@@ -69,10 +69,10 @@
    <widget class="QTabWidget" name="tabMenu">
     <property name="geometry">
      <rect>
-      <x>260</x>
-      <y>30</y>
-      <width>381</width>
-      <height>391</height>
+      <x>230</x>
+      <y>10</y>
+      <width>461</width>
+      <height>411</height>
      </rect>
     </property>
     <property name="currentIndex">
@@ -80,13 +80,13 @@
     </property>
     <widget class="QWidget" name="errors">
      <attribute name="title">
-      <string>Failure Status</string>
+      <string>Train Status</string>
      </attribute>
      <widget class="QLabel" name="label_6">
       <property name="geometry">
        <rect>
-        <x>50</x>
-        <y>155</y>
+        <x>30</x>
+        <y>270</y>
         <width>101</width>
         <height>31</height>
        </rect>
@@ -98,8 +98,8 @@
      <widget class="QLabel" name="label_7">
       <property name="geometry">
        <rect>
-        <x>50</x>
-        <y>30</y>
+        <x>40</x>
+        <y>40</y>
         <width>111</width>
         <height>16</height>
        </rect>
@@ -111,52 +111,235 @@
      <widget class="QLabel" name="velLabel">
       <property name="geometry">
        <rect>
-        <x>90</x>
+        <x>40</x>
         <y>60</y>
-        <width>91</width>
-        <height>71</height>
+        <width>81</width>
+        <height>41</height>
        </rect>
       </property>
       <property name="text">
-       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:36pt;&quot;&gt;0&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:18pt;&quot;&gt;0&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
       </property>
      </widget>
      <widget class="QLabel" name="label_9">
       <property name="geometry">
        <rect>
-        <x>220</x>
-        <y>70</y>
-        <width>91</width>
-        <height>51</height>
+        <x>130</x>
+        <y>60</y>
+        <width>51</width>
+        <height>41</height>
        </rect>
       </property>
       <property name="text">
-       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:36pt;&quot;&gt;mph&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:18pt;&quot;&gt;mph&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
       </property>
      </widget>
      <widget class="QListView" name="statusView">
       <property name="geometry">
        <rect>
-        <x>50</x>
-        <y>190</y>
-        <width>291</width>
-        <height>151</height>
+        <x>30</x>
+        <y>300</y>
+        <width>401</width>
+        <height>61</height>
        </rect>
       </property>
      </widget>
      <widget class="QLabel" name="failStatus">
       <property name="geometry">
        <rect>
-        <x>110</x>
-        <y>230</y>
-        <width>161</width>
-        <height>71</height>
+        <x>40</x>
+        <y>310</y>
+        <width>371</width>
+        <height>41</height>
        </rect>
       </property>
       <property name="text">
        <string>TextLabel</string>
       </property>
      </widget>
+     <widget class="QListView" name="annView">
+      <property name="geometry">
+       <rect>
+        <x>30</x>
+        <y>190</y>
+        <width>401</width>
+        <height>61</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_21">
+      <property name="geometry">
+       <rect>
+        <x>30</x>
+        <y>160</y>
+        <width>101</width>
+        <height>21</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Announcements:</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="announceL">
+      <property name="geometry">
+       <rect>
+        <x>40</x>
+        <y>200</y>
+        <width>361</width>
+        <height>41</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_16">
+      <property name="geometry">
+       <rect>
+        <x>260</x>
+        <y>20</y>
+        <width>141</width>
+        <height>16</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Passenger Infomation</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="passengerLabel">
+      <property name="geometry">
+       <rect>
+        <x>320</x>
+        <y>50</y>
+        <width>58</width>
+        <height>16</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>0</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_17">
+      <property name="geometry">
+       <rect>
+        <x>230</x>
+        <y>50</y>
+        <width>101</width>
+        <height>16</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Current Total:</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_18">
+      <property name="geometry">
+       <rect>
+        <x>230</x>
+        <y>80</y>
+        <width>151</width>
+        <height>16</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Departed at last station:</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_19">
+      <property name="geometry">
+       <rect>
+        <x>230</x>
+        <y>110</y>
+        <width>151</width>
+        <height>16</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Boarded at last station:</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="departedLabel">
+      <property name="geometry">
+       <rect>
+        <x>380</x>
+        <y>80</y>
+        <width>58</width>
+        <height>16</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>0</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="boardedLabel">
+      <property name="geometry">
+       <rect>
+        <x>380</x>
+        <y>110</y>
+        <width>58</width>
+        <height>16</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>0</string>
+      </property>
+     </widget>
+     <widget class="QMdiArea" name="mdiArea_2">
+      <property name="geometry">
+       <rect>
+        <x>220</x>
+        <y>20</y>
+        <width>211</width>
+        <height>111</height>
+       </rect>
+      </property>
+      <property name="background">
+       <brush brushstyle="SolidPattern">
+        <color alpha="255">
+         <red>74</red>
+         <green>75</green>
+         <blue>75</blue>
+        </color>
+       </brush>
+      </property>
+     </widget>
+     <widget class="QMdiArea" name="mdiArea">
+      <property name="geometry">
+       <rect>
+        <x>30</x>
+        <y>20</y>
+        <width>171</width>
+        <height>111</height>
+       </rect>
+      </property>
+      <property name="background">
+       <brush brushstyle="SolidPattern">
+        <color alpha="255">
+         <red>74</red>
+         <green>75</green>
+         <blue>75</blue>
+        </color>
+       </brush>
+      </property>
+     </widget>
+     <zorder>mdiArea</zorder>
+     <zorder>mdiArea_2</zorder>
+     <zorder>label_6</zorder>
+     <zorder>velLabel</zorder>
+     <zorder>label_9</zorder>
+     <zorder>statusView</zorder>
+     <zorder>failStatus</zorder>
+     <zorder>label_7</zorder>
+     <zorder>annView</zorder>
+     <zorder>label_21</zorder>
+     <zorder>announceL</zorder>
+     <zorder>label_16</zorder>
+     <zorder>passengerLabel</zorder>
+     <zorder>label_17</zorder>
+     <zorder>label_18</zorder>
+     <zorder>label_19</zorder>
+     <zorder>departedLabel</zorder>
+     <zorder>boardedLabel</zorder>
     </widget>
     <widget class="QWidget" name="doorTab">
      <attribute name="title">
@@ -165,8 +348,8 @@
      <widget class="QLabel" name="label_8">
       <property name="geometry">
        <rect>
-        <x>40</x>
-        <y>10</y>
+        <x>30</x>
+        <y>260</y>
         <width>101</width>
         <height>21</height>
        </rect>
@@ -178,8 +361,8 @@
      <widget class="QLabel" name="doorLabelLeft">
       <property name="geometry">
        <rect>
-        <x>170</x>
-        <y>0</y>
+        <x>160</x>
+        <y>290</y>
         <width>121</width>
         <height>41</height>
        </rect>
@@ -191,8 +374,8 @@
      <widget class="QLabel" name="label_12">
       <property name="geometry">
        <rect>
-        <x>40</x>
-        <y>120</y>
+        <x>30</x>
+        <y>110</y>
         <width>101</width>
         <height>21</height>
        </rect>
@@ -204,8 +387,8 @@
      <widget class="QLabel" name="label_13">
       <property name="geometry">
        <rect>
-        <x>40</x>
-        <y>150</y>
+        <x>30</x>
+        <y>80</y>
         <width>101</width>
         <height>21</height>
        </rect>
@@ -217,21 +400,21 @@
      <widget class="QLabel" name="label_14">
       <property name="geometry">
        <rect>
-        <x>40</x>
-        <y>90</y>
-        <width>101</width>
+        <x>30</x>
+        <y>50</y>
+        <width>131</width>
         <height>21</height>
        </rect>
       </property>
       <property name="text">
-       <string>Temperature:</string>
+       <string>Current Temperature:</string>
       </property>
      </widget>
      <widget class="QLabel" name="label_15">
       <property name="geometry">
        <rect>
-        <x>40</x>
-        <y>60</y>
+        <x>280</x>
+        <y>280</y>
         <width>101</width>
         <height>21</height>
        </rect>
@@ -243,9 +426,9 @@
      <widget class="QLabel" name="cabinLightLabel">
       <property name="geometry">
        <rect>
-        <x>150</x>
-        <y>50</y>
-        <width>121</width>
+        <x>390</x>
+        <y>270</y>
+        <width>51</width>
         <height>41</height>
        </rect>
       </property>
@@ -256,10 +439,10 @@
      <widget class="QLabel" name="tempLabel">
       <property name="geometry">
        <rect>
-        <x>150</x>
-        <y>80</y>
+        <x>170</x>
+        <y>50</y>
         <width>121</width>
-        <height>41</height>
+        <height>21</height>
        </rect>
       </property>
       <property name="text">
@@ -269,10 +452,10 @@
      <widget class="QLabel" name="heaterLabel">
       <property name="geometry">
        <rect>
-        <x>150</x>
+        <x>130</x>
         <y>110</y>
         <width>121</width>
-        <height>41</height>
+        <height>21</height>
        </rect>
       </property>
       <property name="text">
@@ -282,10 +465,10 @@
      <widget class="QLabel" name="acLabel">
       <property name="geometry">
        <rect>
-        <x>150</x>
-        <y>140</y>
+        <x>130</x>
+        <y>80</y>
         <width>121</width>
-        <height>41</height>
+        <height>21</height>
        </rect>
       </property>
       <property name="text">
@@ -295,8 +478,8 @@
      <widget class="QLabel" name="label_20">
       <property name="geometry">
        <rect>
-        <x>40</x>
-        <y>180</y>
+        <x>280</x>
+        <y>310</y>
         <width>101</width>
         <height>21</height>
        </rect>
@@ -305,25 +488,12 @@
        <string>Ads Status:</string>
       </property>
      </widget>
-     <widget class="QLabel" name="label_21">
-      <property name="geometry">
-       <rect>
-        <x>40</x>
-        <y>210</y>
-        <width>101</width>
-        <height>21</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>Announcements:</string>
-      </property>
-     </widget>
      <widget class="QLabel" name="adLabel">
       <property name="geometry">
        <rect>
-        <x>150</x>
-        <y>170</y>
-        <width>121</width>
+        <x>390</x>
+        <y>300</y>
+        <width>41</width>
         <height>41</height>
        </rect>
       </property>
@@ -334,10 +504,10 @@
      <widget class="QLabel" name="label_10">
       <property name="geometry">
        <rect>
-        <x>40</x>
-        <y>30</y>
+        <x>30</x>
+        <y>290</y>
         <width>111</width>
-        <height>21</height>
+        <height>41</height>
        </rect>
       </property>
       <property name="text">
@@ -347,8 +517,8 @@
      <widget class="QLabel" name="doorLabelRight">
       <property name="geometry">
        <rect>
-        <x>170</x>
-        <y>20</y>
+        <x>160</x>
+        <y>250</y>
         <width>121</width>
         <height>41</height>
        </rect>
@@ -357,16 +527,254 @@
        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Closed&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
       </property>
      </widget>
-     <widget class="QListView" name="annView">
+     <widget class="QLabel" name="label_22">
       <property name="geometry">
        <rect>
-        <x>40</x>
-        <y>230</y>
-        <width>291</width>
-        <height>111</height>
+        <x>160</x>
+        <y>20</y>
+        <width>151</width>
+        <height>21</height>
        </rect>
       </property>
+      <property name="text">
+       <string>Temperature Controls</string>
+      </property>
      </widget>
+     <widget class="QLabel" name="label_23">
+      <property name="geometry">
+       <rect>
+        <x>380</x>
+        <y>80</y>
+        <width>21</width>
+        <height>21</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>°F</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_24">
+      <property name="geometry">
+       <rect>
+        <x>240</x>
+        <y>80</y>
+        <width>111</width>
+        <height>21</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Set Temperature:</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="setTempLabel">
+      <property name="geometry">
+       <rect>
+        <x>350</x>
+        <y>80</y>
+        <width>31</width>
+        <height>21</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;0&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_25">
+      <property name="geometry">
+       <rect>
+        <x>200</x>
+        <y>50</y>
+        <width>41</width>
+        <height>21</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>°F</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="pushButton_5">
+      <property name="geometry">
+       <rect>
+        <x>400</x>
+        <y>60</y>
+        <width>31</width>
+        <height>24</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>▲</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="pushButton_6">
+      <property name="geometry">
+       <rect>
+        <x>400</x>
+        <y>100</y>
+        <width>31</width>
+        <height>24</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>▼</string>
+      </property>
+     </widget>
+     <widget class="QMdiArea" name="mdiArea_4">
+      <property name="geometry">
+       <rect>
+        <x>230</x>
+        <y>50</y>
+        <width>211</width>
+        <height>91</height>
+       </rect>
+      </property>
+      <property name="background">
+       <brush brushstyle="SolidPattern">
+        <color alpha="255">
+         <red>118</red>
+         <green>118</green>
+         <blue>120</blue>
+        </color>
+       </brush>
+      </property>
+     </widget>
+     <widget class="QMdiArea" name="mdiArea_3">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>10</y>
+        <width>441</width>
+        <height>141</height>
+       </rect>
+      </property>
+      <property name="background">
+       <brush brushstyle="SolidPattern">
+        <color alpha="255">
+         <red>74</red>
+         <green>75</green>
+         <blue>75</blue>
+        </color>
+       </brush>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_26">
+      <property name="geometry">
+       <rect>
+        <x>80</x>
+        <y>210</y>
+        <width>101</width>
+        <height>21</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Door Status</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_27">
+      <property name="geometry">
+       <rect>
+        <x>280</x>
+        <y>250</y>
+        <width>101</width>
+        <height>21</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Head Lights:</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_28">
+      <property name="geometry">
+       <rect>
+        <x>340</x>
+        <y>210</y>
+        <width>51</width>
+        <height>21</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Other</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="headlightLabel">
+      <property name="geometry">
+       <rect>
+        <x>390</x>
+        <y>240</y>
+        <width>51</width>
+        <height>41</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Off&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+      </property>
+     </widget>
+     <widget class="QMdiArea" name="mdiArea_5">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>190</y>
+        <width>211</width>
+        <height>171</height>
+       </rect>
+      </property>
+      <property name="background">
+       <brush brushstyle="SolidPattern">
+        <color alpha="255">
+         <red>74</red>
+         <green>75</green>
+         <blue>75</blue>
+        </color>
+       </brush>
+      </property>
+     </widget>
+     <widget class="QMdiArea" name="mdiArea_6">
+      <property name="geometry">
+       <rect>
+        <x>260</x>
+        <y>190</y>
+        <width>181</width>
+        <height>171</height>
+       </rect>
+      </property>
+      <property name="background">
+       <brush brushstyle="SolidPattern">
+        <color alpha="255">
+         <red>74</red>
+         <green>75</green>
+         <blue>75</blue>
+        </color>
+       </brush>
+      </property>
+     </widget>
+     <zorder>mdiArea_6</zorder>
+     <zorder>mdiArea_5</zorder>
+     <zorder>mdiArea_3</zorder>
+     <zorder>mdiArea_4</zorder>
+     <zorder>label_8</zorder>
+     <zorder>doorLabelLeft</zorder>
+     <zorder>label_12</zorder>
+     <zorder>label_13</zorder>
+     <zorder>label_14</zorder>
+     <zorder>label_15</zorder>
+     <zorder>cabinLightLabel</zorder>
+     <zorder>tempLabel</zorder>
+     <zorder>heaterLabel</zorder>
+     <zorder>acLabel</zorder>
+     <zorder>label_20</zorder>
+     <zorder>adLabel</zorder>
+     <zorder>label_10</zorder>
+     <zorder>doorLabelRight</zorder>
+     <zorder>label_22</zorder>
+     <zorder>label_23</zorder>
+     <zorder>label_24</zorder>
+     <zorder>setTempLabel</zorder>
+     <zorder>label_25</zorder>
+     <zorder>pushButton_5</zorder>
+     <zorder>pushButton_6</zorder>
+     <zorder>label_26</zorder>
+     <zorder>label_27</zorder>
+     <zorder>label_28</zorder>
+     <zorder>headlightLabel</zorder>
     </widget>
     <widget class="QWidget" name="infoTab">
      <attribute name="title">
@@ -375,8 +783,8 @@
      <widget class="QLabel" name="label">
       <property name="geometry">
        <rect>
-        <x>40</x>
-        <y>70</y>
+        <x>50</x>
+        <y>220</y>
         <width>58</width>
         <height>16</height>
        </rect>
@@ -388,8 +796,8 @@
      <widget class="QLabel" name="powerLabel">
       <property name="geometry">
        <rect>
-        <x>150</x>
-        <y>70</y>
+        <x>130</x>
+        <y>220</y>
         <width>58</width>
         <height>16</height>
        </rect>
@@ -401,8 +809,8 @@
      <widget class="QLabel" name="label_2">
       <property name="geometry">
        <rect>
-        <x>40</x>
-        <y>110</y>
+        <x>270</x>
+        <y>60</y>
         <width>71</width>
         <height>16</height>
        </rect>
@@ -414,8 +822,8 @@
      <widget class="QLabel" name="blockNumLabel">
       <property name="geometry">
        <rect>
-        <x>150</x>
-        <y>110</y>
+        <x>360</x>
+        <y>60</y>
         <width>58</width>
         <height>16</height>
        </rect>
@@ -427,8 +835,8 @@
      <widget class="QLabel" name="label_4">
       <property name="geometry">
        <rect>
-        <x>40</x>
-        <y>150</y>
+        <x>270</x>
+        <y>90</y>
         <width>91</width>
         <height>16</height>
        </rect>
@@ -440,8 +848,8 @@
      <widget class="QLabel" name="label_5">
       <property name="geometry">
        <rect>
-        <x>40</x>
-        <y>190</y>
+        <x>270</x>
+        <y>120</y>
         <width>81</width>
         <height>16</height>
        </rect>
@@ -454,7 +862,7 @@
       <property name="geometry">
        <rect>
         <x>40</x>
-        <y>30</y>
+        <y>50</y>
         <width>101</width>
         <height>16</height>
        </rect>
@@ -467,7 +875,7 @@
       <property name="geometry">
        <rect>
         <x>150</x>
-        <y>30</y>
+        <y>50</y>
         <width>41</width>
         <height>16</height>
        </rect>
@@ -479,9 +887,9 @@
      <widget class="QLabel" name="label_11">
       <property name="geometry">
        <rect>
-        <x>200</x>
-        <y>70</y>
-        <width>58</width>
+        <x>180</x>
+        <y>220</y>
+        <width>31</width>
         <height>16</height>
        </rect>
       </property>
@@ -492,8 +900,8 @@
      <widget class="QLabel" name="blockLengthLabel">
       <property name="geometry">
        <rect>
-        <x>150</x>
-        <y>150</y>
+        <x>360</x>
+        <y>90</y>
         <width>58</width>
         <height>16</height>
        </rect>
@@ -505,9 +913,9 @@
      <widget class="QLabel" name="blockGradeLabel">
       <property name="geometry">
        <rect>
-        <x>150</x>
-        <y>190</y>
-        <width>58</width>
+        <x>360</x>
+        <y>120</y>
+        <width>41</width>
         <height>16</height>
        </rect>
       </property>
@@ -518,9 +926,9 @@
      <widget class="QLabel" name="blockNumLabel_4">
       <property name="geometry">
        <rect>
-        <x>200</x>
-        <y>150</y>
-        <width>58</width>
+        <x>410</x>
+        <y>90</y>
+        <width>21</width>
         <height>16</height>
        </rect>
       </property>
@@ -531,9 +939,9 @@
      <widget class="QLabel" name="blockNumLabel_5">
       <property name="geometry">
        <rect>
-        <x>200</x>
-        <y>190</y>
-        <width>58</width>
+        <x>410</x>
+        <y>120</y>
+        <width>31</width>
         <height>16</height>
        </rect>
       </property>
@@ -541,6 +949,199 @@
        <string>%</string>
       </property>
      </widget>
+     <widget class="QLabel" name="label_29">
+      <property name="geometry">
+       <rect>
+        <x>300</x>
+        <y>30</y>
+        <width>111</width>
+        <height>16</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Block Information</string>
+      </property>
+     </widget>
+     <widget class="QMdiArea" name="mdiArea_7">
+      <property name="geometry">
+       <rect>
+        <x>260</x>
+        <y>20</y>
+        <width>181</width>
+        <height>141</height>
+       </rect>
+      </property>
+      <property name="background">
+       <brush brushstyle="SolidPattern">
+        <color alpha="255">
+         <red>74</red>
+         <green>75</green>
+         <blue>75</blue>
+        </color>
+       </brush>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_30">
+      <property name="geometry">
+       <rect>
+        <x>70</x>
+        <y>30</y>
+        <width>111</width>
+        <height>16</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Train Information</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_31">
+      <property name="geometry">
+       <rect>
+        <x>40</x>
+        <y>70</y>
+        <width>41</width>
+        <height>16</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Mass:</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_32">
+      <property name="geometry">
+       <rect>
+        <x>40</x>
+        <y>90</y>
+        <width>51</width>
+        <height>16</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Length:</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_33">
+      <property name="geometry">
+       <rect>
+        <x>40</x>
+        <y>110</y>
+        <width>111</width>
+        <height>16</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Height:  11.22 ft</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_34">
+      <property name="geometry">
+       <rect>
+        <x>40</x>
+        <y>130</y>
+        <width>111</width>
+        <height>16</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Width:  8.69 ft</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="massLabel">
+      <property name="geometry">
+       <rect>
+        <x>100</x>
+        <y>70</y>
+        <width>41</width>
+        <height>16</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>0</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="lengthLabel">
+      <property name="geometry">
+       <rect>
+        <x>100</x>
+        <y>90</y>
+        <width>41</width>
+        <height>16</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>0</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_35">
+      <property name="geometry">
+       <rect>
+        <x>150</x>
+        <y>70</y>
+        <width>31</width>
+        <height>16</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>T</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_36">
+      <property name="geometry">
+       <rect>
+        <x>150</x>
+        <y>90</y>
+        <width>31</width>
+        <height>16</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>ft</string>
+      </property>
+     </widget>
+     <widget class="QMdiArea" name="mdiArea_8">
+      <property name="geometry">
+       <rect>
+        <x>20</x>
+        <y>20</y>
+        <width>201</width>
+        <height>141</height>
+       </rect>
+      </property>
+      <property name="background">
+       <brush brushstyle="SolidPattern">
+        <color alpha="255">
+         <red>74</red>
+         <green>75</green>
+         <blue>75</blue>
+        </color>
+       </brush>
+      </property>
+     </widget>
+     <zorder>mdiArea_8</zorder>
+     <zorder>mdiArea_7</zorder>
+     <zorder>label</zorder>
+     <zorder>powerLabel</zorder>
+     <zorder>label_2</zorder>
+     <zorder>blockNumLabel</zorder>
+     <zorder>label_4</zorder>
+     <zorder>label_5</zorder>
+     <zorder>label_3</zorder>
+     <zorder>numCarLabel</zorder>
+     <zorder>label_11</zorder>
+     <zorder>blockLengthLabel</zorder>
+     <zorder>blockGradeLabel</zorder>
+     <zorder>blockNumLabel_4</zorder>
+     <zorder>blockNumLabel_5</zorder>
+     <zorder>label_29</zorder>
+     <zorder>label_30</zorder>
+     <zorder>label_31</zorder>
+     <zorder>label_32</zorder>
+     <zorder>label_33</zorder>
+     <zorder>label_34</zorder>
+     <zorder>massLabel</zorder>
+     <zorder>lengthLabel</zorder>
+     <zorder>label_35</zorder>
+     <zorder>label_36</zorder>
     </widget>
    </widget>
   </widget>
@@ -549,7 +1150,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>717</width>
+     <width>712</width>
      <height>22</height>
     </rect>
    </property>

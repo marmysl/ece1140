@@ -8,13 +8,16 @@
 class CTCMode
 {
     private:
-        bool mode;
     public:
+        bool mode;
         CTCMode();
         void setMode(bool);
         bool getMode();
         void automaticDispatch();
         void manualDispatch();
+        void sm(bool);
+
+        CTCMode* m;
 };
 
 #endif // CTCMODE_H

@@ -49,29 +49,23 @@ void TrackRouter::processLink( PathNode *curNode, BlockDir dir )
             // if there is a diverging block (there should be or something is wonky)
             if( branchBlock )
             {
-                PathNode *divNode = nodeMap[branchBlock];
+                // make a copy of the base node
+                PathNode *divNode = new PathNode(*nodeMap[branchBlock]);
 
-                // check if we found a shorter path to that block, if so, chuck it in the queue with updated info
-                if( newDist < divNode->distance )
+                // add the new node to the queue
+                // only process if block is traversable in this dir
+                BlockDir entryDir = curNode->block->getEntryDir(branchBlock);
+
+                if( branchBlock->canTravelInDir(entryDir) )
                 {
-                    BlockDir entryDir = curNode->block->getEntryDir(branchBlock);
+                    divNode->dir = entryDir;
+                    divNode->distance = newDist;
+                    divNode->prev = curNode;
 
-                    // only process if block is traversable in this dir
-                    if( branchBlock->canTravelInDir(entryDir) )
-                    {
-                        // if the node was already found in the other direction then it's a loop, throw it out
-                        if( divNode->dir == BLK_NODIR || entryDir == divNode->dir )
-                        {
-                            divNode->dir = entryDir;
-                            divNode->distance = newDist;
-                            divNode->prev = curNode;
+                    divNode->prevSwitch = s;
+                    divNode->switchDir = SW_DIVERGING;
 
-                            divNode->prevSwitch = s;
-                            divNode->switchDir = SW_DIVERGING;
-
-                            pathQueue.push(divNode);
-                        }
-                    }
+                    pathQueue.push(divNode);
                 }
             }
 
@@ -79,33 +73,26 @@ void TrackRouter::processLink( PathNode *curNode, BlockDir dir )
         }
         else straightBlock = link->getTarget();
 
-        PathNode *straightNode = nodeMap[straightBlock];
+        // copy that node
+        PathNode *straightNode = new PathNode(*nodeMap[straightBlock]);
 
-        // check if we found a shorter path to that block, if so, chuck it in the queue with updated info
-        if( newDist < straightNode->distance )
+        // only process if block is traversable in this dir
+        BlockDir entryDir = curNode->block->getEntryDir(straightBlock);
+
+        if( straightBlock->canTravelInDir(entryDir) )
         {
-            BlockDir entryDir = curNode->block->getEntryDir(straightBlock);
+            straightNode->dir = entryDir;
+            straightNode->distance = newDist;
+            straightNode->prev = curNode;
 
-            // only process if block is traversable in this dir
-            if( straightBlock->canTravelInDir(entryDir) )
+            // if we got here via the straight leg of the switch
+            if( Switch *s = dynamic_cast<Switch *>(link) )
             {
-                // if the node was already found in the other direction then it's a loop, throw it out
-                if( straightNode->dir == BLK_NODIR || entryDir == straightNode->dir )
-                {
-                    straightNode->dir = entryDir;
-                    straightNode->distance = newDist;
-                    straightNode->prev = curNode;
-
-                    // if we got here via the straight leg of the switch
-                    if( Switch *s = dynamic_cast<Switch *>(link) )
-                    {
-                        straightNode->prevSwitch = s;
-                        straightNode->switchDir = SW_STRAIGHT;
-                    }
-
-                    pathQueue.push(straightNode);
-                }
+                straightNode->prevSwitch = s;
+                straightNode->switchDir = SW_STRAIGHT;
             }
+
+            pathQueue.push(straightNode);
         }
     }
 }

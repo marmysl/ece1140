@@ -48,12 +48,3 @@ void TrainModelControls::toggleAC(bool acStatus){
 void TrainModelControls::toggleHeater(bool heaterStatus){
     heaterOn = heaterStatus;
 }
-
-void TrainModelControls::setTemp(int newTemp){
-    temp = newTemp;
-}
-
-int TrainModelControls::getTemp(){
-    return temp;
-}
-

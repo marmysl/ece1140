@@ -75,7 +75,7 @@ int main(int argc, char *argv[])
     }
 
     ticketSystem = new TicketSystem(mk1_app);
-    //ticketSystem->sellTickets(routes[0], routes[0]->stations[0], systemClock->currentTime(), 20);
+    QObject::connect(systemClock, &TimeTracker::timeAdvanced, ticketSystem, &TicketSystem::onTimeUpdate);
 
     // display modal dialog to select HW component serial ports
     hwPortsDialog = new SerialPortDialog();

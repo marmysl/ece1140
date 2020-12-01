@@ -13,7 +13,7 @@ TrainControlWindow::TrainControlWindow(QWidget *parent)
 {
     ui->setupUi(this);
 
-    timerID = startTimer(1000); // timer event occurs every second
+    timerID = startTimer(100);
     count = 0;
 
     swtc.mode = mode;
@@ -44,6 +44,7 @@ void TrainControlWindow::timerEvent(QTimerEvent *event)
     swtc.calculatePower();
     updatePower();
     updateCircuitInfo();
+    updateStation();
     updateBrakes();
     updateSpeed();
     updateCabin();
@@ -71,6 +72,34 @@ void TrainControlWindow :: updateCircuitInfo()
         ui->auth_exceeded_->setText("Train is slowing due to authority.");
     } else {
         ui->auth_exceeded_->setText("");
+    }
+
+}
+
+void TrainControlWindow :: updateStation()
+{
+    // Display next station
+
+
+    // UI Displays for train stopping at station
+    if (swtc.getStationUpcoming() == true){
+        ui->station_->setText("The train is approaching a station.");
+    } else if (swtc.getStationHere() == true && swtc.getTrainVelocity() != 0.0 && swtc.getHasStopped() == false) {
+        ui->station_->setText("The train is stopping at a station.");
+    } else if (swtc.getStationHere() == true && swtc.getTrainVelocity() == 0.0){
+        ui->station_->setText("The train is stopped at a station.");
+    } else if (swtc.getStationHere() == true && swtc.getTrainVelocity() != 0.0 && swtc.getHasStopped() == true){
+        ui->station_->setText("The train is leaving a station.");
+    } else {
+        ui->station_->setText("");
+    }
+
+
+    // UI display for next station
+    if (swtc.getStationUpcoming() == true || swtc.getStationHere() == true){
+        ui->nextstation_->setText(QString::fromStdString(swtc.getNextStation()));
+    } else {
+        ui->nextstation_->setText("-");
     }
 }
 
@@ -126,6 +155,13 @@ void TrainControlWindow :: updateBrakes()  // Update brake flags in train model
 void TrainControlWindow :: updateSpeed()
 {
     ui->setpointSpeed_->setText(QString::number(swtc.getSetpointSpeed()*2.237));
+
+    // if the setpoint speed exceeds the max speed of the train, add UI message
+    if (swtc.getSetpointSpeed() > 19.4444){
+        ui->setpointexceeds_->setText("Setpoint exceeds max train speed!");
+    } else {
+        ui->setpointexceeds_->setText("");
+    }
 }
 
 void TrainControlWindow :: updateCabin()
@@ -142,6 +178,13 @@ void TrainControlWindow :: updateCabin()
     ui->doors_->setText(doors);
     ui->lights_->setText(lights);
     ui->headlights_->setText(headlights);
+
+    // Disable door button if the train is in motion
+    if (swtc.getTrainVelocity() != 0.0){
+        ui->door_button->setDisabled(true);
+    } else {
+        ui->door_button->setDisabled(false);
+    }
 
 
     // Send updates to the train, if needed
@@ -163,6 +206,8 @@ void TrainControlWindow :: dispatch() // only runs once, at dispatch.
 }
 
 // ------------------------------------------------------------------------------------------- GUI buttons n' stuff
+
+
 void TrainControlWindow::on_submit_clicked() //Submits Kp and Ki
 {
     //convert input string to text then assign to Kp  & Ki
@@ -181,15 +226,22 @@ void TrainControlWindow::on_submit_clicked() //Submits Kp and Ki
 
 void TrainControlWindow::startMoving()
 {
+    // Display values in textboxes
+    ui->ki_textbox->setPlainText(QString::number(swtc.getKi() / 1000));
+    ui->kp_textbox->setPlainText(QString::number(swtc.getKp() / 1000));
+
     // Disable textboxes and submit button
     ui->ki_textbox->setReadOnly(true);
     ui->kp_textbox->setReadOnly(true);
-    ui->submit->setDisabled(true);
+    ui->submit->hide();
 
     cout << "Kp and Ki have been set." << std::endl; //debug
 
     //Disable service brake flag once Kp and Ki are set
     swtc.setServiceBrake(false);
+
+    // Remove recommended Kp/Ki from UI
+    ui->k_rec_->setText("");
 
     swtc.calculatePower();
 }
@@ -213,13 +265,13 @@ void TrainControlWindow::on_emergencyBrake_clicked()
 void TrainControlWindow::on_inc_setspeed_clicked()
 {
     double current = swtc.getSetpointSpeed();
-    swtc.setSetpointSpeed(current + 1.0);
+    swtc.setSetpointSpeed(current + 5.0);
 }
 
 void TrainControlWindow::on_dec_setspeed_clicked()
 {
     double current = swtc.getSetpointSpeed();
-    swtc.setSetpointSpeed(current - 1.0);
+    swtc.setSetpointSpeed(current - 5.0);
 }
 
 void TrainControlWindow::on_door_button_clicked()
@@ -248,3 +300,4 @@ void TrainControlWindow::on_releasebrakebutton_clicked()
 
     ui->releasebrakebutton->hide();
 }
+

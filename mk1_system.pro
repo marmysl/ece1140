@@ -24,13 +24,12 @@ SOURCES += \
     CTCOffice/ctcoffice/CTCMode.cpp \
     CTCOffice/ctcoffice/Files.cpp \
     CTCOffice/ctcoffice/ctc_main.cpp \
+    CTCOffice/ctcoffice/maintenance.cpp \
     CTCOffice/ctcoffice/mainwindow.cpp \
     CTCOffice/ctcoffice/schedule.cpp \
-    HWTrackController/HWPLCUI.cpp \
     HWTrackController/HWTrackController.cpp \
     HWTrackController/HardwarePLC.cpp \
     HWTrackController/initHWTrack.cpp \
-    HWTrackController/FailureDetector.cpp \
     HWTrackController/Region.cpp \
     HWTrainController/SpeedRegulator.cpp \
     HWTrainController/TrainController.cpp \
@@ -77,11 +76,10 @@ HEADERS += \
     CTCOffice/ctcoffice/CTCMode.h \
     CTCOffice/ctcoffice/Files.h \
     CTCOffice/ctcoffice/ctc_main.h \
+    CTCOffice/ctcoffice/maintenance.h \
     CTCOffice/ctcoffice/mainwindow.h \
     CTCOffice/ctcoffice/schedule.h \
-    HWTrackController/HWPLCUI.h \
     HWTrackController/HWTrackController.hpp \
-    HWTrackController/FailureDetector.hpp \
     HWTrackController/HWTrackController_main.h \
     HWTrackController/HardwarePLC.h \
     HWTrackController/Region.hpp \
@@ -103,6 +101,7 @@ HEADERS += \
     TrackModel/layoutdialog.h \
     TrackModel/routemapview.h \
     TrackModel/routingtestdialog.h \
+    TrackModel/station_tracking.h \
     TrackModel/ticketsdialog.h \
     TrackModel/tracklayout.hpp \
     TrackModel/trackmodel_controller.hpp \
@@ -129,6 +128,7 @@ HEADERS += \
 
 FORMS += \
     CTCOffice/ctcoffice/Files.ui \
+    CTCOffice/ctcoffice/maintenance.ui \
     CTCOffice/ctcoffice/mainwindow.ui \
     SWTrackController/swtrackcntrlwindow.ui \
     CTCOffice/ctcoffice/schedule.ui \
