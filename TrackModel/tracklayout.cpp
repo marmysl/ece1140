@@ -3,10 +3,12 @@
 #include <sstream>
 #include <stdexcept>
 #include "tracklayout.hpp"
+#include "mk1_util.hpp"
 
 #include <QFileInfo>
 
 using namespace TrackModel;
+using namespace MK1Util;
 
 std::vector<Route *> TrackModel::routes = std::vector<Route *>();
 
@@ -23,22 +25,6 @@ Route *TrackModel::getRoute( std::string name ) {
 // Route Members
 Route::Route( std::string name ) :
     name(name), displayStartBlk(-1), displayStartDir(BLK_FORWARD) {}
-
-static int parseIntStrict( std::string str ) {
-    size_t lenParsed;
-    int result = std::stoi(str, &lenParsed);
-
-    if( lenParsed != str.length() ) throw std::invalid_argument(str + " is not a valid integer value");
-    return result;
-}
-
-static float parseFloatStrict( std::string str ) {
-    size_t lenParsed;
-    float result = std::stof(str, &lenParsed);
-
-    if( lenParsed != str.length() ) throw std::invalid_argument(str + " is not a valid floating point value");
-    return result;
-}
 
 void Route::loadLayout( std::string fileName ) {
     std::ifstream layoutFile;
