@@ -155,7 +155,10 @@ void TrackController::setRoute() {
 }
 
 void TrackController::setSwitch(bool state) {
-    switch_state = state;
+
+    if (switch_head != -1) {
+        switch_state = state;
+
     bool relay_change = PLC.setSwitch(switch_state);
     TrackModel::SwitchState s;
     if (relay_change == true) {
@@ -189,6 +192,7 @@ void TrackController::setSwitch(bool state) {
         }
     }
         TrackModel::setSwitchState(line, switch_head, s);
+    }
 }
 
 void TrackController::setCross() {
@@ -255,11 +259,13 @@ void TrackController::setTrackSA() {
         }
     }
 
-    if (ctc_exit_id == exit_block0) {
-        setSwitch(true);
-    }
-    else {
-        setSwitch(false);
+    if (switch_head != -1) {
+        if (ctc_exit_id == exit_block0) {
+            setSwitch(true);
+        }
+        else {
+            setSwitch(false);
+        }
     }
 
 }
