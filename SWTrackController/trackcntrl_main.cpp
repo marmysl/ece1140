@@ -93,13 +93,13 @@ void setCrossingUI(TrackController &temp, bool new_s) {
 }
 
 void updateWaysides() {
-   // blue -> waysides.begin() -> updateData();
+    /*blue -> waysides.begin() -> updateData();
 
-   // for (auto i = green -> waysides.begin(); i != green -> waysides.end(); i++) {
-   //     i -> updateData();
-  //  }
+    for (auto i = green -> waysides.begin(); i != green -> waysides.end(); i++) {
+        i -> updateData();
+    }
 
-  //  for (auto i = red -> waysides.begin(); i != red -> waysides.end(); i++) {
-   //     i -> updateData();
-   // }
+    for (auto i = red -> waysides.begin(); i != red -> waysides.end(); i++) {
+        i -> updateData();
+    }*/
 }

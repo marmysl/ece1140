@@ -15,7 +15,8 @@ SWTrackCntrlWindow::SWTrackCntrlWindow(QWidget *parent) :
     PLCfile_present = false;
     ui->CancelButton->hide();
 
-    timerID = startTimer(10, Qt::TimerType::CoarseTimer);
+    counter = 0;
+
 }
 
 void SWTrackCntrlWindow::timerEvent(QTimerEvent *event) {
@@ -129,6 +130,11 @@ void SWTrackCntrlWindow::on_uploadButton_clicked()
      ui->UploadPLCFrame->hide();
      ui->mainWindow->show();
 
+     if (counter == 0) {
+         timerID = startTimer(10, Qt::TimerType::CoarseTimer);
+         counter = 1;
+     }
+
 }
 
 void SWTrackCntrlWindow::on_newPLCButton_clicked()
@@ -200,6 +206,8 @@ void SWTrackCntrlWindow::on_enterWaysideButton_clicked()
         setSwitch();
         setCrossing();
     }
+
+
 
 }
 

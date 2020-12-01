@@ -31,6 +31,7 @@ public:
     std::string filename, filename2;
     //void myTimer();
     int timerID;
+    int counter;
     //QTimer *my_timer;
 
 
@@ -60,7 +61,7 @@ private:
     Ui::SWTrackCntrlWindow *ui;
 
 protected:
-    void timerEvent(QTimerEvent *event) override;
+    void timerEvent(QTimerEvent *event);
 
 };
 
