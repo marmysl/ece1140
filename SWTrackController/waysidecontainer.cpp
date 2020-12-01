@@ -103,7 +103,7 @@ WaysideContainer::WaysideContainer(int count)
             s7.push_back('Z');
 
             std::vector<int> b7;
-            for (int i = 140; i <= 151; i++) {
+            for (int i = 140; i <= 150; i++) {
                 b7.push_back(i);
             }
             for (int i = 27; i <= 32; i++) {
@@ -169,7 +169,7 @@ WaysideContainer::WaysideContainer(int count)
             int sw6[4] = {57, 58, 0, 0};
             int swX[4] = {-1,-1,-1,-1};
 
-            int fin1[2] = {65, 0};
+            int fin1[2] = {0, 65};
             int fin2[2] = {74, -1};
             int fin3[2] = {80,102};
             int fin4[2] = {88, 101};
@@ -182,18 +182,18 @@ WaysideContainer::WaysideContainer(int count)
             int fin11[2] = {60, 0};
             int fin12[2] = {120, -1};
 
-    addTrackObj(1, line, s1, b1, sw1, 0, fin1);
-    addTrackObj(2, line, s2, b2, swX, 0, fin2);
-    addTrackObj(3, line, s3, b3, sw2, 0, fin3);
-    addTrackObj(4, line, s4, b4, sw3, 0, fin4);
-    addTrackObj(5, line, s5, b5, swX, 0, fin5);
-    addTrackObj(6, line, s6, b6, swX, 0, fin6);
-    addTrackObj(7, line, s7, b7, sw4, 0, fin7);
-    addTrackObj(8, line, s8, b8, swX, 19, fin8);
-    addTrackObj(9, line, s9, b9, sw5, 0, fin9);
-    addTrackObj(10, line, s10, b10, swX, 0, fin10);
-    addTrackObj(11, line, s11, b11, sw6, 0, fin11);
-    addTrackObj(12, line, s13, b13, swX, 0, fin12);
+    addTrackObj(2, line, s1, b1, sw1, 0, fin1);
+    addTrackObj(3, line, s2, b2, swX, 0, fin2);
+    addTrackObj(4, line, s3, b3, sw2, 0, fin3);
+    addTrackObj(5, line, s4, b4, sw3, 0, fin4);
+    addTrackObj(6, line, s5, b5, swX, 0, fin5);
+    addTrackObj(7, line, s6, b6, swX, 0, fin6);
+    addTrackObj(8, line, s7, b7, sw4, 0, fin7);
+    addTrackObj(9, line, s8, b8, swX, 19, fin8);
+    addTrackObj(10, line, s9, b9, sw5, 0, fin9);
+    addTrackObj(11, line, s10, b10, swX, 0, fin10);
+    addTrackObj(12, line, s11, b11, sw6, 0, fin11);
+    addTrackObj(13, line, s13, b13, swX, 0, fin12);
 
     }
 
@@ -349,16 +349,16 @@ WaysideContainer::WaysideContainer(int count)
         int fin9[2] = {54, 64};
         int fin10[2] = {64, -1};
 
-        addTrackObj(1, line, b1, s1, sw1, 0, fin1);
-        addTrackObj(2, line, b2, s2, sw2, 0, fin2);
-        addTrackObj(3, line, b3, s3, swX, 0, fin3);
-        addTrackObj(4, line, b4, s4, sw3, 0, fin4);
-        addTrackObj(5, line, b5, s5, sw4, 0, fin5);
-        addTrackObj(6, line, b6, s6, sw5, 0, fin6);
-        addTrackObj(7, line, b7, s7, sw6, 0, fin7);
-        addTrackObj(8, line, b8, s8, swX, 47, fin8);
-        addTrackObj(9, line, b9, s9, sw7, 0, fin9);
-        addTrackObj(10, line, b10, s10, swX, 0, fin10);
+        addTrackObj(14, line, b1, s1, sw1, 0, fin1);
+        addTrackObj(15, line, b2, s2, sw2, 0, fin2);
+        addTrackObj(16, line, b3, s3, swX, 0, fin3);
+        addTrackObj(17, line, b4, s4, sw3, 0, fin4);
+        addTrackObj(18, line, b5, s5, sw4, 0, fin5);
+        addTrackObj(19, line, b6, s6, sw5, 0, fin6);
+        addTrackObj(20, line, b7, s7, sw6, 0, fin7);
+        addTrackObj(21, line, b8, s8, swX, 47, fin8);
+        addTrackObj(22, line, b9, s9, sw7, 0, fin9);
+        addTrackObj(23, line, b10, s10, swX, 0, fin10);
 
     }
 }

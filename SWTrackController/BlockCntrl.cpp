@@ -60,6 +60,7 @@ void BlockCntrl::setCircuit() {
 
 void BlockCntrl::setOcc() {
 
+
     block_occ = TrackModel::isBlockOccupied(line, block_num);
     current_occ = block_occ;
 

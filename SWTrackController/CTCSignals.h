@@ -44,7 +44,7 @@ private:
     std::vector< std::pair<int, int> > div_exit;
     std::vector< std::pair<int, int> > str_exit;
     std::vector< std::pair<int, int> > switch_id;
-    int size;
+
     bool checkValidWayside(int);
     bool checkValidLine(std::string&);
 
@@ -54,9 +54,14 @@ public:
     struct BlockInfoCTC *redblockptr = NULL;
     struct BlockInfoCTC *blueblockptr = NULL;
 
+    struct BlockInfoCTC getBlockPtr(std::string &, int);
+
+    void updateBlockOcc(std::string &, std::vector< std::pair<int, bool> >);
+    void updateBlockFail(std::string &, std::vector< std::pair<int, int> >);
 
     std::vector< std::pair<int, TrackModel::SwitchState> > switchstates; //<block_id, switch state>
 
+    CTCSignals();
     ~CTCSignals();
     void setUpArray(std::string);
     //int getWaysideID(int);

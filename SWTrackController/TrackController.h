@@ -51,6 +51,9 @@ class TrackController
         std::vector<float> CTC_comspeed;
         std::vector<int> CTC_comauth;
 
+        std::vector<std::pair< int, int> > faults_vect;
+        std::vector<std::pair< int, bool> > occ_vect;
+
         TrackController();
         void setUpController(int, std::string &, std::vector<char> &, std::vector<int> &, int[], int, int[]);
         void setSignalsInstance(CTCSignals &);
@@ -62,6 +65,7 @@ class TrackController
         void setCross();
         void manSetCross(bool);
         void getFaults();
+        void getOccupancies();
         void updateData();
 };
 

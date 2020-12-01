@@ -34,6 +34,7 @@ class CTCDispatch
         void sendTrackController(CTCSignals &);
         void dispatch(CTCSignals &);
 
+
         void setLine(std::string);
         std::string getline();
         void setDestination(QString, QString);

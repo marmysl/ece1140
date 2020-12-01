@@ -30,16 +30,133 @@ bool CTCSignals::checkValidLine(std::string &line) {
 
 }
 
+CTCSignals::CTCSignals() {
+
+    setUpArray("Green Line");
+    setUpArray("Red Line");
+    setUpArray("Blue Line");
+
+}
+
 CTCSignals::~CTCSignals() {
     //delete [] blockptr;
     //blockptr = NULL;
 }
 
+struct BlockInfoCTC CTCSignals::getBlockPtr(std::string &line, int id) {
+
+    struct BlockInfoCTC temp;
+    int temp_id;
+    if (line == "Green Line") {
+        for (int i = 0; i < 150; i++) {
+            temp_id = greenblockptr[i].block_id;
+            if (temp_id == id) {
+                temp = greenblockptr[i];
+                i = 150;
+            }
+        }
+    }
+    else if (line == "Red Line") {
+        for (int i = 0; i < 76; i++) {
+            temp_id = redblockptr[i].block_id;
+            if (temp_id == id) {
+                temp = redblockptr[i];
+                i = 76;
+            }
+        }
+    }
+    else {
+        for (int i = 0; i < 15; i++) {
+            temp_id = blueblockptr[i].block_id;
+            if (temp_id == id) {
+                temp = blueblockptr[i];
+                i = 15;
+            }
+        }
+    }
+
+    return temp;
+
+}
+
+void CTCSignals::updateBlockOcc(std::string &line, std::vector< std::pair<int, bool> > v) {
+
+    int temp_id;
+    int c = 0;
+    if (line == "Green Line") {
+        for (auto i = v.begin(); i != v.end(); i++) {
+            temp_id = greenblockptr[c].block_id;
+            if (temp_id == i -> first) {
+                greenblockptr[c].occupancy = i ->second;
+            }
+            c++;
+        }
+    }
+    else if (line == "Red Line") {
+        c = 0;
+        for (auto i = v.begin(); i != v.end(); i++) {
+            temp_id = redblockptr[c].block_id;
+            if (temp_id == i -> first) {
+                redblockptr[c].occupancy = i -> second;
+            }
+            c++;
+        }
+    }
+    else {
+        c = 0;
+        for (auto i = v.begin(); i != v.end(); i++) {
+            temp_id = blueblockptr[c].block_id;
+            if (temp_id == i -> first) {
+                blueblockptr[c].occupancy = i -> second;
+            }
+            c++;
+        }
+    }
+
+}
+
+void CTCSignals::updateBlockFail(std::string &line, std::vector< std::pair<int, int> > v) {
+
+    int temp_id;
+    int c = 0;
+    if (line == "Green Line") {
+        for (auto i = v.begin(); i != v.end(); i++) {
+            temp_id = greenblockptr[c].block_id;
+            if (temp_id == i -> first) {
+                greenblockptr[c].failure_code = i ->second;
+            }
+            c++;
+        }
+    }
+    else if (line == "Red Line") {
+        c = 0;
+        for (auto i = v.begin(); i != v.end(); i++) {
+            temp_id = redblockptr[c].block_id;
+            if (temp_id == i -> first) {
+                redblockptr[c].failure_code = i -> second;
+            }
+            c++;
+        }
+    }
+    else {
+        c = 0;
+        for (auto i = v.begin(); i != v.end(); i++) {
+            temp_id = blueblockptr[c].block_id;
+            if (temp_id == i -> first) {
+                blueblockptr[c].failure_code = i -> second;
+            }
+            c++;
+        }
+    }
+
+}
+
+
 void CTCSignals::setUpArray(std::string l) {
 
     if (l == "Blue Line") {
         blueblockptr = new BlockInfoCTC[15];
-        for (int i = 1; i <= 15; i++) {
+        for (int i = 0; i < 15; i++) {
             blueblockptr[i].block_id = i;
             blueblockptr[i].wayside_id = 1;
             blueblockptr[i].failure_code = TrackModel::BlockFault::FAULT_NONE;
@@ -48,7 +165,7 @@ void CTCSignals::setUpArray(std::string l) {
     }
     else if (l == "Green Line") {
         greenblockptr = new BlockInfoCTC[150];
-        for (int i = 1; i <= 150; i++) {
+        for (int i = 0; i < 150; i++) {
             greenblockptr[i].block_id = i;
             greenblockptr[i].failure_code = TrackModel::BlockFault::FAULT_NONE;
             greenblockptr[i].occupancy = false;
@@ -56,7 +173,7 @@ void CTCSignals::setUpArray(std::string l) {
     }
     else {
         redblockptr = new BlockInfoCTC[76];
-        for (int i = 1; i <= 76; i++) {
+        for (int i = 0; i < 76; i++) {
             redblockptr[i].block_id = i;
             redblockptr[i].failure_code = TrackModel::BlockFault::FAULT_NONE;
             redblockptr[i].occupancy = false;
@@ -135,6 +252,8 @@ void CTCSignals::setUpExits() {
 
 
 void CTCSignals::setSpeed(std::string line, float speed) {
+
+    int size = 0;
 
     if (line == "Blue Line") {
         size = 1;
@@ -277,6 +396,10 @@ std::vector<std::pair<int,int> > CTCSignals::getWaysideAuth(int w, std::vector<i
                 }
             }
         }
+    }
+
+    if (temp.empty()) {
+        temp.push_back(std::make_pair(-1, -1));
     }
 
     return temp;

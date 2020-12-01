@@ -12,7 +12,7 @@
 
 
 extern QMainWindow *programmerGUI;
-
+//extern bool dispatched;
 
 void alertWaysideSystem(std::string &, CTCSignals &);
 
@@ -30,7 +30,7 @@ void updateWaysides();
 
 int init_SWTrackController();
 
-
+bool checkDispatched();
 
 
 

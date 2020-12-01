@@ -21,7 +21,9 @@ SWTrackCntrlWindow::SWTrackCntrlWindow(QWidget *parent) :
 
 void SWTrackCntrlWindow::timerEvent(QTimerEvent *event) {
 
-    updateWaysides();
+    if (checkDispatched()) {
+        updateWaysides();  }
+
     on_enterWaysideButton_clicked();
     on_blockGetInfoButton_clicked();
 }

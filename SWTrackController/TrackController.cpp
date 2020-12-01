@@ -102,8 +102,39 @@ void TrackController::setSignalsInstance(CTCSignals &s){
 
     std::vector<std::pair<int, int> > temp = s.getWaysideAuth(wayside_id, cntrl_blocks);
 
-    for (auto i = temp.begin(); i < temp.end(); i++) {
-        CTC_sugauth.push_back(*i);
+    if ( (temp.begin() -> first) == -1 ) {
+        for (int m = 0; m < block_count; m++) {
+            CTC_sugauth.push_back(std::make_pair(cntrl_blocks[m], 0));
+        }
+    }
+    else {
+        for (auto i = temp.begin(); i < temp.end(); i++) {
+            CTC_sugauth.push_back(*i);
+        }
+    }
+
+
+
+    for (int m = 0; m < block_count; m++) {
+        bool found = false;
+        auto a = CTC_sugauth.begin();
+        auto end = CTC_sugauth.end();
+
+        while (!found) {
+            if ( (a ->first) == cntrl_blocks[m] ) {
+                found = true;
+                a++;
+            }
+            else {
+                a++;
+                if (a == end) {
+                    CTC_sugauth.push_back(std::make_pair(cntrl_blocks[m], 0));
+                    found = true;
+                }
+            }
+
+        }
+
     }
 
     float spd = s.getWaysideSpeed(wayside_id);
@@ -113,7 +144,11 @@ void TrackController::setSignalsInstance(CTCSignals &s){
         //std::cout <<
     }
 
-    ctc_exit_id = s.getWaysideExit(wayside_id);
+    int temp_ex = s.getWaysideExit(wayside_id);
+    if ( temp_ex != -1) {
+        ctc_exit_id = temp_ex;
+    }
+
     setTrackSA();
 
 
@@ -223,12 +258,41 @@ void TrackController::manSetCross(bool state) {
 
 void TrackController::getFaults() {
 
+    std::vector<std::pair<int, int> > temp;
+
     TrackModel::BlockFault fault;
-    for ( auto i = blocks.begin(); i != blocks.end(); i++) {
-        fault = TrackModel::getFaults(line, i->block_num);
-        int temp = fault;
-        i -> block_fail = temp;
+    int fault_num;
+    for ( int i = 0; i < block_count; i++) {
+        fault = TrackModel::getFaults(line, cntrl_blocks[i]);
+        if (fault == TrackModel::BlockFault::FAULT_NONE) {
+            fault_num = 0;
+        }
+        else if (fault == TrackModel::BlockFault::FAULT_BROKEN_RAIL) {
+            fault_num = 1;
+        }
+        else if (fault == TrackModel::BlockFault::FAULT_CIRCUIT_FAIL) {
+            fault_num = 2;
+        }
+        else  {
+            fault_num = 4;
+        }
+
+        temp.push_back(std::make_pair(cntrl_blocks[i], fault_num));
     }
+
+    faults_vect = temp;
+}
+
+void TrackController::getOccupancies() {
+
+    std::vector<std::pair<int, bool> > temp;
+    int block_occ;
+    for ( int i = 0; i < block_count; i++) {
+        block_occ = TrackModel::isBlockOccupied(line, cntrl_blocks[i]);
+        temp.push_back(std::make_pair(cntrl_blocks[i], block_occ));
+    }
+
+    occ_vect = temp;
 
 }
 
@@ -244,14 +308,16 @@ void TrackController::setTrackSA() {
         c = 0;
         curr_block = i -> block_num;
 
+
         for (auto m = CTC_sugauth.begin(); m != CTC_sugauth.end(); m++) {
             tempID = m -> first;
 
             if ( curr_block == tempID ) {
-                i -> setSpdAuth(CTC_sugspeed[c], m -> second);
+                //i -> setSpdAuth(CTC_sugspeed[c], m -> second);
                 c++;
                 TrackModel::TrackCircuitData circ_data = TrackModel::TrackCircuitData::fromFloat(CTC_sugspeed[c], m -> second);
                 TrackModel::setTrackCircuit(line, tempID, circ_data);
+                //m = CTC_sugauth.end();
             }
             else {
                 c++;
@@ -260,6 +326,7 @@ void TrackController::setTrackSA() {
     }
 
     if (switch_head != -1) {
+
         if (ctc_exit_id == exit_block0) {
             setSwitch(true);
         }
@@ -272,38 +339,18 @@ void TrackController::setTrackSA() {
 
 void TrackController::updateData() {
 
-    int c = 0;
 
-    for (auto b = blocks.begin(); b < blocks.end(); b++) {
-        b -> setOcc();
-    }
-
+    getOccupancies();
     getFaults();
 
-    for (auto b = blocks.begin(); b < blocks.end(); b++) {
-        if (line == "Green Line") {
-            while (c < 150) {
-                ctc_wayside.greenblockptr[c].occupancy = (b -> block_occ);
-                ctc_wayside.greenblockptr[c].failure_code = (b -> block_fail);
-                c++;
-            }
-        }
-        else if (line == "Red Line") {
-            c = 0;
-            while (c < 76) {
-                ctc_wayside.redblockptr[c].occupancy = (b -> block_occ);
-                ctc_wayside.redblockptr[c].failure_code = (b -> block_fail);
-            }
-        }
-        else {
-            c = 0;
-            while (c < 15) {
-                ctc_wayside.blueblockptr[c].occupancy = (b -> block_occ);
-                ctc_wayside.blueblockptr[c].failure_code = (b -> block_fail);
-            }
-        }
-    }
+    //struct BlockInfoCTC block_struct;
 
+    for (auto b = blocks.begin(); b < blocks.end(); b++) {
+        ctc_wayside.updateBlockOcc(line, occ_vect);
+        ctc_wayside.updateBlockFail(line, faults_vect);
+       }
+
+/*
     std::vector<std::pair<int, int> > temp = ctc_wayside.getWaysideAuth(wayside_id, cntrl_blocks);
 
     for (auto i = temp.begin(); i < temp.end(); i++) {
@@ -317,7 +364,8 @@ void TrackController::updateData() {
     }
 
     ctc_exit_id = ctc_wayside.getWaysideExit(wayside_id);
+    */
 
     setCross();
-    setTrackSA();
+    //setTrackSA();
 }

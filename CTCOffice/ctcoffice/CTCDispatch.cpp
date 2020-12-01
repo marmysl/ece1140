@@ -167,7 +167,7 @@ float CTCDispatch::getPassNum(){
     return passNum;
 }
 
-void CTCDispatch::dispatch(CTCSignals(&c)){
+void CTCDispatch::dispatch(CTCSignals &c){
     setPassNum();
     carsNum = ceil(passNum/44); // ceil is taken out
     //qDebug() << "Number of Passengers on Train: " << QString::number(passNum);
@@ -192,16 +192,13 @@ void CTCDispatch::sendTrackController(CTCSignals &ctc){
     route = findRoute();
 
     int i = 0;
-    for(std::pair<int, TrackModel::SwitchState> val : route.switchStates){
+/*    for(std::pair<int, TrackModel::SwitchState> val : route.switchStates){
           if(i == 6){
               break;
           }
           tcStates.push_back(val.second);
           i++;
-    }
-
-    ctc.setUpArray(line);
-
+    }*/
 
         ctc.setSpeed(line, speed);
         ctc.setAuthority(line, authority);
@@ -209,8 +206,8 @@ void CTCDispatch::sendTrackController(CTCSignals &ctc){
         std::vector< std::pair<int, TrackModel::SwitchState> > temp_sw;
         temp_sw.push_back(make_pair(63, TrackModel::SwitchState::SW_STRAIGHT));
 
-        TrackModel::TrainPathInfo rte;
-        rte = findRoute();
+        //TrackModel::TrainPathInfo rte;
+        //rte = findRoute();
 
         ctc.setExitBlocks(temp_sw);
 

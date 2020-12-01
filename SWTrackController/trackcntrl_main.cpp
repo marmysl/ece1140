@@ -1,18 +1,24 @@
 #include "trackcntrl_main.h"
 
 QMainWindow *programmerGUI;
+bool dispatched;
 
 WaysideContainer *blue = new WaysideContainer(1);
 WaysideContainer *green = new WaysideContainer(12);
 WaysideContainer *red = new WaysideContainer(10);
 TrackController temp; //= new WaysideContainer;
 
+CTCSignals ctc_blue, ctc_green, ctc_red;
+
+void updateCTCSignals(std::string&);
+
 int init_SWTrackController() {
 
-
+    dispatched = false;
 
     programmerGUI = new SWTrackCntrlWindow();
     programmerGUI -> show();
+
 
 
 	return 0;
@@ -34,16 +40,35 @@ void alertWaysideSystem(std::string &dis_line, CTCSignals &temp) {
 
     if (dis_line == "Blue Line") {
 
-      blue -> addCTCObj(temp);
+        ctc_blue = temp;
 
     }
     if (dis_line == "Green Line") {
 
-        green -> addCTCObj(temp);
+        ctc_green = temp;
+
     }
     if (dis_line == "Red Line") {
-        red -> addCTCObj(temp);
+
+        ctc_red = temp;
+
     }
+
+    updateCTCSignals(dis_line);
+}
+
+void updateCTCSignals(std::string &l) {
+
+    if (l == "Blue Line") {
+        blue -> addCTCObj(ctc_blue);
+    }
+    if (l == "Green Line") {
+        green -> addCTCObj(ctc_green);
+    }
+    if (l == "Red LIne") {
+        red -> addCTCObj(ctc_red);
+    }
+    dispatched = true;
 
 }
 
@@ -93,13 +118,18 @@ void setCrossingUI(TrackController &temp, bool new_s) {
 }
 
 void updateWaysides() {
-    blue -> waysides.begin() -> updateData();
+
+    //blue -> waysides.begin() -> updateData();
 
     for (auto i = green -> waysides.begin(); i != green -> waysides.end(); i++) {
         i -> updateData();
     }
 
-    for (auto i = red -> waysides.begin(); i != red -> waysides.end(); i++) {
+   /* for (auto i = red -> waysides.begin(); i != red -> waysides.end(); i++) {
         i -> updateData();
-    }
+    }*/
+}
+
+bool checkDispatched() {
+    return dispatched;
 }
