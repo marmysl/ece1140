@@ -1,7 +1,7 @@
 #include "trackcntrl_main.h"
 
 QMainWindow *programmerGUI;
-bool dispatched;
+bool dispatched = false;
 
 WaysideContainer *blue = new WaysideContainer(1);
 WaysideContainer *green = new WaysideContainer(12);
@@ -14,7 +14,7 @@ void updateCTCSignals(std::string&);
 
 int init_SWTrackController() {
 
-    dispatched = false;
+    //dispatched = false;
 
     programmerGUI = new SWTrackCntrlWindow();
     programmerGUI -> show();
@@ -65,7 +65,7 @@ void updateCTCSignals(std::string &l) {
     if (l == "Green Line") {
         green -> addCTCObj(ctc_green);
     }
-    if (l == "Red LIne") {
+    if (l == "Red Line") {
         red -> addCTCObj(ctc_red);
     }
     dispatched = true;
@@ -132,4 +132,19 @@ void updateWaysides() {
 
 bool checkDispatched() {
     return dispatched;
+}
+
+bool getControllerMode(std::string &line) {
+
+    bool tempmode;
+
+    if (line == "Green Line") {
+        tempmode = ctc_green.getMode(line);
+    }
+
+    if (line == "Red Line") {
+        tempmode = ctc_red.getMode(line);
+    }
+
+    return tempmode;
 }

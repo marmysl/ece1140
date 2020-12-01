@@ -27,6 +27,7 @@ class TrackController
 
         std::vector<char> cntrl_sections;
         std::vector<int> cntrl_blocks;
+        bool initialized_ctcstruct;
 
         int switch_head;
         int switch_tail0;
@@ -39,6 +40,7 @@ class TrackController
         int ctc_exit_id;
         int exit_block0;
         int exit_block1;
+        bool hold_exit;
         int start_block;
         int block_count;
 
@@ -58,6 +60,7 @@ class TrackController
         void setUpController(int, std::string &, std::vector<char> &, std::vector<int> &, int[], int, int[]);
         void setSignalsInstance(CTCSignals &);
         void setSwitch(bool);
+        void setSwitchAuto();
         void addBlockObj(int);
         void setTrackSA();
         void setRoute();

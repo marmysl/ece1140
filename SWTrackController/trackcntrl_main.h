@@ -32,7 +32,7 @@ int init_SWTrackController();
 
 bool checkDispatched();
 
-
+bool getControllerMode(std::string &);
 
 
 

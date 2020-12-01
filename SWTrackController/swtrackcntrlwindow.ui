@@ -11,14 +11,17 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>MainWindow</string>
+   <string>Software Track Controller</string>
+  </property>
+  <property name="dockOptions">
+   <set>QMainWindow::AllowNestedDocks|QMainWindow::AllowTabbedDocks|QMainWindow::AnimatedDocks</set>
   </property>
   <widget class="QWidget" name="centralwidget">
    <widget class="QFrame" name="mainWindow">
     <property name="geometry">
      <rect>
-      <x>0</x>
-      <y>10</y>
+      <x>20</x>
+      <y>100</y>
       <width>741</width>
       <height>411</height>
      </rect>
@@ -45,8 +48,8 @@
     <widget class="QPushButton" name="toggleSwitchButton">
      <property name="geometry">
       <rect>
-       <x>550</x>
-       <y>40</y>
+       <x>610</x>
+       <y>60</y>
        <width>121</width>
        <height>31</height>
       </rect>
@@ -462,35 +465,6 @@ p, li { white-space: pre-wrap; }
       <string>CTC Suggested:</string>
      </property>
     </widget>
-    <widget class="QPushButton" name="enterWaysideButton">
-     <property name="geometry">
-      <rect>
-       <x>700</x>
-       <y>10</y>
-       <width>20</width>
-       <height>20</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>Enter</string>
-     </property>
-    </widget>
-    <widget class="QPushButton" name="blockGetInfoButton">
-     <property name="enabled">
-      <bool>true</bool>
-     </property>
-     <property name="geometry">
-      <rect>
-       <x>700</x>
-       <y>40</y>
-       <width>20</width>
-       <height>20</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>Get Info</string>
-     </property>
-    </widget>
     <widget class="QLabel" name="label_13">
      <property name="geometry">
       <rect>
@@ -517,21 +491,28 @@ p, li { white-space: pre-wrap; }
       <string>SPEED</string>
      </property>
     </widget>
+    <widget class="QTextEdit" name="modeText">
+     <property name="geometry">
+      <rect>
+       <x>520</x>
+       <y>10</y>
+       <width>211</width>
+       <height>31</height>
+      </rect>
+     </property>
+    </widget>
    </widget>
    <widget class="QFrame" name="UploadPLCFrame">
     <property name="geometry">
      <rect>
-      <x>200</x>
-      <y>440</y>
+      <x>150</x>
+      <y>80</y>
       <width>491</width>
       <height>291</height>
      </rect>
     </property>
-    <property name="frameShape">
-     <enum>QFrame::StyledPanel</enum>
-    </property>
-    <property name="frameShadow">
-     <enum>QFrame::Raised</enum>
+    <property name="autoFillBackground">
+     <bool>false</bool>
     </property>
     <widget class="QPlainTextEdit" name="PLCFileInput">
      <property name="geometry">
@@ -554,25 +535,6 @@ p, li { white-space: pre-wrap; }
      </property>
      <property name="text">
       <string>Upload</string>
-     </property>
-    </widget>
-    <widget class="QTextEdit" name="dialogPLCFrame">
-     <property name="geometry">
-      <rect>
-       <x>0</x>
-       <y>0</y>
-       <width>491</width>
-       <height>251</height>
-      </rect>
-     </property>
-     <property name="html">
-      <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
-&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
-p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'.AppleSystemUIFont'; font-size:13pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p align=&quot;center&quot; style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
-&lt;p align=&quot;center&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Select the PLC program files to upload to Wayside.&lt;/p&gt;
-&lt;p align=&quot;center&quot; style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;br /&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
      </property>
     </widget>
     <widget class="QPushButton" name="CancelButton">
@@ -624,13 +586,21 @@ p, li { white-space: pre-wrap; }
       <string>Select File</string>
      </property>
     </widget>
-    <zorder>dialogPLCFrame</zorder>
-    <zorder>PLCFileInput</zorder>
-    <zorder>uploadButton</zorder>
-    <zorder>CancelButton</zorder>
-    <zorder>selectFileButton</zorder>
-    <zorder>PLCFileInput_2</zorder>
-    <zorder>selectFileButton_2</zorder>
+    <widget class="QLabel" name="label_15">
+     <property name="geometry">
+      <rect>
+       <x>90</x>
+       <y>10</y>
+       <width>301</width>
+       <height>41</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>
+Select the PLC program files to upload to Wayside.
+</string>
+     </property>
+    </widget>
    </widget>
   </widget>
  </widget>

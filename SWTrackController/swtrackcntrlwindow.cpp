@@ -14,7 +14,8 @@ SWTrackCntrlWindow::SWTrackCntrlWindow(QWidget *parent) :
     ui->mainWindow->hide();
     PLCfile_present = false;
     ui->CancelButton->hide();
-
+    ui->toggleCrossingButton->hide();
+    ui->toggleSwitchButton->hide();
     timerActive = false;
 
 }
@@ -209,7 +210,22 @@ void SWTrackCntrlWindow::on_enterWaysideButton_clicked()
         setCrossing();
     }
 
+    std::string temp = wayside.line;
+    std::string m = "";
+    bool mode = getControllerMode(temp);
 
+    if (mode) {
+        m = "Automatic Mode";
+        ui->toggleCrossingButton->hide();
+        ui->toggleSwitchButton->hide();
+    }
+    else {
+        m = "Manual Override Mode";
+        ui->toggleCrossingButton->show();
+        ui->toggleSwitchButton->show();
+    }
+
+    ui->modeText->setPlainText(QString::fromStdString(m));
 
 }
 
@@ -219,53 +235,107 @@ void SWTrackCntrlWindow::on_blockGetInfoButton_clicked()
     if (!temp_block_id.isEmpty()) {
 
         int id = temp_block_id.toInt();
-        float ctcspd = wayside.ctc_wayside.getWaysideSpeed(wayside.wayside_id);
 
-
-        std::vector<std::pair<int,int>> ctcaut = wayside.ctc_wayside.getWaysideAuth(wayside.wayside_id, wayside.cntrl_blocks);
-        int ctcblockaut;
-        for (auto i = ctcaut.begin(); i < ctcaut.end(); i++) {
-            if ( (i->first) == id) {
-                ctcblockaut = i -> second;
-            }
-        }
 
         int auth;
-        int spd;
+        float spd;
         bool occ;
-        bool fail;
+        int fail;
+        QString occ_s;
 
-        for (auto n = wayside.blocks.begin(); n < wayside.blocks.end(); n++) {
-            if (id == (n -> block_num)) {
-                auth = n -> sug_block_authority;
-                spd = n -> sug_block_speed;
-                occ = n -> block_occ;
-                fail = n -> block_fail;
+        QString fail_s;
+        QString auth_s;
+        QString spd_s;
+
+        QString authC_s;
+        QString spdC_s;
+
+            float ctcspd = wayside.ctc_wayside.getWaysideSpeed(wayside.wayside_id);
+
+
+            std::vector<std::pair<int,int>> ctcaut = wayside.ctc_wayside.getWaysideAuth(wayside.wayside_id, wayside.cntrl_blocks);
+            int ctcblockaut;
+            for (auto i = ctcaut.begin(); i < ctcaut.end(); i++) {
+                if ( (i->first) == id) {
+                    ctcblockaut = i -> second;
+                }
+            }
+
+
+
+        for (auto n = wayside.CTC_sugauth.begin(); n != wayside.CTC_sugauth.end(); n++) {
+            if (id == (n -> first)) {
+                auth = n -> second;
             }
         }
 
+        auto n = wayside.CTC_sugspeed.begin();
+        spd = float(*n);
+        std::string null = "null";
+
+
+
+
+        if (auth < 0 || auth > 1000) {
+            auth_s = QString::fromStdString(null);
+        }
+        else {
+            auth_s = QString::number(auth);
+        }
+        if (spd < 0 || spd > 1000) {
+            spd_s = QString::fromStdString(null);
+        }
+        else {
+            spd_s = QString::number(spd);
+        }
+        if (ctcblockaut < 0 || ctcblockaut > 1000) {
+            authC_s = QString::fromStdString(null);
+        }
+        else {
+            authC_s = QString::number(ctcblockaut);
+        }
+        if (ctcspd < 0 || ctcspd > 1000) {
+            spdC_s = QString::fromStdString(null);
+        }
+        else {
+            spdC_s = QString::number(ctcspd);
+        }
+
+
+        for (auto n = wayside.faults_vect.begin(); n != wayside.faults_vect.end(); n++) {
+            if (id == (n -> first)) {
+                fail = n -> second;
+            }
+        }
+
+        for (auto n = wayside.occ_vect.begin(); n != wayside.occ_vect.end(); n++) {
+            if (id == (n -> first)) {
+                occ = n -> second;
+            }
+        }
 
         int occ_int = int(occ);
-        int fail_int = int(fail);
-        QString occ_s = QString::number(occ_int);
-        QString fail_s;
-        QString auth_s = QString::number(auth);
-        QString spd_s = QString::number(spd);
-        QString authC_s = QString::number(ctcblockaut);
-        QString spdC_s = QString::number(ctcspd);
+        occ_s = QString::number(occ_int);
 
-        if (fail_int == 1) {
+
+
+        if (fail == 1) {
             fail_s = "Broken Rail";
         }
-        else if (fail_int == 2) {
+        else if (fail == 2) {
             fail_s = "Circuit Fail";
         }
-        else if (fail_int == 4) {
+        else if (fail == 4) {
             fail_s = "Power Fail";
         }
         else {
             fail_s = "None";
         }
+
+
+
+
+
 
         ui->occText->setPlainText(occ_s);
         ui->FailureText->setPlainText(fail_s);
@@ -274,8 +344,8 @@ void SWTrackCntrlWindow::on_blockGetInfoButton_clicked()
         ui->blockAuthText_C->setPlainText(authC_s);
         ui->blockSpdText_c->setPlainText(spdC_s);
     }
-}
 
+}
 
 void SWTrackCntrlWindow::on_selectFileButton_clicked()
 {

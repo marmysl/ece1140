@@ -48,6 +48,8 @@ private:
     bool checkValidWayside(int);
     bool checkValidLine(std::string&);
 
+    bool mode_green, mode_red; //true == auto, false == manual (maintenance mode)
+
 public:
 
     struct BlockInfoCTC *greenblockptr = NULL;
@@ -68,7 +70,7 @@ public:
     void setUpExits();
 
     //FOR CTC USE
-    void setSpeed(std::string, float);
+    void setSpeed(std::string &, float);
 
     void setAuthority(std::string &, std::vector< std::pair<int, int> >);
     //pair <block #, authority>
@@ -78,11 +80,13 @@ public:
 
     //bool setLineExit(std::string &, std::vector<int>);
 
+    void requestMaintenance(std::string &);
 
     //FOR WAYSIDE USE
     float getWaysideSpeed(int);
     std::vector<std::pair<int, int> > getWaysideAuth(int, std::vector<int>);
     int getWaysideExit(int);
+    bool getMode(std::string &);
 
 };
 

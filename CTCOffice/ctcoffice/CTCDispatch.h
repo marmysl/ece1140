@@ -31,7 +31,7 @@ class CTCDispatch
         std::vector<bool> tcStates;
         void setAuthority();
         void setSpeed(float, float);
-        void sendTrackController(CTCSignals &);
+        void sendTrackController();
         void dispatch(CTCSignals &);
 
 
@@ -51,6 +51,7 @@ class CTCDispatch
         void setCTCMode(CTCMode*);
         CTCMode* getCTCMode();
         TrackModel::TrainPathInfo  findRoute();
+        CTCSignals wayside_sig;
 };
 
 #endif // CTCDISPATCH_H

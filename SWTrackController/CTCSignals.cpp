@@ -35,6 +35,8 @@ CTCSignals::CTCSignals() {
     setUpArray("Green Line");
     setUpArray("Red Line");
     setUpArray("Blue Line");
+    mode_green = true;
+    mode_red = true;
 
 }
 
@@ -251,7 +253,7 @@ void CTCSignals::setUpExits() {
 
 
 
-void CTCSignals::setSpeed(std::string line, float speed) {
+void CTCSignals::setSpeed(std::string &line, float speed) {
 
     int size = 0;
 
@@ -274,17 +276,17 @@ void CTCSignals::setSpeed(std::string line, float speed) {
 void CTCSignals::setAuthority(std::string &l, std::vector< std::pair<int, int> > auth) {
 
     if (l == "Blue Line") {
-        for (auto i= auth.begin(); i < auth.end(); i++) {
+        for (auto i= auth.begin(); i != auth.end(); i++) {
             sug_auth_ctc_b.push_back(*i);
         }
     }
     else if (l == "Green Line") {
-        for (auto i= auth.begin(); i < auth.end(); i++) {
+        for (auto i= auth.begin(); i != auth.end(); i++) {
             sug_auth_ctc_g.push_back(*i);
         }
     }
     else {
-        for (auto i= auth.begin(); i < auth.end(); i++) {
+        for (auto i= auth.begin(); i != auth.end(); i++) {
             sug_auth_ctc_r.push_back(*i);
         }
     }
@@ -320,7 +322,7 @@ void CTCSignals::setExitBlocks(std::vector< std::pair<int, TrackModel::SwitchSta
         }
     }
     else {
-    for (auto i = states.begin(); i < states.end(); i++){
+    for (auto i = states.begin(); i != states.end(); i++){
         temp_blockid = i -> first;
         if ((i -> second) == TrackModel::SwitchState::SW_DIVERGING) {
             for (int m = 0; m < 23; m++) {
@@ -348,7 +350,7 @@ void CTCSignals::setExitBlocks(std::vector< std::pair<int, TrackModel::SwitchSta
 int CTCSignals::getWaysideExit(int w) {
 
     int temp = -1;
-    for (auto i = exit_id.begin(); i < exit_id.end(); i++) {
+    for (auto i = exit_id.begin(); i != exit_id.end(); i++) {
         if ( w == (i -> first)) {
             temp = (i -> second);
         }
@@ -360,7 +362,7 @@ int CTCSignals::getWaysideExit(int w) {
 
 float CTCSignals::getWaysideSpeed(int w) {
     float temp = -1;
-    for (auto i = sug_speed_ctc.begin(); i < sug_speed_ctc.end(); i++) {
+    for (auto i = sug_speed_ctc.begin(); i != sug_speed_ctc.end(); i++) {
         if ( w == (i -> first)) {
             temp = (i -> second);
         }
@@ -373,13 +375,13 @@ std::vector<std::pair<int,int> > CTCSignals::getWaysideAuth(int w, std::vector<i
     std::vector<std::pair<int,int> > temp;
     int blk_id;
     if (w == 1) {
-        for (auto i = sug_auth_ctc_b.begin(); i < sug_auth_ctc_b.end(); i++) {
+        for (auto i = sug_auth_ctc_b.begin(); i != sug_auth_ctc_b.end(); i++) {
             temp.push_back(*i);
         }
     }
     else if (w < 14) {
-        for (auto i = sug_auth_ctc_g.begin(); i < sug_auth_ctc_g.end(); i++) {
-            for (auto m = a.begin(); m < a.end(); m++) {
+        for (auto i = sug_auth_ctc_g.begin(); i != sug_auth_ctc_g.end(); i++) {
+            for (auto m = a.begin(); m != a.end(); m++) {
                 blk_id = *m;
                 if ((i -> first) == blk_id) {
                     temp.push_back(*i);
@@ -388,8 +390,8 @@ std::vector<std::pair<int,int> > CTCSignals::getWaysideAuth(int w, std::vector<i
         }
     }
     else {
-        for (auto i = sug_auth_ctc_r.begin(); i < sug_auth_ctc_r.end(); i++) {
-            for (auto m = a.begin(); m < a.end(); m++) {
+        for (auto i = sug_auth_ctc_r.begin(); i != sug_auth_ctc_r.end(); i++) {
+            for (auto m = a.begin(); m != a.end(); m++) {
                 blk_id = *m;
                 if ((i -> first) == blk_id) {
                     temp.push_back(*i);
@@ -400,6 +402,32 @@ std::vector<std::pair<int,int> > CTCSignals::getWaysideAuth(int w, std::vector<i
 
     if (temp.empty()) {
         temp.push_back(std::make_pair(-1, -1));
+    }
+
+    return temp;
+}
+
+void CTCSignals::requestMaintenance(std::string &line) {
+
+    if (line == "Green Line") {
+        mode_green = false;
+    }
+    if (line == "Red Line") {
+        mode_red = false;
+    }
+
+}
+
+bool CTCSignals::getMode(std::string &line) {
+
+    bool temp;
+
+    if (line == "Green Line") {
+        temp = mode_green;
+    }
+
+    if (line == "Red Line") {
+        temp = mode_red;
     }
 
     return temp;
