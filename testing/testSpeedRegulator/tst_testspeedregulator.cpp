@@ -5,6 +5,7 @@
 #include "../mocs/TrainControllerMoc.h"
 #include "../mocs/SpeedRegulatorMoc.h"
 #include "../mocs/BeaconDecoderMoc.h"
+#include "../mocs/CTCModeMoc.h"
 
 #include <iostream>
 #include <string>
@@ -24,8 +25,12 @@ private slots:
 
 void testSpeedRegulator::testPullServiceBrake()
 {
-    //Tests that when the service brake is pulled the power command goes to 0 and the setpoint speed goes to 0
-    TrainControllerMoc* tc = new TrainControllerMoc();
+    //Create a CTC Mode object to set the mode of the train controller
+    CTCModeMoc* modeInit = new CTCModeMoc();
+    modeInit -> setMode(1);
+
+    //Create a train controller object to test
+    TrainControllerMoc *tc = new TrainControllerMoc(modeInit, 3, "GreenLine");
 
     //Retrieve object pointers from train controller
     SpeedRegulatorMoc *sr = tc -> getSpeedRegulator();
@@ -62,8 +67,12 @@ void testSpeedRegulator::testPullServiceBrake()
 
 void testSpeedRegulator::testPullEmergencyBrake()
 {
-    //Tests that when the service brake is pulled the power command goes to 0 and the setpoint speed goes to 0
-    TrainControllerMoc* tc = new TrainControllerMoc();
+    //Create a CTC Mode object to set the mode of the train controller
+    CTCModeMoc* modeInit = new CTCModeMoc();
+    modeInit -> setMode(1);
+
+    //Create a train controller object to test
+    TrainControllerMoc *tc = new TrainControllerMoc(modeInit, 3, "GreenLine");
 
     //Retrieve object pointers from train controller
     SpeedRegulatorMoc *sr = tc -> getSpeedRegulator();
@@ -100,8 +109,12 @@ void testSpeedRegulator::testPullEmergencyBrake()
 
 void testSpeedRegulator::testIncSetpointSpeed()
 {
-    //Creates a train controller object to test
-    TrainControllerMoc* tc = new TrainControllerMoc();
+    //Create a CTC Mode object to set the mode of the train controller
+    CTCModeMoc* modeInit = new CTCModeMoc();
+    modeInit -> setMode(1);
+
+    //Create a train controller object to test
+    TrainControllerMoc *tc = new TrainControllerMoc(modeInit, 3, "GreenLine");
 
     //Retrieve object pointers from train controller
     SpeedRegulatorMoc *sr = tc -> getSpeedRegulator();
@@ -140,8 +153,12 @@ void testSpeedRegulator::testIncSetpointSpeed()
 
 void testSpeedRegulator::testChooseVcmd()
 {
-    //Creates a train controller object to test
-    TrainControllerMoc* tc = new TrainControllerMoc();
+    //Create a CTC Mode object to set the mode of the train controller
+    CTCModeMoc* modeInit = new CTCModeMoc();
+    modeInit -> setMode(1);
+
+    //Create a train controller object to test
+    TrainControllerMoc *tc = new TrainControllerMoc(modeInit, 3, "GreenLine");
 
     //Retrieve object pointers from train controller
     SpeedRegulatorMoc *sr = tc -> getSpeedRegulator();

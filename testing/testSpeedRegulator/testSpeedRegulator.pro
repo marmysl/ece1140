@@ -19,5 +19,6 @@ SOURCES += \
     ../mocs/TrainMoc.cpp \
     ../mocs/TrainControllerMoc.cpp \
     ../mocs/SpeedRegulatorMoc.cpp \
+    ../mocs/CTCModeMoc.cpp \
     ../mocs/BeaconDecoderMoc.cpp
 

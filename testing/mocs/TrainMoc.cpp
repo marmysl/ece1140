@@ -5,7 +5,8 @@ using namespace std;
 TrainMoc::TrainMoc(int newNumCars)
 {
     numCars = newNumCars;
-    doors = 0;
+    leftDoors = 0;
+    rightDoors = 0;
     lights = 0;
     headlights = 0;
     failureCode = 0;
@@ -28,12 +29,20 @@ double TrainMoc::getCurrentVelocity(){
     return power*2;
 }
 
-void TrainMoc::setDoorStatus(bool doorStatus){
-    doors = doorStatus;
+void TrainMoc::setLeftDoorStatus(bool doorStatus){
+    leftDoors = doorStatus;
 }
 
-bool TrainMoc::getDoorStatus(){
-    return doors;
+bool TrainMoc::getLeftDoorStatus(){
+    return leftDoors;
+}
+
+void TrainMoc::setRightDoorStatus(bool doorStatus){
+    rightDoors = doorStatus;
+}
+
+bool TrainMoc::getRightDoorStatus(){
+    return rightDoors;
 }
 
 void TrainMoc::setCabinLights(bool lightStatus){

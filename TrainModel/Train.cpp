@@ -36,7 +36,7 @@ uint64_t Train::sendTrackCircuit(){
         return 0xFFFFFFFFFFFFFFFF;
     }
     return block->trackCircuitData;
-    //return 0x0002000000032000;
+    //return 0x0002000000000032;
 }
 
 double Train::getCurrentVelocity(){

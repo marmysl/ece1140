@@ -1,10 +1,11 @@
 #include "TrainControllerMoc.h"
 
-TrainControllerMoc::TrainControllerMoc()
+TrainControllerMoc::TrainControllerMoc(CTCModeMoc *modeInit, int numCars, std::string lineType)
 {
-    trainModel = new TrainMoc(5);
+    trainModel = new TrainMoc(numCars);
     speedRegulator = new SpeedRegulatorMoc(trainModel);
     beacon = new BeaconDecoderMoc();
+    mode = modeInit;
 }
 void TrainControllerMoc::receiveData(string simData)
 {
@@ -14,8 +15,8 @@ void TrainControllerMoc::receiveData(string simData)
           else trainModel -> setAC(0);
           if(simData.substr(2,1) == "1") trainModel -> setHeater(1);
           else trainModel -> setHeater(0);
-          if(simData.substr(3,1) == "1") trainModel -> setDoorStatus(1);
-          else trainModel -> setDoorStatus(0);
+          if(simData.substr(3,1) == "1") trainModel -> setLeftDoorStatus(1);
+          else trainModel -> setLeftDoorStatus(0);
           if(simData.substr(4,1) == "1") trainModel -> setAdvertisements(1);
           else trainModel -> setAdvertisements(0);
           if(simData.substr(5,1) == "1") trainModel -> setAnnouncements(1, beacon -> getAnnouncement());
@@ -35,7 +36,7 @@ std::string TrainControllerMoc::writeData()
     outgoing_s += to_string(trainModel -> getCabinLights());
     outgoing_s += to_string(trainModel -> getAC());
     outgoing_s += to_string(trainModel -> getHeater());
-    outgoing_s += to_string(trainModel -> getDoorStatus());
+    outgoing_s += to_string(trainModel -> getLeftDoorStatus());
     outgoing_s += to_string(trainModel -> getAdvertisements());
     outgoing_s += to_string(trainModel -> getAnnouncements());
 

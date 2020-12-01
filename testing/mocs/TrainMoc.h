@@ -15,7 +15,8 @@ public:
     bool serviceBrake;
     int numCars;
     double power;
-    bool doors;
+    bool leftDoors;
+    bool rightDoors;
     bool lights;
     bool headlights;
     int failureCode;
@@ -31,8 +32,10 @@ public:
     uint64_t sendTrackCircuit();
     double getCurrentVelocity();
     void setPower(double newPower);             //Called by train controller to set power
-    void setDoorStatus(bool);
-    bool getDoorStatus();
+    void setLeftDoorStatus(bool);
+    bool getLeftDoorStatus();
+    void setRightDoorStatus(bool);
+    bool getRightDoorStatus();
     void setCabinLights(bool);
     bool getCabinLights();
     void setHeadlights(bool);

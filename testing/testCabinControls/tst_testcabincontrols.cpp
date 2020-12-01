@@ -5,6 +5,7 @@
 #include "../mocs/TrainControllerMoc.h"
 #include "../mocs/SpeedRegulatorMoc.h"
 #include "../mocs/BeaconDecoderMoc.h"
+#include "../mocs/CTCModeMoc.h"
 
 #include <iostream>
 #include <string>
@@ -30,8 +31,12 @@ private slots:
 
 void testCabinControls::testCabinLights()
 {
+    //Create a CTC Mode object to set the mode of the train controller
+    CTCModeMoc* modeInit = new CTCModeMoc();
+    modeInit -> setMode(1);
+
     //Create a train controller object to test
-    TrainControllerMoc *tc = new TrainControllerMoc();
+    TrainControllerMoc *tc = new TrainControllerMoc(modeInit, 3, "GreenLine");
 
     //Obtain trainModel object from train controller
     TrainMoc *tm = tc -> getTrainModel();
@@ -58,8 +63,12 @@ void testCabinControls::testCabinLights()
 
 void testCabinControls::testCabinAc()
 {
+    //Create a CTC Mode object to set the mode of the train controller
+    CTCModeMoc* modeInit = new CTCModeMoc();
+    modeInit -> setMode(1);
+
     //Create a train controller object to test
-    TrainControllerMoc *tc = new TrainControllerMoc();
+    TrainControllerMoc *tc = new TrainControllerMoc(modeInit, 3, "GreenLine");
 
     //Obtain trainModel object from train controller
     TrainMoc *tm = tc -> getTrainModel();
@@ -86,8 +95,12 @@ void testCabinControls::testCabinAc()
 
 void testCabinControls::testCabinHeat()
 {
+    //Create a CTC Mode object to set the mode of the train controller
+    CTCModeMoc* modeInit = new CTCModeMoc();
+    modeInit -> setMode(1);
+
     //Create a train controller object to test
-    TrainControllerMoc *tc = new TrainControllerMoc();
+    TrainControllerMoc *tc = new TrainControllerMoc(modeInit, 3, "GreenLine");
 
     //Obtain trainModel object from train controller
     TrainMoc *tm = tc -> getTrainModel();
@@ -114,8 +127,12 @@ void testCabinControls::testCabinHeat()
 
 void testCabinControls::testCabinAdvertisements()
 {
+    //Create a CTC Mode object to set the mode of the train controller
+    CTCModeMoc* modeInit = new CTCModeMoc();
+    modeInit -> setMode(1);
+
     //Create a train controller object to test
-    TrainControllerMoc *tc = new TrainControllerMoc();
+    TrainControllerMoc *tc = new TrainControllerMoc(modeInit, 3, "GreenLine");
 
     //Obtain trainModel object from train controller
     TrainMoc *tm = tc -> getTrainModel();
@@ -142,8 +159,12 @@ void testCabinControls::testCabinAdvertisements()
 
 void testCabinControls::testCabinAnnouncements()
 {
+    //Create a CTC Mode object to set the mode of the train controller
+    CTCModeMoc* modeInit = new CTCModeMoc();
+    modeInit -> setMode(1);
+
     //Create a train controller object to test
-    TrainControllerMoc *tc = new TrainControllerMoc();
+    TrainControllerMoc *tc = new TrainControllerMoc(modeInit, 3, "GreenLine");
 
     //Obtain trainModel object from train controller
     TrainMoc *tm = tc -> getTrainModel();
@@ -170,18 +191,22 @@ void testCabinControls::testCabinAnnouncements()
 
 void testCabinControls::testCabinDoors()
 {
+    //Create a CTC Mode object to set the mode of the train controller
+    CTCModeMoc* modeInit = new CTCModeMoc();
+    modeInit -> setMode(1);
+
     //Create a train controller object to test
-    TrainControllerMoc *tc = new TrainControllerMoc();
+    TrainControllerMoc *tc = new TrainControllerMoc(modeInit, 3, "GreenLine");
 
     //Obtain trainModel object from train controller
     TrainMoc *tm = tc -> getTrainModel();
 
     //Ensure the headlights are initially closed
-    QCOMPARE(tm -> getDoorStatus(), 0);
+    QCOMPARE(tm -> getLeftDoorStatus(), 0);
 
     //Provides incoming simulated serial port data to open
     tc -> receiveData("00010044.4455.55000001");
-    QCOMPARE(tm -> getDoorStatus(), 1);
+    QCOMPARE(tm -> getLeftDoorStatus(), 1);
 
     //Ensure the proper values are being output to the Arduino
     std::string data = tc -> writeData();
@@ -189,7 +214,7 @@ void testCabinControls::testCabinDoors()
 
     //Provides incoming simulated serial port data to close the doors
     tc -> receiveData("00000044.4455.55000000");
-    QCOMPARE(tm -> getDoorStatus(), 0);
+    QCOMPARE(tm -> getLeftDoorStatus(), 0);
 
     //Ensure the proper values are being output to the Arduino
     data = tc -> writeData();
@@ -198,8 +223,12 @@ void testCabinControls::testCabinDoors()
 
 void testCabinControls::testHeadlights()
 {
+    //Create a CTC Mode object to set the mode of the train controller
+    CTCModeMoc* modeInit = new CTCModeMoc();
+    modeInit -> setMode(1);
+
     //Create a train controller object to test
-    TrainControllerMoc *tc = new TrainControllerMoc();
+    TrainControllerMoc *tc = new TrainControllerMoc(modeInit, 3, "GreenLine");
 
     //Obtain trainModel object from train controller
     TrainMoc *tm = tc -> getTrainModel();
