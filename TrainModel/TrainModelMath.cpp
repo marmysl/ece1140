@@ -109,7 +109,11 @@ double TrainModelMath::calcVelocity() {
     return vel;
 }
 
-void TrainModelMath::limitForce(){
+void TrainModelMath::limitForce(){  
+    //add coefficient of friction
+    //currForce = net Force
+    currForce = (currForce) - (0.01*mass*9.8);
+
     if (currForce > (mass*0.5)){
         currForce = mass*0.5;
     }
@@ -122,11 +126,14 @@ void TrainModelMath::limitForce(){
 }
 
 void TrainModelMath::limitAccel(){
-    if (currForce == 0 & currVel>0){
+    if (failureStatus == 3 && currPower == 0){
+        currAccel = (currForce/mass);
+    }
+    else if (currPower == 0 && currVel>0){
         if(emergencyBrake){currAccel = -2.73;}
         else{currAccel = -1.2;}
     }
-    else if (currForce != 0){
+    else if (currPower != 0){
         if (currAccel > 0.5){currAccel = 0.5;}
     }
     else{
