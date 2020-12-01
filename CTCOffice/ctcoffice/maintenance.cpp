@@ -12,3 +12,8 @@ maintenance::~maintenance()
 {
     delete ui;
 }
+
+void maintenance::on_btnMM_toggled(bool checked)
+{
+    mm = checked;
+}

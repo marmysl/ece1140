@@ -13,7 +13,7 @@
 // mode = 1 = Manual
 CTCMode::CTCMode()
 {
-    mode = 0;
+    mode = 1;
 }
 
 void CTCMode::setMode(bool m){
@@ -77,8 +77,9 @@ void CTCMode::automaticDispatch()
     train1.setTimeStart(s->t1.front());
     train1.setTimeArrival(s->t1.back());
     train1.setBlock(s->blocks.back());
-    CTCSignals c1;
-    train1.dispatch(c1);
+    MainWindow m1;
+    time = train1.setTimeDelay();
+    m1.timerID = m1.startTimer(time);
 
     CTCDispatch train2;
 
@@ -87,8 +88,9 @@ void CTCMode::automaticDispatch()
     train2.setTimeStart(s->t2.front());
     train2.setTimeArrival(s->t2.back());
     train2.setBlock(s->blocks.back());
-    CTCSignals c2;
-    train2.dispatch(c2);
+    MainWindow m2;
+    time = train2.setTimeDelay();
+    m2.timerID = m2.startTimer(time);
 
     CTCDispatch train3;
 
@@ -97,8 +99,9 @@ void CTCMode::automaticDispatch()
     train3.setTimeStart(s->t3.front());
     train3.setTimeArrival(s->t3.back());
     train3.setBlock(s->blocks.back());
-    CTCSignals c3;
-    train3.dispatch(c3);
+    MainWindow m3;
+    time = train3.setTimeDelay();
+    m3.timerID = m3.startTimer(time);
 
     CTCDispatch train4;
 
@@ -107,8 +110,9 @@ void CTCMode::automaticDispatch()
     train4.setTimeStart(s->t4.front());
     train4.setTimeArrival(s->t4.back());
     train4.setBlock(s->blocks.back());
-    CTCSignals c4;
-    train4.dispatch(c4);
+    MainWindow m4;
+    time = train4.setTimeDelay();
+    m4.timerID = m4.startTimer(time);
 
     CTCDispatch train5;
 
@@ -117,8 +121,9 @@ void CTCMode::automaticDispatch()
     train5.setTimeStart(s->t5.front());
     train5.setTimeArrival(s->t5.back());
     train5.setBlock(s->blocks.back());
-    CTCSignals c5;
-    train5.dispatch(c5);
+    MainWindow m5;
+    time = train5.setTimeDelay();
+    m5.timerID = m5.startTimer(time);
 
     CTCDispatch train6;
 
@@ -127,8 +132,9 @@ void CTCMode::automaticDispatch()
     train6.setTimeStart(s->t6.front());
     train6.setTimeArrival(s->t6.back());
     train6.setBlock(s->blocks.back());
-    CTCSignals c6;
-    train6.dispatch(c6);
+    MainWindow m6;
+    time = train6.setTimeDelay();
+    m6.timerID = m6.startTimer(time);
 
     CTCDispatch train7;
 
@@ -137,8 +143,9 @@ void CTCMode::automaticDispatch()
     train7.setTimeStart(s->t7.front());
     train7.setTimeArrival(s->t7.back());
     train7.setBlock(s->blocks.back());
-    CTCSignals c7;
-    train7.dispatch(c7);
+    MainWindow m7;
+    time = train7.setTimeDelay();
+    m7.timerID = m7.startTimer(time);
 
     CTCDispatch train8;
 
@@ -147,8 +154,9 @@ void CTCMode::automaticDispatch()
     train8.setTimeStart(s->t8.front());
     train8.setTimeArrival(s->t8.back());
     train8.setBlock(s->blocks.back());
-    CTCSignals c8;
-    train8.dispatch(c8);
+    MainWindow m8;
+    time = train8.setTimeDelay();
+    m8.timerID = m8.startTimer(time);
 
     CTCDispatch train9;
 
@@ -157,8 +165,9 @@ void CTCMode::automaticDispatch()
     train9.setTimeStart(s->t9.front());
     train9.setTimeArrival(s->t9.back());
     train9.setBlock(s->blocks.back());
-    CTCSignals c9;
-    train9.dispatch(c9);
+    MainWindow m9;
+    time = train9.setTimeDelay();
+    m9.timerID = m9.startTimer(time);
 
     CTCDispatch train10;
 
@@ -167,8 +176,9 @@ void CTCMode::automaticDispatch()
     train10.setTimeStart(s->t10.front());
     train10.setTimeArrival(s->t10.back());
     train10.setBlock(s->blocks.back());
-    CTCSignals c10;
-    train10.dispatch(c10);
+    MainWindow m10;
+    time = train10.setTimeDelay();
+    m10.timerID = m10.startTimer(time);
 
 }
 

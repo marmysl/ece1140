@@ -22,16 +22,27 @@ public:
 
     std::vector<int> blocks;
     std::vector<std::string> stat;
-    std::vector<std::string> t1;
-    std::vector<std::string> t2;
-    std::vector<std::string> t3;
-    std::vector<std::string> t4;
-    std::vector<std::string> t5;
-    std::vector<std::string> t6;
-    std::vector<std::string> t7;
-    std::vector<std::string> t8;
-    std::vector<std::string> t9;
-    std::vector<std::string> t10;
+    std::vector<QTime> t1;
+    std::vector<QTime> t2;
+    std::vector<QTime> t3;
+    std::vector<QTime> t4;
+    std::vector<QTime> t5;
+    std::vector<QTime> t6;
+    std::vector<QTime> t7;
+    std::vector<QTime> t8;
+    std::vector<QTime> t9;
+    std::vector<QTime> t10;
+
+    std::vector<std::string> tv1;
+    std::vector<std::string> tv2;
+    std::vector<std::string> tv3;
+    std::vector<std::string> tv4;
+    std::vector<std::string> tv5;
+    std::vector<std::string> tv6;
+    std::vector<std::string> tv7;
+    std::vector<std::string> tv8;
+    std::vector<std::string> tv9;
+    std::vector<std::string> tv10;
 
     bool loadComplete;
 
