@@ -44,7 +44,7 @@ class TrackController
         int start_block;
         int block_count;
 
-        std::vector<float> CTC_sugspeed;
+        float CTC_sugspeed;
         std::vector<std::pair< int, int> > CTC_sugauth;
 
         std::vector<float> CTC_tempspeed;

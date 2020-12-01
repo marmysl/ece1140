@@ -22,11 +22,12 @@ SWTrackCntrlWindow::SWTrackCntrlWindow(QWidget *parent) :
 
 void SWTrackCntrlWindow::timerEvent(QTimerEvent *event) {
 
-    if (checkDispatched()) {
-        updateWaysides();  }
-
     on_enterWaysideButton_clicked();
-    on_blockGetInfoButton_clicked();
+
+    if (checkDispatched() == true) {
+        updateWaysides();
+        on_blockGetInfoButton_clicked();
+    }
 }
 
 /*void SWTrackCntrlWindow::myTimer() {
@@ -269,8 +270,8 @@ void SWTrackCntrlWindow::on_blockGetInfoButton_clicked()
             }
         }
 
-        auto n = wayside.CTC_sugspeed.begin();
-        spd = float(*n);
+        auto n = wayside.CTC_sugspeed;
+        spd = n;
         std::string null = "null";
 
 

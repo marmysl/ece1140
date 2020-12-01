@@ -207,7 +207,7 @@ void CTCSignals::setUpExits() {
 
     div_exit.push_back(std::make_pair(11, 5));
 
-    div_exit.push_back(std::make_pair(64, 63));
+    div_exit.push_back(std::make_pair(0, 63));
     div_exit.push_back(std::make_pair(101, 77));
     div_exit.push_back(std::make_pair(100, 85));
     div_exit.push_back(std::make_pair(150, 28));
@@ -224,7 +224,7 @@ void CTCSignals::setUpExits() {
 
     str_exit.push_back(std::make_pair(6, 5));
 
-    str_exit.push_back(std::make_pair(0, 63));
+    str_exit.push_back(std::make_pair(64, 63));
     str_exit.push_back(std::make_pair(78, 77));
     str_exit.push_back(std::make_pair(86, 85));
     str_exit.push_back(std::make_pair(29, 28));

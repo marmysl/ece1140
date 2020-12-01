@@ -157,7 +157,7 @@ WaysideContainer::WaysideContainer(int count)
             s13.push_back('V');
 
             std::vector<int> b13;
-            for (int i = 102; i <= 120; i++) {
+            for (int i = 101; i <= 120; i++) {
                 b13.push_back(i);
             }
 
@@ -185,6 +185,7 @@ WaysideContainer::WaysideContainer(int count)
     addTrackObj(2, line, s1, b1, sw1, 0, fin1);
     addTrackObj(3, line, s2, b2, swX, 0, fin2);
     addTrackObj(4, line, s3, b3, sw2, 0, fin3);
+
     addTrackObj(5, line, s4, b4, sw3, 0, fin4);
     addTrackObj(6, line, s5, b5, swX, 0, fin5);
     addTrackObj(7, line, s6, b6, swX, 0, fin6);

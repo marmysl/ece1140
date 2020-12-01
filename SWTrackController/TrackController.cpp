@@ -125,8 +125,9 @@ void TrackController::setSignalsInstance(CTCSignals &s){
    if ( (temp.begin() -> first) == -1 ) {
        for (int m = 0; m < block_count; m++) {
            CTC_sugauth.push_back(std::make_pair(cntrl_blocks[m], 0));
-           CTC_sugspeed.push_back(spd);
+
        }
+       CTC_sugspeed = spd;
    }
    else {
        if (!CTC_sugauth.empty()) {
@@ -139,13 +140,7 @@ void TrackController::setSignalsInstance(CTCSignals &s){
                second_auth.push_back(*y);
            }
 
-           for (int m = 0; m < block_count; m++) {
-               second_spd.push_back(spd);
-           }
 
-           for (auto y = CTC_sugspeed.rbegin(); y != CTC_sugspeed.rend(); y++) {
-               first_spd.push_back(*y);
-           }
 
 
            if ( (temp.begin() -> first) == -1 ) {
@@ -154,6 +149,7 @@ void TrackController::setSignalsInstance(CTCSignals &s){
                }
            }
 
+           CTC_sugspeed = spd;
            for (int m = 0; m < block_count; m++) {
                for ( auto a = occ_vect.begin(); a != occ_vect.end(); a++) {
                    a++;
@@ -165,17 +161,14 @@ void TrackController::setSignalsInstance(CTCSignals &s){
                            second_auth.pop_back();
                            first_auth.pop_back();
 
-                           new_speed.push_back(second_spd.back());
-                           second_spd.pop_back();
-                           first_spd.pop_back();
+
                        }
                        else {
                            while (!first_auth.empty()) {
                             new_auth.push_back(first_auth.back());
                             first_auth.pop_back();
 
-                            new_speed.push_back(first_spd.back());
-                            first_spd.pop_back();
+
                            }
                            break;
                        }
@@ -224,10 +217,7 @@ void TrackController::setSignalsInstance(CTCSignals &s){
        }
 
        float spd = s.getWaysideSpeed(wayside_id);
-       for (int m = 0; m < block_count; m++) {
-               CTC_sugspeed.push_back(spd);
-               //std::cout <<
-           }
+       CTC_sugspeed = spd;
 
 }
 
@@ -349,9 +339,11 @@ void TrackController::setSwitchAuto() {
             s = TrackModel::SwitchState::SW_STRAIGHT;
         }
         else {
-            //blocks[switch_tail0-1].active_tail = false;
-            //blocks[switch_tail1-1].active_tail = true;
-            s = TrackModel::SwitchState::SW_DIVERGING;
+            if (exit_block0 == 88) {
+                s = TrackModel::SwitchState::SW_STRAIGHT;
+            }
+            else {
+            s = TrackModel::SwitchState::SW_DIVERGING; }
         }
     }
     else {
@@ -449,14 +441,14 @@ void TrackController::getOccupancies() {
 
 void TrackController::setTrackSA() {
 
-    int c = 0;
+   // int c = 0;
     int curr_block;
 
     int tempID;
     std::vector<std::pair< int, int> > temp_ctcA;
 
     for ( int i = 0; i < block_count; i++) {
-        c = 0;
+        //c = 0;
         curr_block = cntrl_blocks[i];
 
 
@@ -464,15 +456,12 @@ void TrackController::setTrackSA() {
             tempID = m -> first;
 
             if ( curr_block == tempID ) {
-                //i -> setSpdAuth(CTC_sugspeed[c], m -> second);
-                c++;
-                TrackModel::TrackCircuitData circ_data = TrackModel::TrackCircuitData::fromFloat(CTC_sugspeed[c], m -> second);
+
+                TrackModel::TrackCircuitData circ_data = TrackModel::TrackCircuitData::fromFloat(CTC_sugspeed, m -> second);
                 TrackModel::setTrackCircuit(line, tempID, circ_data);
                 //m = CTC_sugauth.end();
             }
-            else {
-                c++;
-            }
+
         }
     }
 
