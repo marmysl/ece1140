@@ -63,6 +63,11 @@ namespace TrackModel {
     {
         Block *block;
         BlockDir entryDir;
+
+        inline bool exists()
+        {
+            return (block != nullptr);
+        }
     };
 
     inline bool operator==( const NextBlockData &a, const NextBlockData &b )

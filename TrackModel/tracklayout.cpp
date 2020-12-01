@@ -363,17 +363,6 @@ void Route::loadLayout( std::string fileName ) {
     // loop thru uninitialized switches and connect those suckers
     for( LinkInfo &links : voidLinks )
     {
-        // check for station on current block
-        if( links.srcBlock->platform.exists() )
-        {
-            PlatformData platform = links.srcBlock->getPlatformInDir(BLK_FORWARD);
-            Station *station = platform.station;
-            links.srcBlock->forwardBeacon.applyCurrentStationData(station->name, platform.side);
-
-            platform = links.srcBlock->getPlatformInDir(BLK_REVERSE);
-            links.srcBlock->reverseBeacon.applyCurrentStationData(station->name, platform.side);
-        }
-
         if( links.prevStraight >= 0 )
         {
             Block *prevBlock = getBlock(links.prevStraight);
@@ -389,14 +378,6 @@ void Route::loadLayout( std::string fileName ) {
             {
                 links.srcBlock->forwardBeacon.applyTunnelData(false); // exiting forward
                 links.srcBlock->reverseBeacon.applyTunnelData(true); // entering reverse
-            }
-
-            // check for upcoming station (reverse)
-            if( prevBlock->platform.exists() )
-            {
-                BlockDir entryDir = links.srcBlock->getEntryDir(prevBlock);
-                PlatformData prevPlat = prevBlock->getPlatformInDir(entryDir);
-                links.srcBlock->reverseBeacon.applyUpcomingStationData(prevPlat.station->name, prevPlat.side);
             }
 
             // check for switch in reverse dir
@@ -439,14 +420,6 @@ void Route::loadLayout( std::string fileName ) {
                 links.srcBlock->reverseBeacon.applyTunnelData(false); // exiting in reverse
             }
 
-            // check for upcoming station (forward)
-            if( nextBlock->platform.exists() )
-            {
-                BlockDir entryDir = links.srcBlock->getEntryDir(nextBlock);
-                PlatformData prevPlat = nextBlock->getPlatformInDir(entryDir);
-                links.srcBlock->forwardBeacon.applyUpcomingStationData(prevPlat.station->name, prevPlat.side);
-            }
-
             // check for switch in forward dir
             if( links.nextDiverge >= 0 )
             {
@@ -471,6 +444,72 @@ void Route::loadLayout( std::string fileName ) {
         }
     }
     
+    // Now that the blocks are linked, let's find them stations
+    for( auto& kvp : blocks )
+    {
+        Block *curBlock = kvp.second;
+
+        // check for station on current block
+        if( curBlock->platform.exists() )
+        {
+            PlatformData platform = curBlock->getPlatformInDir(BLK_FORWARD);
+            Station *station = platform.station;
+            curBlock->forwardBeacon.applyStationData(station->name, platform.side);
+
+            platform = curBlock->getPlatformInDir(BLK_REVERSE);
+            curBlock->reverseBeacon.applyStationData(station->name, platform.side);
+        }
+
+        // look backwards
+        NextBlockData neighbor = curBlock->getNextBlock(BLK_REVERSE);
+        if( neighbor.exists() )
+        {
+            // neighbor exists
+            // check for platform in neighber
+            PlatformData plat = neighbor.block->getPlatformInDir(neighbor.entryDir);
+            if( plat.exists() )
+            {
+                // platform in adjacent block
+                curBlock->reverseBeacon.applyStationData(plat.station->name, plat.side, 1);
+            }
+
+            NextBlockData farNeighbor = neighbor.block->getNextBlock(neighbor.entryDir);
+            if( farNeighbor.exists() )
+            {
+                // distant neighbor exists, check for station
+                plat = farNeighbor.block->getPlatformInDir(farNeighbor.entryDir);
+                if( plat.exists() )
+                {
+                    curBlock->reverseBeacon.applyStationData(plat.station->name, plat.side, 2);
+                }
+            }
+        }
+
+        // look forwards
+        neighbor = curBlock->getNextBlock(BLK_FORWARD);
+        if( neighbor.exists() )
+        {
+            // neighbor exists
+            // check for platform in neighber
+            PlatformData plat = neighbor.block->getPlatformInDir(neighbor.entryDir);
+            if( plat.exists() )
+            {
+                // platform in adjacent block
+                curBlock->forwardBeacon.applyStationData(plat.station->name, plat.side, 1);
+            }
+
+            NextBlockData farNeighbor = neighbor.block->getNextBlock(neighbor.entryDir);
+            if( farNeighbor.exists() )
+            {
+                // distant neighbor exists, check for station
+                plat = farNeighbor.block->getPlatformInDir(farNeighbor.entryDir);
+                if( plat.exists() )
+                {
+                    curBlock->forwardBeacon.applyStationData(plat.station->name, plat.side, 2);
+                }
+            }
+        }
+    }
 }
 
 Block *Route::getBlock( int blockId ) {
