@@ -60,6 +60,7 @@ public:
     void setCircuit();
     float getSpeedLimit() const;
     bool detectFailure(int, std::string);
+    void setLights(int, std::string, std::string);
 
     // Getters
     std::string getRoute() const;

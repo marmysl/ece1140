@@ -1,2 +1,17 @@
 IF !block 0 THEN switch 63
 IF block 62 THEN !switch 63
+
+IF !switch 63 THEN red 0
+IF !switch 63 THEN green 62
+
+IF switch 63 THEN green 0
+IF switch 63 THEN red 62
+
+IF block 64 THEN red 63
+IF !block 64 THEN green 63
+
+IF block 66 THEN red 65
+IF !block 66 THEN green 65
+
+IF block 74 THEN red 73
+IF !block 74 THEN green 73

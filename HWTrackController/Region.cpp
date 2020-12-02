@@ -80,11 +80,11 @@ void Region::runPLC() {
     std::vector<int> blcs = plc->getBlocks();
     std::vector<int> opbcs = plc->getOutputBlocks();
 
-    // Auto switches
+    // Iterate through condition blocks
     for (unsigned int i = 0; i < blcs.size(); i++) {
-        // Condition if block should be occupied
-        if (conds[i].at(0) == '!') {
-            // Check that block is not occupied, default is that yard is always connected (don't care condition)
+        // AUTO SWITCHES
+        // not occupied block
+        if (conds[i].at(0) == '!' && conds[i].at(1) == 'b') {
             if (detectTrain(blcs[i], getRoute()) == 0) {
                 if (opts[i].at(0) == 's') {
                     // switch should be activated (diverging)
@@ -94,7 +94,8 @@ void Region::runPLC() {
                     TrackModel::setSwitchState(route,opbcs[i],static_cast<TrackModel::SwitchState>(0));
                 }
             }
-        } else {
+        // occupied block
+        } else if (conds[i].at(0) == 'b') {
             if (detectTrain(blcs[i], getRoute()) == 1) {
                 if (opts[i].at(0) != '!') {
                     // switch should be activated (diverging)
@@ -102,6 +103,35 @@ void Region::runPLC() {
                 } else {
                     // switch should be at default (normal)
                     TrackModel::setSwitchState(route,opbcs[i],static_cast<TrackModel::SwitchState>(0));
+                }
+            }
+        // AUTO LIGHTS
+        } else if (conds[i].at(0) == '!' && conds[i].at(1) == 's') {
+            if (TrackModel::getSwitchState(route,blcs[i]) == 0) {
+                 if (opts[i].at(0) == 'r') {
+                     // setLights(opbcs[i],"10") RED
+                 } else if (opts[i].at(0) == 'g'){
+                     // setLights(opbcs[i],"00") GREEN
+                 }
+            } else {
+                if (opts[i].at(0) == 'r') {
+                    // setLights(opbcs[i],"10") RED
+                } else if (opts[i].at(0) == 'g'){
+                    // setLights(opbcs[i],"00") GREEN
+                }
+            }
+        } else if (conds[i].at(0) == 's') {
+            if (TrackModel::getSwitchState(route,blcs[i]) == 1) {
+                 if (opts[i].at(0) == 'r') {
+                     // setLights(opbcs[i],"10") RED
+                 } else if (opts[i].at(0) == 'g'){
+                     // setLights(opbcs[i],"00") GREEN
+                 }
+            } else {
+                if (opts[i].at(0) == 'r') {
+                    // setLights(opbcs[i],"10") RED
+                } else if (opts[i].at(0) == 'g'){
+                    // setLights(opbcs[i],"00") GREEN
                 }
             }
         }
@@ -168,6 +198,21 @@ void Region :: setCircuit() {
 // Get Failures
 bool Region :: detectFailure(int b, string line) {
     int val = TrackModel::getFaults(line, b);
+    int loc;
+
+    if (line == "Green Line") {
+        if (b == 0) { loc = 0; }
+        else { loc = b - 59; } // Track Controller specific solution
+    }
+    if (line == "Red Line") { loc = 0; }
+
+    if (val != 0) { blocks[loc].failure = 1; }
+    return blocks[loc].failure;
+}
+
+// Set Traffic Lights
+void Region :: setLights(int b, string line, string color) {
+    int val = TrackModel::getFaults(line, b)l
     int loc;
 
     if (line == "Green Line") {
