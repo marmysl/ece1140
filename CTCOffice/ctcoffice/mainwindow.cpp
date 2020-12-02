@@ -21,19 +21,6 @@ MainWindow::MainWindow(QWidget *parent)
     ui->comboDestinationType->addItem("Station");
     ui->comboDestinationType->addItem("Block");
 
-    QFont font = ui->btnDispatch->font();
-    font.setPointSize(30);
-    ui->btnDispatch->setFont(font);
-    ui->btnCancel->setFont(font);
-
-    QFont font2 = ui->comboLine->font();
-    font2.setPointSize(15);
-    ui->ManualButton->setFont(font2);
-    ui->AutomaticButton->setFont(font2);
-    ui->btnMap->setFont(font2);
-    ui->btnMaintenance->setFont(font2);
-    ui->btnSchedule->setFont(font2);
-
     updateRoute();
 
     ctc.setCTCMode(&m);
@@ -173,10 +160,8 @@ void MainWindow::on_ManualButton_clicked()
 
 void MainWindow::on_btnMap_clicked()
 {
-    Files *ctcDisplay;
-    ctcDisplay = new Files();
-    ctcDisplay->mapDisplay();
-    ctcDisplay->show();
+    map->mapDisplay();
+    map->show();
 }
 
 void MainWindow::on_comboDisplayLine_currentIndexChanged(const QString &arg1)
@@ -216,13 +201,11 @@ void MainWindow::on_btnSchedule_clicked()
 void MainWindow::timerEvent(QTimerEvent *event){
     CTCSignals c;
     ctc.dispatch(c);
-    ui->lblThroughput->setText(QString::number(ctc.getPassNum()));
     killTimer(timerID);
 }
 
 void MainWindow::on_btnMaintenance_clicked()
 {
-    maint = new maintenance();
     maint->show();
 }
 
@@ -230,4 +213,12 @@ void MainWindow::on_comboDisplayBlock_currentIndexChanged(const QString &arg1)
 {
 
     ui->lblBlockOcc->setText("NO");
+}
+
+void MainWindow::on_btnThroughput_clicked()
+{
+    if(!th){
+        th = new throughput(this);
+    }
+    th->show();
 }
