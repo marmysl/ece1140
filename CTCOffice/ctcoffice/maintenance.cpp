@@ -42,7 +42,6 @@ void maintenance::on_btnMM_clicked()
 
     if(mm == true){
         ui->lblMainStatus->setText("ON");
-        //send Track Controller the command to set switches manually
     }
     else{
         ui->lblMainStatus->setText("OFF");
@@ -73,5 +72,8 @@ void maintenance::on_comboBlocks_currentIndexChanged(const QString &arg1)
 
 void maintenance::on_btnSendM_clicked()
 {
+    CTCSignals h;
+    //send Track Controller the command to set switches manually
+    h.requestMaintenance(line);
     //send Track Controller the line, block to be closed for maintenance
 }
