@@ -1,6 +1,8 @@
 #pragma once
 
 #include <vector>
+#include <string>
+#include <stdexcept>
 
 namespace MK1Util
 {
@@ -40,5 +42,21 @@ namespace MK1Util
         }
 
         return -1;
+    }
+
+    inline int parseIntStrict( std::string str ) {
+        size_t lenParsed;
+        int result = std::stoi(str, &lenParsed);
+
+        if( lenParsed != str.length() ) throw std::invalid_argument(str + " is not a valid integer value");
+        return result;
+    }
+
+    inline float parseFloatStrict( std::string str ) {
+        size_t lenParsed;
+        float result = std::stof(str, &lenParsed);
+
+        if( lenParsed != str.length() ) throw std::invalid_argument(str + " is not a valid floating point value");
+        return result;
     }
 }

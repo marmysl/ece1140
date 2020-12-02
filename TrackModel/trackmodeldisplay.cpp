@@ -194,6 +194,7 @@ void TrackModelDisplay::on_applyFaultsButton_clicked()
 
 void TrackModelDisplay::on_reloadLayoutButton_clicked()
 {
+    TrackModel::changeLayouts();
     TrackModel::initializeTrackModel();
 }
 
@@ -320,14 +321,17 @@ static QString genBeaconString( const BeaconData& beacon )
     {
         if( !first ) sb << ", ";
         sb << "Station: " << beacon.stationName << " (" << strForSide(beacon.platformSide) << ")";
-        first = false;
     }
-
-    if( beacon.stationUpcoming )
+    else if( beacon.stationUpcoming )
     {
         if( !first ) sb << ", ";
 
         sb << "Upcoming: " << beacon.stationName << " (" << strForSide(beacon.platformSide) << ")";
+    }
+    else if( beacon.stationUpcomingFar )
+    {
+        if( !first ) sb << ", ";
+        sb << "Far: " << beacon.stationName << " (" << strForSide(beacon.platformSide) << ")";
     }
 
     return QString::fromStdString(sb.str());

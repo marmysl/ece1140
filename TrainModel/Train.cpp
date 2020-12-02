@@ -186,6 +186,8 @@ void Train::updateUI(){
     w->setMass(math->mass);
     w->updatePower(math->currPower);
     w->updateVelocity(math->currVel);
+    w->updateForce(math->currForce);
+    w->updateAccel(math->currAccel);
     w->updateBlockNum(block->blockNum);
     w->updateBlockLength(block->blockDist);
     w->updateBlockGrade(block->blockGrade);

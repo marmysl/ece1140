@@ -17,6 +17,9 @@ class RouteMapView : public QWidget
         BlockDir orient;
         BlockStatus *stat;
 
+        BlockRepr() :
+            left(0), top(0), orient(BLK_FORWARD), stat(nullptr) {}
+
         BlockRepr( int l, int t, BlockDir dir, BlockStatus *blk ) :
             left(l), top(t), orient(dir), stat(blk) {}
     };

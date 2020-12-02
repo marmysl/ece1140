@@ -19,6 +19,9 @@ class CTCBlockDisplay : public QWidget
         BlockDir orient;
         CTCBlockStatus *stat;
 
+        BlockRepr() :
+            left(0), top(0), orient(BLK_FORWARD), stat(nullptr) {}
+
         BlockRepr( int l, int t, BlockDir dir, CTCBlockStatus *blk ) :
             left(l), top(t), orient(dir), stat(blk) {}
     };
