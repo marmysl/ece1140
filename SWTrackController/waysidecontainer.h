@@ -1,7 +1,7 @@
 #ifndef WAYSIDECONTAINER_H
 #define WAYSIDECONTAINER_H
 
-//#include "trackcntrl_main.h"
+#include "trackcntrl_main.h"
 #include "TrackController.h"
 #include "BlockCntrl.h"
 #include "CTCSignals.h"
@@ -11,11 +11,8 @@ class WaysideContainer
 {
 public:
     WaysideContainer();
-    WaysideContainer(int);
-    std::string track_line;
     std::vector<TrackController> waysides;
-    int wayside_count;
-    void addTrackObj(int, std::string &, std::vector<char> &, std::vector<int> &, int[4], int, int [2]);
+    void addTrackObj(int, std::string &, std::vector<char> &, std::vector<int> &);
 
 
     //Block Container of Wayside, within Track Controller class

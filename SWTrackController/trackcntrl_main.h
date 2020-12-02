@@ -4,35 +4,27 @@
 #include "waysidecontainer.h"
 #include "tracklogic.h"
 #include "CTCSignals.h"
-#include "swtrackcntrlwindow.h"
+#include "../TrackModel/trackmodel_controller.hpp"
+#include "../TrackModel/trackmodel_main.hpp"
+#include "../TrackModel/tracklayout.hpp"
 
 #include <vector>
 #include <string>
 #include <iostream>
 
 
-extern QMainWindow *programmerGUI;
-//extern bool dispatched;
+extern CTCSignals ctc_track_controller;
 
-void alertWaysideSystem(std::string &, CTCSignals &);
-
-TrackController getWaysideInstance(int);
-
-void setPLCFile(std::string &);
-
-void setSwitchUI(TrackController &, bool);
-
-void setCrossingUI(TrackController &, bool);
+void alertWaysideSystem(CTCSignals &);
 
 void timerEvent(QTimerEvent *event);
 
-void updateWaysides();
 
 int init_SWTrackController();
 
-bool checkDispatched();
 
-bool getControllerMode(std::string &);
+
+
 
 
 

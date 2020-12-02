@@ -2,7 +2,6 @@
 #ifndef BlockCntrl_h
 #define BlockCntrl_h
 
-#include "tracklogic.h"
 #include <cstdint>
 #include <string>
 
@@ -14,24 +13,19 @@ class BlockCntrl
 	
 	public:
 
-        int block_num;
+        int block_num; //change to block_id
         std::string line;
         bool block_occ;
         bool switch_head;
         bool switch_tail;
-        bool active_tail;
         bool switch_state;
-        int lights[2];
-        bool cross_block;
+        int lights[2]; //change to light_state
         bool cross_state;
-        float sug_block_speed;
-        int sug_block_authority;
-        float com_block_speed;
-        int com_block_authority;
-        int block_fail;
-
+        uint32_t block_speed;
+        uint32_t block_authority;
+        bool block_fail;
         BlockCntrl();
-        void setUpBlock(std::string &, int, int[], int);
+        void setUpBlock(std::string &, int);
         void setCircuit();
         void setSpdAuth(float, int);
         void setOcc();
@@ -39,16 +33,6 @@ class BlockCntrl
         void setSwitch(int,bool);
         void getFailures();
 
-        //PLC variables
-        bool current_occ;
-        bool next_occ;
-        bool plc_speed;
-        bool speed_safe;
-        bool sw_state;
-        bool crossing_state;
-        bool light_state[2];
-        bool plc_auth;
-        bool auth_safe;
 
 		int getRes();
 
