@@ -10,6 +10,8 @@
 #include <QGraphicsView>
 #include <QGraphicsPixmapItem>
 #include "CTCHashmap.h"
+#include <QDateTime>
+#include "timetracker.h"
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -81,7 +83,7 @@ void MainWindow::on_btnDispatch_clicked()
     int time;
     time  = ctc.setTimeDelay();
 
-    timerID = startTimer(time);
+    timerID = startTimer(time/(systemClock->timeScale));
 }
 
 void MainWindow::on_comboDestination_currentIndexChanged(const QString &arg1)
