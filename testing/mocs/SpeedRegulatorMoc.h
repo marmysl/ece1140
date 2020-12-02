@@ -3,12 +3,20 @@
 
 
 #include <cstdint>
+#include <QDateTime>
+#include <QtGlobal>
 #include "TrainMoc.h"
+#include "CTCModeMoc.h"
+#include "BeaconDecoderMoc.h"
+#include "TrainMoc.h"
+#include <QObject>
 
-class SpeedRegulatorMoc
+class SpeedRegulatorMoc : public QObject
 {
 private:
         TrainMoc *trainModel;
+        CTCModeMoc *mode;
+        BeaconDecoderMoc* beacon;
         double setpointSpeed;
         double Vcmd;
         double powerCmd;
@@ -20,13 +28,15 @@ private:
         double ek_1;
         double T;
         double maxPower;
-
-        //In this class, power is given in Watts
-
+        double commandedSpeed;
+        int authority;
+        QDateTime prevTime;
+        QDateTime currTime;
+        int failureCode;
     public:
 
         //Constructor
-        SpeedRegulatorMoc(TrainMoc*);
+        SpeedRegulatorMoc(TrainMoc*, CTCModeMoc*, BeaconDecoderMoc*);
 
         //Method to choose proper Vcmd
         void chooseVcmd();
@@ -35,6 +45,7 @@ private:
         void incSetpointSpeed(double);
 
         //Calculate powerCmd
+        double powerFormula();
         void calcPowerCmd();
 
         //Set the power command to 0
@@ -43,19 +54,27 @@ private:
         //Sets Kp and Ki according to engineer input
         void setKpAndKi(double propGain, double intGain);
 
-        //Accessor Methods
-        double getSetpointSpeed();
-        double getPowerCmd();
-        double getVcmd();
-        double getKp();
-        double getKi();
-
         //Method to pull the service brake
         void pullServiceBrake();
 
         //Method to pull the emergency brake
         void pullEmergencyBrake();
 
+        //Method to set the failure code in the system when a failure is detected
+        void setFailureCode(int fc);
+
+        //Function to decode track circuit
+        void decodeTrackCircuit();
+
+        //Accessor Methods
+        double getSetpointSpeed();
+        double getPowerCmd();
+        double getVcmd();
+        double getKp();
+        double getKi();
+        int getFailureCode();
+        double getCommandedSpeed();
+        int getAuthority();
 };
 
 #endif // SPEEDREGULATORMOC_H

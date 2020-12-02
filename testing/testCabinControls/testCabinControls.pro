@@ -28,4 +28,3 @@ HEADERS += \
     ../mocs/SpeedRegulatorMoc.h \
     ../mocs/BeaconDecoderMoc.h \
     ../mocs/CTCModeMoc.h
-

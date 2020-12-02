@@ -6,6 +6,7 @@
 #include "SpeedRegulatorMoc.h"
 #include "BeaconDecoderMoc.h"
 #include "CTCModeMoc.h"
+#include "../../TrackModel/trackmodel_types.hpp"
 #include <QDateTime>
 
 class TrainControllerMoc

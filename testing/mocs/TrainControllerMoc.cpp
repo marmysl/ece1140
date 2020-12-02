@@ -2,10 +2,10 @@
 
 TrainControllerMoc::TrainControllerMoc(CTCModeMoc *modeInit, int numCars, std::string lineType)
 {
-    trainModel = new TrainMoc(numCars);
-    speedRegulator = new SpeedRegulatorMoc(trainModel);
+    trainModel = new TrainMoc(numCars, lineType);
     beacon = new BeaconDecoderMoc();
     mode = modeInit;
+    speedRegulator = new SpeedRegulatorMoc(trainModel, mode, beacon);
 }
 void TrainControllerMoc::receiveData(string simData)
 {

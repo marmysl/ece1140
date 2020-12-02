@@ -120,6 +120,10 @@ void SpeedRegulator::calcPowerCmd()
 
         std::cout << powerCmd << std::endl;
     }
+    else if(getAuthority() == 0)
+    {
+        pullServiceBrake();
+    }
     else
     {
         powerCmdZero();
@@ -154,7 +158,7 @@ void SpeedRegulator::incSetpointSpeed(double inc)
     //Increment/Decrement the speed of the train according to the joystick input
 
     //Changes the setpoint speed only if it is within the range of speed as given by the Flexity Tram data sheet and if the emergency or service brakes are being pulled
-    if((setpointSpeed + inc*.60934 >= 0) && setpointSpeed <= 70 && (setpointSpeed + inc*.60934 <= 70) && trainModel -> getEmergencyBrake() != 1 && trainModel -> getServiceBrake() !=1 )
+    if((setpointSpeed + inc*.60934 >= 0) && setpointSpeed <= 70 && (setpointSpeed + inc*1.60934 <= 70) && trainModel -> getEmergencyBrake() != 1 && trainModel -> getServiceBrake() !=1 )
     {
         //Add the incremenet as km/h   mi/hr --> km/hr = 1.60934
         setpointSpeed += inc*1.60934;
