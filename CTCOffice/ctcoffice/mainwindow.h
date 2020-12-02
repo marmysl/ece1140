@@ -27,7 +27,7 @@ public:
     CTCMode m;
     schedule *autoSchedule;
     maintenance *maint = new maintenance(this);
-    throughput *th;
+    throughput *th = new throughput(this);
     Files *map = new Files(this);
 
     int timerID;

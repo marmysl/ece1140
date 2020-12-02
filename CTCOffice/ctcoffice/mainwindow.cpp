@@ -217,8 +217,5 @@ void MainWindow::on_comboDisplayBlock_currentIndexChanged(const QString &arg1)
 
 void MainWindow::on_btnThroughput_clicked()
 {
-    if(!th){
-        th = new throughput(this);
-    }
     th->show();
 }
