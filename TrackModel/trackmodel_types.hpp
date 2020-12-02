@@ -163,6 +163,7 @@ namespace TrackModel {
         bool updateLights;
         bool newLightState;
 
+        bool stationUpcomingFar;
         bool stationUpcoming;
         bool stationHere;
         std::string stationName;
@@ -170,11 +171,12 @@ namespace TrackModel {
 
         BeaconData() :
             updateLights(false), newLightState(false),
-            stationUpcoming(false), stationHere(false), stationName(), platformSide(PS_BOTH) {}
+            stationUpcomingFar(false), stationUpcoming(false), stationHere(false),
+            stationName(), platformSide(PS_BOTH) {}
 
         inline bool hasData() const
         {
-            return updateLights || stationUpcoming || stationHere;
+            return updateLights || stationUpcomingFar || stationUpcoming || stationHere;
         }
 
         void applyTunnelData( bool tunnelInNext )
@@ -183,16 +185,13 @@ namespace TrackModel {
             newLightState = tunnelInNext;
         }
 
-        void applyUpcomingStationData( std::string name, PlatformSide side )
+        void applyStationData( std::string name, PlatformSide side, int blksToStation = 0 )
         {
-            stationUpcoming = true;
-            stationName = name;
-            platformSide = side;
-        }
+            // set flags according to
+            stationUpcomingFar = (blksToStation >= 2);
+            stationUpcoming = (blksToStation == 1);
+            stationHere = (blksToStation <= 0);
 
-        void applyCurrentStationData( std::string name, PlatformSide side )
-        {
-            stationHere = true;
             stationName = name;
             platformSide = side;
         }
