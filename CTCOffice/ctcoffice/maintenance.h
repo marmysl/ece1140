@@ -17,8 +17,17 @@ public:
 
     bool mm = false;
 
+    std::string line;
+    int block;
+
 private slots:
-    void on_btnMM_toggled(bool checked);
+    void on_btnMM_clicked();
+
+    void on_comboLine_currentIndexChanged(const QString &arg1);
+
+    void on_comboBlocks_currentIndexChanged(const QString &arg1);
+
+    void on_btnSendM_clicked();
 
 private:
     Ui::maintenance *ui;
