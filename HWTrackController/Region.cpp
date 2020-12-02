@@ -212,7 +212,6 @@ bool Region :: detectFailure(int b, string line) {
 
 // Set Traffic Lights
 void Region :: setLights(int b, string line, string color) {
-    int val = TrackModel::getFaults(line, b)l
     int loc;
 
     if (line == "Green Line") {
@@ -221,9 +220,8 @@ void Region :: setLights(int b, string line, string color) {
     }
     if (line == "Red Line") { loc = 0; }
 
-    if (val != 0) { blocks[loc].failure = 1; }
-    return blocks[loc].failure;
-}
+    //blocks[loc].lightColor = bool(color)
+};
 
 /* GETTERS AND MISCELLANEOUS INTERNAL METHODS */
 //---------------------------------------------------------------------------------
