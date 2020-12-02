@@ -143,6 +143,8 @@ void Region::runPLC() {
 // Initialize speed and authority allowed in the region
 void Region :: initialize(int db, float ss, std::vector<std::pair<int,int>> ac) {
 
+    std::cout << " AWWW you never got here booohoooooooo" << std::endl;
+
     // assign speed, authority, and exit block
     exitBlock = db;
 

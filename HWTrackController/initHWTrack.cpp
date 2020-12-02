@@ -14,8 +14,10 @@ using namespace std;
 
 Region greenreg("Green Line");
 Region redreg("Red Line");
+bool existence = 0;
 
 int init_HWTrackController() {
+    existence = 1;  // I exist
     HWPLCUI *w = new HWPLCUI();
     w->show();
 	return 0;

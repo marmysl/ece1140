@@ -10,7 +10,9 @@
 
 extern Region greenreg;
 extern Region redreg;
+extern bool existence;
 
 int init_HWTrackController();
+
 
 #endif // HWTRACKCONTROLLER_MAIN_H

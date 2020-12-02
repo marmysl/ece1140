@@ -208,10 +208,12 @@ void CTCDispatch::sendTrackController(){
       alertWaysideSystem(line, wayside_sig);
 
       // Choose the correct HW Track Controller to instantiate
-      if (line == "Green Line") {
-          greenreg.initialize(endblock, speed, authority);
-      } else if (line == "Red Line") {
-          redreg.initialize(endblock, speed, authority);
+      if (existence == 1) {
+          if (line == "Green Line") {
+              greenreg.initialize(endblock, speed, authority);
+          } else if (line == "Red Line") {
+              redreg.initialize(endblock, speed, authority);
+          }
       }
 
     //initializeHW(ctc);
