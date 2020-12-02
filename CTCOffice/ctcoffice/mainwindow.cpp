@@ -187,6 +187,7 @@ void MainWindow::updateRoute(){
     for(auto& rte : TrackModel::routes){
         ui->comboDisplayLine->addItem(QString::fromStdString(rte->name));
         ui->comboLine->addItem(QString::fromStdString(rte->name));
+        on_comboLine_currentIndexChanged(QString::fromStdString(rte->name));
     }
 }
 
