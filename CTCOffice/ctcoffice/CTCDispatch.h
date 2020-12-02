@@ -29,13 +29,14 @@ class CTCDispatch
 
         int timerID;
 
-        std::vector<int> authority; // blocks so vector of ints
+        std::vector<std::pair<int, int>> authority; // blocks so vector of ints
         float speed;
         std::vector<bool> tcStates;
         void setAuthority();
         void setSpeed(float, float);
-        void sendTrackController(CTCSignals &);
+        void sendTrackController();
         void dispatch(CTCSignals &);
+
 
         void setLine(std::string);
         std::string getline();
@@ -53,6 +54,7 @@ class CTCDispatch
         void setCTCMode(CTCMode*);
         CTCMode* getCTCMode();
         TrackModel::TrainPathInfo  findRoute();
+        CTCSignals wayside_sig;
         int setTimeDelay();
 
         QTime qt;
