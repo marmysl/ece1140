@@ -4,6 +4,7 @@
 #include "../../SWTrackController/CTCSignals.h"
 #include "Files.h"
 #include "schedule.h"
+#include "maintenance.h"
 
 #include <QMainWindow>
 #include <QObject>
@@ -24,6 +25,7 @@ public:
     CTCDispatch ctc;
     CTCMode m;
     schedule *autoSchedule;
+    maintenance *maint;
 
     int timerID;
     int count = 0;
@@ -52,6 +54,10 @@ private slots:
     void on_comboDisplayLine_currentIndexChanged(const QString &arg1);
 
     void on_btnSchedule_clicked();
+
+    void on_btnMaintenance_clicked();
+
+    void on_comboDisplayBlock_currentIndexChanged(const QString &arg1);
 
 private:
     Ui::MainWindow *ui;
