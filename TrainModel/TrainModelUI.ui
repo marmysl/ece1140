@@ -76,7 +76,7 @@
      </rect>
     </property>
     <property name="currentIndex">
-     <number>2</number>
+     <number>0</number>
     </property>
     <widget class="QWidget" name="errors">
      <attribute name="title">
@@ -190,7 +190,7 @@
        </rect>
       </property>
       <property name="text">
-       <string> </string>
+       <string/>
       </property>
      </widget>
      <widget class="QLabel" name="label_16">
@@ -783,8 +783,8 @@
      <widget class="QLabel" name="label">
       <property name="geometry">
        <rect>
-        <x>50</x>
-        <y>220</y>
+        <x>40</x>
+        <y>230</y>
         <width>58</width>
         <height>16</height>
        </rect>
@@ -796,8 +796,8 @@
      <widget class="QLabel" name="powerLabel">
       <property name="geometry">
        <rect>
-        <x>130</x>
-        <y>220</y>
+        <x>90</x>
+        <y>230</y>
         <width>58</width>
         <height>16</height>
        </rect>
@@ -887,8 +887,8 @@
      <widget class="QLabel" name="label_11">
       <property name="geometry">
        <rect>
-        <x>180</x>
-        <y>220</y>
+        <x>190</x>
+        <y>230</y>
         <width>31</width>
         <height>16</height>
        </rect>
@@ -1075,7 +1075,7 @@
      <widget class="QLabel" name="label_35">
       <property name="geometry">
        <rect>
-        <x>150</x>
+        <x>160</x>
         <y>70</y>
         <width>31</width>
         <height>16</height>
@@ -1088,7 +1088,7 @@
      <widget class="QLabel" name="label_36">
       <property name="geometry">
        <rect>
-        <x>150</x>
+        <x>160</x>
         <y>90</y>
         <width>31</width>
         <height>16</height>
@@ -1096,6 +1096,110 @@
       </property>
       <property name="text">
        <string>ft</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_37">
+      <property name="geometry">
+       <rect>
+        <x>190</x>
+        <y>200</y>
+        <width>101</width>
+        <height>16</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Train Physics:</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_38">
+      <property name="geometry">
+       <rect>
+        <x>40</x>
+        <y>250</y>
+        <width>81</width>
+        <height>16</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Acceleration:</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_39">
+      <property name="geometry">
+       <rect>
+        <x>40</x>
+        <y>270</y>
+        <width>81</width>
+        <height>16</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Net Force:</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_40">
+      <property name="geometry">
+       <rect>
+        <x>40</x>
+        <y>290</y>
+        <width>91</width>
+        <height>16</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Friction Coeff:</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_41">
+      <property name="geometry">
+       <rect>
+        <x>140</x>
+        <y>290</y>
+        <width>91</width>
+        <height>16</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>0.01</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="accelLabel">
+      <property name="geometry">
+       <rect>
+        <x>130</x>
+        <y>250</y>
+        <width>58</width>
+        <height>16</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>0</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="forceLabel">
+      <property name="geometry">
+       <rect>
+        <x>110</x>
+        <y>270</y>
+        <width>58</width>
+        <height>16</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>0</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_42">
+      <property name="geometry">
+       <rect>
+        <x>190</x>
+        <y>250</y>
+        <width>41</width>
+        <height>16</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>ft/s^2</string>
       </property>
      </widget>
      <widget class="QMdiArea" name="mdiArea_8">
@@ -1117,6 +1221,39 @@
        </brush>
       </property>
      </widget>
+     <widget class="QLabel" name="label_43">
+      <property name="geometry">
+       <rect>
+        <x>190</x>
+        <y>270</y>
+        <width>31</width>
+        <height>16</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>N</string>
+      </property>
+     </widget>
+     <widget class="QMdiArea" name="mdiArea_9">
+      <property name="geometry">
+       <rect>
+        <x>20</x>
+        <y>190</y>
+        <width>421</width>
+        <height>141</height>
+       </rect>
+      </property>
+      <property name="background">
+       <brush brushstyle="SolidPattern">
+        <color alpha="255">
+         <red>74</red>
+         <green>75</green>
+         <blue>75</blue>
+        </color>
+       </brush>
+      </property>
+     </widget>
+     <zorder>mdiArea_9</zorder>
      <zorder>mdiArea_8</zorder>
      <zorder>mdiArea_7</zorder>
      <zorder>label</zorder>
@@ -1142,6 +1279,15 @@
      <zorder>lengthLabel</zorder>
      <zorder>label_35</zorder>
      <zorder>label_36</zorder>
+     <zorder>label_37</zorder>
+     <zorder>label_38</zorder>
+     <zorder>label_39</zorder>
+     <zorder>label_40</zorder>
+     <zorder>label_41</zorder>
+     <zorder>accelLabel</zorder>
+     <zorder>forceLabel</zorder>
+     <zorder>label_42</zorder>
+     <zorder>label_43</zorder>
     </widget>
    </widget>
   </widget>

@@ -28,13 +28,7 @@ void CTCDispatch::setAuthority()
 
         int auth = route.blocks.size();
         for(auto val : route.blocks){
-            //set block number
-            //then the auth
-            //authority.push_back.first(val)
-            //authority.push_back.second(auth)
-            //ORRRRR
-            //authority.push_back(val, auth)
-            authority.push_back(auth);
+            authority.push_back(std::make_pair(val->id, auth));
             auth--;
             qDebug() << "Set Authority at Block " << val->id << ": " << QString::number(auth);
         }
@@ -105,24 +99,14 @@ std::string CTCDispatch::getStation(){
     return station;
 }
 
-void CTCDispatch::setTimeStart(std::string st){
-    qDebug() << "Set Start Time to: " << QString::fromStdString(st);
+void CTCDispatch::setTimeStart(QTime st){
 
-    float hours;
-    float minutes;
-    std::string shours;
-    std::string sminutes;
+    qt = st;
 
-    shours = st.substr(0,2);
-    sminutes = st.substr(3,4);
+    QDateTime t = systemClock->currentTime();
+    QTime rt = t.time();
 
-    std::stringstream temp1(shours);
-    std::stringstream temp2(sminutes);
-
-    temp1 >> hours;
-    temp2 >> minutes;
-
-    float time = hours + (minutes/60);
+    float time = st.hour() + (((float)st.minute())/60);
     qDebug() << "Start Time Math: " << QString::number(time);
 
     timeStart = time;
@@ -132,24 +116,9 @@ float CTCDispatch::getTimeStart(){
     return timeStart;
 }
 
-void CTCDispatch::setTimeArrival(std::string at){
-    qDebug() << "Set Arrival Time to: " << QString::fromStdString(at);
+void CTCDispatch::setTimeArrival(QTime at){
 
-    float hours;
-    float minutes;
-    std::string shours;
-    std::string sminutes;
-
-    shours = at.substr(0,2);
-    sminutes = at.substr(3,4);
-
-    std::stringstream temp1(shours);
-    std::stringstream temp2(sminutes);
-
-    temp1 >> hours;
-    temp2 >> minutes;
-
-    float time = hours + (minutes/60);
+    float time = at.hour() + (((float)at.minute())/60);
     qDebug() << "Arrival Time Math: " << QString::number(time);
 
     timeArrival = time;
@@ -167,7 +136,7 @@ float CTCDispatch::getPassNum(){
     return passNum;
 }
 
-void CTCDispatch::dispatch(CTCSignals(&c)){
+void CTCDispatch::dispatch(CTCSignals& c){
     setPassNum();
     carsNum = ceil(passNum/44); // ceil is taken out
     //qDebug() << "Number of Passengers on Train: " << QString::number(passNum);
@@ -180,13 +149,13 @@ void CTCDispatch::dispatch(CTCSignals(&c)){
         qDebug() << "Route not found.";
         return;
     }
+        sendTrackController();
 
-    sendTrackController(c);
+        createNewTrain(m, carsNum, line);
 
-    createNewTrain(m, carsNum, line);
 }
 
-void CTCDispatch::sendTrackController(CTCSignals &ctc){
+void CTCDispatch::sendTrackController(){
 
     TrackModel::TrainPathInfo route;
     route = findRoute();
@@ -200,11 +169,25 @@ void CTCDispatch::sendTrackController(CTCSignals &ctc){
           i++;
     }
 
-    //ctc.calcRoute(line, tcStates);
-    //ctc.setSignal(endblock, speed, authority);
-    reg.initialize(endblock, speed, authority);
+    std::vector<std::pair<int, TrackModel::SwitchState> > temp_r;
 
-    //alertWaysideSystem(ctc);
+    int w = 0;
+    for(std::pair<int, TrackModel::SwitchState> val : route.switchStates){
+          if(w == 6){
+              break;
+          }
+
+          temp_r.push_back(std::make_pair(val.first, val.second));
+          w++;
+    }
+
+        wayside_sig.setSpeed(line, speed);
+        wayside_sig.setAuthority(line, authority);
+
+        wayside_sig.setExitBlocks(temp_r);
+
+
+      alertWaysideSystem(line, wayside_sig);
     //initializeHW(ctc);
 }
 
@@ -227,6 +210,19 @@ TrackModel::TrainPathInfo CTCDispatch::findRoute(){
     path = temp.findPath(0, TrackModel::BLK_NODIR , endblock);
 
     return path;
+}
+
+int CTCDispatch::setTimeDelay(){
+    int test = systemClock->currentTime().time().QTime::msecsTo(qt);
+    qDebug() << "The time satrt: " << qt.hour()<<":"<<qt.minute();
+
+    if(test < 0){
+        test = 86400000 + test;
+    }
+
+    qDebug() << "The time needed is: " << test;
+
+    return test;
 }
 
 
