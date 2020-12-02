@@ -3,12 +3,10 @@
 #include <sstream>
 #include <stdexcept>
 #include "tracklayout.hpp"
-#include "mk1_util.hpp"
 
 #include <QFileInfo>
 
 using namespace TrackModel;
-using namespace MK1Util;
 
 std::vector<Route *> TrackModel::routes = std::vector<Route *>();
 
@@ -25,6 +23,22 @@ Route *TrackModel::getRoute( std::string name ) {
 // Route Members
 Route::Route( std::string name ) :
     name(name), displayStartBlk(-1), displayStartDir(BLK_FORWARD) {}
+
+static int parseIntStrict( std::string str ) {
+    size_t lenParsed;
+    int result = std::stoi(str, &lenParsed);
+
+    if( lenParsed != str.length() ) throw std::invalid_argument(str + " is not a valid integer value");
+    return result;
+}
+
+static float parseFloatStrict( std::string str ) {
+    size_t lenParsed;
+    float result = std::stof(str, &lenParsed);
+
+    if( lenParsed != str.length() ) throw std::invalid_argument(str + " is not a valid floating point value");
+    return result;
+}
 
 void Route::loadLayout( std::string fileName ) {
     std::ifstream layoutFile;
@@ -210,22 +224,22 @@ void Route::loadLayout( std::string fileName ) {
                             break;
 
                         case LL_PREV_BLK:
-                            if( bufStr.length() == 0 ) blkRev = BLK_UNSPECIFIED;
+                            if( bufStr.length() == 0 ) blkRev = -1;
                             else blkRev = parseIntStrict(bufStr);
                             break;
 
                         case LL_NEXT_BLK:
-                            if( bufStr.length() == 0 ) blkFwd = BLK_UNSPECIFIED;
+                            if( bufStr.length() == 0 ) blkFwd = -1;
                             else blkFwd = parseIntStrict(bufStr);
                             break;
 
                         case LL_BRANCH_A:
-                            if( bufStr.length() == 0 ) branchRev = BLK_UNSPECIFIED;
+                            if( bufStr.length() == 0 ) branchRev = -1;
                             else branchRev = parseIntStrict(bufStr);
                             break;
 
                         case LL_BRANCH_B:
-                            if( bufStr.length() == 0 ) branchFwd = BLK_UNSPECIFIED;
+                            if( bufStr.length() == 0 ) branchFwd = -1;
                             else branchFwd = parseIntStrict(bufStr);
                             break;
 
@@ -355,18 +369,26 @@ void Route::loadLayout( std::string fileName ) {
     if( !spawnBlock ) throw LayoutParseError("No valid initial block specified");
 
     Block *yard = new Block(0, "Yard", 50, 0, 100);
-    blocks.insert({0, yard});
+    blocks.insert(std::pair<int, Block*>(0, yard));
 
-    Block *exitYard = new Block(-1, "Yard", 50, 0, 100);
-    blocks.insert({-1, exitYard});
-
-    LinkInfo yardExit(yard, BLK_UNSPECIFIED, parsedStartBlockId, BLK_UNSPECIFIED, BLK_UNSPECIFIED);
+    LinkInfo yardExit(yard, -1, parsedStartBlockId, -1, -1);
     voidLinks.push_back(yardExit);
 
     // loop thru uninitialized switches and connect those suckers
     for( LinkInfo &links : voidLinks )
     {
-        if( links.prevStraight != BLK_UNSPECIFIED )
+        // check for station on current block
+        if( links.srcBlock->platform.exists() )
+        {
+            PlatformData platform = links.srcBlock->getPlatformInDir(BLK_FORWARD);
+            Station *station = platform.station;
+            links.srcBlock->forwardBeacon.applyCurrentStationData(station->name, platform.side);
+
+            platform = links.srcBlock->getPlatformInDir(BLK_REVERSE);
+            links.srcBlock->reverseBeacon.applyCurrentStationData(station->name, platform.side);
+        }
+
+        if( links.prevStraight >= 0 )
         {
             Block *prevBlock = getBlock(links.prevStraight);
             if( !prevBlock )
@@ -383,8 +405,16 @@ void Route::loadLayout( std::string fileName ) {
                 links.srcBlock->reverseBeacon.applyTunnelData(true); // entering reverse
             }
 
+            // check for upcoming station (reverse)
+            if( prevBlock->platform.exists() )
+            {
+                BlockDir entryDir = links.srcBlock->getEntryDir(prevBlock);
+                PlatformData prevPlat = prevBlock->getPlatformInDir(entryDir);
+                links.srcBlock->reverseBeacon.applyUpcomingStationData(prevPlat.station->name, prevPlat.side);
+            }
+
             // check for switch in reverse dir
-            if( links.prevDiverge != BLK_UNSPECIFIED )
+            if( links.prevDiverge >= 0 )
             {
                 Block *divergeBlock = getBlock(links.prevDiverge);
                 if( !divergeBlock )
@@ -406,7 +436,7 @@ void Route::loadLayout( std::string fileName ) {
             }
         }
 
-        if( links.nextStraight != BLK_UNSPECIFIED )
+        if( links.nextStraight >= 0 )
         {
             Block *nextBlock = getBlock(links.nextStraight);
             if( !nextBlock )
@@ -423,8 +453,16 @@ void Route::loadLayout( std::string fileName ) {
                 links.srcBlock->reverseBeacon.applyTunnelData(false); // exiting in reverse
             }
 
+            // check for upcoming station (forward)
+            if( nextBlock->platform.exists() )
+            {
+                BlockDir entryDir = links.srcBlock->getEntryDir(nextBlock);
+                PlatformData prevPlat = nextBlock->getPlatformInDir(entryDir);
+                links.srcBlock->forwardBeacon.applyUpcomingStationData(prevPlat.station->name, prevPlat.side);
+            }
+
             // check for switch in forward dir
-            if( links.nextDiverge != BLK_UNSPECIFIED )
+            if( links.nextDiverge >= 0 )
             {
                 Block *divergeBlock = getBlock(links.nextDiverge);
                 if( !divergeBlock )
@@ -447,72 +485,6 @@ void Route::loadLayout( std::string fileName ) {
         }
     }
     
-    // Now that the blocks are linked, let's find them stations
-    for( auto& kvp : blocks )
-    {
-        Block *curBlock = kvp.second;
-
-        // check for station on current block
-        if( curBlock->platform.exists() )
-        {
-            PlatformData platform = curBlock->getPlatformInDir(BLK_FORWARD);
-            Station *station = platform.station;
-            curBlock->forwardBeacon.applyStationData(station->name, platform.side);
-
-            platform = curBlock->getPlatformInDir(BLK_REVERSE);
-            curBlock->reverseBeacon.applyStationData(station->name, platform.side);
-        }
-
-        // look backwards
-        NextBlockData neighbor = curBlock->getNextBlock(BLK_REVERSE);
-        if( neighbor.exists() )
-        {
-            // neighbor exists
-            // check for platform in neighber
-            PlatformData plat = neighbor.block->getPlatformInDir(neighbor.entryDir);
-            if( plat.exists() )
-            {
-                // platform in adjacent block
-                curBlock->reverseBeacon.applyStationData(plat.station->name, plat.side, 1);
-            }
-
-            NextBlockData farNeighbor = neighbor.block->getNextBlock(neighbor.entryDir);
-            if( farNeighbor.exists() )
-            {
-                // distant neighbor exists, check for station
-                plat = farNeighbor.block->getPlatformInDir(farNeighbor.entryDir);
-                if( plat.exists() )
-                {
-                    curBlock->reverseBeacon.applyStationData(plat.station->name, plat.side, 2);
-                }
-            }
-        }
-
-        // look forwards
-        neighbor = curBlock->getNextBlock(BLK_FORWARD);
-        if( neighbor.exists() )
-        {
-            // neighbor exists
-            // check for platform in neighber
-            PlatformData plat = neighbor.block->getPlatformInDir(neighbor.entryDir);
-            if( plat.exists() )
-            {
-                // platform in adjacent block
-                curBlock->forwardBeacon.applyStationData(plat.station->name, plat.side, 1);
-            }
-
-            NextBlockData farNeighbor = neighbor.block->getNextBlock(neighbor.entryDir);
-            if( farNeighbor.exists() )
-            {
-                // distant neighbor exists, check for station
-                plat = farNeighbor.block->getPlatformInDir(farNeighbor.entryDir);
-                if( plat.exists() )
-                {
-                    curBlock->forwardBeacon.applyStationData(plat.station->name, plat.side, 2);
-                }
-            }
-        }
-    }
 }
 
 Block *Route::getBlock( int blockId ) {
