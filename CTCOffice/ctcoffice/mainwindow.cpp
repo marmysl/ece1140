@@ -22,20 +22,22 @@ MainWindow::MainWindow(QWidget *parent)
     ui->comboDestinationType->addItem("Block");
 
     QFont font = ui->btnDispatch->font();
-    font.setPointSize(60);
+    font.setPointSize(30);
     ui->btnDispatch->setFont(font);
-
-    QFont font1 = ui->btnCancel->font();
-    font1.setPointSize(60);
-    ui->btnCancel->setFont(font1);
+    ui->btnCancel->setFont(font);
 
     QFont font2 = ui->comboLine->font();
-    font2.setPointSize(60);
-    ui->btnCancel->setFont(font2);
+    font2.setPointSize(15);
+    ui->ManualButton->setFont(font2);
+    ui->AutomaticButton->setFont(font2);
+    ui->btnMap->setFont(font2);
+    ui->btnMaintenance->setFont(font2);
+    ui->btnSchedule->setFont(font2);
 
     updateRoute();
 
     ctc.setCTCMode(&m);
+
 }
 
 MainWindow::~MainWindow()
@@ -185,6 +187,15 @@ void MainWindow::on_comboDisplayLine_currentIndexChanged(const QString &arg1)
     CTCRouteStatus *temp;
     temp = ctcmap.getRouteStatus(arg1.toStdString());
     ui->blockDisplay->setRoute(temp);
+
+    TrackModel::Route *rte;
+    rte = TrackModel::getRoute(arg1.toStdString());
+
+    for(auto &blk : rte->blocks){
+        if(blk.second->id != 0){
+             ui->comboDisplayBlock->addItem(QString::number(blk.second->id));
+        }
+    }
 }
 
 void MainWindow::updateRoute(){
@@ -205,5 +216,18 @@ void MainWindow::on_btnSchedule_clicked()
 void MainWindow::timerEvent(QTimerEvent *event){
     CTCSignals c;
     ctc.dispatch(c);
+    ui->lblThroughput->setText(QString::number(ctc.getPassNum()));
     killTimer(timerID);
+}
+
+void MainWindow::on_btnMaintenance_clicked()
+{
+    maint = new maintenance();
+    maint->show();
+}
+
+void MainWindow::on_comboDisplayBlock_currentIndexChanged(const QString &arg1)
+{
+
+    ui->lblBlockOcc->setText("NO");
 }
