@@ -58,7 +58,7 @@ void TrainModelUpdateBlock::updateTrackCircuit(){
 }
 int TrainModelUpdateBlock::getPassengers(int maxPassengers){
     int numPassengers = 0;
-    if(block -> platform.exists()){
+    if(block->platform.exists()){
         TrackModel::PlatformData platform = block->getPlatformInDir(blockDir);
         numPassengers = TrackModel::takePassengers(lineType, platform.station->name, maxPassengers);
     }
