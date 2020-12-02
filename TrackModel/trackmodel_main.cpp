@@ -5,7 +5,6 @@
 #include "layoutdialog.h"
 #include "trackmodeldisplay.h"
 #include "station_tracking.h"
-#include "system_main.h"
 #include "CTCOffice/ctcoffice/CTCHashmap.h"
 #include "CTCOffice/ctcoffice/ctc_main.h"
 
@@ -255,31 +254,14 @@ namespace TrackModel {
         }
     }
 
-    void changeLayouts()
-    {
-        // no config loaded, show the selector dialog
-        LayoutDialog diag;
-        diag.exec();
-
-        // save the layouts back to the config
-        int lineCount = routesToLoad.size();
-        mk1Config.setIntVal("nlines", lineCount);
-        for( int i = 0; i < lineCount; i++ )
-        {
-            std::string nameKey = QString("line_n%0").arg(i).toStdString();
-            std::string fileKey = QString("line_f%0").arg(i).toStdString();
-
-            RouteFile& rf = routesToLoad[i];
-            mk1Config.setStringVal(nameKey, rf.name.toStdString());
-            mk1Config.setStringVal(fileKey, rf.layoutFile.toStdString());
-        }
-    }
-
     // load and initialize all layout files in routesToLoad
     // returns: 0 on success, negative number on error
     int initializeTrackModel()
     {
         routes.clear();
+
+        LayoutDialog diag;
+        diag.exec();
 
         // Instantiate UI
         if( !trackModelUi )

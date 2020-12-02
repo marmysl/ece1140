@@ -42,7 +42,6 @@ namespace TrackModel
         Route *layout;
         PathNode *nodeList;
         std::unordered_map<Block *, PathNode *> nodeMap;
-        std::vector<PathNode *> dynamicNodes;
         PathQueueType pathQueue;
         int nodeCount;
 
@@ -51,14 +50,9 @@ namespace TrackModel
         TrackRouter( Route *route );
         ~TrackRouter();
 
-        /*! Perform a simplified djikstra search for a path between two blocks */
         TrainPathInfo findPath( int startBlock, BlockDir startDir, int endBlock );
 
     private:
-        /*! Find newly reachable blocks from the given block/node */
         void processLink( PathNode *curNode, BlockDir dir );
-
-        /*! Free all dynamically allocated nodes */
-        void freeDynamicNodes();
     };
 }
