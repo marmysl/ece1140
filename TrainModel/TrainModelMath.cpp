@@ -1,5 +1,9 @@
 /**
  * This class handles all math calculations for the train.
+ * It occurs when the train controller PID loop is run and sets a new power for the train every loop.
+ * All calculations are then made to move the train along the track and account for changing distance,
+ * as well as calculate the new current velocity that is grabbed by the train controller for the next PID
+ * loop calculation.
 */
 #include "TrainModelMath.h"
 #include "TrainModelUpdateBlock.h"
@@ -7,6 +11,7 @@
 #include <iostream>
 
 TrainModelMath::TrainModelMath(int newNumCars, TrainModelUpdateBlock *newAssigBlock, TrainModelControls *newControl){
+    //make initial train characterisitic calculations
     numCars = newNumCars;
     mass = numCars * 56700;
     length = numCars * 105.6;
@@ -28,11 +33,10 @@ TrainModelMath::TrainModelMath(int newNumCars, TrainModelUpdateBlock *newAssigBl
     newBlock = false;
     emergencyBrake = false;
     serviceBrake = false;
-
     currTemp = weather->getTempFheit();
 }
 
-//Main function
+//Main function that is run when the train controller PID loop sets 0
 void TrainModelMath::setPower(double newPower){
     //Set the power of the train. If engine failure, power is 0
     if(failureStatus == 2){
@@ -50,7 +54,8 @@ void TrainModelMath::setPower(double newPower){
     currAccel = currForce/mass;
     limitAccel();
 
-    //Get current time, don't use last time until out of yard
+    //Get current time, don't use previous time until out of yard
+    // Time is based on system clock changes
     if (!inYard){
         newTime = systemClock->currentTime();
 
@@ -85,6 +90,7 @@ void TrainModelMath::setPower(double newPower){
         lastVel = currVel;
     }
     if (inYard && newPower!=0){
+        //While train is in the yard, keep last variables same
         lastTime = systemClock->currentTime();
         lastPos = 0;
         block->updateTrackInfo(inYard);
@@ -96,24 +102,28 @@ void TrainModelMath::setPower(double newPower){
     }
 }
 
+// calculate the travelled distance of train from last loop
 double TrainModelMath::travelledDist() {
     double totalVel = lastVel + currVel;
     double dist = lastPos + ((elapsedTime/2)*totalVel);
     return dist;
 }
 
+// calculate average velocity from last loop
 double TrainModelMath::calcVelocity() {
     double totalAcc = lastAccel + currAccel;
     double vel = lastVel + ((elapsedTime/2)*totalAcc);
 
+    // limit so that if velocity calculation is less than 0, it is = 0
+    // this stops the train from reversing
     if (vel < 0){ vel=0; }
-
     if (lastVel <= 0 && (serviceBrake || emergencyBrake)){ vel=0; }
 
     return vel;
 }
 
-void TrainModelMath::limitForce(){  
+// limit the force of the train to max characteristic capability
+void TrainModelMath::limitForce(){
     if (currForce > (mass*0.5)){
         currForce = mass*0.5;
     }
