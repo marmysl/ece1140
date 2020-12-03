@@ -5,6 +5,9 @@
 #include "TrainMoc.h"
 #include "SpeedRegulatorMoc.h"
 #include "BeaconDecoderMoc.h"
+#include "CTCModeMoc.h"
+#include "../../TrackModel/trackmodel_types.hpp"
+#include <QDateTime>
 
 class TrainControllerMoc
 {
@@ -12,10 +15,16 @@ class TrainControllerMoc
         TrainMoc *trainModel;
         BeaconDecoderMoc *beacon;
         SpeedRegulatorMoc *speedRegulator;
+        CTCModeMoc *mode;
+        bool stopTimerStarted;
+        bool stopAlreadyOccurred;
+        QDateTime start;
+        QDateTime now;
     public:
-        TrainControllerMoc();
+        TrainControllerMoc(CTCModeMoc* modeInit, int numCars, std::string lineType);
         void receiveData(string simData);
         std::string writeData();
+	void updateBeaconData(std::string headlights);
         BeaconDecoderMoc* getBeacon();
         SpeedRegulatorMoc* getSpeedRegulator();
         TrainMoc* getTrainModel();

@@ -58,14 +58,23 @@ std::string BeaconDecoder::getAnnouncement()
     //Initialize a string for the annoucnement to be stored in
     std::string announcement = "";
 
-    //If the station is on the left, tell passengers to exit on the left
-    if(getPlatformDoors() == "LEFT") announcement = "The next station is " + nextStation + ". Please exit on your left.";
+    if(stationUpcoming || stationHere)
+    {
 
-    //If the station is on the left, tell passengers to exit on the left
-    else if(getPlatformDoors() == "RIGHT") announcement  = "The next station is " + nextStation + ". Please exit on your right";
+        //If the station is on the left, tell passengers to exit on the left
+        if(getPlatformDoors() == "LEFT") announcement = "The next station is " + nextStation + ". Please exit on your left.";
 
-    //If the station is on the left, tell passengers to exit on the left
-    else announcement = "The next station is " + nextStation + ". Please exit on either side.";
+        //If the station is on the left, tell passengers to exit on the left
+        else if(getPlatformDoors() == "RIGHT") announcement  = "The next station is " + nextStation + ". Please exit on your right.";
+
+        //If the station is on the left, tell passengers to exit on the left
+        else announcement = "The next station is " + nextStation + ". Please exit on either side.";
+
+    }
+    else
+    {
+        announcement = "Thank you for choosing Port Authority.";
+    }
 
     //Return the full announcement
     return announcement;
@@ -138,8 +147,8 @@ bool BeaconDecoder::getStationHere()
 std::string BeaconDecoder::getPlatformDoors()
 {
     extractBeaconData();
-    if(platformDoorsChar == 'B') platformDoors = "BOTH";
-    else if(platformDoorsChar == 'L') platformDoors = "LEFT";
+    if(platformDoorsChar == '\x00') platformDoors = "BOTH";
+    else if(platformDoorsChar == '\xff') platformDoors = "LEFT";
     else platformDoors = "RIGHT";
 
     return platformDoors;

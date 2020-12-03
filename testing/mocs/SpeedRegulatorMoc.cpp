@@ -1,6 +1,6 @@
 #include "SpeedRegulatorMoc.h"
 
-SpeedRegulatorMoc::SpeedRegulatorMoc(TrainMoc *ptr)
+SpeedRegulatorMoc::SpeedRegulatorMoc(TrainMoc *t, CTCModeMoc *m, BeaconDecoderMoc *b)
 {
     //CalculatePowerCmd();
     powerCmd = 0;
@@ -13,7 +13,9 @@ SpeedRegulatorMoc::SpeedRegulatorMoc(TrainMoc *ptr)
     Ki = 0.000;
 
     //Set trainModel object to the pointer in the parameters
-    trainModel = ptr;
+    trainModel = t;
+    mode = m;
+    beacon = b;
 
     //Initialize the PID control variables to 0
     uk = 0;
@@ -21,43 +23,89 @@ SpeedRegulatorMoc::SpeedRegulatorMoc(TrainMoc *ptr)
     ek = 0;
     ek_1 = 0;
 
-    //Initialize the period T to be 1
-    T = 1;
-
     //Initialize the maxPower to be 120,000 watts
-    maxPower = 120000; //this value comes from Flexity 2 Tram datasheet
+    maxPower = 120; //this value comes from Flexity2 Tram datasheet
+
+    //Set the failure code to 0 initially
+    failureCode = 0;
+
+}
+double SpeedRegulatorMoc::powerFormula()
+{
+    //Create a variable to store the power
+    double power;
+
+    //Call the chooseVcmd() function to ensure there is no stale data for Vcmd
+    chooseVcmd();
+
+    //Calculate the values for ek (convert Vcmd to meters/second)
+    ek = (Vcmd*0.277778) - (trainModel -> getCurrentVelocity());
+
+    //Find sample elapsed time (.1 seconds)
+    double elapsedTime = .1;
+
+    //Set T to the elapsed time
+    T = elapsedTime;
+
+    //Choose the correct value of uk
+    if(powerCmd <= maxPower) uk = uk_1 + (T/2)*(ek + ek_1);
+    else uk = uk_1;
+
+    //Calculate the power command in watts
+    power = (Kp * ek) + (Ki * uk);
+
+    //Set ek_1 = ek for next power command calculation
+    ek_1 = ek;
+
+    //Set uk_1 = ek for next power command calculation
+    uk_1 = uk;
+
+    return power;
 }
 void SpeedRegulatorMoc::calcPowerCmd()
 {
     //Only calculate a nonzero power while the train has a nonzero authority and the brake is not being pulled
-    if(  ((trainModel -> sendTrackCircuit() & 0xfffffff) > 0) || (trainModel -> getServiceBrake() != 1) || (trainModel -> getEmergencyBrake() != 1) )
+    if(  (getAuthority() > 0) && (trainModel -> getServiceBrake() != 1) && (trainModel -> getEmergencyBrake() != 1) )
     {
-        //Call the chooseVcmd() function to ensure there is no stale data for Vcmd
-        chooseVcmd();
+        double power1 = powerFormula();
+        double power2 = powerFormula();
+        double power3 = powerFormula();
 
-        //Calculate the values for ek
-        ek = Vcmd - trainModel -> getCurrentVelocity();
+        std::cout << "power1 = " << power1 << std::endl;
+        std::cout << "power2 = " << power2 << std::endl;
+        std::cout << "power3 = " << power3 << std::endl;
 
-        //Choose the correct value of uk
-        if(powerCmd < maxPower) uk = uk_1 + T*(ek + ek_1);
-        else uk = uk_1;
+        double avg12 = (power1 + power2) /2;
+        double avg13 = (power1 + power3) /2;
+        double avg23 = (power2 + power3) /2;
 
-        //Calculate the power command
-        powerCmd = (Kp * ek) + (Ki * uk);
+        if(power1 > power2 - 50 && power1 < power2 + 50) powerCmd = avg12;
+        else if(power1 > power3 - 50 && power1 < power3 + 50) powerCmd = avg13;
+        else if(power3 > power2 - 50 && power3 < power2 + 50) powerCmd = avg23;
+        else pullEmergencyBrake();
 
-        //Sends power command to the trainModel
-        if(powerCmd < 120000) trainModel -> setPower(powerCmd);
+        //Sends power command to the trainModel (needs conversion kW => W)
+        if(powerCmd <= 120000 && powerCmd >= -120000)
+        {
+            trainModel -> setPower(powerCmd);
+            if(trainModel -> getPower() == 0 && powerCmd != 0) setFailureCode(2);
+        }
+        else if(powerCmd < -120000)
+        {
+            trainModel -> setPower(-120000);
+            if(trainModel -> getPower() == 0 && powerCmd != 0) setFailureCode(2);
+        }
         else
         {
-            powerCmd = 120000;
-            trainModel -> setPower(powerCmd);
+            trainModel -> setPower(120000);
+            if(trainModel -> getPower() == 0 && powerCmd != 0) setFailureCode(2);
         }
 
-        //Set ek_1 = ek for next power command calculation
-        ek_1 = ek;
-
-        //Set uk_1 = ek for next power command calculation
-        uk_1 = uk;
+        std::cout << powerCmd << std::endl;
+    }
+    else if(getAuthority() == 0)
+    {
+        pullServiceBrake();
     }
     else
     {
@@ -81,7 +129,6 @@ void SpeedRegulatorMoc::powerCmdZero()
 }
 double SpeedRegulatorMoc::getPowerCmd()
 {
-    chooseVcmd();
     calcPowerCmd();
     return powerCmd;
 }
@@ -94,9 +141,10 @@ void SpeedRegulatorMoc::incSetpointSpeed(double inc)
     //Increment/Decrement the speed of the train according to the joystick input
 
     //Changes the setpoint speed only if it is within the range of speed as given by the Flexity Tram data sheet and if the emergency or service brakes are being pulled
-    if((setpointSpeed + inc >= 0) && setpointSpeed <= 43 && (setpointSpeed + inc <= 43) && trainModel -> getEmergencyBrake() != 1 && trainModel -> getServiceBrake() !=1 )
+    if((setpointSpeed + inc*.60934 >= 0) && setpointSpeed <= 70 && (setpointSpeed + inc*1.60934 <= 70) && trainModel -> getEmergencyBrake() != 1 && trainModel -> getServiceBrake() !=1 )
     {
-        setpointSpeed += inc;
+        //Add the incremenet as km/h   mi/hr --> km/hr = 1.60934
+        setpointSpeed += inc*1.60934;
     }
 
     //Calculate the power command
@@ -104,12 +152,26 @@ void SpeedRegulatorMoc::incSetpointSpeed(double inc)
 }
 void SpeedRegulatorMoc::chooseVcmd()
 {
-    //If the setpoint speed is greater than or equal to the commanded speed, the lesser of the speeds is the commanded speed
-    //The commmanded speed will be Vcmd and will generate the power command
-    if(setpointSpeed >= trainModel -> sendTrackCircuit() >> 32) Vcmd = trainModel -> sendTrackCircuit() >> 32;
+    //If the train is in automatic mode speed is automatically chosen for the train
+    if(mode -> getMode() == 0)
+    {
+        //Must be this slow so that the train can stop on time in the higher speeds for the 75m blocks
+        if(beacon -> getStationUpcoming() && getCommandedSpeed() > 16.0934) Vcmd = 16.0934;
 
-    //If the commanded speed is greater than the setpoint speed, then the velocity for the power command will be the setpoint speed
-    else Vcmd = setpointSpeed;
+        //If a station is not upcoming, the speed is simply the commanded speed
+        else Vcmd = getCommandedSpeed();
+    }
+
+    //If the train is in manual mode, Vmd is chosen differently
+    else
+    {
+        //If the setpoint speed is greater than or equal to the commanded speed, the lesser of the speeds is the commanded speed
+        //The commmanded speed will be Vcmd and will generate the power command
+        if(setpointSpeed >= getCommandedSpeed()) Vcmd = getCommandedSpeed();
+
+        //If the commanded speed is greater than the setpoint speed, then the velocity for the power command will be the setpoint speed
+        else Vcmd = setpointSpeed;
+    }
 
 }
 void SpeedRegulatorMoc::setKpAndKi(double propGain, double intGain)
@@ -132,6 +194,9 @@ void SpeedRegulatorMoc::pullServiceBrake()
 
     //Set the power command to 0
     powerCmdZero();
+
+    //Check for brake failure
+    if(trainModel -> getServiceBrake() == 0) setFailureCode(1);
 }
 void SpeedRegulatorMoc::pullEmergencyBrake()
 {
@@ -140,8 +205,57 @@ void SpeedRegulatorMoc::pullEmergencyBrake()
 
     //Set the power in the train model to 0
     powerCmdZero();
+
+    //Check for brake failure
+    if(trainModel -> getEmergencyBrake() == 0) setFailureCode(1);
 }
+void SpeedRegulatorMoc::setFailureCode(int fc)
+{
+    //Integer coding system for failures:
+    //0 = no failure occurring
+    //1 = brake failure
+    //2 = engine failure
+    //3 = track signal pickup failure
+    failureCode = fc;
+
+    //If the failure code is not being set to 0 (no failure), pull emergency brake
+    if(failureCode != 0) pullEmergencyBrake();
+}
+int SpeedRegulatorMoc::getFailureCode()
+{
+    return failureCode;
+}
+void SpeedRegulatorMoc::decodeTrackCircuit()
+{
+    //Check for a track circuit signal pickup failure
+    if(trainModel -> sendTrackCircuit() == 0xffffffffffffffff) setFailureCode(1);
+
+    //Decode the track circuit data
+    commandedSpeed = (trainModel -> sendTrackCircuit() >> 32) / 4096;
+    authority = (trainModel -> sendTrackCircuit() & 0xffffffff);
+
+    std::cout << trainModel -> sendTrackCircuit() << std::endl;
+}
+
+double SpeedRegulatorMoc::getCommandedSpeed()
+{
+    //Decode the track circuit
+    decodeTrackCircuit();
+
+    //Returns the commanded speed
+    return commandedSpeed;
+}
+int SpeedRegulatorMoc::getAuthority()
+{
+    //Decode the track circuit
+    decodeTrackCircuit();
+
+    //Returns the authority
+    return authority;
+}
+
 double SpeedRegulatorMoc::getVcmd()
 {
+    chooseVcmd();
     return Vcmd;
 }

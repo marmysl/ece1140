@@ -2,6 +2,7 @@ INCLUDEPATH += ../..
 
 QT += testlib
 QT += gui
+QT += core
 QT += core gui serialport
 
 
@@ -14,18 +15,16 @@ CONFIG -= app_bundle
 TEMPLATE = app
 
 SOURCES += \
-    tst_testspeedregulator.cpp \
+    tst_testbeacondecoder.cpp \
     ../mocs/TrainMoc.cpp \
     ../mocs/TrainControllerMoc.cpp \
     ../mocs/SpeedRegulatorMoc.cpp \
-    ../mocs/CTCModeMoc.cpp \
     ../mocs/BeaconDecoderMoc.cpp \
-    ../../TrackModel/trackmodel_types.cpp
+    ../mocs/CTCModeMoc.cpp
 
 HEADERS += \
     ../mocs/TrainMoc.h \
     ../mocs/TrainControllerMoc.h \
     ../mocs/SpeedRegulatorMoc.h \
     ../mocs/BeaconDecoderMoc.h \
-    ../mocs/CTCModeMoc.h \
-    ../../TrackModel/trackmodel_types.h
+    ../mocs/CTCModeMoc.h

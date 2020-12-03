@@ -103,7 +103,7 @@ void TrainController::recieveData( char *buf, qint64 len )
              else trainModel -> setHeater(0);
 
              //Updates the left doors
-             if(data.substr(3,1) == "1") trainModel -> setLeftDoorStatus(1);
+             if(data.substr(3,1) == "1" || (!stopAlreadyOccurred && stopTimerStarted && trainModel -> getLeftDoorStatus())) trainModel -> setLeftDoorStatus(1);
              else trainModel -> setLeftDoorStatus(0);
 
              //Updates the advertisements
@@ -148,7 +148,7 @@ void TrainController::recieveData( char *buf, qint64 len )
              }
 
              //Updates the right doors
-             if(data.substr(23,1) == "1") trainModel -> setRightDoorStatus(1);
+             if(data.substr(23,1) == "1" || (!stopAlreadyOccurred && stopTimerStarted && trainModel -> getRightDoorStatus())) trainModel -> setRightDoorStatus(1);
              else trainModel -> setRightDoorStatus(0);
 
              //Updates the beacon information
@@ -189,6 +189,15 @@ void TrainController::updateBeaconData(std::string headlights)
                 //Once the train has stopped, start the timer to wait at station
                 stopTimerStarted = 1;
                 start = systemClock -> currentTime();
+
+                //Open the doors for the passengers to unload/load onto the train
+                if(beacon -> getPlatformDoors() == "RIGHT") trainModel -> setRightDoorStatus(1);
+                else if(beacon -> getPlatformDoors() == "LEFT") trainModel -> setLeftDoorStatus(1);
+                else
+                {
+                    trainModel -> setRightDoorStatus(1);
+                    trainModel -> setLeftDoorStatus(1);
+                }
             }
 
             if(stopTimerStarted == 1)
@@ -199,8 +208,14 @@ void TrainController::updateBeaconData(std::string headlights)
                 //If the train has been stopped for 60 seconds, release the service brake and set the stopTimerStarted flag back to 0 and the stopAlreadyOccurred flag to 1
                 if(start.secsTo(now) >= 60)
                 {
-                    //FUNCTION HERE TO LOAD/UNLOAD PASSENGERS
+                    //Close the doors because the train is finished unloading/loading passeners
+                    trainModel -> setRightDoorStatus(0);
+                    trainModel -> setLeftDoorStatus(0);
+
+                    //Release the service brake
                     trainModel -> setServiceBrake(0);
+
+                    //Mark that the stop has already occurred in the block so it does not occur again
                     stopAlreadyOccurred = 1;
                 }
             }
@@ -344,4 +359,3 @@ void TrainController::writeData()
     //Write the character array to the serial port
     trainControllerPort.writeString(outgoing_s);
 }
-

@@ -112,7 +112,7 @@ bool enterKpKi()
   //Prompt user to enter in Ki
   lcd.clear();
   lcd.setCursor(0, 0); 
-  lcd.print("Enter Ki: (300)");
+  lcd.print("Enter Ki: (0.000)");
   do
   {
     do
@@ -129,7 +129,7 @@ bool enterKpKi()
   //Prompt user to enter in Kp
   lcd.clear();
   lcd.setCursor(0, 0); 
-  lcd.print("Enter Kp: (400)");
+  lcd.print("Enter Kp: (50.00)");
   i = 0;
   do
   {
@@ -160,6 +160,29 @@ bool enterKpKi()
   }
   else
   {
+    //Show the user a confirmation page
+    lcd.clear();
+    lcd.setCursor(0,0);
+    lcd.print("Confirm Kp and Ki?");
+    lcd.setCursor(0,1);
+    lcd.print("A = YES");
+    lcd.setCursor(0,2);
+    lcd.print("Any other key = NO");
+
+    //Get the users response to the confirmation
+    do {
+      customKey = customKeypad.getKey();
+    } while(!customKey);
+      
+    if(customKey != 'A')
+    {
+      //Return false so the user can re-enter values
+      lcd.clear();
+      lcd.print("Cancelling...");
+      delay(2000);
+      return false;
+    }
+
     //Return true to inform the user that the values were entered successfully
     lcd.clear();
     lcd.print("Success!");

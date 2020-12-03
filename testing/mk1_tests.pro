@@ -5,15 +5,11 @@ SOURCES += \
     mocs/TrainMoc.cpp \
     mocs/TrainControllerMoc.cpp \
     mocs/SpeedRegulatorMoc.cpp \
-    mocs/BeaconDecoderMoc.cpp
-
-HEADERS += \
-    mocs/TrainMoc.h \
-    mocs/TrainControllerMoc.h \
-    mocs/SpeedRegulatorMoc.h \
-    mocs/BeaconDecoderMoc.h
+    mocs/BeaconDecoderMoc.cpp \
+    mocs/CTCModeMoc.cpp
 
 SUBDIRS += \
+	testBeaconDecoder \
 	testCabinControls \
 	testLayout \
 	testRouting \

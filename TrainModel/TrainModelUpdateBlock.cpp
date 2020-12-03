@@ -56,7 +56,6 @@ void TrainModelUpdateBlock::updateTrackCircuit(){
     TrackModel::TrackCircuitData newData = TrackModel::getTrackCircuit(lineType, blockNum);
     trackCircuitData = newData.getEncodedData();
 }
-
 int TrainModelUpdateBlock::getPassengers(int maxPassengers){
     int numPassengers = 0;
     if (block->platform.exists()){
