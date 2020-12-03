@@ -1,3 +1,15 @@
+/**
+ * This is the main train object class.
+ *
+ * It is instantiatied by the Train Controller and creates all other necessary classes for train model
+ * functionality.
+ *
+ * There will be one train object and associated classes per train controller, symbolizing one train.
+ * This class also will create one instance of the train model UI upon instantiation.
+ *
+ * Funtions in this class are getters and setters to be used by the train controller. The UI is also updated
+ * in functions in this class.
+*/
 #include "Train.h"
 #include <QApplication>
 #include <cstdint>
@@ -12,6 +24,7 @@ using namespace std;
 
 Train::Train(int newNumCars, string lineType)
 {
+    // create instances of each necessary class and show the UI
     w = new TrainModelUI();
     w->show();
     controls = new TrainModelControls();
@@ -21,7 +34,7 @@ Train::Train(int newNumCars, string lineType)
     updateUI();
 }
 
-void Train::setPower(double newPower){             //Called by train controller to set power
+void Train::setPower(double newPower){
     math->setPower(newPower);
     updateUI();
 }
@@ -96,12 +109,7 @@ bool Train::getPassengerEBrake(){
 }
 
 void Train::setEmergencyBrake(bool eBrakeStatus){
-    if(math->failureStatus == 3){
-        math->setEBrake(false);
-    }
-    else{
-        math->setEBrake(eBrakeStatus);
-    }
+    math->setEBrake(eBrakeStatus);
 }
 
 bool Train::getEmergencyBrake(){
@@ -117,12 +125,7 @@ int Train::getSystemFailure(){
 }
 
 void Train::setServiceBrake(bool servBrake){
-    if(math->failureStatus == 3){
-        math->setSBrake(false);
-    }
-    else{
-        math->setSBrake(servBrake);
-    }
+    math->setSBrake(servBrake);
 }
 
 bool Train::getServiceBrake(){
