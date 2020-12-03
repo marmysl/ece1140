@@ -1,3 +1,8 @@
+/**
+ * This class handles the UI and UI updates. It updates all labels in the UI and handles any button action.
+ *
+ * QTCreator was used initially to set up the UI.
+*/
 #include "TrainModelUI.h"
 #include "ui_TrainModelUI.h"
 
@@ -147,6 +152,7 @@ void TrainModelUI::on_pushButton_4_clicked()
 
 void TrainModelUI::on_pushButton_5_clicked()
 {
+    //limit the set temp to have a max of 85
     if((train->setTemp)<85){
         train->setTemperature((train->setTemp)+1);
     }
@@ -154,6 +160,7 @@ void TrainModelUI::on_pushButton_5_clicked()
 
 void TrainModelUI::on_pushButton_6_clicked()
 {
+    //limit the set temp to have a min of 60
     if((train->setTemp)>60){
         train->setTemperature((train->setTemp)-1);
     }

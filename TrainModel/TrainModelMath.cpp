@@ -1,9 +1,22 @@
+/**
+ * This class handles all math calculations for the train.
+ * It occurs when the train controller PID loop is run and sets a new power for the train every loop.
+ * All calculations are then made to move the train along the track and account for changing distance,
+ * as well as calculate the new current velocity that is grabbed by the train controller for the next PID
+ * loop calculation.
+ *
+ * Note:
+ * Net force should be calculated to accont for friction. However, with the design constrains given,
+ * the velocity is severely limited (as per requirement of one 120kW motor). Therefore, the design decision
+ * was made to remove friction.
+*/
 #include "TrainModelMath.h"
 #include "TrainModelUpdateBlock.h"
 #include "TrainModelControls.h"
 #include <iostream>
 
 TrainModelMath::TrainModelMath(int newNumCars, TrainModelUpdateBlock *newAssigBlock, TrainModelControls *newControl){
+    //make initial train characterisitic calculations
     numCars = newNumCars;
     mass = numCars * 56700;
     length = numCars * 105.6;
@@ -25,10 +38,10 @@ TrainModelMath::TrainModelMath(int newNumCars, TrainModelUpdateBlock *newAssigBl
     newBlock = false;
     emergencyBrake = false;
     serviceBrake = false;
-
     currTemp = weather->getTempFheit();
 }
 
+//Main function that is run when the train controller PID loop sets 0
 void TrainModelMath::setPower(double newPower){
     //Set the power of the train. If engine failure, power is 0
     if(failureStatus == 2){
@@ -39,14 +52,18 @@ void TrainModelMath::setPower(double newPower){
     }
 
     //Calculate Force from Power input
-    currForce = currPower/lastVel;
+    /**Equation for net force (see doc note for more info):
+     * netForce = (currPower/lastVel) - (0.01*mass*9.8))/mass);
+    */
+    currForce = (currPower/lastVel);
     limitForce();
 
     //Find acceleration from calculated force
     currAccel = currForce/mass;
     limitAccel();
 
-    //Get current time, don't use last time until out of yard
+    //Get current time, don't use previous time until out of yard
+    // Time is based on system clock changes
     if (!inYard){
         newTime = systemClock->currentTime();
 
@@ -81,6 +98,7 @@ void TrainModelMath::setPower(double newPower){
         lastVel = currVel;
     }
     if (inYard && newPower!=0){
+        //While train is in the yard, keep last variables same
         lastTime = systemClock->currentTime();
         lastPos = 0;
         block->updateTrackInfo(inYard);
@@ -92,28 +110,28 @@ void TrainModelMath::setPower(double newPower){
     }
 }
 
+// calculate the travelled distance of train from last loop
 double TrainModelMath::travelledDist() {
     double totalVel = lastVel + currVel;
     double dist = lastPos + ((elapsedTime/2)*totalVel);
     return dist;
 }
 
+// calculate average velocity from last loop
 double TrainModelMath::calcVelocity() {
     double totalAcc = lastAccel + currAccel;
     double vel = lastVel + ((elapsedTime/2)*totalAcc);
 
+    // limit so that if velocity calculation is less than 0, it is = 0
+    // this stops the train from reversing
     if (vel < 0){ vel=0; }
-
     if (lastVel <= 0 && (serviceBrake || emergencyBrake)){ vel=0; }
 
     return vel;
 }
 
-void TrainModelMath::limitForce(){  
-    //add coefficient of friction
-    //currForce = net Force
-    currForce = (currForce) - (0.01*mass*9.8);
-
+// limit the force of the train to max characteristic capability
+void TrainModelMath::limitForce(){
     if (currForce > (mass*0.5)){
         currForce = mass*0.5;
     }
@@ -125,15 +143,19 @@ void TrainModelMath::limitForce(){
     }
 }
 
+// limit acceleration according to what brake is being used and what situation train is in
 void TrainModelMath::limitAccel(){
-    if (failureStatus == 3 && currPower == 0){
-        currAccel = (currForce/mass);
+    if (failureStatus == 3 && (serviceBrake == 1 || emergencyBrake == 1)){  //brake failure
+        //if there is a brake failure, physics and friction are used to slow the train.
+        currAccel = (((currForce) - (0.01*mass*9.8))/mass);
+        serviceBrake = 0;
+        emergencyBrake = 0;
     }
-    else if (currPower == 0 && currVel>0){
+    else if (currPower == 0 && currVel>0){      //service or emergency brake
         if(emergencyBrake){currAccel = -2.73;}
         else{currAccel = -1.2;}
     }
-    else if (currPower != 0){
+    else if (currPower != 0){                   //normal acceleration limit
         if (currAccel > 0.5){currAccel = 0.5;}
     }
     else{
@@ -141,28 +163,37 @@ void TrainModelMath::limitAccel(){
     }
 }
 
+//function to update the passenger count on the train when at a station
 void TrainModelMath::updatePassengers(){
     //if the doors are open and the train was not at a station in previous loop
     if((controls->doorLeftOpen || controls->doorRightOpen) && !atStation){
         //Set variable so that the passengers are only updated once at a station
         atStation = true;
+
         //Randomly generate the number of passengers leaving the train
         if (passengers>0){
             passengersDepart = rand() % passengers;
             passengers = passengers - passengersDepart;
         }
+
+        //pick up passengers through track model
         int transMax = maxPassTotal - passengers;
         int randomPassEntry = rand() % transMax;
         passengersBoard = block->getPassengers(randomPassEntry);
         passengers = passengers + passengersBoard;
+
+        //calculate new mass based on passenger count
         mass = (numCars * 56700) + (passengers * 68);
     }
+    //reset bool to false when the doors are closed
     else if (!(controls->doorLeftOpen) && !(controls->doorRightOpen)){
         atStation = false;
     }
 }
 
+//regulate internal train temperature
 void TrainModelMath::regulateTemperature(){
+    //turn on the heat if less than set point temp
     if(currTemp<setTemp){
         controls->toggleHeater(true);
         controls->toggleAC(false);
@@ -174,6 +205,7 @@ void TrainModelMath::regulateTemperature(){
             currTemp = currTemp + 1;
         }
     }
+    //turn on AC if greater than set point temp
     else if(currTemp>setTemp){
         controls->toggleHeater(false);
         controls->toggleAC(true);

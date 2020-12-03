@@ -1,3 +1,15 @@
+/**
+ * This is the main train object class.
+ *
+ * It is instantiatied by the Train Controller and creates all other necessary classes for train model
+ * functionality.
+ *
+ * There will be one train object and associated classes per train controller, symbolizing one train.
+ * This class also will create one instance of the train model UI upon instantiation.
+ *
+ * Funtions in this class are getters and setters to be used by the train controller. The UI is also updated
+ * in functions in this class.
+*/
 #include "Train.h"
 #include <QApplication>
 #include <cstdint>
@@ -12,6 +24,7 @@ using namespace std;
 
 Train::Train(int newNumCars, string lineType)
 {
+    // create instances of each necessary class and show the UI
     w = new TrainModelUI();
     w->show();
     controls = new TrainModelControls();
@@ -21,7 +34,7 @@ Train::Train(int newNumCars, string lineType)
     updateUI();
 }
 
-void Train::setPower(double newPower){             //Called by train controller to set power
+void Train::setPower(double newPower){
     math->setPower(newPower);
     updateUI();
 }
@@ -36,7 +49,6 @@ uint64_t Train::sendTrackCircuit(){
         return 0xFFFFFFFFFFFFFFFF;
     }
     return block->trackCircuitData;
-    //return 0x0002000000000032;
 }
 
 double Train::getCurrentVelocity(){
@@ -181,6 +193,7 @@ double Train::getSafeStoppingDistance(){
 }
 
 void Train::updateUI(){
+    //various UI updates to be made each loop
     w->updateNumCars(math->numCars);
     w->setLength(math->length);
     w->setMass(math->mass);
