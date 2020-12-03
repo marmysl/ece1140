@@ -251,7 +251,7 @@ void RouteMapView::drawSignals( BlockRepr &repr, QPainter *painter )
     QPoint center(repr.left, repr.top - BLOCK_THICKNESS);
 
     painter->setPen(Qt::NoPen);
-    QColor &col = sigColors[repr.stat->getSignal(oppositeDir(repr.orient))];
+    QColor col = sigColors[repr.stat->getSignal(oppositeDir(repr.orient))];
     painter->setBrush(col);
     painter->drawEllipse(center, RADIUS, RADIUS);
 

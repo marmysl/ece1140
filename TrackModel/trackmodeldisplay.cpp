@@ -224,7 +224,12 @@ void TrackModelDisplay::on_applySignalButton_clicked()
 {
     int selected = ui->signalCombo->currentIndex();
 
-    BlockDir side = (ui->signalDirCombo->currentIndex()) ? BLK_FORWARD : BLK_REVERSE;
+    BlockDir side = BLK_FORWARD;
+    if( ui->signalDirCombo->currentText().startsWith('R') )
+    {
+        side = BLK_REVERSE;
+    }
+
     selectedBlock->setSignal(side, static_cast<TrackModel::SignalState>(selected));
 }
 
