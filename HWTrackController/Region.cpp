@@ -52,7 +52,7 @@ Region::Region(std::string line) {
         b.blockID = blc[i];
         b.isSwitch = sw[i];
         b.isCrossing = rc[i];
-        b.lightColor[0] = {0};        // Array initialized to [0,0] which is green
+        b.lightColor[0] = {1};        // Array initialized to [1,0] which is green
         b.lightColor[1] = {0};
         b.sugSpeed = 0.0;
         b.commSpeed = 0.0;
