@@ -1,3 +1,6 @@
+/**
+ * This class handles all math calculations for the train.
+*/
 #include "TrainModelMath.h"
 #include "TrainModelUpdateBlock.h"
 #include "TrainModelControls.h"
@@ -29,6 +32,7 @@ TrainModelMath::TrainModelMath(int newNumCars, TrainModelUpdateBlock *newAssigBl
     currTemp = weather->getTempFheit();
 }
 
+//Main function
 void TrainModelMath::setPower(double newPower){
     //Set the power of the train. If engine failure, power is 0
     if(failureStatus == 2){
@@ -39,7 +43,7 @@ void TrainModelMath::setPower(double newPower){
     }
 
     //Calculate Force from Power input
-    currForce = currPower/lastVel;
+    currForce = (currPower/lastVel);
     limitForce();
 
     //Find acceleration from calculated force
@@ -110,10 +114,6 @@ double TrainModelMath::calcVelocity() {
 }
 
 void TrainModelMath::limitForce(){  
-    //add coefficient of friction
-    //currForce = net Force
-    currForce = (currForce) - (0.01*mass*9.8);
-
     if (currForce > (mass*0.5)){
         currForce = mass*0.5;
     }
