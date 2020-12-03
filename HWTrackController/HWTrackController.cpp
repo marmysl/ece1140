@@ -6,6 +6,10 @@
 #include <string>
 #include <QTimer>
 
+/*
+* Constructor that creates a timer so data can be transmitted and received. PLC Timer is also created
+* so the PLC can run automatically and continuously rerun
+*/
 HWTrackController::HWTrackController()
 {
     cout.flush();
@@ -31,6 +35,9 @@ HWTrackController::~HWTrackController()
     delete writeTimer;
 }
 
+/*
+* Decodes data received and utilizes it to control track region
+*/
 void HWTrackController::recieveData( char *buf, qint64 len )
 {
     memcpy(incomingData, buf, len);
@@ -103,6 +110,9 @@ void HWTrackController::recieveData( char *buf, qint64 len )
     }
 }
 
+/*
+* Decodes data to send to Arduino
+*/
 void HWTrackController::writeData()
 {
     /*

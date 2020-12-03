@@ -16,6 +16,9 @@ Region greenreg("Green Line");
 Region redreg("Red Line");
 bool existence = 0;
 
+/*
+* Initializes HW Track Controller golobal instances of Red and Green Line regions are made
+*/
 int init_HWTrackController() {
     existence = 1;  // I exist
     HWPLCUI *w = new HWPLCUI();
