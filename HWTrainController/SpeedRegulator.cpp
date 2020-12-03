@@ -32,7 +32,7 @@ SpeedRegulator::SpeedRegulator(Train *t, CTCMode *m, BeaconDecoder *b)
     prevTime = systemClock -> currentTime();
 
     //Initialize the maxPower to be 120,000 watts
-    maxPower = 120; //this value comes from Flexity2 Tram datasheet
+    maxPower = 120000; //this value comes from Flexity2 Tram datasheet
 
     //Set the failure code to 0 initially
     failureCode = 0;
@@ -70,7 +70,7 @@ double SpeedRegulator::powerFormula()
     if(powerCmd <= maxPower) uk = uk_1 + (T/2)*(ek + ek_1);
     else uk = uk_1;
 
-    //Calculate the power command
+    //Calculate the power command in watts
     power = (Kp * ek) + (Ki * uk);
 
     //Set ek_1 = ek for next power command calculation
@@ -94,29 +94,33 @@ void SpeedRegulator::calcPowerCmd()
         double avg13 = (power1 + power3) /2;
         double avg23 = (power2 + power3) /2;
 
-        std::cout << "Difference: " << power1 - power2 << std::endl;
-
         if(power1 > power2 - 3 && power1 < power2 + 3) powerCmd = avg12;
         else if(power1 > power3 - 3 && power1 < power3 + 3) powerCmd = avg13;
         else if(power3 > power2 - 3 && power3 < power2 + 3) powerCmd = avg23;
         else pullEmergencyBrake();
 
         //Sends power command to the trainModel (needs conversion kW => W)
-        if(powerCmd <= 120 && powerCmd >= -120)
+        if(powerCmd <= 120000 && powerCmd >= -120000)
         {
-            trainModel -> setPower(powerCmd*1000);
+            trainModel -> setPower(powerCmd);
+            if(trainModel -> getPower() == 0 && powerCmd != 0) setFailureCode(2);
         }
-        else if(powerCmd < -120)
+        else if(powerCmd < -120000)
         {
-            trainModel -> setPower(-120*1000);
-
+            trainModel -> setPower(-120000);
+            if(trainModel -> getPower() == 0 && powerCmd != 0) setFailureCode(2);
         }
         else
         {
-            trainModel -> setPower(120*1000);
+            trainModel -> setPower(120000);
+            if(trainModel -> getPower() == 0 && powerCmd != 0) setFailureCode(2);
         }
 
         std::cout << powerCmd << std::endl;
+    }
+    else if(getAuthority() == 0)
+    {
+        pullServiceBrake();
     }
     else
     {
@@ -152,7 +156,7 @@ void SpeedRegulator::incSetpointSpeed(double inc)
     //Increment/Decrement the speed of the train according to the joystick input
 
     //Changes the setpoint speed only if it is within the range of speed as given by the Flexity Tram data sheet and if the emergency or service brakes are being pulled
-    if((setpointSpeed + inc*.60934 >= 0) && setpointSpeed <= 70 && (setpointSpeed + inc*.60934 <= 70) && trainModel -> getEmergencyBrake() != 1 && trainModel -> getServiceBrake() !=1 )
+    if((setpointSpeed + inc*1.60934 >= 0) && setpointSpeed <= 70 && (setpointSpeed + inc*1.60934 <= 70) && trainModel -> getEmergencyBrake() != 1 && trainModel -> getServiceBrake() !=1 )
     {
         //Add the incremenet as km/h   mi/hr --> km/hr = 1.60934
         setpointSpeed += inc*1.60934;
@@ -211,7 +215,7 @@ void SpeedRegulator::pullServiceBrake()
     powerCmdZero();
 
     //Check for brake failure
-    if(trainModel -> getServiceBrake() == 0) setFailureCode(1);
+    if(trainModel -> getServiceBrake() == 0) setFailureCode(3);
 }
 void SpeedRegulator::pullEmergencyBrake()
 {
@@ -222,15 +226,15 @@ void SpeedRegulator::pullEmergencyBrake()
     powerCmdZero();
 
     //Check for brake failure
-    if(trainModel -> getEmergencyBrake() == 0) setFailureCode(1);
+    if(trainModel -> getEmergencyBrake() == 0) setFailureCode(3);
 }
 void SpeedRegulator::setFailureCode(int fc)
 {
     //Integer coding system for failures:
     //0 = no failure occurring
-    //1 = brake failure
+    //1 = track signal pickup failure
     //2 = engine failure
-    //3 = track signal pickup failure
+    //3 = brake failure failure
     failureCode = fc;
 
     //If the failure code is not being set to 0 (no failure), pull emergency brake
@@ -248,7 +252,7 @@ void SpeedRegulator::decodeTrackCircuit()
 
     //Decode the track circuit data
     commandedSpeed = (trainModel -> sendTrackCircuit() >> 32) / 4096;
-    authority = (trainModel -> sendTrackCircuit() & 0xffffffff) / 4096;
+    authority = (trainModel -> sendTrackCircuit() & 0xffffffff);
 }
 
 double SpeedRegulator::getCommandedSpeed()

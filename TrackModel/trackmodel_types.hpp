@@ -16,8 +16,8 @@ namespace TrackModel {
     }
 
     enum SwitchState {
-        SW_STRAIGHT,
-        SW_DIVERGING
+        SW_STRAIGHT = 0,
+        SW_DIVERGING = 1
     };
 
     enum SignalState

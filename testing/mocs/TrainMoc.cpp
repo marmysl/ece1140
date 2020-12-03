@@ -1,11 +1,12 @@
 #include "TrainMoc.h"
+#include "../../TrackModel/trackmodel_types.hpp"
+using namespace TrackModel;
 
-using namespace std;
-
-TrainMoc::TrainMoc(int newNumCars)
+TrainMoc::TrainMoc(int newNumCars, string lineType)
 {
     numCars = newNumCars;
-    doors = 0;
+    leftDoors = 0;
+    rightDoors = 0;
     lights = 0;
     headlights = 0;
     failureCode = 0;
@@ -14,106 +15,146 @@ TrainMoc::TrainMoc(int newNumCars)
     ads = 0;
     serviceBrake = 0;
     emergencyBrake = 0;
+    power = 0;
+    temp = 0;
+    velocity = 0;
+    count = 0;
+    message = "";
 }
 
-void TrainMoc::setPower(double newPower){             //Called by train controller to set power
-    power = newPower;
-}
 
-uint64_t TrainMoc::sendTrackCircuit(){
+uint64_t TrainMoc::sendTrackCircuit()
+{
+    if(failureCode == 3)
+    {
+        return 0xFFFFFFFFFFFFFFFF;
+    }
     return trackCircuit;
 }
-
-double TrainMoc::getCurrentVelocity(){
-    return power*2;
+double TrainMoc::getCurrentVelocity()
+{
+    return 5;
 }
-
-void TrainMoc::setDoorStatus(bool doorStatus){
-    doors = doorStatus;
+void TrainMoc::setPower(double newPower)
+{
+    if(failureCode == 2) power = 0;
+    else power = newPower;
 }
-
-bool TrainMoc::getDoorStatus(){
-    return doors;
+void TrainMoc::setLeftDoorStatus(bool door)
+{
+    leftDoors = door;
 }
-
-void TrainMoc::setCabinLights(bool lightStatus){
-    lights = lightStatus;
+bool TrainMoc::getLeftDoorStatus()
+{
+    return leftDoors;
 }
-
-bool TrainMoc::getCabinLights(){
+void TrainMoc::setRightDoorStatus(bool door)
+{
+    rightDoors = door;
+}
+bool TrainMoc::getRightDoorStatus()
+{
+    return rightDoors;
+}
+void TrainMoc::setCabinLights(bool l)
+{
+    lights = l;
+}
+bool TrainMoc::getCabinLights()
+{
     return lights;
 }
-
-void TrainMoc::setHeadlights(bool headlightStatus){
-    headlights = headlightStatus;
+void TrainMoc::setHeadlights(bool h)
+{
+    headlights = h;
 }
-
-bool TrainMoc::getHeadlights(){
+bool TrainMoc::getHeadlights()
+{
     return headlights;
 }
-
-void TrainMoc::setEmergencyBrake(bool eBrakeStatus){
-    emergencyBrake = eBrakeStatus;
+void TrainMoc::setEmergencyBrake(bool b)
+{
+    emergencyBrake = b;
 }
-
-bool TrainMoc::getEmergencyBrake(){
+bool TrainMoc::getEmergencyBrake()
+{
     return emergencyBrake;
 }
-
-void TrainMoc::setSystemFailure(int failStat){
-    failureCode = failStat;
+void TrainMoc::setPassengerEBrake(bool b)
+{
+    emergencyBrake = b;
 }
-
-int TrainMoc::getSystemFailure(){
+bool TrainMoc::getPassengerEBrake()
+{
+    return emergencyBrake;
+}
+void TrainMoc::setSystemFailure(int code)
+{
+    failureCode = code;
+}
+int TrainMoc::getSystemFailure()
+{
     return failureCode;
 }
-
-void TrainMoc::setServiceBrake(bool servBrake){
-    serviceBrake = servBrake;
+void TrainMoc::setServiceBrake(bool b)
+{
+    serviceBrake = b;
 }
-
-bool TrainMoc::getServiceBrake(){
+bool TrainMoc::getServiceBrake()
+{
     return serviceBrake;
 }
-
-void TrainMoc::setAC(bool acStatus){
-    ac = acStatus;
+void TrainMoc::setTemp(int t)
+{
+    temp = t;
 }
-
-bool TrainMoc::getAC(){
+double TrainMoc::getPower()
+{
+    return power;
+}
+double TrainMoc::getTemp()
+{
+    return temp;
+}
+void TrainMoc::setAC(bool a)
+{
+    ac = a;
+}
+bool TrainMoc::getAC()
+{
     return ac;
 }
-
-void TrainMoc::setHeater(bool heaterStatus){
-    heater = heaterStatus;
+void TrainMoc::setHeater(bool h)
+{
+    heater = h;
 }
-
-bool TrainMoc::getHeater(){
+bool TrainMoc::getHeater()
+{
     return heater;
 }
-
-void TrainMoc::setAdvertisements(bool adStatus){
-    ads = adStatus;
+void TrainMoc::setAdvertisements(bool a)
+{
+    ads = a;
 }
-
-bool TrainMoc::getAdvertisements(){
+bool TrainMoc::getAdvertisements()
+{
     return ads;
 }
-
-void TrainMoc::setAnnouncements(bool annStatus, string annString){
-    announcements = annStatus;
-    message = annString;
+void TrainMoc::setAnnouncements(bool a, string str)
+{
+    announcements = a;
+    message = str;
 }
-
-bool TrainMoc::getAnnouncements(){
+bool TrainMoc::getAnnouncements()
+{
     return announcements;
 }
-
-uint8_t* TrainMoc::getBeaconData(){
+TrackModel::BeaconData TrainMoc::getBeaconData()
+{
     return beaconData;
 }
-
-string TrainMoc::getAnnouncementMsg(){
+string TrainMoc::getAnnouncementMsg()
+{
     return message;
 }
 

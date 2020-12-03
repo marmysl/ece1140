@@ -28,8 +28,8 @@ void speedRegulatorSetup()
 
 void joystick()
 {
-  if(analogRead(X_pin) < 50) joystickCount--;
-  else if(analogRead(X_pin) > 1000) joystickCount++;
+  if(analogRead(X_pin) < 500) joystickCount--;
+  else if(analogRead(X_pin) > 700) joystickCount++;
   
   //Handles the joystick swiping (left/right joystick motions display different menus
   if(abs(joystickCount) % 5 == 0)
@@ -68,25 +68,34 @@ void joystick()
   }
   else if(abs(joystickCount) % 5 == 3)
   {
-    lcd.clear();
-    lcd.setCursor(0,0);
-    lcd.print("Next Station: ");
-    lcd.setCursor(0,1);
-    lcd.print(stationName);
-    lcd.setCursor(0,2);
-    lcd.print("Platform Side:");
-    lcd.setCursor(0,3);
-    lcd.print(platformSide);
+    if(stationUpcoming || stationHere)
+    {
+      lcd.clear();
+      lcd.setCursor(0,0);
+      lcd.print("Arriving at Station: ");
+      lcd.setCursor(0,1);
+      lcd.print(stationName);
+      lcd.setCursor(0,2);
+      lcd.print("Platform Side:");
+      lcd.setCursor(0,3);
+      lcd.print(platformSide);
+    }
+    else 
+    {
+      lcd.clear();
+      lcd.setCursor(0,0);
+      lcd.print("Arriving at Station: ");
+      lcd.setCursor(0,1);
+      lcd.print("No station upcoming");
+      lcd.setCursor(0,2);
+      lcd.print("Platform Side:");
+      lcd.setCursor(0,3);
+      lcd.print("n/a");
+    }
   }
   else if(abs(joystickCount) % 5 == 4)
   {
-    lcd.clear();
-    lcd.setCursor(0,0);
-    lcd.print("Length: ");
-    lcd.setCursor(0,1);
-    lcd.print(receivedString.length());
-    /*
-    if(CabinAnnouncementsOut == HIGH)
+    if(stationHere || stationUpcoming)
     {
       lcd.clear();
       lcd.setCursor(0,0);
@@ -101,12 +110,21 @@ void joystick()
       else if(platformSide == "LEFT") lcd.print("Exit left.");
       else lcd.print("Exit either side.");
     }
+    else if(digitalRead(CabinAnnouncementsIn) == HIGH)
+    {
+      lcd.clear();
+      lcd.setCursor(0,0);
+      lcd.print("Announcement: ");
+      lcd.setCursor(0,1);
+      lcd.print("Thank you for choos-");
+      lcd.setCursor(0,2);
+      lcd.print("ing Port Authority.");
+    }
     else
     {
       lcd.clear();
       lcd.setCursor(0,0);
       lcd.print("Announcements Off");
     }
-    */
   }
 }

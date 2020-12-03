@@ -76,4 +76,5 @@ void maintenance::on_btnSendM_clicked()
     //send Track Controller the command to set switches manually
     h.requestMaintenance(line);
     //send Track Controller the line, block to be closed for maintenance
+    //greenreg.maintenance(block,line);
 }

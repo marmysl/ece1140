@@ -4,6 +4,9 @@
 #include <chrono>
 #include <cstdint>
 #include <string>
+#include "TrackModel/trackmodel_types.hpp"
+
+using namespace TrackModel;
 using namespace std;
 
 class TrainMoc
@@ -15,7 +18,8 @@ public:
     bool serviceBrake;
     int numCars;
     double power;
-    bool doors;
+    bool leftDoors;
+    bool rightDoors;
     bool lights;
     bool headlights;
     int failureCode;
@@ -23,26 +27,38 @@ public:
     bool heater;
     bool ads;
     bool announcements;
+    int temp;
+    double velocity;
+    int count;
     string message;
-    uint8_t beaconData[64];
     uint64_t trackCircuit;
+    BeaconData beaconData;
 
-    TrainMoc(int newNumCars);
+    TrainMoc(int, string);
     uint64_t sendTrackCircuit();
     double getCurrentVelocity();
     void setPower(double newPower);             //Called by train controller to set power
     void setDoorStatus(bool);
     bool getDoorStatus();
+    void setLeftDoorStatus(bool);
+    bool getLeftDoorStatus();
+    void setRightDoorStatus(bool);
+    bool getRightDoorStatus();
     void setCabinLights(bool);
     bool getCabinLights();
     void setHeadlights(bool);
     bool getHeadlights();
     void setEmergencyBrake(bool);
     bool getEmergencyBrake();
+    void setPassengerEBrake(bool);
+    bool getPassengerEBrake();
     void setSystemFailure(int);
     int getSystemFailure();
     void setServiceBrake(bool);
     bool getServiceBrake();
+    void setTemp(int);
+    double getPower();
+    double getTemp();
     void setAC(bool);
     bool getAC();
     void setHeater(bool);
@@ -51,9 +67,8 @@ public:
     bool getAdvertisements();
     void setAnnouncements(bool, string);
     bool getAnnouncements();
-    uint8_t* getBeaconData();
+    TrackModel::BeaconData getBeaconData();
     string getAnnouncementMsg();
-
 };
 
 #endif // TRAINMOC_H
