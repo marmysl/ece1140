@@ -68,6 +68,7 @@ public:
     std::string getSection(int) const;
     int getCurrentBlock() const; 
     int getSwitchBlock();
+    int getCrossingBlock();
     float getSuggestedSpeed(int) const;
     float getCommandedSpeed(int) const;
     float getAuthority(int) const;

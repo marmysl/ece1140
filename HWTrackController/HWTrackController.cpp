@@ -87,7 +87,11 @@ void HWTrackController::recieveData( char *buf, qint64 len )
             }
 
             if (data.substr(3,1) == "1") {
-                // manually set railway
+                // activate crossing manually
+                greenreg.automatic = 0;
+                TrackModel::setCrossing(greenreg.getRoute(),greenreg.getCrossingBlock(), 1);
+            } else if (data.substr(2,1) == "0") {
+                 greenreg.automatic = 1;
             }
 
             if (data.substr(4,1) == "1") {

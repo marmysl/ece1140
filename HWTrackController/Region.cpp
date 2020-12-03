@@ -334,4 +334,11 @@ int Region::getSwitchBlock() {
     }
 }
 
-
+int Region::getCrossingBlock() {
+    for (unsigned int i = 0; i < blocks.size(); i++) {
+        if (blocks[i].isCrossing == 1) {
+            return blocks[i].blockID;
+        }
+    }
+    return 19; // for the purposes of demonstrating functionality in Green Line, in this region there is no railway crossing.
+}
