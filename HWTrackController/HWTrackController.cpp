@@ -8,7 +8,6 @@
 
 HWTrackController::HWTrackController()
 {
-    std::cout << "here" << std::endl;
     cout.flush();
 
     writeTimer = new QTimer(this);
@@ -18,7 +17,13 @@ HWTrackController::HWTrackController()
     connect(&trackControllerPort, &SerialConn::dataReceived, this, &HWTrackController::recieveData);
     connect(writeTimer, &QTimer::timeout, this, &HWTrackController::writeData);
 
+    // set up PLC timer
+    plcTimer = new QTimer(this);
+    plcTimer->setInterval(100);
+    connect(plcTimer, &QTimer::timeout, &greenreg, &Region::runPLC);
+
     writeTimer->start();
+    plcTimer->start();
 }
 
 HWTrackController::~HWTrackController()
@@ -34,24 +39,66 @@ void HWTrackController::recieveData( char *buf, qint64 len )
     if( len >= 0 )
     {
         string data(incomingData);
-        cout << "Incoming Length: " << data.length() << endl;
-        std::cout << "Incoming Track Controller: " << data << std::endl;
 
         /*
-         * Char 0-1 = Block Number (int)
-         * Char 2 = Manual Switch : 0 or 1
-         * Char 3 = Railway Switches Switch : 0 or 1
-         * Char 4 = Railway Crossing Switch : 0 or 1
-         * Char 5-6 = Color of the Lights : 00, 01, 10 (green, yellow, red)
-         * Char 7 = State of the PLC Button: 0 or 1
-         * Char 8 = State of the View Track Button: 0 or 1
-         * Char 9-10 = Joystick: 00 (left), 01 (right), 10 (up), 11 (down)
-         * Char 11 = newline char
+         * Char 0 = Joystick left
+         * Char 1 = Joystick right
+         * Char 2 = Manually change Switch Position: 0 or 1
+         * Char 3 = Manually activate railway crossing: 0 or 1
+         * Char 4 = Update PLC Button: 0 or 1
          */
 
-        if(data.length() == 12)
+        if(data.length() == 7)
         {
-            std::cout << "Incoming Track Controller: " << data << std::endl;
+            if (data.substr(0,1) == "1") {
+                // change to previous block
+                if (greenreg.getCurrentBlock() == 60) {
+                    greenreg.setCurrentBlock(0);
+                } else if (greenreg.getCurrentBlock() == 0) {
+                    greenreg.setCurrentBlock(0);
+                } else {
+                    greenreg.setCurrentBlock(greenreg.getCurrentBlock()-1);
+                }
+            }
+
+            if (data.substr(1,1) == "1") {
+                // change to next block
+                if (greenreg.getCurrentBlock() == 0) {
+                    greenreg.setCurrentBlock(60);
+                } else if (greenreg.getCurrentBlock() == 74) {
+                    greenreg.setCurrentBlock(74);
+                } else {
+                    greenreg.setCurrentBlock(greenreg.getCurrentBlock()+1);
+                }
+            }
+
+            if (data.substr(2,1) == "1") {
+                // manually set switch
+                int newsw;
+                greenreg.automatic = 0;
+                if (TrackModel::getSwitchState(greenreg.getRoute(),greenreg.getSwitchBlock()) == 0) {
+                    newsw = 1;
+                } else {
+                    newsw = 0;
+                }
+                TrackModel::setSwitchState(greenreg.getRoute(),greenreg.getSwitchBlock(),static_cast<TrackModel::SwitchState>(0));
+            } else if (data.substr(2,1) == "0") {
+                 greenreg.automatic = 1;
+            }
+
+            if (data.substr(3,1) == "1") {
+                // activate crossing manually
+                greenreg.automatic = 0;
+                TrackModel::setCrossing(greenreg.getRoute(),greenreg.getCrossingBlock(), 1);
+            } else if (data.substr(2,1) == "0") {
+                 greenreg.automatic = 1;
+            }
+
+            if (data.substr(4,1) == "1") {
+                // new PLC
+                HWPLCUI *reupload = new HWPLCUI();
+                reupload->show();
+             }
         }
     }
 }
@@ -65,41 +112,74 @@ void HWTrackController::writeData()
      * Char 4-7 = Suggested Speed
      * Char 8-11 = Commanded Speed
      * Char 12-15 = Authority
-     * Char 16-17 = Lights
+     * Char 16 = Lights
+     * Char 17 = Failure Alert
      * Last character is a newline
      */
 
     string outgoing_s = "";
 
-    outgoing_s += to_string(reg.detectTrain(reg.getCurrentBlock(), reg.getRoute()));
+    // if (route = "Green Line") {
+            int b = greenreg.getCurrentBlock();
 
-    outgoing_s += reg.getSection(reg.getCurrentBlock());
+            outgoing_s += to_string(greenreg.detectTrain(b, greenreg.getRoute()));
 
-    if (reg.getCurrentBlock() < 10) {
-        outgoing_s += "0";
-        outgoing_s += to_string(reg.getCurrentBlock());
-    } else {
-         outgoing_s += reg.getCurrentBlock();
-    }
+            outgoing_s += greenreg.getSection(b);
 
-    string suggestedSpeed(to_string(reg.getSuggestedSpeed(reg.getCurrentBlock())), 0, 4);
-    outgoing_s += suggestedSpeed;
+            if (b < 10) {
+                outgoing_s += "0";
+                outgoing_s += to_string(b);
+            } else {
+                 outgoing_s += to_string(b);
+            }
 
-    string commandedSpeed(to_string(reg.getCommandedSpeed(reg.getCurrentBlock())), 0, 4);
-    outgoing_s += commandedSpeed;
+            string suggestedSpeed(to_string(greenreg.getSuggestedSpeed(b)),0,4);
+            outgoing_s += suggestedSpeed;
 
-    string authority(to_string(reg.getAuthority(reg.getCurrentBlock())),0,4);
-    outgoing_s += authority;
+            string commandedSpeed(to_string(greenreg.getCommandedSpeed(b)),0,4);
+            outgoing_s += commandedSpeed;
 
-    string lights = "00";
-    outgoing_s += lights;
+            string authority(to_string(greenreg.getAuthority(b)),0,4);
+            outgoing_s += authority;
 
-    outgoing_s += "\n";
+            outgoing_s += to_string(greenreg.getLights(b));
 
-    //std::cout << "Outgoing Track Controller: " << outgoing_s << std::endl;
-    //cout.flush();
+            outgoing_s += to_string(greenreg.detectFailure(b, greenreg.getRoute()));
+
+            outgoing_s += "\n";
+    //}
+
+        /*
+         if (route = "Red Line") {
+            outgoing_s += to_string(redreg.detectTrain(redreg.getCurrentBlock(), redreg.getRoute()));
+
+            outgoing_s += redreg.getSection(redreg.getCurrentBlock());
+
+            if (redreg.getCurrentBlock() < 10) {
+                outgoing_s += "0";
+                outgoing_s += to_string(redreg.getCurrentBlock());
+            } else {
+                 outgoing_s += redreg.getCurrentBlock();
+            }
+
+            string suggestedSpeed(to_string(redreg.getSuggestedSpeed(redreg.getCurrentBlock())), 0, 4);
+            outgoing_s += suggestedSpeed;
+
+            string commandedSpeed(to_string(redreg.getCommandedSpeed(redreg.getCurrentBlock())), 0, 4);
+            outgoing_s += commandedSpeed;
+
+            string authority(to_string(redreg.getAuthority(redreg.getCurrentBlock())),0,4);
+            outgoing_s += authority;
+
+            string lights = "00";
+            outgoing_s += lights;
+
+            outgoing_s += "\n";
+        } */
+
+    // std::cout << "Outgoing Track Controller: " << outgoing_s << std::endl;
+    cout.flush();
 
     strcpy(outgoingData, outgoing_s.c_str());
-
     trackControllerPort.writeString(outgoing_s);
 }

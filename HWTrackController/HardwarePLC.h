@@ -3,18 +3,28 @@
 
 #include <string>
 #include <vector>
+#include <fstream>
+#include <iostream>
+#include <sstream>
+#include <QFileInfo>
 
 class HardwarePLC {
     private:
-       std::vector<std::string> conditions;
-       std::vector<std::string> outputs;
+        std::vector<std::string> conditions;
+        std::vector<std::string> outputs;
+        std::vector<int> blockIDs;
+        std::vector<int> opBlocks;
     public:
        HardwarePLC();
-       bool interpretHWPLC(std::string);
-       void setCondition(std::vector<std::string>);
-       void setResult(std::vector<std::string>);
-       std::vector<std::string> getConditions();
-       std::vector<std::string> getOutputs();
+       bool InterpretHWPLC(QString);
+       void SetCondition(std::vector<std::string>);
+       void SetResult(std::vector<std::string>);
+       void SetBlocks(std::vector<int>);
+       void SetOutputBlocks(std::vector<int>);
+       std::vector<std::string> GetConditions();
+       std::vector<std::string> GetOutputs();
+       std::vector<int> GetBlocks();
+       std::vector<int> GetOutputBlocks();
 };
 
 #endif // HARDWAREPLC_H

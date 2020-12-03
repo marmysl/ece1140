@@ -86,7 +86,7 @@ namespace TrackModel {
         {
             throw std::invalid_argument("route or block not found");
         }
-    }
+    }  
 
     void setCrossing( std::string route, int blockId, bool newState )
     {

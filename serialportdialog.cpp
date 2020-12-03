@@ -3,6 +3,7 @@
 #include <QSerialPortInfo>
 
 #include "SerialPort.hpp"
+#include "HWTrackController/HWTrackController_main.h"
 
 SerialPortDialog::SerialPortDialog(QWidget *parent) :
     QDialog(parent),
@@ -28,6 +29,7 @@ void SerialPortDialog::on_buttonBox_clicked(QAbstractButton *button)
     if( ui->trackEnabled->isChecked() && (trackContPortInfo != NULL) )
     {
         trackControllerPort.connectPort(*trackContPortInfo);
+        init_HWTrackController();
     }
     else
     {

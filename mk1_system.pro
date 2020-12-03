@@ -30,6 +30,7 @@ SOURCES += \
     CTCOffice/ctcoffice/throughput.cpp \
     HWTrackController/HWTrackController.cpp \
     HWTrackController/HardwarePLC.cpp \
+    HWTrackController/hwplcui.cpp \
     HWTrackController/initHWTrack.cpp \
     HWTrackController/Region.cpp \
     HWTrainController/SpeedRegulator.cpp \
@@ -85,6 +86,7 @@ HEADERS += \
     HWTrackController/HWTrackController_main.h \
     HWTrackController/HardwarePLC.h \
     HWTrackController/Region.hpp \
+    HWTrackController/hwplcui.h \
     HWTrainController/HWTrainController_main.h \
     HWTrainController/SpeedRegulator.h \
     HWTrainController/TrainController.h \
@@ -135,6 +137,7 @@ FORMS += \
     CTCOffice/ctcoffice/throughput.ui \
     SWTrackController/swtrackcntrlwindow.ui \
     CTCOffice/ctcoffice/schedule.ui \
+    HWTrackController/hwplcui.ui \
     SWTrainController/SWTrainController.ui \
     TrackModel/blockgeodialog.ui \
     TrackModel/layoutdialog.ui \

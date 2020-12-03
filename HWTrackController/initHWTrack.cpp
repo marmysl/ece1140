@@ -4,19 +4,22 @@
 #include <vector>
 #include <cstdint>
 
-#include "HWTrackController.hpp"
+#include <QTimer>
+
 #include "HWTrackController_main.h"
+#include "hwplcui.h"
+#include "CTCOffice/ctcoffice/CTCDispatch.h"
 
 using namespace std;
 
-Region reg;
-
-void initializeHW(CTCSignals &c){
-    //reg.initialize(c.getExit(),c.getSpeed(),c.getAuth());
-}
+Region greenreg("Green Line");
+Region redreg("Red Line");
+bool existence = 0;
 
 int init_HWTrackController() {
-    HWTrackController* obj = new HWTrackController();
+    existence = 1;  // I exist
+    HWPLCUI *w = new HWPLCUI();
+    w->show();
 	return 0;
 }
 
