@@ -94,8 +94,6 @@ void SpeedRegulator::calcPowerCmd()
         double avg13 = (power1 + power3) /2;
         double avg23 = (power2 + power3) /2;
 
-        std::cout << "Difference: " << power1 - power2 << std::endl;
-
         if(power1 > power2 - 3 && power1 < power2 + 3) powerCmd = avg12;
         else if(power1 > power3 - 3 && power1 < power3 + 3) powerCmd = avg13;
         else if(power3 > power2 - 3 && power3 < power2 + 3) powerCmd = avg23;
