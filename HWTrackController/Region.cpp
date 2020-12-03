@@ -106,6 +106,10 @@ void Region::runPLC() {
                         color[0] = 0;
                         color[1] = 0;
                         setLights(opbcs[i],route,color);
+                    } else if  (opts[i].at(0) == 'y') {
+                        color[0] = 0;
+                        color[1] = 1;
+                        setLights(opbcs[i],route,color);
                     }
                 }
             // occupied block
@@ -127,6 +131,11 @@ void Region::runPLC() {
                         color[0] = 0;
                         color[1] = 0;
                         setLights(opbcs[i],route,color);
+                        cout << " Is this happening ? Yes " << opbcs[i] << " " << route << " " << color[0] << color[1] << endl;
+                    } else if  (opts[i].at(0) == 'y') {
+                        color[0] = 0;
+                        color[1] = 1;
+                        setLights(opbcs[i],route,color);
                     }
                 }
             // AUTO LIGHTS BASED ON SWITCHES
@@ -140,6 +149,10 @@ void Region::runPLC() {
                          color[0] = 1;
                          color[1] = 0;
                          setLights(opbcs[i],route,color);
+                     } else if  (opts[i].at(0) == 'y') {
+                         color[0] = 0;
+                         color[1] = 1;
+                         setLights(opbcs[i],route,color);
                      }
                 }
             } else if (conds[i].at(0) == 's') {
@@ -151,6 +164,10 @@ void Region::runPLC() {
                      } else if (opts[i].at(0) == 'g'){
                          color[0] = 1;
                          color[1] = 0;
+                         setLights(opbcs[i],route,color);
+                     } else if  (opts[i].at(0) == 'y') {
+                         color[0] = 0;
+                         color[1] = 1;
                          setLights(opbcs[i],route,color);
                      }
                 }
@@ -244,13 +261,18 @@ void Region :: setLights(int b, string line, bool color[]) {
     blocks[loc].lightColor[0] = color[0];
     blocks[loc].lightColor[1] = color[1];
 
+    cout << "In the Set Lights function, " << blocks[loc].blockID << " has color " << blocks[loc].lightColor[0] << blocks[loc].lightColor[1] << endl;
+
     // conversion for track model
     if (color[0] == 0 && color[1] == 0)  {
         TrackModel::setSignal(line,b,static_cast<TrackModel::BlockDir>(1),static_cast<TrackModel::SignalState>(0));
+        cout << "In the Set Lights function, after sent to track model " << b << " " << static_cast<TrackModel::BlockDir>(1) << " " << static_cast<TrackModel::SignalState>(0) << endl;
     } else if (color[0] == 0 && color[1] == 1) {
         TrackModel::setSignal(line,b,static_cast<TrackModel::BlockDir>(1),static_cast<TrackModel::SignalState>(1));
+         cout << "In the Set Lights function, after sent to track model " << b << " " << static_cast<TrackModel::BlockDir>(1) << " " << static_cast<TrackModel::SignalState>(1) << endl;
     } else if (color[0] == 1 && color[1] == 0) {
         TrackModel::setSignal(line,b,static_cast<TrackModel::BlockDir>(1),static_cast<TrackModel::SignalState>(2));
+         cout << "In the Set Lights function, after sent to track model " << b << " " << static_cast<TrackModel::BlockDir>(1) << " " << static_cast<TrackModel::SignalState>(2) << endl;
     }
 
 };

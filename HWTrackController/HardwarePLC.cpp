@@ -63,7 +63,7 @@ bool HardwarePLC::interpretHWPLC(QString path){
         if (then != "THEN") throw std::invalid_argument ("PLC File is not formatted correctly");
 
         std::getline(linestream, result, ' ');
-        if ((result == "!switch") || (result == "switch") || (result == "red") || (result == "green")){
+        if ((result == "!switch") || (result == "switch") || (result == "red") || (result == "green") || (result == "yellow")){
             tempops.push_back(result);
         }
 

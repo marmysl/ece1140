@@ -81,7 +81,7 @@ void HWTrackController::recieveData( char *buf, qint64 len )
                 } else {
                     newsw = 0;
                 }
-                TrackModel::setSwitchState(greenreg.getRoute(),greenreg.getSwitchBlock(),static_cast<TrackModel::SwitchState>(newsw));
+                TrackModel::setSwitchState(greenreg.getRoute(),greenreg.getSwitchBlock(),static_cast<TrackModel::SwitchState>(0));
             } else if (data.substr(2,1) == "0") {
                  greenreg.automatic = 1;
             }
