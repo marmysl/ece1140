@@ -145,9 +145,11 @@ void TrainModelMath::limitForce(){
 
 // limit acceleration according to what brake is being used and what situation train is in
 void TrainModelMath::limitAccel(){
-    if (failureStatus == 3 && currPower == 0){  //brake failure
+    if (failureStatus == 3 && (serviceBrake == 1 || emergencyBrake == 1)){  //brake failure
         //if there is a brake failure, physics and friction are used to slow the train.
         currAccel = (((currForce) - (0.01*mass*9.8))/mass);
+        serviceBrake = 0;
+        emergencyBrake = 0;
     }
     else if (currPower == 0 && currVel>0){      //service or emergency brake
         if(emergencyBrake){currAccel = -2.73;}

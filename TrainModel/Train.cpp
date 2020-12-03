@@ -108,10 +108,7 @@ bool Train::getPassengerEBrake(){
 }
 
 void Train::setEmergencyBrake(bool eBrakeStatus){
-    //check for brake failure
-    if(math->failureStatus != 3){
-        math->setEBrake(eBrakeStatus);
-    }
+    math->setEBrake(eBrakeStatus);
 }
 
 bool Train::getEmergencyBrake(){
@@ -127,10 +124,7 @@ int Train::getSystemFailure(){
 }
 
 void Train::setServiceBrake(bool servBrake){
-    //check for brake failure
-    if(math->failureStatus != 3){
-        math->setSBrake(servBrake);
-    }
+    math->setSBrake(servBrake);
 }
 
 bool Train::getServiceBrake(){
