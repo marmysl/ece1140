@@ -4,6 +4,8 @@
 #include <vector>
 #include <iostream>
 #include <string>
+#include <QObject>
+class CTCDispatch;
 
 class CTCMode
 {
@@ -19,8 +21,11 @@ class CTCMode
 
         CTCMode* m;
 
+        int timerID;
         int time;
         std::string line;
+
+        void test(CTCDispatch train);
 };
 
 #endif // CTCMODE_H

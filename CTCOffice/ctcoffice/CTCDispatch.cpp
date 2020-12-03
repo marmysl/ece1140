@@ -4,7 +4,6 @@
 #include <sstream>
 #include <QTextStream>
 #include <QApplication>
-#include "../../TrackModel/tracklayout.hpp"
 #include "system_main.h"
 #include <cmath>
 
