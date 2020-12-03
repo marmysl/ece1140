@@ -49,7 +49,6 @@ uint64_t Train::sendTrackCircuit(){
         return 0xFFFFFFFFFFFFFFFF;
     }
     return block->trackCircuitData;
-    //return 0x0002000000032000;
 }
 
 double Train::getCurrentVelocity(){
@@ -109,6 +108,7 @@ bool Train::getPassengerEBrake(){
 }
 
 void Train::setEmergencyBrake(bool eBrakeStatus){
+    //check for brake failure
     if(math->failureStatus != 3){
         math->setEBrake(eBrakeStatus);
     }
@@ -127,6 +127,7 @@ int Train::getSystemFailure(){
 }
 
 void Train::setServiceBrake(bool servBrake){
+    //check for brake failure
     if(math->failureStatus != 3){
         math->setSBrake(servBrake);
     }
@@ -198,6 +199,7 @@ double Train::getSafeStoppingDistance(){
 }
 
 void Train::updateUI(){
+    //various UI updates to be made each loop
     w->updateNumCars(math->numCars);
     w->setLength(math->length);
     w->setMass(math->mass);

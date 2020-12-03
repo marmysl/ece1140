@@ -4,6 +4,11 @@
  * All calculations are then made to move the train along the track and account for changing distance,
  * as well as calculate the new current velocity that is grabbed by the train controller for the next PID
  * loop calculation.
+ *
+ * Note:
+ * Net force should be calculated to accont for friction. However, with the design constrains given,
+ * the velocity is severely limited (as per requirement of one 120kW motor). Therefore, the design decision
+ * was made to remove friction.
 */
 #include "TrainModelMath.h"
 #include "TrainModelUpdateBlock.h"
@@ -47,6 +52,9 @@ void TrainModelMath::setPower(double newPower){
     }
 
     //Calculate Force from Power input
+    /**Equation for net force (see doc note for more info):
+     * netForce = (currPower/lastVel) - (0.01*mass*9.8))/mass);
+    */
     currForce = (currPower/lastVel);
     limitForce();
 
@@ -138,6 +146,7 @@ void TrainModelMath::limitForce(){
 // limit acceleration according to what brake is being used and what situation train is in
 void TrainModelMath::limitAccel(){
     if (failureStatus == 3 && currPower == 0){  //brake failure
+        //if there is a brake failure, physics and friction are used to slow the train.
         currAccel = (((currForce) - (0.01*mass*9.8))/mass);
     }
     else if (currPower == 0 && currVel>0){      //service or emergency brake

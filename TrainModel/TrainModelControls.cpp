@@ -1,3 +1,8 @@
+/**
+ * This class holds variable status for various cabin controls
+ *
+ * It is used and updated by Train.cpp and TrainModelMath.cpp
+*/
 #include "TrainModelControls.h"
 
 
