@@ -2,10 +2,18 @@
 #include <string>
 #include "HardwarePLC.h"
 
+/* CONSTRUCTOR */
+//---------------------------------------------------------------------------------
 HardwarePLC::HardwarePLC(){
 }
 
-bool HardwarePLC::interpretHWPLC(QString path){
+/* INTERNAL METHODS */
+//---------------------------------------------------------------------------------
+
+/* InterpretHWPLC:
+ * This function parses the file chosen by the user to make sure it is a valid PLC program
+ */
+bool HardwarePLC::InterpretHWPLC(QString path){
     // is upload successful
     bool success = 0;
 
@@ -79,49 +87,54 @@ bool HardwarePLC::interpretHWPLC(QString path){
     }
 
     // If valid, then temporary conditions and outputs are stored in the conditions and outputs vectors
-    setCondition(tempcond);
-    setResult(tempops);
-    setBlocks(tempblcs);
-    setOutputBlocks(tempopblcs);
+    SetCondition(tempcond);
+    SetResult(tempops);
+    SetBlocks(tempblcs);
+    SetOutputBlocks(tempopblcs);
     success = 1;
 
     return success;
 }
 
-void HardwarePLC::setCondition(std::vector<std::string> newcond){
+/* SETTERS */
+//---------------------------------------------------------------------------------
+void HardwarePLC::SetCondition(std::vector<std::string> newcond){
     for (unsigned int i = 0; i < newcond.size(); i++) {
           conditions.push_back(newcond[i]);
     }
 }
 
-void HardwarePLC::setResult(std::vector<std::string> newops){
+void HardwarePLC::SetResult(std::vector<std::string> newops){
     for (unsigned int i = 0; i < newops.size(); i++)
         outputs.push_back(newops[i]);
 }
 
-void HardwarePLC::setBlocks(std::vector<int> newblcs){
+void HardwarePLC::SetBlocks(std::vector<int> newblcs){
     for (unsigned int i = 0; i < newblcs.size(); i++)
         blockIDs.push_back(newblcs[i]);
 }
 
-void HardwarePLC::setOutputBlocks(std::vector<int> newblcs){
+void HardwarePLC::SetOutputBlocks(std::vector<int> newblcs){
     for (unsigned int i = 0; i < newblcs.size(); i++)
         opBlocks.push_back(newblcs[i]);
 }
 
-std::vector<std::string> HardwarePLC::getConditions(){
+
+/* SSTTERS */
+//---------------------------------------------------------------------------------
+std::vector<std::string> HardwarePLC::GetConditions(){
     return conditions;
 }
 
-std::vector<std::string> HardwarePLC::getOutputs(){
+std::vector<std::string> HardwarePLC::GetOutputs(){
     return outputs;
 }
 
-std::vector<int> HardwarePLC::getBlocks(){
+std::vector<int> HardwarePLC::GetBlocks(){
     return blockIDs;
 }
 
-std::vector<int> HardwarePLC::getOutputBlocks(){
+std::vector<int> HardwarePLC::GetOutputBlocks(){
     return opBlocks;
 }
 

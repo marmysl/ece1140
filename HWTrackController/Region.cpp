@@ -32,7 +32,7 @@ Region::Region(std::string line) {
         rc = greenrc;
 
    } else { // Red Line
-        // stored track layout
+        // stored track layout: This is configurable and based on team
         std::vector<std::string> redsec{"A","A","A","B","B","B","C","C","C","D","D","D"};
         std::vector<int> redb{0,63,64,65,66,67,68,69,70,71,72,73};
         std::vector<bool> redsw{0,0,0,0,0,0,0,0,0,0,0,0};
@@ -68,9 +68,12 @@ Region::Region(std::string line) {
 
 /* PLC METHODS */
 //---------------------------------------------------------------------------------
-// Load the PLC file and parse it
+
+/* Load the PLC file
+ * Parse it
+ * */
 bool Region::loadPLC(QString filename) {
-    success = plc->interpretHWPLC(filename);
+    success = plc->InterpretHWPLC(filename);
     automatic = 1;
     return success;
 }
@@ -78,10 +81,10 @@ bool Region::loadPLC(QString filename) {
 void Region::runPLC() {
     if (automatic == 1) {
 
-        std::vector<std::string> conds = plc->getConditions();
-        std::vector<std::string> opts = plc->getOutputs();
-        std::vector<int> blcs = plc->getBlocks();
-        std::vector<int> opbcs = plc->getOutputBlocks();
+        std::vector<std::string> conds = plc->GetConditions();
+        std::vector<std::string> opts = plc->GetOutputs();
+        std::vector<int> blcs = plc->GetBlocks();
+        std::vector<int> opbcs = plc->GetOutputBlocks();
         bool color[2];
 
         // Iterate through condition blocks

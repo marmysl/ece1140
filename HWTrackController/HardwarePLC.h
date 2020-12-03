@@ -16,15 +16,15 @@ class HardwarePLC {
         std::vector<int> opBlocks;
     public:
        HardwarePLC();
-       bool interpretHWPLC(QString);
-       void setCondition(std::vector<std::string>);
-       void setResult(std::vector<std::string>);
-       void setBlocks(std::vector<int>);
-       void setOutputBlocks(std::vector<int>);
-       std::vector<std::string> getConditions();
-       std::vector<std::string> getOutputs();
-       std::vector<int> getBlocks();
-       std::vector<int> getOutputBlocks();
+       bool InterpretHWPLC(QString);
+       void SetCondition(std::vector<std::string>);
+       void SetResult(std::vector<std::string>);
+       void SetBlocks(std::vector<int>);
+       void SetOutputBlocks(std::vector<int>);
+       std::vector<std::string> GetConditions();
+       std::vector<std::string> GetOutputs();
+       std::vector<int> GetBlocks();
+       std::vector<int> GetOutputBlocks();
 };
 
 #endif // HARDWAREPLC_H
