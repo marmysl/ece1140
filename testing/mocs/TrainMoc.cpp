@@ -25,7 +25,7 @@ TrainMoc::TrainMoc(int newNumCars, string lineType)
 
 uint64_t TrainMoc::sendTrackCircuit()
 {
-    if(failureCode == 1)
+    if(failureCode == 3)
     {
         return 0xFFFFFFFFFFFFFFFF;
     }
@@ -37,7 +37,8 @@ double TrainMoc::getCurrentVelocity()
 }
 void TrainMoc::setPower(double newPower)
 {
-    power = newPower;
+    if(failureCode == 2) power = 0;
+    else power = newPower;
 }
 void TrainMoc::setLeftDoorStatus(bool door)
 {

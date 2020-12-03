@@ -228,7 +228,7 @@ int SpeedRegulatorMoc::getFailureCode()
 void SpeedRegulatorMoc::decodeTrackCircuit()
 {
     //Check for a track circuit signal pickup failure
-    if(trainModel -> sendTrackCircuit() == 0xffffffffffffffff) setFailureCode(3);
+    if(trainModel -> sendTrackCircuit() == 0xffffffffffffffff) setFailureCode(1);
 
     //Decode the track circuit data
     commandedSpeed = (trainModel -> sendTrackCircuit() >> 32) / 4096;

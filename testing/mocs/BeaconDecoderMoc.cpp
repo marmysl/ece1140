@@ -65,7 +65,7 @@ std::string BeaconDecoderMoc::getAnnouncement()
         if(getPlatformDoors() == "LEFT") announcement = "The next station is " + nextStation + ". Please exit on your left.";
 
         //If the station is on the left, tell passengers to exit on the left
-        else if(getPlatformDoors() == "RIGHT") announcement  = "The next station is " + nextStation + ". Please exit on your right";
+        else if(getPlatformDoors() == "RIGHT") announcement  = "The next station is " + nextStation + ". Please exit on your right.";
 
         //If the station is on the left, tell passengers to exit on the left
         else announcement = "The next station is " + nextStation + ". Please exit on either side.";
@@ -147,8 +147,8 @@ bool BeaconDecoderMoc::getStationHere()
 std::string BeaconDecoderMoc::getPlatformDoors()
 {
     extractBeaconData();
-    if(platformDoorsChar == 'B') platformDoors = "BOTH";
-    else if(platformDoorsChar == 'L') platformDoors = "LEFT";
+    if(platformDoorsChar == '\x00') platformDoors = "BOTH";
+    else if(platformDoorsChar == '\xff') platformDoors = "LEFT";
     else platformDoors = "RIGHT";
 
     return platformDoors;

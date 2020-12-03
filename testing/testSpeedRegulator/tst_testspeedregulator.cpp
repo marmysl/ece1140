@@ -27,6 +27,8 @@ private slots:
     void testDecodeTrackCircuit();
     void testZeroAuthority();
     void testCalcPowerMax();
+    void testSignalPickupFailure();
+    void testEngineFailure();
 };
 
 TrainControllerMoc* testSpeedRegulator::configureManual()
@@ -330,6 +332,53 @@ void testSpeedRegulator::testCalcPowerMax()
     {
         QVERIFY(sr -> getPowerCmd() <= 120000 && sr -> getPowerCmd() >= -120000);
     }
+}
+
+void testSpeedRegulator::testSignalPickupFailure()
+{
+    //Create a train controller object to test
+    TrainControllerMoc *tc = configureManual();
+    SpeedRegulatorMoc *sr = tc -> getSpeedRegulator();
+    TrainMoc *tm = tc -> getTrainModel();
+
+    //Verify the track circuit information
+    QVERIFY(sr -> getCommandedSpeed() == 32);
+    QVERIFY(sr -> getAuthority() == 50);
+
+    //Set signal pickup failure in the train model
+    tm -> setSystemFailure(3);
+
+    //Decode the track circuit
+    sr -> decodeTrackCircuit();
+
+    //Ensure the failure code in the train controller is now 0
+    QVERIFY(sr -> getFailureCode() == 1);
+    QCOMPARE(tm -> getEmergencyBrake(),1);
+}
+
+void testSpeedRegulator::testEngineFailure()
+{
+    //Create a train controller object to test
+    TrainControllerMoc *tc = configureAutomatic();
+    SpeedRegulatorMoc *sr = tc -> getSpeedRegulator();
+    TrainMoc *tm = tc -> getTrainModel();
+
+    //Set the track circuit
+    QVERIFY(sr -> getCommandedSpeed() == 32);
+    QVERIFY(sr -> getAuthority() == 50);
+
+    //Ensure the power in the train is not 0
+    QVERIFY(sr -> getPowerCmd() != 0);
+
+    //Set engine failure in the train model
+    tm -> setSystemFailure(2);
+
+    sr -> calcPowerCmd();
+
+    //Ensure the failure code in the train controller is now 0
+    QVERIFY(sr -> getFailureCode() == 2);
+    QCOMPARE(tm -> getEmergencyBrake(),1);
+    QVERIFY(tm -> getPower() == 0);
 }
 
 QTEST_APPLESS_MAIN(testSpeedRegulator)
