@@ -58,7 +58,7 @@ void CTCMode::automaticDispatch()
 
     if(!s){
         // prompt for schedule if not already initialized
-        ctcMainWindow->autoSchedule = new schedule();
+        ctcMainWindow->autoSchedule = new schedule(ctcMainWindow);
         s = ctcMainWindow->autoSchedule;
     }
 
