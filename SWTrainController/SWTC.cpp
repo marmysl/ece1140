@@ -13,6 +13,8 @@ void SWTC :: calculatePower()
     if (serviceBrakeEnabled == false && emergencyBrakeEnabled == false && passengerEBrakeEnabled == false)
     {
 
+        trainVelocity = trainVelocity * 3.6; // convert to km/h
+
         // Compare setpoint & commanded speed
         if (setpointSpeed <= commandedSpeed){
             speed = setpointSpeed;
