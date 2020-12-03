@@ -20,6 +20,7 @@ class CTCMode
         CTCMode* m;
 
         int time;
+        std::string line;
 };
 
 #endif // CTCMODE_H

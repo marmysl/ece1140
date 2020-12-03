@@ -27,6 +27,7 @@ SOURCES += \
     CTCOffice/ctcoffice/maintenance.cpp \
     CTCOffice/ctcoffice/mainwindow.cpp \
     CTCOffice/ctcoffice/schedule.cpp \
+    CTCOffice/ctcoffice/throughput.cpp \
     HWTrackController/HWTrackController.cpp \
     HWTrackController/HardwarePLC.cpp \
     HWTrackController/initHWTrack.cpp \
@@ -37,6 +38,7 @@ SOURCES += \
     SWTrackController/BlockCntrl.cpp \
     SWTrackController/CTCSignals.cpp \
     SWTrackController/TrackController.cpp \
+    SWTrackController/swtrackcntrlwindow.cpp \
     SWTrackController/trackcntrl_main.cpp \
     SWTrackController/tracklogic.cpp \
     SWTrackController/waysidecontainer.cpp \
@@ -78,6 +80,7 @@ HEADERS += \
     CTCOffice/ctcoffice/maintenance.h \
     CTCOffice/ctcoffice/mainwindow.h \
     CTCOffice/ctcoffice/schedule.h \
+    CTCOffice/ctcoffice/throughput.h \
     HWTrackController/HWTrackController.hpp \
     HWTrackController/HWTrackController_main.h \
     HWTrackController/HardwarePLC.h \
@@ -89,6 +92,7 @@ HEADERS += \
     SWTrackController/BlockCntrl.h \
     SWTrackController/CTCSignals.h \
     SWTrackController/TrackController.h \
+    SWTrackController/swtrackcntrlwindow.h \
     SWTrackController/trackcntrl_main.h \
     SWTrackController/tracklogic.h \
     SWTrackController/waysidecontainer.h \
@@ -128,6 +132,8 @@ FORMS += \
     CTCOffice/ctcoffice/Files.ui \
     CTCOffice/ctcoffice/maintenance.ui \
     CTCOffice/ctcoffice/mainwindow.ui \
+    CTCOffice/ctcoffice/throughput.ui \
+    SWTrackController/swtrackcntrlwindow.ui \
     CTCOffice/ctcoffice/schedule.ui \
     SWTrainController/SWTrainController.ui \
     TrackModel/blockgeodialog.ui \

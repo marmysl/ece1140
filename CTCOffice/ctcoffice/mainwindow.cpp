@@ -10,6 +10,8 @@
 #include <QGraphicsView>
 #include <QGraphicsPixmapItem>
 #include "CTCHashmap.h"
+#include <QDateTime>
+#include "timetracker.h"
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -21,21 +23,10 @@ MainWindow::MainWindow(QWidget *parent)
     ui->comboDestinationType->addItem("Station");
     ui->comboDestinationType->addItem("Block");
 
-    QFont font = ui->btnDispatch->font();
-    font.setPointSize(60);
-    ui->btnDispatch->setFont(font);
-
-    QFont font1 = ui->btnCancel->font();
-    font1.setPointSize(60);
-    ui->btnCancel->setFont(font1);
-
-    QFont font2 = ui->comboLine->font();
-    font2.setPointSize(60);
-    ui->btnCancel->setFont(font2);
-
     updateRoute();
 
     ctc.setCTCMode(&m);
+
 }
 
 MainWindow::~MainWindow()
@@ -92,7 +83,7 @@ void MainWindow::on_btnDispatch_clicked()
     int time;
     time  = ctc.setTimeDelay();
 
-    timerID = startTimer(time);
+    timerID = startTimer(time/(systemClock->timeScale));
 }
 
 void MainWindow::on_comboDestination_currentIndexChanged(const QString &arg1)
@@ -171,10 +162,8 @@ void MainWindow::on_ManualButton_clicked()
 
 void MainWindow::on_btnMap_clicked()
 {
-    Files *ctcDisplay;
-    ctcDisplay = new Files();
-    ctcDisplay->mapDisplay();
-    ctcDisplay->show();
+    map->mapDisplay();
+    map->show();
 }
 
 void MainWindow::on_comboDisplayLine_currentIndexChanged(const QString &arg1)
@@ -185,12 +174,22 @@ void MainWindow::on_comboDisplayLine_currentIndexChanged(const QString &arg1)
     CTCRouteStatus *temp;
     temp = ctcmap.getRouteStatus(arg1.toStdString());
     ui->blockDisplay->setRoute(temp);
+
+    TrackModel::Route *rte;
+    rte = TrackModel::getRoute(arg1.toStdString());
+
+    for(auto &blk : rte->blocks){
+        if(blk.second->id != 0){
+             ui->comboDisplayBlock->addItem(QString::number(blk.second->id));
+        }
+    }
 }
 
 void MainWindow::updateRoute(){
     for(auto& rte : TrackModel::routes){
         ui->comboDisplayLine->addItem(QString::fromStdString(rte->name));
         ui->comboLine->addItem(QString::fromStdString(rte->name));
+        on_comboLine_currentIndexChanged(QString::fromStdString(rte->name));
     }
 }
 
@@ -206,4 +205,20 @@ void MainWindow::timerEvent(QTimerEvent *event){
     CTCSignals c;
     ctc.dispatch(c);
     killTimer(timerID);
+}
+
+void MainWindow::on_btnMaintenance_clicked()
+{
+    maint->show();
+}
+
+void MainWindow::on_comboDisplayBlock_currentIndexChanged(const QString &arg1)
+{
+
+    ui->lblBlockOcc->setText("NO");
+}
+
+void MainWindow::on_btnThroughput_clicked()
+{
+    th->show();
 }

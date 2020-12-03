@@ -2,8 +2,10 @@
 #define MAINWINDOW_H
 #include "CTCDispatch.h"
 #include "../../SWTrackController/CTCSignals.h"
-#include "Files.h"
 #include "schedule.h"
+#include "maintenance.h"
+#include "throughput.h"
+#include "Files.h"
 
 #include <QMainWindow>
 #include <QObject>
@@ -24,6 +26,9 @@ public:
     CTCDispatch ctc;
     CTCMode m;
     schedule *autoSchedule;
+    maintenance *maint = new maintenance(this);
+    throughput *th = new throughput(this);
+    Files *map = new Files(this);
 
     int timerID;
     int count = 0;
@@ -52,6 +57,12 @@ private slots:
     void on_comboDisplayLine_currentIndexChanged(const QString &arg1);
 
     void on_btnSchedule_clicked();
+
+    void on_btnMaintenance_clicked();
+
+    void on_comboDisplayBlock_currentIndexChanged(const QString &arg1);
+
+    void on_btnThroughput_clicked();
 
 private:
     Ui::MainWindow *ui;

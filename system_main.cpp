@@ -20,7 +20,7 @@
 #include <QApplication>
 #include <QDebug>
 
-TrackModel::RouteFile blueLine {"Blue Line", "blue_line.csv"};
+TrackModel::RouteFile greenLine {"Green Line", "green_line.csv"};
 
 QApplication *mk1_app;
 SerialPortDialog *hwPortsDialog;
@@ -65,7 +65,7 @@ int main(int argc, char *argv[])
     systemDialog = new SystemSettingsDialog();
     systemDialog->show();
 
-    TrackModel::routesToLoad.push_back(blueLine);
+    TrackModel::routesToLoad.push_back(greenLine);
     int initResult = TrackModel::initializeTrackModel();
     if( initResult < 0 )
     {
@@ -89,8 +89,8 @@ int main(int argc, char *argv[])
     }
 
     init_CTC(argc, argv);
-    init_HWTrackController();
-    //init_SWTrackController();
+    //init_HWTrackController();
+    init_SWTrackController();
     //init_HWTrainController();
 
     systemClock->play();

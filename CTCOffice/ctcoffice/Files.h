@@ -2,7 +2,6 @@
 #define FILES_H
 
 #include <QDialog>
-#include "mainwindow.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui {class Files;}
