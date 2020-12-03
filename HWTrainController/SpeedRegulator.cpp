@@ -217,7 +217,7 @@ void SpeedRegulator::pullServiceBrake()
     powerCmdZero();
 
     //Check for brake failure
-    if(trainModel -> getServiceBrake() == 0) setFailureCode(1);
+    if(trainModel -> getServiceBrake() == 0) setFailureCode(3);
 }
 void SpeedRegulator::pullEmergencyBrake()
 {
@@ -228,15 +228,15 @@ void SpeedRegulator::pullEmergencyBrake()
     powerCmdZero();
 
     //Check for brake failure
-    if(trainModel -> getEmergencyBrake() == 0) setFailureCode(1);
+    if(trainModel -> getEmergencyBrake() == 0) setFailureCode(3);
 }
 void SpeedRegulator::setFailureCode(int fc)
 {
     //Integer coding system for failures:
     //0 = no failure occurring
-    //1 = brake failure
+    //1 = track signal pickup failure
     //2 = engine failure
-    //3 = track signal pickup failure
+    //3 = brake failure failure
     failureCode = fc;
 
     //If the failure code is not being set to 0 (no failure), pull emergency brake
@@ -250,13 +250,11 @@ int SpeedRegulator::getFailureCode()
 void SpeedRegulator::decodeTrackCircuit()
 {
     //Check for a track circuit signal pickup failure
-    if(trainModel -> sendTrackCircuit() == 0xffffffffffffffff) setFailureCode(1);
+    if(trainModel -> sendTrackCircuit() == 0xffffffffffffffff) setFailureCode(3);
 
     //Decode the track circuit data
     commandedSpeed = (trainModel -> sendTrackCircuit() >> 32) / 4096;
     authority = (trainModel -> sendTrackCircuit() & 0xffffffff);
-
-    std::cout << trainModel -> sendTrackCircuit() << std::endl;
 }
 
 double SpeedRegulator::getCommandedSpeed()
