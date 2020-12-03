@@ -112,7 +112,7 @@ void TrainControlWindow :: updateStation()
 void TrainControlWindow :: updatePower()
 {
     swtc.setTrainVelocity(train->getCurrentVelocity());
-    ui->currspeed_->setText(QString::number(swtc.getTrainVelocity() / 1.609));
+    ui->currspeed_->setText(QString::number(swtc.getTrainVelocity() * 2.237));
 
     train->setPower(swtc.getPowerCommand());
     ui->powerOutput_->setText(QString::number(swtc.getPowerCommand() / 1000));
@@ -205,6 +205,7 @@ void TrainControlWindow :: dispatch() // only runs once, at dispatch.
     if (swtc.mode->getMode() == 0){ // If the train is in automatic mode, set Kp and Ki to default and setpoint = commanded
         swtc.setKi(225 * 1000);
         swtc.setKp(225 * 1000);
+        ui->releasebrakebutton->hide();
         startMoving();
     }
 
@@ -245,9 +246,13 @@ void TrainControlWindow::startMoving()
 
     //Disable service brake flag once Kp and Ki are set
     swtc.setServiceBrake(false);
+    ui->releasebrakebutton->hide();
 
     // Remove recommended Kp/Ki from UI
     ui->k_rec_->setText("");
+
+    // Set setpoint = commanded
+    swtc.setSetpointSpeed(swtc.getCommandedSpeed());
 
     swtc.calculatePower();
 }
