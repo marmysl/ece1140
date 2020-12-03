@@ -22,7 +22,7 @@ Region::Region(std::string line) {
         // stored track layout
         std::vector<std::string> greensec{"Y","J","J","J","K","K","K","K","K","K","L","L","L","L","L","M"};
         std::vector<int> greenb{0,60,61,62,63,64,65,66,67,68,69,70,71,72,73,74};
-        std::vector<bool> greensw{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
+        std::vector<bool> greensw{0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0};
         std::vector<bool> greenrc{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
 
         // assignment operator
@@ -71,67 +71,88 @@ Region::Region(std::string line) {
 // Load the PLC file and parse it
 bool Region::loadPLC(QString filename) {
     success = plc->interpretHWPLC(filename);
+    automatic = 1;
     return success;
 }
 
 void Region::runPLC() {
-    std::vector<std::string> conds = plc->getConditions();
-    std::vector<std::string> opts = plc->getOutputs();
-    std::vector<int> blcs = plc->getBlocks();
-    std::vector<int> opbcs = plc->getOutputBlocks();
+    if (automatic == 1) {
 
-    // Iterate through condition blocks
-    for (unsigned int i = 0; i < blcs.size(); i++) {
-        // AUTO SWITCHES
-        // not occupied block
-        if (conds[i].at(0) == '!' && conds[i].at(1) == 'b') {
-            if (detectTrain(blcs[i], getRoute()) == 0) {
-                if (opts[i].at(0) == 's') {
-                    // switch should be activated (diverging)
-                    TrackModel::setSwitchState(route,opbcs[i],static_cast<TrackModel::SwitchState>(1));
-                } else {
-                    // switch should be at default (normal)
-                    TrackModel::setSwitchState(route,opbcs[i],static_cast<TrackModel::SwitchState>(0));
+        std::vector<std::string> conds = plc->getConditions();
+        std::vector<std::string> opts = plc->getOutputs();
+        std::vector<int> blcs = plc->getBlocks();
+        std::vector<int> opbcs = plc->getOutputBlocks();
+        bool color[2];
+
+        // Iterate through condition blocks
+        for (unsigned int i = 0; i < blcs.size(); i++) {
+            // not occupied block
+            if (conds[i].at(0) == '!' && conds[i].at(1) == 'b') {
+                if (detectTrain(blcs[i], getRoute()) == 0) {
+                    // AUTO SWITCHES
+                    if (opts[i].at(0) == 's') {
+                        // switch should be activated (diverging)
+                        TrackModel::setSwitchState(route,opbcs[i],static_cast<TrackModel::SwitchState>(1));
+                    } else if (opts[i].at(0) == '!' && opts[i].at(1) == 's') {
+                        // switch should be at default (normal)
+                        TrackModel::setSwitchState(route,opbcs[i],static_cast<TrackModel::SwitchState>(0));
+                    }
+                    // AUTO LIGHTS BASED ON BLOCk
+                    if (opts[i].at(0) == 'g') {
+                        color[0] = 1;
+                        color[1] = 0;
+                        setLights(opbcs[i],route,color);
+                    } else if (opts[i].at(0) == 'r') {
+                        color[0] = 0;
+                        color[1] = 0;
+                        setLights(opbcs[i],route,color);
+                    }
                 }
-            }
-        // occupied block
-        } else if (conds[i].at(0) == 'b') {
-            if (detectTrain(blcs[i], getRoute()) == 1) {
-                if (opts[i].at(0) != '!') {
-                    // switch should be activated (diverging)
-                    TrackModel::setSwitchState(route,opbcs[i],static_cast<TrackModel::SwitchState>(1));
-                } else {
-                    // switch should be at default (normal)
-                    TrackModel::setSwitchState(route,opbcs[i],static_cast<TrackModel::SwitchState>(0));
+            // occupied block
+            } else if (conds[i].at(0) == 'b') {
+                if (detectTrain(blcs[i], getRoute()) == 1) {
+                    if (opts[i].at(0) == 's') {
+                        // switch should be activated (diverging)
+                        TrackModel::setSwitchState(route,opbcs[i],static_cast<TrackModel::SwitchState>(1));
+                    } else if (opts[i].at(0) == '!' && opts[i].at(1) == 's'){
+                        // switch should be at default (normal)
+                        TrackModel::setSwitchState(route,opbcs[i],static_cast<TrackModel::SwitchState>(0));
+                    }
+                    //AUTO LIGHTS BASED ON BLOCK
+                    if (opts[i].at(0) == 'g') {
+                        color[0] = 1;
+                        color[1] = 0;
+                        setLights(opbcs[i],route,color);
+                    } else if (opts[i].at(0) == 'r') {
+                        color[0] = 0;
+                        color[1] = 0;
+                        setLights(opbcs[i],route,color);
+                    }
                 }
-            }
-        // AUTO LIGHTS
-        } else if (conds[i].at(0) == '!' && conds[i].at(1) == 's') {
-            if (TrackModel::getSwitchState(route,blcs[i]) == 0) {
-                 if (opts[i].at(0) == 'r') {
-                     // setLights(opbcs[i],"10") RED
-                 } else if (opts[i].at(0) == 'g'){
-                     // setLights(opbcs[i],"00") GREEN
-                 }
-            } else {
-                if (opts[i].at(0) == 'r') {
-                    // setLights(opbcs[i],"10") RED
-                } else if (opts[i].at(0) == 'g'){
-                    // setLights(opbcs[i],"00") GREEN
+            // AUTO LIGHTS BASED ON SWITCHES
+            } else if (conds[i].at(0) == '!' && conds[i].at(1) == 's') {
+                if (TrackModel::getSwitchState(route,blcs[i]) == 0) {
+                     if (opts[i].at(0) == 'r') {
+                         color[0] = 0;
+                         color[1] = 0;
+                         setLights(opbcs[i],route,color);
+                     } else if (opts[i].at(0) == 'g'){
+                         color[0] = 1;
+                         color[1] = 0;
+                         setLights(opbcs[i],route,color);
+                     }
                 }
-            }
-        } else if (conds[i].at(0) == 's') {
-            if (TrackModel::getSwitchState(route,blcs[i]) == 1) {
-                 if (opts[i].at(0) == 'r') {
-                     // setLights(opbcs[i],"10") RED
-                 } else if (opts[i].at(0) == 'g'){
-                     // setLights(opbcs[i],"00") GREEN
-                 }
-            } else {
-                if (opts[i].at(0) == 'r') {
-                    // setLights(opbcs[i],"10") RED
-                } else if (opts[i].at(0) == 'g'){
-                    // setLights(opbcs[i],"00") GREEN
+            } else if (conds[i].at(0) == 's') {
+                if (TrackModel::getSwitchState(route,blcs[i]) == 1) {
+                     if (opts[i].at(0) == 'r') {
+                         color[0] = 0;
+                         color[1] = 0;
+                         setLights(opbcs[i],route,color);
+                     } else if (opts[i].at(0) == 'g'){
+                         color[0] = 1;
+                         color[1] = 0;
+                         setLights(opbcs[i],route,color);
+                     }
                 }
             }
         }
@@ -142,8 +163,6 @@ void Region::runPLC() {
 //---------------------------------------------------------------------------------
 // Initialize speed and authority allowed in the region
 void Region :: initialize(int db, float ss, std::vector<std::pair<int,int>> ac) {
-
-    std::cout << " AWWW you never got here booohoooooooo" << std::endl;
 
     // assign speed, authority, and exit block
     exitBlock = db;
@@ -213,16 +232,27 @@ bool Region :: detectFailure(int b, string line) {
 }
 
 // Set Traffic Lights
-void Region :: setLights(int b, string line, string color) {
+void Region :: setLights(int b, string line, bool color[]) {
     int loc;
 
     if (line == "Green Line") {
         if (b == 0) { loc = 0; }
-        else { loc = b - 59; } // Track Controller specific solution
+        else { loc = b - 59; } // Track Controller (region) specific solution
     }
     if (line == "Red Line") { loc = 0; }
 
-    //blocks[loc].lightColor = bool(color)
+    blocks[loc].lightColor[0] = color[0];
+    blocks[loc].lightColor[1] = color[1];
+
+    // conversion for track model
+    if (color[0] == 0 && color[1] == 0)  {
+        TrackModel::setSignal(line,b,static_cast<TrackModel::BlockDir>(1),static_cast<TrackModel::SignalState>(0));
+    } else if (color[0] == 0 && color[1] == 1) {
+        TrackModel::setSignal(line,b,static_cast<TrackModel::BlockDir>(1),static_cast<TrackModel::SignalState>(1));
+    } else if (color[0] == 1 && color[1] == 0) {
+        TrackModel::setSignal(line,b,static_cast<TrackModel::BlockDir>(1),static_cast<TrackModel::SignalState>(2));
+    }
+
 };
 
 /* GETTERS AND MISCELLANEOUS INTERNAL METHODS */
@@ -233,28 +263,75 @@ void Region :: setLights(int b, string line, string color) {
 //    }
 //}
 
-std::string Region::getRoute() const {  // Line
+std::string Region::getRoute() const {  // Line 
     return route;
 }
 
 std::string Region::getSection(int b) const { // Section
+    if (b != 0) {
+        b-= 59;
+    }
     return blocks[b].section;
 }
 
 int Region::getCurrentBlock() const { // Current Block
-    return iterator;
+    if (iterator != 0) {
+        return (iterator + 59);
+    } else {
+         return iterator;
+    }
 }
 
 float Region::getSuggestedSpeed(int b) const{ // Suggested Speed
+    if (b != 0) {
+        b-= 59;
+    }
     return blocks[b].sugSpeed;
 }
 
 float Region::getCommandedSpeed(int b) const { // Commanded Speed
+    if (b != 0) {
+        b-= 59;
+    }
     return blocks[b].commSpeed;
 }
 
 float Region::getAuthority(int b) const{ // Authority
+    if (b != 0) {
+        b-= 59;
+    }
     return blocks[b].auth;
+}
+
+int Region::getLights(int b) const{ // Authority
+    int color;
+    if (b != 0) {
+        b-= 59;
+    }
+    if (blocks[b].lightColor[0] == 0 && blocks[b].lightColor[0] == 0) {
+        color = 0;
+    } else if (blocks[b].lightColor[0] == 0 && blocks[b].lightColor[0] == 1) {
+        color = 1;
+    } else {
+        color = 2;
+    }
+    return color;
+}
+
+void Region::setCurrentBlock(int b){
+    if (b != 0) {
+        iterator = b - 59;
+    } else {
+        iterator = 0;
+    }
+}
+
+int Region::getSwitchBlock() {
+    for (unsigned int i = 0; i < blocks.size(); i++) {
+        if (blocks[i].isSwitch == 1) {
+            return blocks[i].blockID;
+        }
+    }
 }
 
 

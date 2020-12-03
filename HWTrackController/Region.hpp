@@ -51,6 +51,7 @@ public:
     Region(std::string);
     bool success;
     bool loadPLC(QString);
+    bool automatic;
 
     // CTC
     void initialize(int, float, std::vector<std::pair<int, int>>);
@@ -60,15 +61,21 @@ public:
     void setCircuit();
     float getSpeedLimit() const;
     bool detectFailure(int, std::string);
-    void setLights(int, std::string, std::string);
+    void setLights(int, std::string, bool[2]);
 
     // Getters
     std::string getRoute() const;
     std::string getSection(int) const;
-    int getCurrentBlock() const;
+    int getCurrentBlock() const; 
+    int getSwitchBlock();
     float getSuggestedSpeed(int) const;
     float getCommandedSpeed(int) const;
     float getAuthority(int) const;
+    int getLights(int) const;
+
+    // Other internal methods
+    void setCurrentBlock(int);
+
 
 public slots:
     void runPLC();

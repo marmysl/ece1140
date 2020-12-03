@@ -41,7 +41,7 @@ bool HardwarePLC::interpretHWPLC(QString path){
         if (conditional != "IF") throw std::invalid_argument ("PLC File is not formatted correctly");
 
         std::getline(linestream, condition, ' ');
-        if ((condition == "!block") || (condition == "block")) {
+        if ((condition == "!block") || (condition == "block") || (condition == "switch") || (condition == "!switch")) {
             tempcond.push_back(condition);
         }
 
@@ -63,7 +63,7 @@ bool HardwarePLC::interpretHWPLC(QString path){
         if (then != "THEN") throw std::invalid_argument ("PLC File is not formatted correctly");
 
         std::getline(linestream, result, ' ');
-        if ((result == "!switch") || (result == "switch")) {
+        if ((result == "!switch") || (result == "switch") || (result == "red") || (result == "green")){
             tempops.push_back(result);
         }
 

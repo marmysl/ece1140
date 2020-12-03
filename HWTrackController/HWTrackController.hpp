@@ -9,6 +9,7 @@
 #include "hw_sw_interfaces.h"
 #include "HWTrackController_main.h"
 #include "SerialPort.hpp"
+#include "hwplcui.h"
 
 using namespace std;
 

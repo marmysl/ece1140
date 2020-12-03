@@ -214,8 +214,12 @@ void MainWindow::on_btnMaintenance_clicked()
 
 void MainWindow::on_comboDisplayBlock_currentIndexChanged(const QString &arg1)
 {
-
-    ui->lblBlockOcc->setText("NO");
+    bool occupancy;
+    if (ctc.getline() == "Green Line") {
+        occupancy = greenreg.detectTrain(arg1.toInt(), ctc.getline());
+        if (occupancy == 0) ui->lblBlockOcc->setText("NO");
+        if (occupancy == 1) ui->lblBlockOcc->setText("YES");
+    }
 }
 
 void MainWindow::on_btnThroughput_clicked()
